@@ -2,11 +2,11 @@
 The lab experiment workflow, particularly psiTurk, has become a burden.  It is complex, it only works with Mechanical Turk, and is nearly 10 years old in terms of its thinking and architecture.  It’s time to move on.
 
 ## Key philosophy ⚡️
-- We need a new framework for doing experiments based on up to date web technologies.
+- We need a new framework for doing experiments based on up-to-date web technologies.
 - It needs to accomodate multiple recruitment channels (AMT, prolific, etc…) with the same code.
-- Key is to make this a PROGRESSIVE framework in that simple and common stuff is done super simply and *extremely fast and error free* but complex stuff is still possible down the line by adding stuff when you need it.
-- I want things so that if you are making a relatively straightforward cognitive psychology type experiment you could do the entire thing start to finish in day, for experts, and a week for new lab members.
-- Sharability and modularity are critical.  If one lab member makes a great implementation of a psychometric scale (BIS/BAS) another member who wanted to use that in their experiment should spend no more than 15 minutes making that happen.  If one person makes a cool captcha everyone can add it in 5-10 minutes.
+- Key is to make this a **progressive** framework in that simple and common stuff is done super simply and *extremely fast and error free* but complex stuff is still possible down the line by adding stuff when you need it.  (*progressive frameworks means ones that you only add what you need*)
+- I want things so that if you are making a relatively straightforward cognitive psychology type experiment you could do the entire thing start to finish in day or so, for experts, and a week for new lab members.
+- Sharability and modularity are critical.  If one lab member makes a great implementation of a psychometric scale (BIS/BAS) another member who wanted to use that in their experiment should spend no more than 15 minutes making that happen.  If one person makes a cool captcha everyone can add it to their experiment in 5-10 minutes.
 - A common workflow is more desirable than every—phd student-for-themselves because we push in the same direction but also because aids replicability and reuse.
 - If the code we develop for this lasts for 5 years (1/2 as long as psiturk code base) I’ll be happy.
 - Work to make it clean/simple when default workflows don’t align with the needs of experimenters
@@ -14,6 +14,7 @@ The lab experiment workflow, particularly psiTurk, has become a burden.  It is c
 - Want making experiments to be fun, exciting, easy, not time consuming.
 - Want to use technology to help reduce errors and bugs in our collected datasets.
 - Want to simplify the process of getting from data -> data analysis.
+- Noone in the lab should ever be tempted to use Qualtrics which is to say things should be about that easy.
 
 ##  Terminology 📋
 What do I mean by front/back end?  **Front end** means things in the browser.  **Back end** means databases and other things which manage and export data.  The hope is we develop a useful backend which you rarely need to mess with much except for extremely niche type applications, and then focus on modern front end tools and simple deployment systems.
@@ -40,13 +41,13 @@ Front end has to do with
 - gaming libraries like Phaser (pam!), Unity (Ili! Guy!), etc…
 - something else?
 
-One comment about frontend: It is likely that in 1-5 years python will become a more viable front end language due to recent advances in WebAssembly possibly leading to a shift away from Javascript.  However, Javascript is so big that will be a slow evolution and so I’m still comfortable with going Javascript here.
+*One comment about frontend: It is likely that in 1-5 years python will become a more viable front end language due to recent advances in WebAssembly possibly leading to a shift away from Javascript.  However, Javascript is so big that will be a slow evolution and so I’m still comfortable with going Javascript here.*
 
 ## Back-end 🧟‍♂️
-Minimally the back end needs to store data in a database of some kind (low tech: simple .json text files, high tech: realtime databases).
-- Do you need a different backend server for each experiment or can we make one server for entire lab?
-- What datastorage technology?  Key concerns are cost of storage, types of queries you can perfom on it, etc…
-- What about server side computations (these are computations we don’t want to be use-editable in the experiment).  Examples:
+Minimally the back end needs to store data in a database of some kind (low tech: simple .json text files, medium tech: mysql, high tech: realtime databases).
+- Do you need a different backend server for each experiment or can we make one server for entire lab?  Discuss.
+- What datastorage technology?  Key concerns are cost of storage, types of queries you can perfom on it, etc…  (e.g., .json text files hard to query, some real time NoSQL databases also limit queries)
+- What about server side computations (these are computations we don’t want to be user-editable in the experiment javascript).  Examples:
 	- Computing bonus from an experiment
 	- Verifying if the user id on AMT or prolific has done this specific experiment or this _type_ of experiment before
 	- Blocking known bots or bad actors from participating based on ip addresses, AMT workeriDs, etc…
