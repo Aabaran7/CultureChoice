@@ -33,12 +33,14 @@ Front end has to do with
 - Documentation — let’s make super easy to understand documentation to get people going
 
 ### Possibilities:
-- Custom javascript
-- d3.js
-- raw jQuery
-- jsPsych
-- Vue/React/Angular, etc…
-- gaming libraries like Phaser (pam!), Unity (Ili! Guy!), etc…
+- Custom javascript (ala psiturk.js)
+- raw [jQuery](https://jquery.com)
+- [d3.js](https://d3js.org)
+- [jsPsych](https://www.jspsych.org/7.2/)
+- [Vue](https://vuejs.org)
+- [React](https://reactjs.org)
+- [Angular](https://angular.io), etc…
+- gaming libraries like [Phaser](https://phaser.io) (pam!), [Unity](https://unity.com/pages/unity-pro-buy-now?gclsrc=aw.ds&gclid=CjwKCAjw7IeUBhBbEiwADhiEMZ_9Fmbg4yKNAO_c1TU6kpAGm8Ufkn_OXML91pG_WWKpUtaLsNEW3BoCBuYQAvD_BwE) (Ili! Guy!), etc…
 - something else?
 
 *One comment about frontend: It is likely that in 1-5 years python will become a more viable front end language due to recent advances in WebAssembly possibly leading to a shift away from Javascript.  However, Javascript is so big that will be a slow evolution and so I’m still comfortable with going Javascript here.*
