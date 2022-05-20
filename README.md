@@ -65,3 +65,30 @@ Various cominations of:
 - [Express.js](https://expressjs.com) (node)
 - [Laraval](https://laravel.com) (php)
 - others? (there are literally hundreds)
+
+
+## Expected use cases
+
+What are the types of web experiment things we are doing as a lab generally?  I guess we might want to see if there's a solution that covers some or most of what people wanted.  Let’s take a look at some recent papers and proposed projects…
+
+- Angela’s attention RL task - sort of a bandit style task pretty well suited to something like jsPsych (in fact, written in jsPsych)
+- Emily’s question asking experiment - pretty complex. Subject have several complex mouse-guided interactions with a battleship grid then ask questions and rank order them using some list sorting widgets.  This was based on d3js code written by Anselm but this code and the imperative coding style was super complex and hard to maintain.  Also it had many bugs we never could figure out exactly.
+- Guy’s VR experiments - well to some degree this bypassed the issue by requiring interactions that were in Unity but the surrounding stuff was in React
+- Pam’s multi-player helping task.  Used Phaser and I don’t think anything like jQuery/jsPsych could have managed that.  Just needed a video game specific tool with support for sprites and other add ons.
+- Ill’s canadian traveler thing - written in c# using unity, i think used psiturk for recruitment.
+- Anna’s causal learning experiments - These were elaborate and hard to maintain d3 code.  It was messy but worked.  I believe that Kate Nuss, Ali Cohen, Zach Davis, et al. reimplemented the experiments for kids using something along the lines of jsPsych but not sure how it worked in the end.
+- Alex rich learning traps stuff was all psiturk/Jquery/d3 type stuff.  Seemed ok but development was somewhat involved.
+- Pam’s categorization task - this was based on very old, boilerplate type psiTurk code primilarly using d3/jquery type calls.  Bug continued and never resolved adequately.  Development of new versions/features took months particularly designing instructions which were the most important part of the study.
+- David’s long term memory encoding experiments.   The task was just like study a list of words and then get tested on them after a delay.  jsPsych for the front end but the rest was some more complex custom psiturk/flask backend for firing off reminder emails and stuff.  Development time for front end was very easy with jsPsych.
+- Pat physics experiments: overlay videos with custom interaction elements.  Did it in regular javascript/jQuery for the most part.  Seemed not so bad and complexities had more to do with the video itself.
+- Ethan physics stuff.  Mostly unity rendered videos into a qualtrics form.  Real lack of control including of randomization and stuff.  Not recommended.
+- ARC task - this was quite complex javascript with a very involved interface borrowed from chollet and then adapted for our purposes. 
+
+### Future designs
+- Emily has been planning experiments were subjects might design video game levels to each another person some concepts in a game.  I assume these would be more similar to the Battleship stuff in terms of complex, dynamic interactions, and possibly similar to Pam’s Phaser stuff too needing sprites and stuff
+- Baba is you - obviously a sprite based game so would be helped in that space although different technical trade offs could be considered for sure
+- Further modifications of Pam’s experiment for computational helping type stuff, multi player, player-bot interactions with a game context (possibly add on modules like real time payer communication and chat between players)
+- Additional experimentation with bandit/RL type problems
+- Physics things involving video and manipulations or ratings of videos
+- Human-machine interaction things where humans interact with machine learning algorithms in some ways
+- More stuff in the line of Guy with complex 3d environments involving interaction with multiple types of controls, complex data streams, and text/language type stuff
