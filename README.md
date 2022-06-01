@@ -1,7 +1,12 @@
-# Vue 3 + Vite
+# 🫠 Smile.
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A happy approach to online research.
 
-## Recommended IDE Setup
+Online docs: [http://smile.gureckislab.org](http://smile.gureckislab.org)
+
+
+## Required software to work on this
 
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- [Node.js](https://nodejs.org/en/download/)
+- A git client
