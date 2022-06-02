@@ -115,8 +115,9 @@ them to the github repo.
 
 ## What happens next?
 
-:::warning
-This is to-be-implemented
-:::
+Currently the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the to `main` github branch, a Github Actions script runs which automatically builds the static website using vitepress and the rsyncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**
 
-Currently the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the docs to github they are automatically rebuilt and synchronized with that website url (using [Github Actions](https://docs.github.com/en/actions)) so there is nothing you really need to do.  Pushing your changes to the master branch will update the website.
+
+For complete documentation, the script which runs the action is located at `.github/workflows/docs-deploy.yml`.  This pulls several "secrets" which are configured in the repository settings (these are environment variables hidden from the public github repo since they contain sensitive information).  This is the [rsync package](https://github.com/Burnett01/rsync-deployments) used.  I also found [this guide](https://zellwk.com/blog/github-actions-deploy/) helpful.
+
+Before pushing your changes you might check the build correctly by running `npm run docs:build` and then `npm run docs:serve` to view the results although if you are constantly monitoring your edits in the vite dev server (i.e., `npm run docs:dev`) things are likely ok.
