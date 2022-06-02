@@ -7,7 +7,9 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches:
-      - docs
+      - main
+    paths:
+      - "docs/**"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -22,10 +24,23 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout docs branch
+      - name: Checkout main branch
         uses: actions/checkout@v3
         with: 
-          ref: docs
+          ref: main
+      
+      # setup node.js
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version:16.15.1
+        
+      # install node packages
+      - name: Install node dependencies
+        run: npm install
+
+      - name: Rebuild docs
+        run: npm run docs:build
 
       # Runs a single command using the runners shell
       - name: List the files
@@ -36,6 +51,7 @@ jobs:
         uses: burnett01/rsync-deployments@5.2
         with:
           switches: -avrz --delete
+          path: docs/.vitpress/dist
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.DEPLOY_HOST }}
           remote_port: ${{ secrets.DEPLOY_PORT }}
