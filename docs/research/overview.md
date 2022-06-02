@@ -12,5 +12,5 @@ Unlike psiTurk Smile will separate these concerns.
 
 The following pages contain research notes and design ideas:
 
-- [Back-end research document](research/backend)
-- [Front-end research document](research/frontend)
+- [Back-end research document](/research/backend)
+- [Front-end research document](/research/frontend)

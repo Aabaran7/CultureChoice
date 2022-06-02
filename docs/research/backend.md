@@ -5,7 +5,7 @@ Minimally the back end needs to store data in a database of some kind along with
 Key questions to answer: 
 
 - Do you need a different backend server for each experiment or can we make one server for entire lab?
-- What datastorage technology?  Key concerns are cost of storage, types of queries you can perfom on it, etc…  (e.g., .json text files hard to query, some real time NoSQL databases also limit queries).  See notes on [backend technology](backend-technology).
+- What datastorage technology?  Key concerns are cost of storage, types of queries you can perfom on it, etc…  (e.g., .json text files hard to query, some real time NoSQL databases also limit queries).  See notes on [backend technology](#backend-technology).
 - What about [server side computations](#server-side-computations) (these are computations we don’t want to be user-editable in the experiment javascript).  
 
 ## Backend Technology
@@ -53,8 +53,8 @@ Sometimes experiment need specific server-side software to run. Examples:
 - Computing bonus from an experiment in a way that the subject can't change it in the browser dev tools.
 - Verifying if the user id on AMT or prolific has done this specific experiment or this _type_ of experiment before
 - Blocking known bots or bad actors from participating based on ip addresses, AMT workeriDs, etc…
-- Running server-side python code that determines something about experiment (e.g., using OpenAI gym to define and respond to actions by a user in a browser), or possibly fitting a model to a users data and then using the fitted model to adapt future trials.
-- Ability to yoke subjects (e.g., query database and find a previous person and use their data as input for current designs — relates to markov monte carlo with people type chaining)
+- Running server-side python code that determines something about the experiment (e.g., using OpenAI gym to define and respond to actions by a user in a browser), or possibly fitting a model to a user's data and then using the fitted model to adapt future trials.
+- Ability to yoke subjects (e.g., query database and find a previous person and use their data as input for current designs — relates to Markov Monte Carlo with people type chaining)
 
 ## Specific miscellaneous stuff like multi-player games
 

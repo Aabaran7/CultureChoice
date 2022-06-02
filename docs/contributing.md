@@ -119,4 +119,4 @@ Currently, the docs are live at [http://smile.gureckislab.org](http://smile.gure
 
 For complete documentation, the script which runs the action is located at `.github/workflows/docs-deploy.yml`.  This pulls several "secrets" which are configured in the repository settings (these are environment variables hidden from the public github repo since they contain sensitive information).  This is the [rsync package](https://github.com/Burnett01/rsync-deployments) used.  I also found [this guide](https://zellwk.com/blog/github-actions-deploy/) helpful.
 
-Before pushing your changes you might check the build correctly by running `npm run docs:build` and then `npm run docs:serve` to view the results although if you are constantly monitoring your edits in the vite dev server (i.e., `npm run docs:dev`) things are likely ok.
+Before pushing your changes it can be a good idea check the build correctly by running `npm run docs:build`.  If the build fails on the Github Action the website will remain unchanged.  You can get diagnostic information about the auto-deploy process on the [Github Actions tab](https://github.com/NYUCCL/smile/actions) of the repo.

@@ -1,17 +1,16 @@
 # Use cases
 
 <style>
-
-td{
+td {
     font-size: 0.8em;
 }
-
-
+.note {
+    font-size: 0.7em;
+    text-align: right;
+}
 </style>
 
 What are the types of web experiment things we are doing as a lab generally?  I guess we might want to see if there's a solution that covers some or most of what people wanted.  Let’s take a look at some recent papers and proposed projects…
-
-
 
 | Paper                           | JsPsych? | Qualtrics?| psiTurk | Unity | Notes          |
 | ------------------------------- |:--------:|:---------:|:-------:|:-----:|----------------|
@@ -28,8 +27,11 @@ What are the types of web experiment things we are doing as a lab generally?  I 
 | [Ethan physics stuff](https://gureckislab.org/papers/#/ref/ludwin2021limits)             | (:+1:)   | :+1:      |         |       | :frowning_face: trials not randomized! |
 | [WaiKeen ARC task](https://gureckislab.org/papers/#/ref/johnson2021fast)                |          |           | :+1:    |       | complex code from online |
 
-<font size="2px" style="color: #ccc"> (👍) means in theory could have used it</font><br>
-<font size="2px" style="color: #ccc">👍? means unsure</font><br>
+<div class="note">
+(👍) means in theory could have used it<br>
+👍? means unsure
+</div>
+
 
 ## Future designs
 
