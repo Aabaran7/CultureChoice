@@ -47,6 +47,6 @@ Then I added these commands to the `package.json` file:
 ```
 
 To run the documentation locally then I just type `npm run doc:dev` and open the provided localhost link.
-The documenation on how to configure Vitepress is [here](https://vitepress.vuejs.org).
+The documentation on how to configure Vitepress is [here](https://vitepress.vuejs.org).
 
 
