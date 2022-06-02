@@ -33,7 +33,7 @@ jobs:
       - name: Setup node.js
         uses: actions/setup-node@v3
         with:
-          node-version:16.15.1
+          node-version: 16.15.1
         
       # install node packages
       - name: Install node dependencies
