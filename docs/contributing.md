@@ -48,7 +48,7 @@ also provides a set of commands available for managing the project.  The content
 }
 ```
 
-In the `scripts` section you see several commands.  To run them you just type `npm run <cmd>`. 
+In the `scripts` section, you see several commands.  To run them you just type `npm run <cmd>`. 
 For instance typing `npm run docs:dev` will effectively type `vitepress dev docs`.  The `npm run <cmd>`
 commands are just shorthands for running build steps of the vitepress documentation system, and
 later for the 🫠 Smile project itself.  Anytime you forget the possible commands just type `npm run`
@@ -88,7 +88,7 @@ vitepress v1.0.0-alpha.1
 
 Opening `http://localhost:3000/` in your browser will let you see the current documentation website.
 
-Lets look at the current files in the `docs/` folder:
+Let's look at the current files in the `docs/` folder:
 
 ```
 docs
@@ -114,8 +114,7 @@ When you are done making changes to the docs just use git commands to stage the 
 them to the github repo.
 
 ## What happens next?
-
-Currently the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the to `main` github branch, a Github Actions script runs which automatically builds the static website using vitepress and the rsyncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**  This is a core design principle of 🫠 Smile: don't sweat the dumb stuff.
+Currently, the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the `main` github branch, a Github Actions script runs which automatically builds the static website using vitepress and the rsyncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**  This is a core design principle of 🫠 Smile: don't sweat the dumb stuff.
 
 
 For complete documentation, the script which runs the action is located at `.github/workflows/docs-deploy.yml`.  This pulls several "secrets" which are configured in the repository settings (these are environment variables hidden from the public github repo since they contain sensitive information).  This is the [rsync package](https://github.com/Burnett01/rsync-deployments) used.  I also found [this guide](https://zellwk.com/blog/github-actions-deploy/) helpful.

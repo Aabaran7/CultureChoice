@@ -1,4 +1,4 @@
-# 👩‍💻 Install notes
+# 👩‍💻 Setup notes
 
 **You never have to do these steps they are just documented so you know how we got to 
 the initial project structure.**
@@ -7,9 +7,9 @@ the initial project structure.**
 
 
 The project starts off with a bunch of files which you might find unfamiliar.  There is no magic there though.
-The basic directory structure was automatically created by [Vite](https://vitejs.dev).  
+The basic directory structure was automatically created by [Vite](https://vitejs.dev). 
 
-First you need to install Node.js on your computer if you haven't already.  You can download the latest version [here](https://nodejs.org/en/download/).  Verify that you have the `npm` command in your terminal program of choice.
+First, you need to install Node.js on your computer if you haven't already.  You can download the latest version [here](https://nodejs.org/en/download/).  Verify that you have the `npm` command in your terminal program of choice.
 
 
 Next, I initialized a default Vite project:
@@ -20,11 +20,10 @@ cd smile
 npm create vite@latest .
 ```
 
-It asked me for a project name ("smile"), a framework ("vue"), and a variant ("vue" meaning vanilla
-javascript not typescript).
+It asked me for a project name ("smile"), a framework ("vue"), and a variant ("vue" meaning vanilla javascript, not typescript).
 Then you just run `npm i` to install all the dependencies.
 
-Next I installed the documentation system, [Vitepress](https://vitepress.vuejs.org).  From inside
+Next, I installed the documentation system, [Vitepress](https://vitepress.vuejs.org).  From inside
 the smile folder:
 
 ```sh

@@ -1,8 +1,21 @@
-export default {
+import footnote from 'markdown-it-footnote'
+import { defineConfig } from 'vitepress'
+
+
+export default defineConfig({
     title: '🫠 Smile.',
     description: 'a gureckislab joint.',
     
+    markdown: {
+        toc: {
+            listType: 'ol'
+        },
+        config: (md) => {
+            md.use(footnote)
+        }
+    },
     themeConfig: {
+        lastUpdated: true,
         lastUpdatedText: 'Updated Date',
         nav: [
                 { text: 'gureckislab.org', link: 'https://gureckislab.org' }, 
@@ -14,15 +27,34 @@ export default {
                 items: [
                     { text: "Introduction", link: '/introduction' },
                     { text: "Contributing", link: '/contributing' },
-                    { text: "Notes", link: '/notes' },
                     
                 ]
             },
             {
                 text: "Planning",
                 items: [
-                    { text: "Design Principles", link: '/principles' },
                     { text: "Manifesto", link: '/manifesto' },
+                    { text: "Design Principles", link: '/principles' },
+                    { text: "Overview", link: '/research/overview' },
+                    { text: "Use-cases", link: '/research/usecases' }
+                ]
+            },
+            {
+                text: "Back End",
+                items: [
+                    { text: "Research Notes", link: "/research/backend"}
+                ]
+            },
+            {
+                text: "Front End",
+                items: [
+                    { text: "Research Notes", link: "/research/frontend"}
+                ]
+            },
+            {
+                text: "Misc",
+                items: [
+                    { text: "Setup", link: "/notes" }
                 ]
             }
         ],
@@ -31,4 +63,4 @@ export default {
             copyright: 'Copyright © 2020-present Todd Gureckis'
         }
     }
-}
+})
