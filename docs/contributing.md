@@ -115,7 +115,7 @@ them to the github repo.
 
 ## What happens next?
 
-Currently the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the to `main` github branch, a Github Actions script runs which automatically builds the static website using vitepress and the rsyncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**
+Currently the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the to `main` github branch, a Github Actions script runs which automatically builds the static website using vitepress and the rsyncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**  This is a core design principle of 🫠 Smile: don't sweat the dumb stuff.
 
 
 For complete documentation, the script which runs the action is located at `.github/workflows/docs-deploy.yml`.  This pulls several "secrets" which are configured in the repository settings (these are environment variables hidden from the public github repo since they contain sensitive information).  This is the [rsync package](https://github.com/Burnett01/rsync-deployments) used.  I also found [this guide](https://zellwk.com/blog/github-actions-deploy/) helpful.

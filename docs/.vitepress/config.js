@@ -21,6 +21,7 @@ export default {
             {
                 text: "Planning",
                 items: [
+                    { text: "Design Principles", link: '/principles' },
                     { text: "Manifesto", link: '/manifesto' },
                 ]
             }
