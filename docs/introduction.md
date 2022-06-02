@@ -1,6 +1,6 @@
 # Introduction
 
-The goal of 🫠 **Smile** is to simplify the process of running online behavioral experiments.  The goal is to make it easy and fun to collect behavioral data online.
+The goal of 🫠 **Smile** is to make it easy and fun to collect behavioral data online.
 
 The project is currently in the development and planning stage. We are taking a "docs first" approach to this project by planning the development in the documentation and then working on implementation. 
 
