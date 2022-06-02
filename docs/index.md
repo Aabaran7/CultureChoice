@@ -3,7 +3,7 @@ layout: home
 
 hero:
     name: 🫠
-    text: Smile.
+    text: Smile
     tagline: A happy approach to online behavioral research.
     actions:
         - theme: brand
