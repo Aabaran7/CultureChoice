@@ -11,6 +11,11 @@ npm run docs:build
 
 # navigate to the build output directory (which is not tracked by git due to .gitignore)
 
+# have to copy the github workflow over
+mkdir docs/.vitepress/dist/.github
+mkdir docs/.vitepress/dist/.github/workflows
+cp .github/workflows/docs-deploy.yml docs/.vitepress/dist/.github/workflows/
+
 cd docs/.vitepress/dist
 
 git init  # create a new git repo here

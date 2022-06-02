@@ -9,7 +9,6 @@ on:
     branches:
       - docs
 
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -29,5 +28,16 @@ jobs:
           ref: docs
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
+      - name: List the files
         run: ls -la
+        
+      # Deploy files to web server
+      - name: rsync to server
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -avrz --delete
+          remote_path: ${{ secrets.DEPLOY_PATH }}
+          remote_host: ${{ secrets.DEPLOY_HOST }}
+          remote_port: ${{ secrets.DEPLOY_PORT }}
+          remote_user: ${{ secrets.DEPLOY_USER }}
+          remote_key:  ${{ secrets.DEPLOY_KEY  }}
