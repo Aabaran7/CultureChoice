@@ -4,14 +4,11 @@ The design of online experiments (and webpages in general) requires a lot of com
 
 [[toc]]
 
-
----
-
 ## Our goal is to write error-free experiments, happily.
 
 The first point is that we want to write high-quality code which is bug-free while smiling the whole time 🫠 (and not melting too much).  We need to do this because we have a moral obligation both in our scientific papers and to our participants to not have mistakes in our empirical data collection.  Messing up a model code is bad but at least you didn't waste the time of 1000 subjects and the money of taxpayers [^moral].  All the subsequent principles are ultimately in the service of this one.
 
-[^moral]: This shouldn't be interpreted as pressure to hide bugs when they happen.  An even more important factor there is humans are humans, bugs happen, and we should fix them and move on even if costly.  The goal actually of this project is to lower the costs and roadblock that face us a humans.  It's not life or death here.  The moral imperative is higher for honestly fixing things!
+[^moral]: This shouldn't be interpreted as pressure to hide bugs when they happen.  An even more important factor there is humans are humans, bugs happen, and we should fix them and move on even if costly.  The goal actually of this project is to lower the costs and roadblocks that face us as humans.  It's not life or death here.  The moral imperative is higher for honestly fixing things!
 
 ## No code is the best code.
 
@@ -27,7 +24,7 @@ Here's an example.  In the past with psiTurk you called `psiturk.saveData()` whe
 
 [^forget]: This has happened.   Once because a student didn't know they needed to call the save data function and another time because they forgot to do it.  The fact that this happens is an indication that something is wrong in a way since there's no point to doing an experiment where you don't save the data so why should you even need to think about it?
 
-Another example is the [15 step process to deploy psiturk to the Heroku cloud](https://psiturk.readthedocs.io/en/latest/tutorials/heroku.html).
+Another example is the 15-step[ process to](https://psiturk.readthedocs.io/en/latest/tutorials/heroku.html) deploy psiTurk to the Heroku cloud](https://psiturk.readthedocs.io/en/latest/tutorials/heroku.html).
 
 
 ## Don't repeat yourself.
@@ -63,6 +60,6 @@ Having bugs in your experiment code is actually one of the worst things we can d
 
 Deciding what things Smile can do and what things it shouldn't (i.e., project scope) can be hard.  It can be a matter of taste.  psiTurk tried to do a lot (front-end development, server-side code, Mechanical Turk API).  It is useful to pull these services together but made things somewhat complex.  A better solution is to find the natural break points in how other people develop systems.  Have pieces that are small and manageable that can be shared between projects.
 
-## Spend time to set up your development environment.
+## Spend time setting up your development environment.
 
 Modern web development tools are outstanding.  Become familiar with syntax highlighting, automatic code completion, linters, and other debugging packages to make your life better.  These have a learning curve (see principle about [learning](#sometimes-learning-1-seemingly-complex-thing-makes-everything-you-do-10-faster)), but the payoff can be dramatic not only in productivity but in writing high-quality error-free code.
