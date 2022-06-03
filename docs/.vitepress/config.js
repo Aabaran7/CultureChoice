@@ -5,7 +5,6 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
     title: '🫠 Smile.',
     description: 'a gureckislab joint.',
-    
     markdown: {
         toc: {
             listType: 'ol'
@@ -18,8 +17,11 @@ export default defineConfig({
         lastUpdated: true,
         lastUpdatedText: 'Updated Date',
         nav: [
-                { text: 'gureckislab.org', link: 'https://gureckislab.org' }, 
-                { text: 'github', link: 'https://github.com/NYUCCL/smile' }              
+                { text: 'gureckislab.org', link: 'https://gureckislab.org' }           
+        ],
+        socialLinks: [
+            { icon: 'github', link: 'https://github.com/NYUCCL/smile' },
+            { icon: 'twitter', link: 'https://twitter.com/todd_gureckis' }
         ],
         sidebar: [
             {
