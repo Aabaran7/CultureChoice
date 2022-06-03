@@ -22,9 +22,9 @@ There are a lot of stupid things you need to do in developing and deploying slig
 
 Here's an example.  In the past with psiTurk you called `psiturk.saveData()` when you wanted to push the current data from your experiment to the database.  You might do this multiple times in the task, often at the end of a block of trials.  However, it could make sense to engineer this so it happens automatically.  Now you as the task developer don't have to think about when to save the data, you can trust that it has been worked out for you and it means you have one less thing to think about (or possibly forget!).[^forget]
 
-[^forget]: This has happened.   Once because a student didn't know they needed to call the save data function and another time because they forgot to do it.  The fact that this happens is an indication that something is wrong in a way since there's no point to doing an experiment where you don't save the data so why should you even need to think about it?
+[^forget]: This has happened.   Once because a student didn't know they needed to call the save data function and another time because they forgot to do it.  The fact that this happens is an indication that something is wrong in a way since there's no point to doing an experiment where you don't save the data so why should you even need to think about it?  Think about it -- you are using a package to help you make experiments and saving the data is left to you as an **option**? :monocle_face:
 
-Another example is the 15-step[ process to](https://psiturk.readthedocs.io/en/latest/tutorials/heroku.html) deploy psiTurk to the Heroku cloud](https://psiturk.readthedocs.io/en/latest/tutorials/heroku.html).
+Another example is the [15-step process](https://psiturk.readthedocs.io/en/latest/tutorials/heroku.html) to deploy psiTurk to the Heroku cloud.  Instead, it would make sense for reasonable choices to be made about the configurations and all this to happen in the background, automatically.
 
 
 ## Don't repeat yourself.
@@ -33,16 +33,16 @@ This is known as D.R.Y.  This means you shouldn't have copies of your code in tw
 
 ## Abstraction is your friend.
 
-Related D.R.Y. is when something becomes useful enough it should be abstracted into a component, object, or plugin that can be reused by others.  As one example of a failure on this in the first version of psiTurk we envisioned most of it working using a command line.  This meant that we had a command-line shell interpreter that made direct calls to Bobo (the library that interfaces to Amazon Web Services).  Later we wanted to make a web dashboard GUI to replace the command line.  However, we had to go back and re-abstract the Mechanical Turk function into a more general class that could be used by *either* the command line or the front end.  In the first place, it would have made sense to do that abstraction.  Lesson learned.
+Related D.R.Y. is when something becomes useful enough it should be abstracted into a component, object, or plugin that can be reused by others.  As one example of a failure, in the first version of psiTurk we envisioned most of it working using a command line.  This meant that we had a command-line shell interpreter that made direct calls to Bobo (the library that interfaces to Amazon Web Services).  Later we wanted to make a web dashboard GUI to replace the command line.  However, we had to go back and re-abstract the Mechanical Turk function into a more general class that could be used by *either* the command line or the front end.  In the first place, it would have made sense to do that abstraction.  Lesson learned.
 
 
 ## Limit choices so that the only options are to do things correctly.
 
-People hate having to make choices.  It is exhausting and you never are quite sure if you did the right thing.  If possible narrow choices so there is just one (a default) or if you need options keep them reasonable.  psiTurk has suffered from the desire to be all things to all people.  As an example, you can run it locally or on Heroku or AWS.  There are instructions for all these options, each being more complex than the next.  It'd make more sense if there was just a choice made and live with it.
+People hate having to make choices.  It is exhausting and you never are quite sure if you did the right thing.  If possible narrow choices so there is just one (a default) or if you need options keep them reasonable.  psiTurk has suffered from the desire to be all things to all people.  As an example, you can run it locally or on Heroku or AWS.  There are instructions for all these options, each being more complex than the next.  It'd make more sense if there was just a choice made and everyone lives with it.  New users hate this complexity and you are just forcing it on them instead of making the hard decisions yourself.
 
 ## Keep learning.
 
-Learning things is hard.  It hurts your head and is an unpleasant feeling when you don't understand things 🙇.  Also hard to know, once you do understand things if the thing you are learning about is really what you need to know.  My recommendation is to push through and always be learning.  There's a good chance that the problem you think you have has already been solved and you just don't know the right words to put into Google to find the solution.  Or there is an important concept you are missing that would make your life much easier.
+Learning things is hard.  It hurts your head and is an unpleasant feeling when you don't understand things 🙇.  Also hard to know, if the thing you are learning about is really what you need to know to solve your problem.  My recommendation is to push through and always be learning.  There's a good chance that the problem you think you have has already been solved and you just don't know the right words to put into Google to find the solution.  Or there is an important concept you are missing that would make your life much easier.
 
 ## Documentation first.
 
