@@ -26,7 +26,7 @@ export default defineConfig({
                 text: "Overview",
                 items: [
                     { text: "Introduction", link: '/introduction' },
-                    { text: "Contributing", link: '/contributing' },
+                    { text: "Contributing to the docs", link: '/contributing' },
                     
                 ]
             },
@@ -42,7 +42,8 @@ export default defineConfig({
             {
                 text: "Back End",
                 items: [
-                    { text: "Research Notes", link: "/research/backend"}
+                    { text: "Research Notes", link: "/research/backend" },
+                    { text: "Analyzing Data", link: "/analysis" }
                 ]
             },
             {
@@ -53,6 +54,8 @@ export default defineConfig({
             },
             {
                 text: "Misc",
+                collapsible: true,
+                collapsed: true,
                 items: [
                     { text: "Setup", link: "/notes" }
                 ]

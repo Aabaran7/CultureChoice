@@ -6,7 +6,16 @@ and fun.**
 
 The docs are developed with [Vitepress](https://vitepress.vuejs.org) which is super awesome.
 
-The first step is to clone the project [github repo](https://github.com/NYUCCL/smile).  This has files both for the project and for the documentation.  Next `cd smile` to set your current terminal to the working copy directory.  Next type `npm i` (aka `npm install`) to automatically install all the dependencies of the smile project.
+The first step is to clone the project [github repo](https://github.com/NYUCCL/smile) and set
+your current terminal to the working copy. Next, install the required javascript dependencies
+using `npm` the node package manager (similar to `pip` in python).  This is three simple commands:
+
+```
+git clone https://github.com/nyuccl/smile.git
+cd smile
+npm install
+```
+
 
 Things are still evolving but you should get a directory listing like this:
 
@@ -49,9 +58,10 @@ also provides a set of commands available for managing the project.  The content
 ```
 
 In the `scripts` section, you see several commands.  To run them you just type `npm run <cmd>`. 
-For instance typing `npm run docs:dev` will effectively type `vitepress dev docs`.  The `npm run <cmd>`
-commands are just shorthands for running build steps of the vitepress documentation system, and
-later for the 🫠 Smile project itself.  Anytime you forget the possible commands just type `npm run`
+For instance typing `npm run docs:dev` will effectively run the command `vitepress dev docs`.  
+The `npm run <cmd>` commands are just aliases/shorthands for running build steps of the 
+vitepress documentation system, and later for the 🫠 Smile project itself.  It is similar to a
+Makefile.  Anytime you forget the possible commands just type `npm run`
 on a line by itself and you'll get a listing like this:
 
 ```
@@ -86,9 +96,10 @@ vitepress v1.0.0-alpha.1
   > Network: use `--host` to expose
 ```
 
-Opening `http://localhost:3000/` in your browser will let you see the current documentation website.
+In this case, opening `http://localhost:3000/` in your browser (it might be different is port 3000 on your computer
+is already in use) will let you see the current documentation website.
 
-Let's look at the current files in the `docs/` folder:
+Now let's look at the current files in the `docs/` folder:
 
 ```
 docs
@@ -111,7 +122,7 @@ save to the markdown or configuration files will automatically update your brows
 fast thanks to Vite.
 
 When you are done making changes to the docs just use git commands to stage the files, commit them and (when you are ready) push
-them to the github repo.
+them to the github repo.  There are several useful tutorials available online for using git and GitHub.
 
 ## What happens next?
 Currently, the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the `main` github branch, a Github Actions script runs which automatically builds the static website using vitepress and the rsyncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**  This is a core design principle of 🫠 Smile: don't sweat the dumb stuff.
