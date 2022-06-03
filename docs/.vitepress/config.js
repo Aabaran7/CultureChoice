@@ -49,7 +49,8 @@ export default defineConfig({
             {
                 text: "Front End",
                 items: [
-                    { text: "Research Notes", link: "/research/frontend"}
+                    { text: "Research Notes", link: "/research/frontend"},
+                    { text: "Configuration Options", link: "/configuration"}
                 ]
             },
             {

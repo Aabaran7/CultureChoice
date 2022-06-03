@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
+    "git-commit-info": "^2.0.1",
     "markdown-it-footnote": "^3.0.3",
     "sass": "^1.52.1",
     "vite": "^2.9.9",
