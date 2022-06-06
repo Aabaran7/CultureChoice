@@ -96,7 +96,7 @@ vitepress v1.0.0-alpha.1
   > Network: use `--host` to expose
 ```
 
-In this case, opening `http://localhost:3000/` in your browser (it might be different is port 3000 on your computer
+In this case, opening `http://localhost:3000/` in your browser (it might be different number if port 3000 on your computer
 is already in use) will let you see the current documentation website.
 
 Now let's look at the current files in the `docs/` folder:
@@ -117,17 +117,16 @@ new `.md` files as you like.  You can also add new subfolders.  To add them to t
 `.vitepress/config.js`.  It is mildly self-explanatory (full docs [here](https://vitepress.vuejs.org/config/introduction.html)).
 Vitepress is under active development but quite functional.
 
-One cool thing about running `npm run docs:dev` is the website uses hot module reloading so any changes you 
-save to the markdown or configuration files will automatically update your browser giving you instant feedback.  It is incredibly
+One cool thing about running `npm run docs:dev` is the website uses [hot module reloading](https://vitejs.dev/guide/features.html#hot-module-replacement) so any changes you  save to the markdown or configuration files will automatically update your browser giving you instant feedback.  It is incredibly
 fast thanks to Vite.
 
-When you are done making changes to the docs just use git commands to stage the files, commit them and (when you are ready) push
+When you are finished making changes to the docs just use git commands to stage the files, commit them and (when you are ready) push
 them to the github repo.  There are several useful tutorials available online for using git and GitHub.
 
 ## What happens next?
-Currently, the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the `main` github branch, a Github Actions script runs which automatically builds the static website using vitepress and the rsyncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**  This is a core design principle of 🫠 Smile: don't sweat the dumb stuff.
+Currently, the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the `main` GitHub branch, a Github Actions script runs which automatically builds the static website using VitePress and then syncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**  This is a core design principle of 🫠 Smile: [don't sweat the dumb stuff](/principles.html#don-t-sweat-the-dumb-stuff).
 
 
-For complete documentation, the script which runs the action is located at `.github/workflows/docs-deploy.yml`.  This relies on serveral "secrets" which are configured in the GitHub website's repository settings (these are environment variables hidden from the public github repo since they contain sensitive information).  This is the [rsync package](https://github.com/Burnett01/rsync-deployments) used.  I also found [this guide](https://zellwk.com/blog/github-actions-deploy/) helpful.
+For complete documentation, the script which runs the action is located at `.github/workflows/docs-deploy.yml`.  This relies on several "secrets" which are configured in the GitHub website's repository settings (these are environment variables hidden from the public GitHub repo since they contain sensitive information).  This is the [rsync package](https://github.com/Burnett01/rsync-deployments) used.  I also found [this guide](https://zellwk.com/blog/github-actions-deploy/) helpful.
 
-Before pushing your changes it can be a good idea check the build correctly by running `npm run docs:build`.  If the build fails on the Github Action the website will remain unchanged.  You can get diagnostic information about the auto-deploy process on the [Github Actions tab](https://github.com/NYUCCL/smile/actions) of the repo.
+Before pushing your changes it can be a good idea to check the build correctly by running `npm run docs:build`.  If the build fails on the Github Action the website will remain unchanged.  You can get diagnostic information about the auto-deploy process on the [Github Actions tab](https://github.com/NYUCCL/smile/actions) of the repo.
