@@ -28,6 +28,7 @@ export default defineConfig({
                 text: "Overview",
                 items: [
                     { text: "Introduction", link: '/introduction' },
+                    { text: "Getting started", link: '/gettingstarted'},
                     { text: "Contributing to the docs", link: '/contributing' },
                     
                 ]
@@ -36,7 +37,7 @@ export default defineConfig({
                 text: "Planning",
                 items: [
                     { text: "Manifesto", link: '/manifesto' },
-                    { text: "Design Principles", link: '/principles' },
+                    { text: "Design principles", link: '/principles' },
                     { text: "Overview", link: '/research/overview' },
                     { text: "Use-cases", link: '/research/usecases' }
                 ]
@@ -44,15 +45,15 @@ export default defineConfig({
             {
                 text: "Back End",
                 items: [
-                    { text: "Research Notes", link: "/research/backend" },
-                    { text: "Analyzing Data", link: "/analysis" }
+                    { text: "Research notes", link: "/research/backend" },
+                    { text: "Analyzing data", link: "/analysis" }
                 ]
             },
             {
                 text: "Front End",
                 items: [
                     { text: "Research Notes", link: "/research/frontend"},
-                    { text: "Configuration Options", link: "/configuration"},
+                    { text: "Configuration options", link: "/configuration"},
                     { text: "Developing your experiment", link: "/developing"},
                     { text: "Testing your experiment", link: "/testing"},
                     { text: "Deploying your experiment", link: "/deploy"}

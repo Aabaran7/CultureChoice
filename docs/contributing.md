@@ -1,4 +1,4 @@
-# Contributing
+# Contributing to the documentation
 
 We are taking a "docs first" approach to this project by planning the development in the documentation
 and then working on implementation.  Thus, the place to start is by contributing to the docs.  **It's easy
@@ -6,18 +6,9 @@ and fun.**
 
 The docs are developed with [Vitepress](https://vitepress.vuejs.org) which is super awesome.
 
-The first step is to clone the project [github repo](https://github.com/NYUCCL/smile) and set
-your current terminal to the working copy. Next, install the required javascript dependencies
-using `npm` the node package manager (similar to `pip` in python).  This is three simple commands:
+Make sure you have followed the steps on the [Getting started](/gettingstarted) page.
 
-```
-git clone https://github.com/nyuccl/smile.git
-cd smile
-npm install
-```
-
-
-Things are still evolving but you should get a directory listing like this:
+Things are still evolving but after cloning the repo you should get a directory listing like this:
 
 ```
 .
