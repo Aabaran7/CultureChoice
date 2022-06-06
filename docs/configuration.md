@@ -6,7 +6,26 @@
 }
 </style>
 
-Applications inevitably need configuration options.  The key question is what those are and where they should go and how they should be determined.
+Applications inevitably need configuration options.  The key question is where they should go, what those are, and how they should be determined.
+
+## Where should they go
+
+Generally, configuration options can be divided into two groups based on security/privacy concerns.  One set of options can be publically exposed (e.g., published in a public Github repo).  Examples of these might be options related to data collection like "Does the experiment allow repeat participation?"  The second set of options typically needs to be shielded from public GitHub repos because it contains passwords, access keys, or other sensitive URLs that might be best left secure.  
+
+:::warning
+Because Smile runs as a Single-Page App, most of the configuration options available to the app will also, in theory, be available in the source code of the application.  Thus, it is still not safe to configure the app with sensitive passwords.  Services like Google Cloud/Firebase provide access tokens to web apps that can be exposed to the open web and the security configuration takes place on the server-side.  
+:::
+
+Some wisdom about these things is available on the [12 Factor App](https://12factor.net) site, particularly the section on [config](https://12factor.net/config).  In this document, it is argued that environment variables are the safest way to configure sensitive information (this way they are never mentioned in files that could be accidentally committed.)  This is, incidentally, [the approach that has been taken more recently with psiTurk](https://psiturk.readthedocs.io/en/stable/configuration-overview.html#which-go-where-consider-security-and-privacy-as-well-as-science-replicability).
+
+Another issue is making environment variables accessible inside the web application/Single Page App.  To do this the build system can come in handy.  [Vite](https://vitejs.dev) uses the [dotenv Node.js package](https://vitejs.dev/guide/env-and-mode.html) to read in `.env` files and make them accessible in your javascript.  This is done by doing a static string replacement operation on all the files prior to building them (and it also done as a step in the development server).  The variables become available in your code as `import.meta.env.VITE_XXXX` where `XXX` is the name of the environment variable.
+
+When you are relying on Github to manage deployments for you then the way to set environment variables is through ["Secrets"](https://docs.github.com/en/actions/security-guides/encrypted-secrets).  These are variables that you define in the settings section of the repository which can then be accessed by script at run time using Github Actions.
+
+See the discussion [here](https://stackoverflow.com/questions/60176044/how-do-i-use-an-env-file-with-github-actions) for some helpful tips.
+
+
+## What are the relevant options for Smile?
 
 Here's a possible list (which can be added to):
 
@@ -28,14 +47,18 @@ Here's a possible list (which can be added to):
     ☁️ = has to be copied from cloud provider
 </div>
 
-What we want is for our javascript application to have access to these options.  In most cases, we could just write them in our javascript someplace.  However, there are two issues with this.  First, some of the items we need to generate on the fly using other code that might not be part of our final experiment (running in the browser) itself. For instance, the code running in the browser can't access the file system and thus can't look up the hash value of the last git commit.  Instead, we need to run some other code against the local files to determine these values automatically :robot:.  Second, some of the information is sort of particular to our lab and so we might not want them placed into git.  
 
-Luckily all of these problems are solved by Vite the building and development system we are using.  At its core, Vite preprocesses our javascript/CSS/HTML files and "bundles" them together in more efficient, smaller packages for delivery to our subjects.  As one part of this, it pre-processes the files using some configuration options.
+## How are they set
 
+The ideal situation is to keep the number of configuration options to a minimum by making reasonable choices for most things.  Also the web experiment itself may have very options than the services (e.g., Mechanical Turk).  In cases where there is likely to be different choices for different experiments in the lab (e.g., should the experiment allows AMT and/or Prolific access?) then we want to fill in sensible defaults and then let people configure them easily in one place.
+
+Finally, some of the items we need to generate on the fly using other code that might not be part of our final experiment (running in the browser) itself. For instance, the code running in the browser can't access the file system and thus can't look up the hash value of the last git commit.  Instead, we need to run some other code against the local files to determine these values automatically :robot:.  
+
+This will likely require an extra build step.
 
 ## Example file
 
-Here is an example file that would be a Javascript object
+Here is an example `.env` file:
 
 
 ```
@@ -67,8 +90,4 @@ VITE_FIREBASE_APPID              = 1:947316438062:web:19974ca8a24ffe671f5bbf
 ## Configuration
 
 The build and development server for Smile is Vite which is a really fast
-and amazing tool.  Vite uses .env files to configure options for your application.
-In Smile, these configuration options are located in the `env/` folder.  There
-are two files here `.env` and `.env.local`.  All files with `.local` at the end
-of them are not traced by git and so are a good place to put "private" information
-like urls, certain credentials, etc...  
+and amazing tool.  Vite uses .env files to configure options for your application.  In Smile, these configuration options are located in the `env/` folder.  There are two files here `.env` and `.env.local`.  All files with `.local` at the end of them are not traced by git and so are a good place to put "private" information like urls, certain credentials, etc...  
