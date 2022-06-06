@@ -33,7 +33,7 @@ This is known as D.R.Y.  This means you shouldn't have copies of your code in tw
 
 ## Abstraction is your friend.
 
-Related D.R.Y. is when something becomes useful enough it should be abstracted into a component, object, or plugin that can be reused by others.  As one example of a failure, in the first version of psiTurk we envisioned most of it working using a command line.  This meant that we had a command-line shell interpreter that made direct calls to Bobo (the library that interfaces to Amazon Web Services).  Later we wanted to make a web dashboard GUI to replace the command line.  However, we had to go back and re-abstract the Mechanical Turk function into a more general class that could be used by *either* the command line or the front end.  In the first place, it would have made sense to do that abstraction.  Lesson learned.
+Related to D.R.Y. is when something becomes useful enough it should be abstracted into a component, object, or plugin that can be reused by others.  As one example of a failure, in the first version of psiTurk we envisioned most of it working using a command line.  This meant that we had a command-line shell interpreter that made direct calls to Bobo (the library that interfaces to Amazon Web Services).  Later we wanted to make a web dashboard GUI to replace the command line.  However, we had to go back and re-abstract the Mechanical Turk function into a more general class that could be used by *either* the command line or the front end.  In the first place, it would have made sense to do that abstraction.  Lesson learned.
 
 
 ## Limit choices so that the only options are to do things correctly.
@@ -42,11 +42,16 @@ People hate having to make choices.  It is exhausting and you never are quite su
 
 ## Keep learning.
 
-Learning things is hard.  It hurts your head and is an unpleasant feeling when you don't understand things 🙇.  Also hard to know, if the thing you are learning about is really what you need to know to solve your problem.  My recommendation is to push through and always be learning.  There's a good chance that the problem you think you have has already been solved and you just don't know the right words to put into Google to find the solution.  Or there is an important concept you are missing that would make your life much easier.
+Learning things is hard.  It hurts your head and is an unpleasant feeling when you don't understand things 🙇.  Also, it can be hard to know if the thing you are learning about is really what you need to know to solve your problem.  My recommendation is to push through and always be learning.  There's a good chance that the problem you think you have has already been solved and you just don't know the right words to put into Google to find the solution.  Or there is an important concept you are missing that would make your life much easier.
 
 ## Documentation first.
 
-Documentation is often considered to be something you do after you finish writing your main code.  However, this is one reason things are never adequately documented.  When you are writing your code is the best time to write down the steps you took, the research you did (links to URLs, etc...) and the overall design considerations you were trying to achieve.  These notes can be edited later to make useful, stable docs for a project.  So do the docs then write a little code, then do more docs, and more code, etc...
+Documentation is often considered to be something you do after you finish writing your main code.  However, this is one reason things are never adequately documented.  When you are writing your code is the best time to write down the steps you took, the research you did (links to URLs, etc...) and the overall design considerations you were trying to achieve.  These notes can be edited later to make useful, stable docs for a project.  So do the docs then write a little code, then do more docs, and more code, etc...  Also writing documentation is a check on yourself -- is what you are doing too complex to explain?
+
+## Data must always be linked to the code that created it.
+
+Modern software development largely happens using version control software like git/GitHub.  This is incredibly helpful for keeping track of changes, collaborating, and documenting code as it is developed.  However, version control also offers the potential of linking empirical data generated using a software program to the exact version of the software used to create it.  This is helpful for several reasons.
+First, this makes it trivial to limit data analyses to participant data from particular code versions (e.g., removing subjects affected by a bug without looking inside their data file).  Second, this is helpful for replicability since when you share your data and code other scientists can go back and realize if a bug affected only a subset of participants. In 🫠 Smile, a key design goal is to always provide a way to link the current code version history to datasets generated from that code.  This should happen automatically so that users don't forget this important step.
 
 ## Trust in useful third-party services but don't tie yourself to them.
 
