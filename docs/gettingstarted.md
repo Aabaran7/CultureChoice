@@ -1,8 +1,9 @@
 # Getting started
 
-The **🫠 Smile** repo includes both the code and documentation for the code.
+The **🫠 Smile** repo ([https://github.com/NYUCCL/smile](https://github.com/NYUCCL/smile)) includes both the code and documentation for the code.
 
-Things to install:
+
+Things to install so you can contribute to the project:
 
 - It is recommended you use [VS Code](https://code.visualstudio.com/) and the [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension as your development environment.
 
@@ -10,7 +11,7 @@ Things to install:
 
 The next step is to clone the project [github repo](https://github.com/NYUCCL/smile) and set
 your current terminal to the working copy. Then, install the required javascript dependencies
-using `npm` the node package manager (similar to `pip` in python).  This is three simple commands (you can also clone the repo using GUI tools if you prefer):
+using `npm`, the node package manager (similar to `pip` in python).  This is three simple commands (you can also clone the repo using GUI tools if you prefer):
 
 ```
 git clone https://github.com/nyuccl/smile.git

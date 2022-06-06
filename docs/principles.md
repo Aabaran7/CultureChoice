@@ -14,7 +14,7 @@ The first point is that we want to write high-quality code which is bug-free whi
 
 > Jeff Atwood: “the best code is no code at all. Every new line of code you willingly bring into the world is code that has to be debugged, code that has to be read and understood, code that has to be supported. Every time you write new code, you should do so reluctantly, under duress, because you completely exhausted all your other options.”
 
-In trying to keep things simple and easy to maintain it is helpful to keep this old programmer lore in mind.  Of course, code has to be written but simple and intuitive is helpful.  Perhaps the biggest example of this is reactive programming where you simply define how your website component should *look* and then the state is updated automatically when things change.  Or like if data need to be saved from an experiment do it automatically in the background with some fault tolerance rather than asking the experiment designer to think about this.
+In trying to keep things simple and easy to maintain it is helpful to keep this old programmer lore in mind.  Of course, code has to be written but simple and intuitive is helpful.  Perhaps the biggest example of this is reactive programming where you simply define how your website component should *look* and then the state is updated automatically when things change.  Or like if data needs to be saved from an experiment do it automatically in the background with some fault tolerance rather than asking the experiment designer to think about this.
 
 ## Don't sweat the dumb stuff.
 
