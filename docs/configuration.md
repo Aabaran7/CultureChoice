@@ -50,9 +50,9 @@ Here's a possible list (which can be added to):
 
 ## How are they set
 
-The ideal situation is to keep the number of configuration options to a minimum by making reasonable choices for most things.  Also the web experiment itself may have very options than the services (e.g., Mechanical Turk).  In cases where there is likely to be different choices for different experiments in the lab (e.g., should the experiment allows AMT and/or Prolific access?) then we want to fill in sensible defaults and then let people configure them easily in one place.
+The ideal situation is to keep the number of configuration options to a minimum by making reasonable choices for most things.  Also the web experiment itself may have fewer options than the services (e.g., Mechanical Turk, Prolific).  In cases where there are likely to be different choices for different experiments in the lab (e.g., should mobile devices or tablets be allowed to take the experiment?) then we want to fill in sensible defaults and then let people configure them easily in one place.
 
-Finally, some of the items we need to generate on the fly using other code that might not be part of our final experiment (running in the browser) itself. For instance, the code running in the browser can't access the file system and thus can't look up the hash value of the last git commit.  Instead, we need to run some other code against the local files to determine these values automatically :robot:.  
+Finally, some of the items we need to generate on the fly using other code that might not be part of our final experiment (running in the browser) itself. For instance, the code running in the browser can't access the file system and thus can't look up information about the latest git commit.  Instead, we need to run some other code against the local files to determine these values automatically :robot:.  
 
 This will likely require an extra build step.
 
