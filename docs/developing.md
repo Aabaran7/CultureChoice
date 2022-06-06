@@ -28,21 +28,7 @@ If you have experience with psiTurk you will be familiar with the commands `psit
 and `psiturk debug` which created a local webserver for testing.  `npm run dev` provides the same basic purpose with additional features.
 :::
 
-Keep reading if you would like more details.
+[Keep reading](/notes.html#vite-development-features) if you would like more details.
 
 
 
-## Vite development features
-
-One of the most useful features of Vite in development mode is that it automatically reloads the webpage anytime changes are made to any project files.  This prevents you from having to go back and forth between your editor and the browser and pressing shift-reload.
-
-[Some](https://marketplace.visualstudio.com/items?itemName=ziishaned.livereload) [tools](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) provide this automatic updating by forcing the entire browser webpage to reload anytime a file changes.  
-
-However, the downside of reloading the site page each time there is a change is that the "state" of the page is reset.  For example, if you were testing your experiment and were on trial 10 of the experiment, paused, and then changed the color of one of the fonts, most live-reloaders will completely reload the page taking you back to the first trial of the experiment (i.e., the state is reset).
-
-Instead, Vite can reload modules for parts of a page without reloading the *entire* page.   This can be **very powerful** for developing experiments because it can prevent a lot of mindless clicking just to get back to a particular state and trigger an error, etc...  Once you understand this difference you'll wonder how you every programmed for the web without it.  This feature is known as [Hot Module Replacement](https://vitejs.dev/guide/features.html#hot-module-replacement).  
-
-
-A second key feature of Vite is that it acts as a bundler.  When you use complex libraries in your project there may be lots of dependencies both within and between packages.  As one example, the popular [lodash](https://lodash.com) library organizes all the functions into individual modules so importing the lodash library in Node.js technically may load as many as 600 other files at once.  If this was running on a real webserver the number of separate requests might overload the server.  As a result modern website "bundle" the required code into a single, optimized file so that only one file is imported.  Vite does this behind the scenes for you both in development and building mode.
-
-(There are several other features of Vite including a process called [Tree-Shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) which removes functions from the bundle which are not used in the current app to reduce the file size and [Code Splitting](https://developer.mozilla.org/en-US/docs/Glossary/Code_splitting) which organizes files into "chunks" the reflect common dependencies across different pages of a site.)
