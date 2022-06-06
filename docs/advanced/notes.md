@@ -63,3 +63,56 @@ Instead, Vite can reload modules for parts of a page without reloading the *enti
 A second key feature of Vite is that it acts as a bundler.  When you use complex libraries in your project there may be lots of dependencies both within and between packages.  As one example, the popular [lodash](https://lodash.com) library organizes all the functions into individual modules so importing the lodash library in Node.js technically may load as many as 600 other files at once.  If this was running on a real webserver the number of separate requests might overload the server.  As a result modern website "bundle" the required code into a single, optimized file so that only one file is imported.  Vite does this behind the scenes for you both in development and building mode.
 
 (There are several other features of Vite including a process called [Tree-Shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) which removes functions from the bundle which are not used in the current app to reduce the file size and [Code Splitting](https://developer.mozilla.org/en-US/docs/Glossary/Code_splitting) which organizes files into "chunks" the reflect common dependencies across different pages of a site.)
+
+
+## Node package manager (npm)
+
+The project assumes that you are using node package manager (npm).  Generally all commands involve `npm <something>`.
+
+An important file here is `package.json` which describes the javascript dependencies of the current project but
+also provides a set of commands available for managing the project.  The content contains something like this:
+
+```json
+{
+  ...
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "docs:dev": "vitepress dev docs",  // this is a docs command!
+    "docs:build": "vitepress build docs", // this too
+    "docs:serve": "vitepress serve docs" // this too
+  },
+  ...
+}
+```
+
+In the `scripts` section, you see several commands.  To run them you just type `npm run <cmd>`. 
+For instance typing `npm run docs:dev` will effectively run the command `vitepress dev docs`.  
+The `npm run <cmd>` commands are just aliases/shorthands for running build steps of the 
+vitepress documentation system, and later for the 🫠 Smile project itself.  It is similar to a
+Makefile.  Anytime you forget the possible commands just type `npm run`
+on a line by itself and you'll get a listing like this:
+
+```
+➜ npm run
+Scripts available in smile@0.0.0 via `npm run-script`:
+  dev
+    vite
+  build
+    vite build
+  preview
+    vite preview
+  docs:dev
+    vitepress dev docs
+  docs:build
+    vitepress build docs
+  docs:serve
+    vitepress serve docs
+```
+
+## GitHub Actions - Vitepress Docs
+
+The script which runs the deploy action is located at `.github/workflows/docs-deploy.yml`.  This relies on several "secrets" which are configured in the GitHub website's repository settings (these are environment variables hidden from the public GitHub repo since they contain sensitive information).  A few other notes:
+- This is the [rsync package](https://github.com/Burnett01/rsync-deployments) used.  
+- I also found [this guide](https://zellwk.com/blog/github-actions-deploy/) helpful.

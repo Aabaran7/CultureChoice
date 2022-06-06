@@ -28,7 +28,7 @@ If you have experience with psiTurk you will be familiar with the commands `psit
 and `psiturk debug` which created a local webserver for testing.  `npm run dev` provides the same basic purpose with additional features.
 :::
 
-[Keep reading](/notes.html#vite-development-features) if you would like more details.
+[Keep reading](/advanced/notes.html#vite-development-features) if you would like more details.
 
 
 

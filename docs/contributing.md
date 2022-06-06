@@ -30,50 +30,8 @@ Things are still evolving but after cloning the repo you should get a directory 
 
 The documentation lives in the `docs/` folder.
 
-An important file here is `package.json` which describes the javascript dependencies of the current project but
-also provides a set of commands available for managing the project.  The content contains something like this:
-
-```json
-{
-  ...
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "docs:dev": "vitepress dev docs",  // this is a docs command!
-    "docs:build": "vitepress build docs", // this too
-    "docs:serve": "vitepress serve docs" // this too
-  },
-  ...
-}
-```
-
-In the `scripts` section, you see several commands.  To run them you just type `npm run <cmd>`. 
-For instance typing `npm run docs:dev` will effectively run the command `vitepress dev docs`.  
-The `npm run <cmd>` commands are just aliases/shorthands for running build steps of the 
-vitepress documentation system, and later for the 🫠 Smile project itself.  It is similar to a
-Makefile.  Anytime you forget the possible commands just type `npm run`
-on a line by itself and you'll get a listing like this:
-
-```
-➜ npm run
-Scripts available in smile@0.0.0 via `npm run-script`:
-  dev
-    vite
-  build
-    vite build
-  preview
-    vite preview
-  docs:dev
-    vitepress dev docs
-  docs:build
-    vitepress build docs
-  docs:serve
-    vitepress serve docs
-```
-
 ## Development
-To develop the docs in real time type `npm run docs:dev`.  You should see something like this
+To develop the docs in real time type `npm run docs:dev` in the top level project folder.  You should see something like this:
 
 ```
 ➜ npm run docs:dev
@@ -87,7 +45,7 @@ vitepress v1.0.0-alpha.1
   > Network: use `--host` to expose
 ```
 
-In this case, opening `http://localhost:3000/` in your browser (it might be different number if port 3000 on your computer
+In this case, opening `http://localhost:3000/` in your browser (it might be a different number if port 3000 on your computer
 is already in use) will let you see the current documentation website.
 
 Now let's look at the current files in the `docs/` folder:
@@ -118,6 +76,4 @@ them to the github repo.  There are several useful tutorials available online fo
 Currently, the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the `main` GitHub branch, a Github Actions script runs which automatically builds the static website using VitePress and then syncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**  This is a core design principle of 🫠 Smile: [don't sweat the dumb stuff](/principles.html#don-t-sweat-the-dumb-stuff).
 
 
-For complete documentation, the script which runs the action is located at `.github/workflows/docs-deploy.yml`.  This relies on several "secrets" which are configured in the GitHub website's repository settings (these are environment variables hidden from the public GitHub repo since they contain sensitive information).  This is the [rsync package](https://github.com/Burnett01/rsync-deployments) used.  I also found [this guide](https://zellwk.com/blog/github-actions-deploy/) helpful.
-
-Before pushing your changes it can be a good idea to check the build correctly by running `npm run docs:build`.  If the build fails on the Github Action the website will remain unchanged.  You can get diagnostic information about the auto-deploy process on the [Github Actions tab](https://github.com/NYUCCL/smile/actions) of the repo.
+ If the build fails on the Github Action the website will remain unchanged.  You can get diagnostic information about the auto-deploy process on the [Github Actions tab](https://github.com/NYUCCL/smile/actions) of the repo.  If you suspect your changes to the docs introduced a bug that was not caught by the development server, you can check the build process locally by running `npm run docs:build`. 

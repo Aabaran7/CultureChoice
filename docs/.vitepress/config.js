@@ -64,7 +64,8 @@ export default defineConfig({
                 collapsible: true,
                 collapsed: true,
                 items: [
-                    { text: "Setup", link: "/notes" }
+                    { text: "Setup", link: "/advanced/notes" },
+                    { text: "Understanding deployment", link: "/advanced/deploysteps" }
                 ]
             }
         ],
