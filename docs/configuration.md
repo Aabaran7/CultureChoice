@@ -52,7 +52,7 @@ Here's a possible list (which can be added to):
 
 The ideal situation is to keep the number of configuration options to a minimum by making reasonable choices for most things.  Also the web experiment itself may have fewer options than the services (e.g., Mechanical Turk, Prolific).  In cases where there are likely to be different choices for different experiments in the lab (e.g., should mobile devices or tablets be allowed to take the experiment?) then we want to fill in sensible defaults and then let people configure them easily in one place.
 
-Finally, some of the items we need to generate on the fly using other code that might not be part of our final experiment (running in the browser) itself. For instance, the code running in the browser can't access the file system and thus can't look up information about the latest git commit.  Instead, we need to run some other code against the local files to determine these values automatically :robot:.  
+Finally, some of the items we need to generate on the fly using other code that might not be part of our final experiment (running in the browser) itself. For instance, the code running in the browser can't access the file system and thus can't look up information about the latest git commit.  Instead, we need to run some other code against the local files to determine these values automatically :robot:.  The purpose of storing the git commit hash in the javascript app is so it can also be entered into the resulting data files (One key principle of **🫠 Smile** is that [data must always be linked to the code that created it](principles.html#data-must-always-be-linked-to-the-code-that-created-it).)
 
 This will likely require an extra build step.
 
