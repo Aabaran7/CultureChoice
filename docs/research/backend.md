@@ -19,7 +19,7 @@ Main options:
     - Custom CGI/Flask/Node.js process running someplace implementing a simple API (CRUD - create read update delete)
     - Data goes into a folder on the server
     - You download your data files (one per subject perhaps)
-    - Need to configure and monitor backup by not that hard
+    - Need to configure and monitor backup but not that hard
 1. **Relational Database (RDBMS)**: usually independent process or server that has a fault tolerant data management system that can be queried in complex ways
     - Usually MySQL or Postgres
     - Hosted solutions usually are cheap/free and provide automated backups
