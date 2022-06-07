@@ -56,7 +56,7 @@ jobs:
           echo "VITE_PROJECT_NAME  =   ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
           echo "VITE_GIT_HASH      =   ${{ env.GITHUB_SHA_SHORT }}"
           echo "VITE_GIT_REPO      =   ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
-          echo "VITE_GIT_MSG       =   'i updated something'"
+          echo "VITE_GIT_MSG       =   ${{ github.event.head_commit.message }}"
 
       # setup node.js
       # - name: Setup node.js
