@@ -1,0 +1,85 @@
+# This is a basic workflow to help you get started with Actions
+
+name: DEPLOY
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches-ignore:
+      - main # want this to be all branches eventually
+    paths-ignore:  # ignore any changes to the docs for this workflow
+      - 'docs/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      ## TODO CHANGE THIS TO CHECK OUT THE BRANCH THAT WAS COMMITTED TO
+      - name: Checkout committed to branch
+        uses: actions/checkout@v3
+
+      # Just add this  => 
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
+
+      # And you get this  => 
+      - name: Print slug/short variables
+        run: |
+          echo "Slug variables"
+          echo " - ${{ env.GITHUB_REF_SLUG }}"    
+          echo " - ${{ env.GITHUB_HEAD_REF_SLUG }}"
+          echo " - ${{ env.GITHUB_BASE_REF_SLUG }}"
+          echo " - ${{ env.GITHUB_REPOSITORY_SLUG }}"
+          # output e.g. : master feat-new-feature v1.0.0 product-1.0.0-rc.2 new-awesome-product
+          echo "Slug URL variables"
+          echo " - ${{ env.GITHUB_REF_SLUG_URL }}"
+          echo " - ${{ env.GITHUB_HEAD_REF_SLUG_URL }}"
+          echo " - ${{ env.GITHUB_BASE_REF_SLUG_URL }}"
+          echo " - ${{ env.GITHUB_REPOSITORY_SLUG_URL }}"
+          # output e.g. : master feat-new-feature v1-0-0 product-1-0-0-rc-2 new-awesome-product
+          echo "Short SHA variables"
+          echo " - ${{ env.GITHUB_SHA_SHORT }}"
+          # output e.g. : ffac537e
+
+      # setup node.js
+      # - name: Setup node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16.15.1 # this is what i'm using locally
+        
+      # install node packages
+      # - name: Install node dependencies
+      #   run: npm install
+
+      # run script to generation the .env files here
+      # - name: Configuring environment files
+      #   run: something
+
+      # - name: Build web app
+      #   run: npm run build
+
+      # Runs a single command using the runners shell
+      # - name: List the files
+      #   run: ls -la
+        
+      # Deploy files to web server
+      # - name: rsync to server
+      #   uses: burnett01/rsync-deployments@5.2
+      #   with:
+      #     switches: -avrz --delete
+      #     path: dist/
+      #     remote_path: ${{ secrets.DEPLOY_PATH }}  # this should be configured with branch name and versioning
+      #     remote_host: ${{ secrets.DEPLOY_HOST }}
+      #     remote_port: ${{ secrets.DEPLOY_PORT }}
+      #     remote_user: ${{ secrets.DEPLOY_USER }}
+      #     remote_key:  ${{ secrets.DEPLOY_KEY  }}
