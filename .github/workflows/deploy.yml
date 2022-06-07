@@ -39,20 +39,24 @@ jobs:
         run: |
           echo "------"
           if test -z "${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
+          then
             echo "VITE_PROJECT_NAME  =   unknown" > $ENV_FILE
           else
             echo "VITE_PROJECT_NAME  =   ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" > $ENV_FILE
           fi
           if test -z "${{ env.GITHUB_SHA_SHORT }}"
+          then
             echo "VITE_GIT_HASH      =   x0x0x0x0" >> $ENV_FILE
           else
             echo "VITE_GIT_HASH      =   ${{ env.GITHUB_SHA_SHORT }}" >> $ENV_FILE
           if test -z "${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}"
+          then
             echo "VITE_GIT_OWNER     =   unknown_owner" >> $ENV_FILE
           else
             echo "VITE_GIT_OWNER     =   ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}" >> $ENV_FILE
           fi
           if test -z "${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
+          then
             echo "VITE_GIT_REPO_NAME  =   unknown_repo" >> $ENV_FILE
           else
             echo "VITE_GIT_REPO_NAME  = ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" >> $ENV_FILE
