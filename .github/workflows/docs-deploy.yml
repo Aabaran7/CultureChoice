@@ -52,8 +52,8 @@ jobs:
         with:
           switches: -avrz --delete
           path: docs/.vitepress/dist/
-          remote_path: ${{ secrets.DEPLOY_PATH }}
-          remote_host: ${{ secrets.DEPLOY_HOST }}
-          remote_port: ${{ secrets.DEPLOY_PORT }}
-          remote_user: ${{ secrets.DEPLOY_USER }}
-          remote_key:  ${{ secrets.DEPLOY_KEY  }}
+          remote_path: ${{ secrets.DOCS_DEPLOY_PATH }}
+          remote_host: ${{ secrets.DOCS_DEPLOY_HOST }}
+          remote_port: ${{ secrets.DOCS_DEPLOY_PORT }}
+          remote_user: ${{ secrets.DOCS_DEPLOY_USER }}
+          remote_key:  ${{ secrets.DOCS_DEPLOY_KEY  }}
