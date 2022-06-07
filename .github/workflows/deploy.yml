@@ -36,26 +36,26 @@ jobs:
       - name: Print slug/short variables
         run: |
           echo "Slug variables"
-          echo " - ${{ env.GITHUB_REF_SLUG }}" # branch name   
+          echo " - ${{ env.GITHUB_REF_SLUG }}"   
           echo " - ${{ env.GITHUB_HEAD_REF_SLUG }}"
           echo " - ${{ env.GITHUB_BASE_REF_SLUG }}"
-          echo " - ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}" #account owner name
-          echo " - ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" #repo name
+          echo " - ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}" 
+          echo " - ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" 
           # output e.g. : master feat-new-feature v1.0.0 product-1.0.0-rc.2 new-awesome-product
           echo "Slug URL variables"
-          echo " - ${{ env.GITHUB_REF_SLUG_URL }}"  # branch name
+          echo " - ${{ env.GITHUB_REF_SLUG_URL }}" 
           echo " - ${{ env.GITHUB_HEAD_REF_SLUG_URL }}"
           echo " - ${{ env.GITHUB_BASE_REF_SLUG_URL }}"
-          echo " - ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG_URL }}" #account owner name
-          echo " - ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG_URL }}" # repo name
+          echo " - ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG_URL }}" 
+          echo " - ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG_URL }}" 
           # output e.g. : master feat-new-feature v1-0-0 product-1-0-0-rc-2 new-awesome-product
           echo "Short SHA variables"
-          echo " - ${{ env.GITHUB_SHA_SHORT }}"  # short hash
+          echo " - ${{ env.GITHUB_SHA_SHORT }}" 
           # output e.g. : ffac537e
           echo "------"
           echo "VITE_PROJECT_NAME  =   ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
           echo "VITE_GIT_HASH      =  ${{ env.GITHUB_SHA_SHORT }}"
-          echo "VITE_GIT_REPO      =  ${{ env.GITHUB_REPOSITORY_SLUG }}"
+          echo "VITE_GIT_REPO      =  ${{ GITHUB_REPOSITORY_OWNER_PART_SLUG }}/${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
           echo "VITE_GIT_MSG       =  'i updated something'"
 
       # setup node.js
