@@ -67,6 +67,7 @@ jobs:
             echo "VITE_GIT_LAST_MSG       =   ${{ github.event.head_commit.message }}" >> $ENV_FILE
           fi
           cat $ENV_FILE
+      
       # setup node.js
       # - name: Setup node.js
       #   uses: actions/setup-node@v3
