@@ -35,7 +35,7 @@ To start the documentation development server:
 npm run docs:dev
 ```
 
-Either of these commands will print out a URL that looks roughly like `http://localhost:3000/`. If you open this link in your favorite browser (or command-click the link on MacOS), will load the respective website. 
+Either of these commands will print out a URL that looks roughly like `http://localhost:3000/`. If you open this link in your favorite browser (or command-click the link on MacOS), it will load the respective website. 
 
 Next steps: 
 - Learn how to [contribute to the documentation](/contributing)

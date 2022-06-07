@@ -1,6 +1,6 @@
 # Contributing to the documentation
 
-We are taking a "docs first" approach to this project by planning the development in the documentation
+This project takes a "docs first" approach by first planning the development in the documentation
 and then working on implementation.  Thus, the place to start is by contributing to the docs.  **It's easy
 and fun.**
 
@@ -63,7 +63,7 @@ docs
 
 The docs are written in [plain markdown](https://vitepress.vuejs.org/guide/markdown.html).  Just edit or add
 new `.md` files as you like.  You can also add new subfolders.  To add them to the side bar or nav bar at the top take a look inside
-`.vitepress/config.js`.  It is mildly self-explanatory (full docs [here](https://vitepress.vuejs.org/config/introduction.html)).
+`docs/.vitepress/config.js`.  It is mildly self-explanatory (full docs [here](https://vitepress.vuejs.org/config/introduction.html)).
 Vitepress is under active development but quite functional.
 
 One cool thing about running `npm run docs:dev` is the website uses [hot module reloading](https://vitejs.dev/guide/features.html#hot-module-replacement) so any changes you  save to the markdown or configuration files will automatically update your browser giving you instant feedback.  It is incredibly
