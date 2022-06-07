@@ -5,9 +5,10 @@
 export default {
     project_name: import.meta.env.VITE_PROJECT_NAME, // autocompute this on intitialization
     project_version: '1.2.23', // autocompute this all the time
-    git_repo: import.meta.env.VITE_GIT_REPO,
-    last_git_commit: import.meta.env.VITE_GIT_HASH, // autocompute this all the time
-    last_git_commit_msg: import.meta.env.VITE_GIT_MSG, 
+    git_repo_name: import.meta.env.VITE_GIT_REPO_NAME,
+    git_owner: import.meta.env.VITE_GIT_OWNER,
+    git_last_commit_msg: import.meta.env.VITE_GIT_LAST_MSG,
+    git_last_commit_hash: import.meta.env.VITE_GIT_HASH, // autocompute this all the time
     browser_exclude: import.meta.env.VITE_BROWSER_EXCLUDE,
     allow_repeats: import.meta.env.VITE_ALLOW_REPEATS,
     bug_reports: import.meta.env.VITE_BUG_REPORTS,

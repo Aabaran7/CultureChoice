@@ -33,35 +33,36 @@ jobs:
         uses: rlespinasse/github-slug-action@v3.x
 
       # And you get this  => 
-      - name: Print slug/short variables
+      - name: Expose git-specific information to the Vite environment
+        env:
+          ENV_FILE: "env/.env"
         run: |
-          echo "Slug variables"
-          echo " - ${{ env.GITHUB_REF_SLUG }}"   
-          echo " - ${{ env.GITHUB_HEAD_REF_SLUG }}"
-          echo " - ${{ env.GITHUB_BASE_REF_SLUG }}"
-          echo " - ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}" 
-          echo " - ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" 
-          # output e.g. : master feat-new-feature v1.0.0 product-1.0.0-rc.2 new-awesome-product
-          echo "Slug URL variables"
-          echo " - ${{ env.GITHUB_REF_SLUG_URL }}" 
-          echo " - ${{ env.GITHUB_HEAD_REF_SLUG_URL }}"
-          echo " - ${{ env.GITHUB_BASE_REF_SLUG_URL }}"
-          echo " - ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG_URL }}" 
-          echo " - ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG_URL }}" 
-          # output e.g. : master feat-new-feature v1-0-0 product-1-0-0-rc-2 new-awesome-product
-          echo "Short SHA variables"
-          echo " - ${{ env.GITHUB_SHA_SHORT }}" 
-          # output e.g. : ffac537e
           echo "------"
-          echo "VITE_PROJECT_NAME  =   ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
-          echo "VITE_GIT_HASH      =   ${{ env.GITHUB_SHA_SHORT }}"
-          echo "VITE_GIT_REPO      =   ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
+          if test -z "${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
+            echo "VITE_PROJECT_NAME  =   unknown" > $ENV_FILE
+          else
+            echo "VITE_PROJECT_NAME  =   ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" > $ENV_FILE
+          fi
+          if test -z "${{ env.GITHUB_SHA_SHORT }}"
+            echo "VITE_GIT_HASH      =   x0x0x0x0" >> $ENV_FILE
+          else
+            echo "VITE_GIT_HASH      =   ${{ env.GITHUB_SHA_SHORT }}" >> $ENV_FILE
+          if test -z "${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}"
+            echo "VITE_GIT_OWNER     =   unknown_owner" >> $ENV_FILE
+          else
+            echo "VITE_GIT_OWNER     =   ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}" >> $ENV_FILE
+          fi
+          if test -z "${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
+            echo "VITE_GIT_REPO_NAME  =   unknown_repo" >> $ENV_FILE
+          else
+            echo "VITE_GIT_REPO_NAME  = ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" >> $ENV_FILE
           if test -z "${{ github.event.head_commit.message }}"
           then
-            echo "VITE_GIT_MSG       =   (no commit message)"
+            echo "VITE_GIT_LAST_MSG       =   (no commit message)" >> $ENV_FILE
           else
-            echo "VITE_GIT_MSG       =   ${{ github.event.head_commit.message }}"
+            echo "VITE_GIT_LAST_MSG       =   ${{ github.event.head_commit.message }}" >> $ENV_FILE
           fi
+          cat $ENV_FILE
       # setup node.js
       # - name: Setup node.js
       #   uses: actions/setup-node@v3
