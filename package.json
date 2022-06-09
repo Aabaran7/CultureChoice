@@ -19,7 +19,6 @@
     "markdown-it-footnote": "^3.0.3",
     "sass": "^1.52.1",
     "vite": "^2.9.9",
-    "vite-plugin-progress": "^0.0.2",
     "vitepress": "^1.0.0-alpha.1"
   }
 }
