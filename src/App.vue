@@ -5,7 +5,6 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <span id="bigsmile">🫠</span>
   <HelloWorld msg="Smile." />
 </template>
 
@@ -22,9 +21,5 @@ import HelloWorld from './components/HelloWorld.vue'
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-#bigsmile {
-  font-size: 100px;
 }
 </style>

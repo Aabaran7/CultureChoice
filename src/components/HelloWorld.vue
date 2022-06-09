@@ -1,14 +1,16 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 defineProps({
   msg: String
 })
 
 const count = ref(0)
+
 </script>
 
 <template>
+  <span id="bigsmile">🫠</span>
   <h1>{{ msg }}</h1>
   <h3>A happy approach to online behavioral research.</h3>
 
@@ -23,9 +25,22 @@ const count = ref(0)
   <h4>Smile Configuration Options:</h4>
 
   <code>
-  <li class="config" v-for="option, key in smileconfig">
-    <b>{{key}}</b> : {{option}}
-  </li>
+  <ul>
+    <li class="config" v-for="option, key in smileconfig">
+      <span v-if=" typeof(option)=='string' ">
+        <b>{{key}}</b>: {{option}}
+      </span>
+      <span v-else>
+        <b>{{key}}</b>: 
+          <ul>
+            <li v-for="option2,key2 in option">
+              <b>{{key2}}</b>: {{option2}}
+            </li>
+          </ul>
+      </span>
+
+    </li>
+  </ul>
   </code>
 
 </template>
@@ -38,4 +53,8 @@ a {
   text-align: left;
   margin-left: 20px;
 }
+#bigsmile {
+  font-size: 100px;
+}
+
 </style>
