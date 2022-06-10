@@ -18,9 +18,9 @@ Because Smile runs as a Single-Page App, most of the configuration options avail
 
 Some wisdom about these things is available on the [12 Factor App](https://12factor.net) site, particularly the section on [config](https://12factor.net/config).  In this document, it is argued that environment variables are the safest way to configure sensitive information (this way they are never mentioned in files that could be accidentally committed.)  This is, incidentally, [the approach that has been taken more recently with psiTurk](https://psiturk.readthedocs.io/en/stable/configuration-overview.html#which-go-where-consider-security-and-privacy-as-well-as-science-replicability).
 
-Another issue is making environment variables accessible inside the web application/Single Page App.  To do this the build system can come in handy.  [Vite](https://vitejs.dev) uses the [dotenv Node.js package](https://vitejs.dev/guide/env-and-mode.html) to read in `.env` files and make them accessible in your javascript.  This is done by doing a static string replacement operation on all the files prior to building them (and it also done as a step in the development server).  The variables become available in your code as `import.meta.env.VITE_XXXX` where `XXX` is the name of the environment variable.
+Another issue is making environment variables accessible inside the web application/Single Page App.  To do this the build system can come in handy.  [Vite](https://vitejs.dev) uses the [dotenv Node.js package](https://vitejs.dev/guide/env-and-mode.html) to read in `.env` files and make them accessible in your javascript.  This is done by doing a static string replacement operation on all the files before building them (and is also done as a step in the development server).  The variables become available in your code as `import.meta.env.VITE_XXXX` where `XXX` is the name of the environment variable.
 
-When you are relying on Github to manage deployments for you then the way to set environment variables is through ["Secrets"](https://docs.github.com/en/actions/security-guides/encrypted-secrets).  These are variables that you define in the settings section of the repository which can then be accessed by script at run time using Github Actions.
+When you are relying on Github to manage deployments for you then the way to set environment variables is through ["Secrets"](https://docs.github.com/en/actions/security-guides/encrypted-secrets).  These are variables that you define in the settings section of the repository which can then be accessed by a script at run time using Github Actions.
 
 See the discussion [here](https://stackoverflow.com/questions/60176044/how-do-i-use-an-env-file-with-github-actions) for some helpful tips.
 
@@ -50,7 +50,7 @@ Here's a possible list (which can be added to):
 
 ## How are they set
 
-The ideal situation is to keep the number of configuration options to a minimum by making reasonable choices for most things.  Also the web experiment itself may have fewer options than the services (e.g., Mechanical Turk, Prolific).  In cases where there are likely to be different choices for different experiments in the lab (e.g., should mobile devices or tablets be allowed to take the experiment?) then we want to fill in sensible defaults and then let people configure them easily in one place.
+The ideal situation is to keep the number of configuration options to a minimum by making reasonable choices for most things.  Also, the web experiment itself may have fewer options than the services (e.g., Mechanical Turk, Prolific).  In cases where there are likely to be different choices for different experiments in the lab (e.g., should mobile devices or tablets be allowed to take the experiment?) then we want to fill in sensible defaults and then let people configure them easily in one place.
 
 Finally, some of the items we need to generate on the fly using other code that might not be part of our final experiment (running in the browser) itself. For instance, the code running in the browser can't access the file system and thus can't look up information about the latest git commit.  Instead, we need to run some other code against the local files to determine these values automatically :robot:.  The purpose of storing the git commit hash in the javascript app is so it can also be entered into the resulting data files (One key principle of **🫠 Smile** is that [data must always be linked to the code that created it](principles.html#data-must-always-be-linked-to-the-code-that-created-it).)
 
@@ -76,12 +76,12 @@ VITE_DEPLOY_URL_BASE             = http://smile.gurecislab.org/exps/
 
 
 # enter firebase database credentials
-VITE_FIREBASE_APIKEY             = AIzaSyCFaXN8JwrUgJviKZ8toXob_I1ysslvOeQ
-VITE_FIREBASE_AUTHDOMAIN         = smile-db-test.firebaseapp.com
-VITE_FIREBASE_PROJECTID          = smile-db-test
-VITE_FIREBASE_STORAGEBUCKET      = smile-db-test.appspot.com
-VITE_FIREBASE_MESSAGINGSENDERID  = 947316438062
-VITE_FIREBASE_APPID              = 1:947316438062:web:19974ca8a24ffe671f5bbf
+VITE_FIREBASE_APIKEY             = xxxx
+VITE_FIREBASE_AUTHDOMAIN         = xxxx.firebaseapp.com
+VITE_FIREBASE_PROJECTID          = xxxx
+VITE_FIREBASE_STORAGEBUCKET      = xxxx.appspot.com
+VITE_FIREBASE_MESSAGINGSENDERID  = xxxx
+VITE_FIREBASE_APPID              = xxxx
 
 ```
 
