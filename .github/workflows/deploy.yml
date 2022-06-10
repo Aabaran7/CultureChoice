@@ -81,34 +81,31 @@ jobs:
           cat $SECRET_ENV_FILE
 
       # setup node.js
-      # - name: Setup node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16.15.1 # this is what i'm using locally
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.1 # this is what i'm using locally
         
       # install node packages
-      # - name: Install node dependencies
-      #   run: npm install
+      - name: Install node dependencies
+        run: npm install
 
-      # run script to generation the .env files here
-      # - name: Configuring environment files
-      #   run: something
-
-      # - name: Build web app
-      #   run: npm run build
+      # Build the web app
+      - name: Build web app
+        run: npm run build
 
       # Runs a single command using the runners shell
-      # - name: List the files
-      #   run: ls -la
+      - name: List the files
+        run: ls -la
         
       # Deploy files to web server
-      # - name: rsync to server
-      #   uses: burnett01/rsync-deployments@5.2
-      #   with:
-      #     switches: -avrz --delete
-      #     path: dist/
-      #     remote_path: ${{ secrets.DEPLOY_PATH }}  # this should be configured with branch name and versioning
-      #     remote_host: ${{ secrets.DEPLOY_HOST }}
-      #     remote_port: ${{ secrets.DEPLOY_PORT }}
-      #     remote_user: ${{ secrets.DEPLOY_USER }}
-      #     remote_key:  ${{ secrets.DEPLOY_KEY  }}
+      - name: rsync to server
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -avrz --delete --mkpath
+          path: dist/
+          remote_path: ${{ secrets.EXP_DEPLOY_PATH }}  # this should be configured with branch name and versioning
+          remote_host: ${{ secrets.EXP_DEPLOY_HOST }}
+          remote_port: ${{ secrets.EXP_DEPLOY_PORT }}
+          remote_user: ${{ secrets.EXP_DEPLOY_USER }}
+          remote_key:  ${{ secrets.EXP_DEPLOY_KEY  }}
