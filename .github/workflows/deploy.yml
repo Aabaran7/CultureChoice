@@ -73,12 +73,14 @@ jobs:
       # Configure secure information configuration
       - name: Expose secret information to the Vite environment
         env:
-          SECRET_APP_CONFIG: ${{ secrets.APP_CONFIG }}
-          ENV_FILE: "env/.env.local"
+          SECRET_APP_CONFIG: ${{ secrets.SECRET_APP_CONFIG }}
+          SECRET_ENV_FILE: "env/.env.local"
         run: |
           echo "------"
-          echo $SECRET_APP_CONFIG | base64 --decode > $ENV_FILE
-          cat $ENV_FILE
+          echo $SECRET_APP_CONFIG
+          echo $SECRET_ENV_FILE
+          echo $SECRET_APP_CONFIG | base64 --decode > $SECRET_ENV_FILE
+          cat $SECRET_ENV_FILE
 
       # setup node.js
       # - name: Setup node.js
