@@ -4,7 +4,7 @@ layout: home
 hero:
     name: 🫠
     text: Smile.
-    tagline: A head-meltingly happy approach to online behavioral research!
+    tagline: A head-meltingly happy approach to online behavioral research.
     actions:
         - theme: brand
           text: Get Started
