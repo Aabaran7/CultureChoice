@@ -5,9 +5,11 @@ The **🫠 Smile** repo ([https://github.com/NYUCCL/smile](https://github.com/NY
 
 Things to install so you can contribute to the project:
 
-- It is recommended you use [VS Code](https://code.visualstudio.com/) and the [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension as your text editor/development environment.
+- You will need to install Node.js on your computer if you haven't already.  You can download the latest version [here](https://nodejs.org/en/download/).  Verify that you have the `npm` command in your terminal program of choice.
 
-- You will also need to install Node.js on your computer if you haven't already.  You can download the latest version [here](https://nodejs.org/en/download/).  Verify that you have the `npm` command in your terminal program of choice.
+- You will also need to install the GitHub [command line tool](https://cli.github.com).  You can download a standard double-click installer or if you use homebrew type `brew install gh` in your terminal program.
+
+- It is recommended you use [VS Code](https://code.visualstudio.com/) and the [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension as your text editor/development environment.
 
 - The next step is to clone the project [github repo](https://github.com/NYUCCL/smile) and set
 your current terminal to the working copy. Then, install the required javascript dependencies
