@@ -98,11 +98,12 @@ jobs:
       - name: List the files
         run: ls -la
         
+      # make remote folder if necessar
       # Deploy files to web server
       - name: rsync to server
         uses: burnett01/rsync-deployments@5.2
         with:
-          switches: -avrz --delete --mkpath
+          switches: -avrz --delete
           path: dist/
           remote_path: ${{ secrets.EXP_DEPLOY_PATH }}  # this should be configured with branch name and versioning
           remote_host: ${{ secrets.EXP_DEPLOY_HOST }}
