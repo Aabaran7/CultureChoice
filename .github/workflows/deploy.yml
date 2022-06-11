@@ -108,9 +108,8 @@ jobs:
         uses: falti/dotenv-action@v0.2.8
         with:
           path: "./env/.env.local"
-
-      - name: Echo the enviornment variables
         run: echo ${{ steps.dotenv.outputs }}
+
       # echo all the environment variables
 
       # make remote folder if necessar
