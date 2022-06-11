@@ -122,7 +122,7 @@ jobs:
         env:
           DEPLOY_ENV_FILE: "env/.env.deploy.local"
         run: |
-          echo "EXP_DEPLOY_BASE_PATH = ${{ secrets.EXP_DEPLOY_BASE_PATH }}" > DEPLOY_ENV_FILE
+          echo "EXP_DEPLOY_BASE_PATH = ${{ secrets.EXP_DEPLOY_BASE_PATH }}" > $DEPLOY_ENV_FILE
 
       # make remote folder if necessar
       - name: create the remove folder if it doesn't exist
