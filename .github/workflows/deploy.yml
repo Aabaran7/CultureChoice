@@ -104,11 +104,6 @@ jobs:
         with:
           path: "./env/.env"
 
-      - name: Load the deploy dotenv file
-        uses: falti/dotenv-action@v0.2.8
-        with:
-          path: "./env/.env.deploy.local"
-
       - name: Load the general config dotenv file
         uses: falti/dotenv-action@v0.2.8
         with:
