@@ -127,13 +127,13 @@ jobs:
           script: mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}/
           
       # Deploy files to web server
-      # - name: rsync to server
-      #   uses: burnett01/rsync-deployments@5.2
-      #   with:
-      #     switches: -avrz --delete
-      #     path: dist/
-      #     remote_path: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}/  # this should be configured with branch name and versioning
-      #     remote_host: ${{ secrets.EXP_DEPLOY_HOST }}
-      #     remote_port: ${{ secrets.EXP_DEPLOY_PORT }}
-      #     remote_user: ${{ secrets.EXP_DEPLOY_USER }}
-      #     remote_key:  ${{ secrets.EXP_DEPLOY_KEY  }}
+      - name: rsync to server
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -avrz --delete
+          path: dist/
+          remote_path: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}/  # this should be configured with branch name and versioning
+          remote_host: ${{ secrets.EXP_DEPLOY_HOST }}
+          remote_port: ${{ secrets.EXP_DEPLOY_PORT }}
+          remote_user: ${{ secrets.EXP_DEPLOY_USER }}
+          remote_key:  ${{ secrets.EXP_DEPLOY_KEY  }}
