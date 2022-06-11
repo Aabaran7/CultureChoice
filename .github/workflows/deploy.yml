@@ -115,6 +115,14 @@ jobs:
       - name: echo the environment variables
         run: |
           echo "deploy url: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}/"
+      
+      # place the deploy settings into the environment files
+      # this one needs to be made available to vite.config.js
+      - name: create deploy file
+        env:
+          DEPLOY_ENV_FILE: "env/.env.deploy.local"
+        run: |
+          echo "EXP_DEPLOY_BASE_PATH = ${{ secrets.EXP_DEPLOY_BASE_PATH }}" > DEPLOY_ENV_FILE
 
       # make remote folder if necessar
       - name: create the remove folder if it doesn't exist
