@@ -86,18 +86,6 @@ jobs:
         with:
           node-version: 16.15.1 # this is what i'm using locally
         
-      # install node packages
-      - name: Install node dependencies
-        run: npm install
-
-      # Build the web app
-      - name: Build web app
-        run: npm run build
-
-      # Runs a single command using the runners shell
-      - name: List the files
-        run: ls -la
-      
       # load the environment
       - name: Load the github dotenv file
         id: dotenv_github
@@ -123,6 +111,14 @@ jobs:
           DEPLOY_ENV_FILE: "env/.env.deploy.local"
         run: |
           echo "EXP_DEPLOY_BASE_PATH = ${{ secrets.EXP_DEPLOY_BASE_PATH }}" > $DEPLOY_ENV_FILE
+
+      # install node packages
+      - name: Install node dependencies
+        run: npm install
+
+      # Build the web app
+      - name: Build web app
+        run: npm run build
 
       # make remote folder if necessar
       - name: create the remove folder if it doesn't exist
