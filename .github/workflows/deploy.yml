@@ -110,7 +110,7 @@ jobs:
           path: "./env/.env.local"
 
       - name: Echo the enviornment variables
-        run: env
+        run: echo ${{ steps.dotenv.outputs }}
       # echo all the environment variables
 
       # make remote folder if necessar
