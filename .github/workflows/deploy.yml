@@ -1,13 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: DEPLOY2
+name: DEPLOY
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches-ignore:
-      - main # want this to be all branches eventually
+    # branches-ignore:
+    #   - main # want this to be all branches eventually
     paths-ignore:  # ignore any changes to the docs for this workflow
       - 'docs/**'
 
@@ -97,16 +97,37 @@ jobs:
       # Runs a single command using the runners shell
       - name: List the files
         run: ls -la
-        
-      # make remote folder if necessar
-      # Deploy files to web server
-      - name: rsync to server
-        uses: burnett01/rsync-deployments@5.2
+      
+      # load the environment
+      - name: Load the github dotenv file
+        uses: falti/dotenv-action@v0.2.8
         with:
-          switches: -avrz --delete
-          path: dist/
-          remote_path: ${{ secrets.EXP_DEPLOY_PATH }}  # this should be configured with branch name and versioning
-          remote_host: ${{ secrets.EXP_DEPLOY_HOST }}
-          remote_port: ${{ secrets.EXP_DEPLOY_PORT }}
-          remote_user: ${{ secrets.EXP_DEPLOY_USER }}
-          remote_key:  ${{ secrets.EXP_DEPLOY_KEY  }}
+          path: "./env/.env"
+
+      - name: Load the deploy dotenv file
+        uses: falti/dotenv-action@v0.2.8
+        with:
+          path: "./env/.env.deploy.local"
+
+      - name: Load the general config dotenv file
+        uses: falti/dotenv-action@v0.2.8
+        with:
+          path: "./env/.env.local"
+
+      - name: Echo the enviornment variables
+        run: env
+      # echo all the environment variables
+
+      # make remote folder if necessar
+
+      # Deploy files to web server
+      # - name: rsync to server
+      #   uses: burnett01/rsync-deployments@5.2
+      #   with:
+      #     switches: -avrz --delete
+      #     path: dist/
+      #     remote_path: ${{ secrets.EXP_DEPLOY_PATH }}  # this should be configured with branch name and versioning
+      #     remote_host: ${{ secrets.EXP_DEPLOY_HOST }}
+      #     remote_port: ${{ secrets.EXP_DEPLOY_PORT }}
+      #     remote_user: ${{ secrets.EXP_DEPLOY_USER }}
+      #     remote_key:  ${{ secrets.EXP_DEPLOY_KEY  }}
