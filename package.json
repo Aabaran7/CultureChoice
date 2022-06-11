@@ -9,7 +9,8 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
-    "docs:clean": "rm -rf docs/.vitepress/dist"
+    "docs:clean": "rm -rf docs/.vitepress/dist",
+    "config:upload": "sh scripts/update_config.sh"
   },
   "dependencies": {
     "vue": "^3.2.25"
