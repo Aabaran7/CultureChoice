@@ -100,17 +100,22 @@ jobs:
       
       # load the environment
       - name: Load the github dotenv file
+        id: dotenv_github
         uses: falti/dotenv-action@v0.2.8
         with:
           path: "./env/.env"
 
       - name: Load the general config dotenv file
+        id: dotenv_config
         uses: falti/dotenv-action@v0.2.8
         with:
           path: "./env/.env.local"
-        run: echo ${{ steps.dotenv.outputs }}
 
       # echo all the environment variables
+      - name: echo the environment variables
+        run: |
+          echo ${{ steps.dotenv_github.outputs }}
+          echo ${{ steps.dotenv_config.outputs }}
 
       # make remote folder if necessar
 
