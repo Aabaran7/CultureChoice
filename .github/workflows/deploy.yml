@@ -114,17 +114,25 @@ jobs:
       # echo all the environment variables
       - name: echo the environment variables
         run: |
-          echo "deploy url: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}"
+          echo "deploy url: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}/"
 
       # make remote folder if necessar
-
+      - name: create the remove folder if it doesn't exist
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EXP_DEPLOY_HOST }}
+          username: ${{ secrets.EXP_DEPLOY_USER }}
+          key: ${{ secrets.EXP_DEPLOY_KEY  }}
+          port: ${{ secrets.EXP_DEPLOY_PORT }}
+          script: mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}/
+          
       # Deploy files to web server
       # - name: rsync to server
       #   uses: burnett01/rsync-deployments@5.2
       #   with:
       #     switches: -avrz --delete
       #     path: dist/
-      #     remote_path: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}  # this should be configured with branch name and versioning
+      #     remote_path: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}/  # this should be configured with branch name and versioning
       #     remote_host: ${{ secrets.EXP_DEPLOY_HOST }}
       #     remote_port: ${{ secrets.EXP_DEPLOY_PORT }}
       #     remote_user: ${{ secrets.EXP_DEPLOY_USER }}
