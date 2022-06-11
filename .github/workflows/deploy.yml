@@ -114,8 +114,7 @@ jobs:
       # echo all the environment variables
       - name: echo the environment variables
         run: |
-          echo ${{ steps.dotenv_github.outputs }}
-          echo ${{ steps.dotenv_config.outputs }}
+          echo "deploy url: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}"
 
       # make remote folder if necessar
 
@@ -125,7 +124,7 @@ jobs:
       #   with:
       #     switches: -avrz --delete
       #     path: dist/
-      #     remote_path: ${{ secrets.EXP_DEPLOY_PATH }}  # this should be configured with branch name and versioning
+      #     remote_path: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}  # this should be configured with branch name and versioning
       #     remote_host: ${{ secrets.EXP_DEPLOY_HOST }}
       #     remote_port: ${{ secrets.EXP_DEPLOY_PORT }}
       #     remote_user: ${{ secrets.EXP_DEPLOY_USER }}
