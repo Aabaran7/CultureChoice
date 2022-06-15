@@ -10,3 +10,4 @@ Online docs: [http://smile.gureckislab.org](http://smile.gureckislab.org)
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 - [Node.js](https://nodejs.org/en/download/)
 - A git client
+- The [GitHub command line tool](https://cli.github.com)
