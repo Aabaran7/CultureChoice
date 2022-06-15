@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 
 
 export default defineConfig({
+    lang: 'en-US',
     title: '🫠 Smile.',
     description: 'a gureckislab joint.',
     markdown: {
@@ -14,8 +15,10 @@ export default defineConfig({
         }
     },
     themeConfig: {
-        lastUpdated: true,
-        lastUpdatedText: 'Updated Date',
+        editLink: {
+            pattern: 'https://github.com/nyuccl/smile/edit/main/docs/:path',
+            text: 'Suggest changes to this page on GitHub'
+        },
         nav: [
                 { text: 'gureckislab.org', link: 'https://gureckislab.org' }           
         ],
@@ -53,6 +56,7 @@ export default defineConfig({
                 text: "Front End",
                 items: [
                     { text: "Research Notes", link: "/research/frontend"},
+                    { text: "Starting a new project", link: "/starting"},
                     { text: "Configuration options", link: "/configuration"},
                     { text: "Developing your experiment", link: "/developing"},
                     { text: "Testing your experiment", link: "/testing"},

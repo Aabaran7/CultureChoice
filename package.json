@@ -20,6 +20,6 @@
     "markdown-it-footnote": "^3.0.3",
     "sass": "^1.52.1",
     "vite": "^2.9.9",
-    "vitepress": "^1.0.0-alpha.1"
+    "vitepress": "^1.0.0-alpha.2"
   }
 }
