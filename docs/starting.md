@@ -11,17 +11,17 @@ You can do some of the steps below by clicking buttons on the GitHub website
 but can be easier in the terminal (and the UI changes from time to time).
 If you already have the GitHub command line tool installed skip to step 2.
 
-## 1. Install and authenticate GitHub cli
+## 1. Install and authenticate the GitHub Command Line Interface (CLI)
 
 First make sure you have the GitHub Command Line Interface (cli) tool installed:
-[download it here](https://cli.github.com).  Next allow the cli access to your GitHub
-account.
+[download it here](https://cli.github.com) using the installer or homebrew.  
+Next allow the cli access to your GitHub account by typing:
 
 ```
 gh auth login --web
 ```
 
-This will open your default browser and ask you to log in to GitHub.
+Into your terminal program.  This will open your default browser and ask you to log in to GitHub.
 
 
 ## 2. Fork the repo and check it out.
@@ -33,41 +33,22 @@ For example, on Mac this might be your desktop
 cd ~/Desktop
 ```
 
-Next fork the 🫠 Smile GitHub repo into a new project and check it out locally:
+Next fork the 🫠 Smile GitHub repo into a new project and clone it out locally:
 
 ```
 gh repo fork nyuccl/smile --clone=true --fork-name=my_cool_project
 ```
 
-In this example, the project will be named `my_cool_project`.  In the gureckislab
-we highly recommend you use underscores for spaces and name your project based on 
+In this example, the project will be named `my_cool_project` and a copy of the starting
+project template will be placed in a new folder with that name. We highly recommend you 
+use underscores for spaces and name your project based on 
 the science (e.g., `question_asking`) or something.  
 
-The output will look like this if you run the first version (forking to your personal
-account):
+Next, alter the Github description for your new repo (replace `username/projectname` with your github 
+username and the project name from above):
 
 ```
-➜ gh repo fork nyuccl/smile --clone=true --fork-name my_cool_project
-✓ Created fork username/smile
-✓ Renamed fork to username/my_cool_project
-Cloning into 'my_cool_project'...
-remote: Enumerating objects: 518, done.
-remote: Counting objects: 100% (157/157), done.
-remote: Compressing objects: 100% (92/92), done.
-remote: Total 518 (delta 64), reused 122 (delta 42), pack-reused 361
-Receiving objects: 100% (518/518), 159.95 KiB | 1.70 MiB/s, done.
-Resolving deltas: 100% (243/243), done.
-Updating upstream
-From https://github.com/nyuccl/smile
- * [new branch]      config     -> upstream/config
- * [new branch]      main       -> upstream/main
-✓ Cloned fork
-```
-
-Next alter the Github description for your new repo (replace gureckis with your github username or `nyuccl` if you forked to the lab organization):
-
-```
-gh repo edit gureckis/my_cool_project --description "my new research project"
+gh repo edit username/my_cool_project --description "my new research project"
 ```
 
 ## 3. Setup the project
