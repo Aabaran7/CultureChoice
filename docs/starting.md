@@ -41,20 +41,15 @@ gh repo fork nyuccl/smile --clone=true --fork-name=my_cool_project
 
 In this example, the project will be named `my_cool_project`.  In the gureckislab
 we highly recommend you use underscores for spaces and name your project based on 
-the science (e.g., `question_asking`) or something.  In addition you should create
-your fork in the [lab GitHub organization](https://github.com/NYUCCL) (contact todd if you aren't a member of this org):
-
-```
-gh repo fork nyuccl/smile --clone=true --org=nyuccl --fork-name=my_cool_project
-```
+the science (e.g., `question_asking`) or something.  
 
 The output will look like this if you run the first version (forking to your personal
 account):
 
 ```
 ➜ gh repo fork nyuccl/smile --clone=true --fork-name my_cool_project
-✓ Created fork gureckis/smile
-✓ Renamed fork to gureckis/my_cool_project
+✓ Created fork username/smile
+✓ Renamed fork to username/my_cool_project
 Cloning into 'my_cool_project'...
 remote: Enumerating objects: 518, done.
 remote: Counting objects: 100% (157/157), done.
@@ -75,18 +70,19 @@ Next alter the Github description for your new repo (replace gureckis with your 
 gh repo edit gureckis/my_cool_project --description "my new research project"
 ```
 
-Finally (optional) you might want to remove the history of repo changes made to the core smile project
-from your own project.  To do this you can reset the git history of your new project.  Assuming you used the name `my_cool_project` then type[^fish]:
+## 3. Setup the project
+
+Next change into the newly created project directory (assuming you called your project `my_cool_project`) and the `npm run setup_project` command:
 
 ```
 cd my_cool_project
-git reset $(git commit-tree HEAD^{tree} -m "A new start")
-git push --force
+npm run setup_project
+npm install
 ```
 
-[^fish]: Note if you use the [fish shell](https://fishshell.com) the second command should just be `git reset (git commit-tree HEAD^{tree} -m "A new start")`.
+This will clean up git history for the base Smile project, remove some files you will not need, and install the required node packages for development.
 
-## 3. Setup the configuration
+## 4. Configure your project
 
 Next you need to configure your app, especially for where it will be hosted when you deploy it.  Information about configuration is [here](/configuration) but if you are in the gureckislab you should simply download the latest version of our configuration settings from the lab slack.
 
@@ -96,16 +92,9 @@ After all the necessary files are in the `env` folder run:
 npm run config:upload
 ```
 
-## 4. Install the required node packages
+to configure your deployment process.
 
-Next you will want to install and the javascript dependencies for the project:
-
-```
-npm install
-```
-
-
-## 4. Begin developing
+## 5. Begin developing
 
 Next you can begin testing and developing your app!
 
@@ -117,7 +106,7 @@ npm run dev
 
 to run the development server and see the current, default setup of the site.
 
-## Test the deployment
+## 5. Test the deployment
 
 If you have properly configured your application then you should be able to deploy your website to your remote site.
-Make a change to any file (except in the `docs/` folder) and push that change to your repository.
+Make a change to any file (except in the `docs/` folder) and push that change to your repository.  Your code should be made available according to the deploy settings you provided [NEEDS BETTER INFO HERE]

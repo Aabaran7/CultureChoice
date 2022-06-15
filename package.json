@@ -10,6 +10,7 @@
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
     "docs:clean": "rm -rf docs/.vitepress/dist",
+    "setup_project": "sh scripts/setup_project.sh",
     "config:upload": "sh scripts/update_config.sh"
   },
   "dependencies": {
