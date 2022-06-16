@@ -31,9 +31,7 @@ export default defineConfig({
                 text: "Overview",
                 items: [
                     { text: "Introduction", link: '/introduction' },
-                    { text: "Getting started", link: '/gettingstarted'},
-                    { text: "Contributing to the docs", link: '/contributing' },
-                    
+                    { text: "Starting a new project", link: "/starting"},                    
                 ]
             },
             {
@@ -56,11 +54,20 @@ export default defineConfig({
                 text: "Front End",
                 items: [
                     { text: "Research Notes", link: "/research/frontend"},
-                    { text: "Starting a new project", link: "/starting"},
                     { text: "Configuration options", link: "/configuration"},
                     { text: "Developing your experiment", link: "/developing"},
                     { text: "Testing your experiment", link: "/testing"},
                     { text: "Deploying your experiment", link: "/deploy"}
+                ]
+            },
+            {
+                text: "Contributing",
+                collapsible: false,
+                collapsed: false,
+                items: [
+                    { text: "Getting started", link: '/gettingstarted'},
+                    { text: "Contributing to the docs", link: '/contributing' },
+
                 ]
             },
             {

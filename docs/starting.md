@@ -25,7 +25,7 @@ Next allow the cli access to your GitHub account by typing:
 gh auth login --web
 ```
 
-Into your terminal program.  This will open your default browser and ask you to log in to GitHub.
+into your terminal program.  This will open your default browser and ask you to log in to GitHub.
 
 ## 2. Request access to the shared database resources (gureckislab only)
 
@@ -49,13 +49,13 @@ Next create a RSA key-pair for your email address:
 gpg --gen-key
 ```
 
-There will be a sequence of questions you answer.  Use your preferred email address e.g., the one linked to GitHub.  Send Todd your public key by sending the output of this command to him on slack or via email.
+There will be a sequence of questions you answer.  Use your preferred email address e.g., the one linked to GitHub.  Send Todd your public key by sending the output of this command to him on slack or via email:
 
 ```
-gpg --armor --explore your.email@address.com
+gpg --armor --export your.email@address.com
 ```
 
-Wait for him to reply and to make a push to the Smile repo giving access to the encrypted files to your email address.
+Wait for him to reply and to make a push to the main 🫠 Smile repo giving access to the encrypted files to your email address.
 
 
 ## 3. Fork the repo and check it out.
@@ -89,7 +89,7 @@ After this you can visit GitHub and you should see a new repo in your personal r
 
 ## 4. Setup the project
 
-Next change into the newly created project directory (assuming you called your project `my_cool_project`) and the `npm run setup_project` command:
+Next change into the newly created project directory (assuming you called your project `my_cool_project`) and run the `npm run setup_project` command:
 
 ```
 cd my_cool_project
@@ -102,11 +102,13 @@ This will clean up git history for the base Smile project, remove some files you
 
 Information about configuration is [here](/configuration) but if you are in the gureckislab you will want to simply decrypt the files provided in the repository.
 
-To do this simply type 
+To do this simply type: 
 
 ```
 git secret reveal
 ```
+
+this shoudl create several .env.* files in your `env/` directory.
 
 ::: danger 
 This will only work if you have first sent Todd your gpg key and waited for him to push a change to the Smile repo.
