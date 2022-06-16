@@ -100,7 +100,11 @@ This will clean up git history for the base Smile project, remove some files you
 
 ## 5. Configure your project
 
-Information about configuration is [here](/configuration) but if you are in the gureckislab you will want to simply decrypt the files provided in the repository.
+Information about the configuration setting is [here](/configuration) but if you are in the gureckislab you will want to simply decrypt the files provided in the repository.
+
+::: danger 
+This will only work if you have first sent Todd your gpg key and waited for him to push a change to the Smile repo.
+:::
 
 To do this simply type: 
 
@@ -108,11 +112,7 @@ To do this simply type:
 git secret reveal
 ```
 
-this shoudl create several .env.* files in your `env/` directory.
-
-::: danger 
-This will only work if you have first sent Todd your gpg key and waited for him to push a change to the Smile repo.
-:::
+this should create several `.env.*.local` files in your `env/` directory.
 
 After all the necessary files are in the `env` folder run:
 
