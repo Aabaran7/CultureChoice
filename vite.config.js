@@ -7,7 +7,6 @@ export default ({ mode }) => {
 
   // import.meta.env.VITE_NAME available here with: process.env.VITE_NAME
   // import.meta.env.VITE_PORT available here with: process.env.VITE_PORT
-  //console.log(process.env)
   return defineConfig({
       plugins: [vue()],
       envDir: 'env',
