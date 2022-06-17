@@ -4,7 +4,7 @@ When developing and debugging your experiment it is useful to interact with a we
 
 
 
-In Smile this is all handled by [Vite](https://vitejs.dev).  Vite is a development tool which is heavily optimized for DX (developer experience).  There's lots to say about the features of Vite but more directly to test your application locally simple type:
+In **🫠 Smile** this is all handled by [Vite](https://vitejs.dev).  Vite is a development tool that is heavily optimized for (developer experience (DX).  There is a lot to say about the features of Vite but more directly to test your application locally simple type:
 
 `npm run dev`
 

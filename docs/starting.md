@@ -5,20 +5,19 @@ import { reactive, computed } from 'vue'
 const config = reactive({
     username: 'ghuser',
     projectname: 'my_cool_project',
-    email: 'someone@nyu.edu',
+    email: 'someone@gmail.edu',
     description: 'my new research project'
 })
-
-
 
 </script>
 
 <style lang="css">
-label {
+.vp-doc  label {
     font-weight: bold;
     font-size: 1.1em;
+    color: #42b883;
 }
-input {
+.vp-doc input {
     border: 1px;
     width: 100%;
     font-size: 1.1em;
@@ -35,6 +34,7 @@ input {
 .label {
     text-align: right;
     border: none;
+   
 }
 .data {
     width: 60%;
@@ -43,9 +43,11 @@ input {
 .vp-doc td {
     vertical-align:top;
     border: none;
+    font-size: 1em;
 }
 .vp-doc tr {
     border: none;
+    font-size: 1em;
 }
 </style>
 
@@ -58,7 +60,6 @@ of the Smile project and adjusting the configuration settings for your project.
 
 **Don't worry it is easy and most of it you only do once!**
 
-You will need to have a (free) [GitHub account](https://github.com/join).
 
 :::details Customize this page!
 To prevent typo errors you can enter the key details of your project here and the example commands
@@ -129,6 +130,7 @@ gh auth login --web
 ```
 
 into your terminal program.  This will open your default browser and ask you to log in to GitHub.
+You will need to have a (free) [GitHub account](https://github.com/join).
 
 
 
@@ -230,7 +232,7 @@ Simply type
 npm run dev
 ```
 
-to run the development server and see the current, default setup of the site.
+to run the development server and see the current, default setup of the site.  More information about developing is available [here](/developing).
 
 ## 7. Test the deployment
 
