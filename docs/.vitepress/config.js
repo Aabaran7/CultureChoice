@@ -65,7 +65,7 @@ export default defineConfig({
                 collapsible: false,
                 collapsed: false,
                 items: [
-                    { text: "Getting started", link: '/gettingstarted'},
+                    { text: "Getting started contributing", link: '/gettingstarted'},
                     { text: "Contributing to the docs", link: '/contributing' },
 
                 ]
