@@ -4,7 +4,6 @@ import { reactive, computed } from 'vue'
 const config = reactive({
     username: 'ghuser',
     projectname: 'my_cool_project',
-    email: 'someone@gmail.edu',
     description: 'my new research project'
 })
 </script>
@@ -54,7 +53,7 @@ const config = reactive({
 # Starting a new project
 
 When you start a new project, there are a few one-time steps you must take.
-These essentially boil down to forking the current version
+These essentially boil down to copying the current version
 of the Smile project, adjusting the configuration settings for your project,
 and running a setup script.
 
@@ -72,15 +71,6 @@ below will be adapted for your situation allowing you to simply cut and paste wi
         </td>
         <td class="data">
             <input id="username" type="text" v-model="config.username" />
-        </td>
-    </tr>
-    <tr>
-        <td class="label">
-            <label for="email">Email address</label><br>
-            Use your preferred email address here, even better if the same one you use with GitHub. 
-        </td>
-        <td class="data">
-            <input id="email" type="text" v-model="config.email" />
         </td>
     </tr>
     <tr>
@@ -111,59 +101,7 @@ the science (e.g., `question_asking`).
 
 
 
-## 1. Install and authenticate the GitHub Command Line Interface (CLI)
-
-
-You can do some of the steps below by clicking buttons on the GitHub website 
-but can be easier in the terminal (and the UI changes from time to time).
-If you already have the GitHub command line tool installed and authenticated
-skip to step 2.
-
-First make sure you have the GitHub Command Line Interface (cli) tool installed:
-[download it here](https://cli.github.com) using the installer or homebrew.  
-
-Next, allow the cli access to your GitHub account by typing:
-
-```
-gh auth login --web
-```
-
-into your terminal program.  This will open your default browser and ask you to log in to GitHub.
-You will need to have a (free) [GitHub account](https://github.com/join).
-
-
-
-## 2. Request access to the shared database resources (gureckislab only)
-
-Later you will want to configure your application, but if you are in the gureckislab you will want to 
-simply decrypt the pre-configured files provided in the repository.
-
-::: info Great news!
-You only need to do this the first time you try out Smile!  Then you will forever be part of the 
-familia.
-:::
-
-
-To do this first install the git secret package which includes the relevant dependencies using homebrew: 
-
-```
-brew install git-secret
-```
-
-Next create a RSA key-pair for your email address:
-
-```
-gpg --gen-key
-```
-
-There will be a sequence of questions you answer.  Use your preferred email address e.g., the one linked to GitHub.  Send Todd your public key by sending the output of this command to him on slack or via email:
-
-<div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">gpg --armor --export {{ config.email }}</span></span></code></pre></div>
-
-Wait for him to reply and to make a push to the main **🫠 Smile** repo giving access to the encrypted files to your email address.
-
-
-## 3. Fork the repo and check it out.
+## 1. Copy over the basic project
 
 Set your current working directory to where you would like to place your files.
 For example, on Mac this might be your desktop
@@ -172,13 +110,13 @@ For example, on Mac this might be your desktop
 cd ~/Desktop
 ```
 
-Following the steps below, fork the **🫠 Smile** GitHub repo into a new project name and clone it locally.
+Following the steps below, copy the **🫠 Smile** GitHub repo into a new project name and clone it locally.
 
 
-In this example command, the new project will be named `{{config.projectname}}` and a copy of the starting
-project template will be placed in a new folder with that name:
+In this example command, the new project will be named `{{config.projectname}}` and a copy of the starting project template will be placed in a new folder with that name:
 
-<div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">gh repo fork nyuccl/smile --clone=true --fork-name={{config.projectname}}</span></span></code></pre></div>
+
+<div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">gh repo create {{config.projectname}} --private --clone --template nyuccl/smile</span></span></code></pre></div>
 
 Next, alter the Github description for your new repo:
 
@@ -187,18 +125,13 @@ Next, alter the Github description for your new repo:
 
 After this you can visit GitHub and you should see a new repo in your personal repositories list: [http://github.com/{{config.username}}/{{config.projectname}}](http://github.com/{{config.username}}/{{config.projectname}})
 
-## 4. Setup the project
+Finally change into the newly created project directory (assuming you called your project `{{config.projectname}}`):
 
-Next change into the newly created project directory (assuming you called your project `my_cool_project`) and run the `npm run setup_project` command:
+<div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">cd {{config.projectname}}</span></span></code></pre></div>
 
-```
-cd my_cool_project
-npm run setup_project
-```
 
-This will clean up git history for the base Smile project, remove some files you will not need, and install the required node packages for development.
+## 2. Configure your project
 
-## 5. Configure your project
 
 Information about the configuration setting is [here](/configuration) but if you are in the gureckislab you will want to simply decrypt the files provided in the repository.
 
@@ -222,7 +155,26 @@ npm run config:upload
 
 to configure your deployment process.
 
-## 6. Begin developing
+## 3. Setup the project
+
+Next run the `npm run setup_project` command:
+
+```
+npm run setup_project
+```
+
+This will clean up git history for the base Smile project, remove some files you will not need, and install the required node packages for development.
+
+
+## 4. Test the deployment
+
+If you have properly configured your application the last command should have created an initial deployment of your project.  If you are in the gureckislab look join the `#smile-deploy` slack channel.  A robot there will let you know that your project was deployed and provide you with a web link the the live site.  
+
+If that doesn't work then continue reading to learn more about [deployments](/deploy) including debugging tips.
+
+From here on out any time you make a change to any file (except in the `docs/` folder), commit it, and push that change to your project repository the Slack bot will confirm your code has been uploaded. 
+
+## 5. Begin developing!
 
 Next you can begin testing and developing your app!
 
@@ -234,10 +186,7 @@ npm run dev
 
 to run the development server and see the current, default setup of the site.  More information about developing is available [here](/developing).
 
-## 7. Test the deployment
 
-If you have properly configured your application then you should be able to deploy your website to your remote site.
-Make a change to any file (except in the `docs/` folder) and push that change to your repository.  Your code should be made available according to the deploy settings you provided [NEEDS BETTER INFO HERE]
 
 
 
