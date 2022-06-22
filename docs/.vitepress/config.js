@@ -6,6 +6,9 @@ export default defineConfig({
     lang: 'en-US',
     title: '🫠 Smile.',
     description: 'a gureckislab joint.',
+    head: [
+        ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ],
     markdown: {
         toc: {
             listType: 'ol'
@@ -32,6 +35,7 @@ export default defineConfig({
                 items: [
                     { text: "Introduction", link: '/introduction' },
                     { text: "Starting a new project", link: "/starting"},  
+                    { text: "Deploying your experiment", link: "/deploy"}, 
                     { text: "Developing your experiment", link: "/developing"},                  
                 ]
             },
@@ -56,8 +60,7 @@ export default defineConfig({
                 items: [
                     { text: "Research Notes", link: "/research/frontend"},
                     { text: "Configuration options", link: "/configuration"},
-                    { text: "Testing your experiment", link: "/testing"},
-                    { text: "Deploying your experiment", link: "/deploy"}
+                    { text: "Testing your experiment", link: "/testing"}
                 ]
             },
             {
