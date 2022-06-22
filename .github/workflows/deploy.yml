@@ -41,10 +41,10 @@ jobs:
           if test -z "${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
           then
             echo "VITE_PROJECT_NAME  =   unknown" > $ENV_FILE
-            VITE_PROJECT_NAME= 'unknown'
+            VITE_PROJECT_NAME='unknown'
           else
             echo "VITE_PROJECT_NAME  =   ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" > $ENV_FILE
-            VITE_PROJECT_NAME= '${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}'
+            VITE_PROJECT_NAME='${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}'
           fi
           if test -z "${{ env.GITHUB_SHA_SHORT }}"
           then
