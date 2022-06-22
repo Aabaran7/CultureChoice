@@ -34,6 +34,7 @@ export default defineConfig({
                 text: "Overview",
                 items: [
                     { text: "Introduction", link: '/introduction' },
+                    { text: "Required software", link: "/requirements"}, 
                     { text: "Starting a new project", link: "/starting"},  
                     { text: "Deploying your experiment", link: "/deploy"}, 
                     { text: "Developing your experiment", link: "/developing"},                  
