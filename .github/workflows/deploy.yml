@@ -70,13 +70,13 @@ jobs:
             echo "VITE_GIT_REPO_NAME  =   ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" >> $ENV_FILE
             VITE_GIT_REPO_NAME='${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}'
           fi
-          if test -z "${{ env.GITHUB_GITHUB_REF_SLUG }}"
+          if test -z "${{ env.GITHUB_REF_SLUG }}"
           then
             echo "VITE_GIT_BRANCH_NAME  =   unknown_branch" >> $ENV_FILE
             VITE_GIT_BRANCH_NAME='unknown_branch'
           else
-            echo "VITE_GIT_BRANCH_NAME  =   ${{ env.GITHUB_GITHUB_REF_SLUG }}" >> $ENV_FILE
-            VITE_GIT_BRANCH_NAME='${{ env.GITHUB_GITHUB_REF_SLUG }}'
+            echo "VITE_GIT_BRANCH_NAME  =   ${{ env.GITHUB_REF_SLUG }}" >> $ENV_FILE
+            VITE_GIT_BRANCH_NAME='${{ env.GITHUB_REF_SLUG }}'
           fi
           if test -z "${{ github.event.head_commit.message }}"
           then
