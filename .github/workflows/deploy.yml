@@ -74,7 +74,7 @@ jobs:
           else
             echo "VITE_GIT_LAST_MSG   =   ${{ github.event.head_commit.message }}" >> $ENV_FILE
           fi
-          echo "VITE_DEPLOY_BASE_PATH   =  '/${VITE_GIT_OWNER}/${VITE_GIT_REPO_NAME}/${VITE_GIT_BRANCH_NAME}/'"
+          echo "VITE_DEPLOY_BASE_PATH   =  '/${VITE_GIT_OWNER}/${VITE_GIT_REPO_NAME}/${VITE_GIT_BRANCH_NAME}/'" >> $ENV_FILE
           cat $ENV_FILE
       
       # put the full path name in VITE_DEPLOY_BASE_PATH
