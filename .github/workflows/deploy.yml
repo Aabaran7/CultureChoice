@@ -41,8 +41,10 @@ jobs:
           if test -z "${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
           then
             echo "VITE_PROJECT_NAME  =   unknown" > $ENV_FILE
+            VITE_PROJECT_NAME = 'unknown'
           else
             echo "VITE_PROJECT_NAME  =   ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" > $ENV_FILE
+            VITE_PROJECT_NAME = ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}
           fi
           if test -z "${{ env.GITHUB_SHA_SHORT }}"
           then
@@ -87,7 +89,6 @@ jobs:
         run: |
           echo "------"
           echo $SECRET_APP_CONFIG | base64 --decode > $SECRET_ENV_FILE
-          cat $SECRET_ENV_FILE
 
       # setup node.js
       - name: Setup node.js
