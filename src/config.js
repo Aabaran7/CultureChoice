@@ -8,6 +8,7 @@ export default {
     github: {
         repo_name: import.meta.env.VITE_GIT_REPO_NAME,
         owner: import.meta.env.VITE_GIT_OWNER,
+        branch: import.meta.env.VITE_GIT_BRANCH_NAME,
         last_commit_msg: import.meta.env.VITE_GIT_LAST_MSG,
         last_commit_hash: import.meta.env.VITE_GIT_HASH // autocompute this all the time    
     },

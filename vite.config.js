@@ -10,6 +10,6 @@ export default ({ mode }) => {
   return defineConfig({
       plugins: [vue()],
       envDir: 'env',
-      base: process.env.EXP_DEPLOY_BASE_PATH + '/' + process.env.VITE_PROJECT_NAME + '/'
+      base: process.env.VITE_DEPLOY_BASE_PATH
   });
 }

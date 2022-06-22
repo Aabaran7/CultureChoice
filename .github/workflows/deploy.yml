@@ -62,13 +62,22 @@ jobs:
           else
             echo "VITE_GIT_REPO_NAME  =   ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}" >> $ENV_FILE
           fi
+          if test -z "${{ env.GITHUB_GITHUB_REF_SLUG }}"
+          then
+            echo "VITE_GIT_BRANCH_NAME  =   unknown_repo" >> $ENV_FILE
+          else
+            echo "VITE_GIT_BRANCH_NAME  =   ${{ env.GITHUB_GITHUB_REF_SLUG }}" >> $ENV_FILE
+          fi
           if test -z "${{ github.event.head_commit.message }}"
           then
             echo "VITE_GIT_LAST_MSG   =   (no commit message)" >> $ENV_FILE
           else
             echo "VITE_GIT_LAST_MSG   =   ${{ github.event.head_commit.message }}" >> $ENV_FILE
           fi
+          echo "VITE_DEPLOY_BASE_PATH   =  '/${VITE_GIT_OWNER}/${VITE_GIT_REPO_NAME}/${VITE_GIT_BRANCH_NAME}/'"
           cat $ENV_FILE
+      
+      # put the full path name in VITE_DEPLOY_BASE_PATH
       
       # Configure secure information configuration
       - name: Expose secret information to the Vite environment
@@ -102,16 +111,8 @@ jobs:
       # echo all the environment variables
       - name: echo the environment variables
         run: |
-          echo "deploy url: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}/"
+          echo "deploy url: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}"
       
-      # place the deploy settings into the environment files
-      # this one needs to be made available to vite.config.js
-      - name: create deploy file
-        env:
-          DEPLOY_ENV_FILE: "env/.env.deploy.local"
-        run: |
-          echo "EXP_DEPLOY_BASE_PATH = ${{ secrets.EXP_DEPLOY_BASE_PATH }}" > $DEPLOY_ENV_FILE
-
       # install node packages
       - name: Install node dependencies
         run: npm install
@@ -128,7 +129,7 @@ jobs:
           username: ${{ secrets.EXP_DEPLOY_USER }}
           key: ${{ secrets.EXP_DEPLOY_KEY  }}
           port: ${{ secrets.EXP_DEPLOY_PORT }}
-          script: mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}/
+          script: mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}
           
       # Deploy files to web server
       - name: rsync to server
@@ -136,7 +137,7 @@ jobs:
         with:
           switches: -avrz --delete
           path: dist/
-          remote_path: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.vite_project_name }}/  # this should be configured with branch name and versioning
+          remote_path: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }} # this should be configured with branch name and versioning
           remote_host: ${{ secrets.EXP_DEPLOY_HOST }}
           remote_port: ${{ secrets.EXP_DEPLOY_PORT }}
           remote_user: ${{ secrets.EXP_DEPLOY_USER }}
