@@ -122,7 +122,7 @@ jobs:
       # echo all the environment variables
       - name: echo the environment variables
         run: |
-          echo "deploy url: ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}"
+          echo "deploy url: ${{ secrets.EXP_DEPLOY_PATH }}${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}"
         
       # place the deploy settings into the environment files
        # this one needs to be made available to vite.config.js
