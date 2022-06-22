@@ -175,5 +175,5 @@ jobs:
             {
               "github_username": "${{ steps.dotenv_github.outputs.VITE_GIT_OWNER }}",
               "deploy_url": "https://${{ secrets.EXP_DEPLOY_HOST }}${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}",
-              "github_hash": "${{ steps.dotenv_github.outputs.VITE_GIT_HASH }}"
+              "github_hash": "https://github.com/${{ steps.dotenv_github.outputs.VITE_GIT_OWNER }}/${{ steps.dotenv_github.outputs.VITE_GIT_REPO_NAME }}/commit/${{ steps.dotenv_github.outputs.VITE_GIT_HASH }}"
             }
