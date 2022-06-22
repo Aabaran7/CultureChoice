@@ -126,11 +126,11 @@ jobs:
         
       # place the deploy settings into the environment files
        # this one needs to be made available to vite.config.js
-       - name: create deploy file
-         env:
-           DEPLOY_ENV_FILE: "env/.env.deploy.local"
-         run: |
-           echo "VITE_DEPLOY_URL = 'https://${{ secrets.EXP_DEPLOY_HOST }}${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}" > $DEPLOY_ENV_FILE
+      - name: create deploy file
+        env:
+          DEPLOY_ENV_FILE: "env/.env.deploy.local"
+        run: |
+          echo "VITE_DEPLOY_URL = 'https://${{ secrets.EXP_DEPLOY_HOST }}${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}" > $DEPLOY_ENV_FILE
       
       # install node packages
       - name: Install node dependencies

@@ -15,7 +15,7 @@ export default {
     browser_exclude: import.meta.env.VITE_BROWSER_EXCLUDE,
     allow_repeats: import.meta.env.VITE_ALLOW_REPEATS,
     bug_reports: import.meta.env.VITE_BUG_REPORTS,
-    deploy_url: import.meta.env.VITE_DEPLOY_URL_BASE + import.meta.env.VITE_PROJECT_NAME, // auto compute this
+    deploy_url: import.meta.env.VITE_DEPLOY_URL, // auto compute this
     services_allowed: import.meta.env.VITE_SERVICES_ALLOWED,
     firebaseConfig : {
         apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
