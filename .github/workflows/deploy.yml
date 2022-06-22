@@ -164,7 +164,9 @@ jobs:
 
       # send a notification at the end
       - name: Send notification to lab slack
-        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }} # this should only run if SLACK_WEBHOOK_URL exists
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ env.SLACK_WEBHOOK != '' }} # this should only run if SLACK_WEBHOOK exists
         id: slack
         uses: slackapi/slack-github-action@v1.19.0
         with:
