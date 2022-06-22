@@ -141,7 +141,7 @@ jobs:
         run: npm run build
 
       # make remote folder if necessar
-      - name: create the remove folder if it doesn't exist
+      - name: create the remote folder if it doesn't exist
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EXP_DEPLOY_HOST }}
