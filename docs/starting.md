@@ -1,14 +1,12 @@
 <script setup>
 import { reactive, computed } from 'vue'
 
-
 const config = reactive({
     username: 'ghuser',
     projectname: 'my_cool_project',
     email: 'someone@gmail.edu',
     description: 'my new research project'
 })
-
 </script>
 
 <style lang="css">
@@ -24,6 +22,7 @@ const config = reactive({
     background-color: white;
     border: 1px solid #999;
     padding-left: 10px;
+    color: rgb(84, 84, 84);
 }
 .form {
     width: 100%;
@@ -55,11 +54,11 @@ const config = reactive({
 # Starting a new project
 
 When you start a new project, there are a few one-time steps you must take.
-These include forking the current version
-of the Smile project and adjusting the configuration settings for your project.
+These essentially boil down to forking the current version
+of the Smile project, adjusting the configuration settings for your project,
+and running a setup script.
 
 **Don't worry it is easy and most of it you only do once!**
-
 
 :::details Customize this page!
 To prevent typo errors you can enter the key details of your project here and the example commands
@@ -139,8 +138,9 @@ You will need to have a (free) [GitHub account](https://github.com/join).
 Later you will want to configure your application, but if you are in the gureckislab you will want to 
 simply decrypt the pre-configured files provided in the repository.
 
-::: info Note
-You only need to do this the first time you try Smile!
+::: info Great news!
+You only need to do this the first time you try out Smile!  Then you will forever be part of the 
+familia.
 :::
 
 
