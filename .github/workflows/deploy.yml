@@ -165,8 +165,8 @@ jobs:
       # send a notification at the end
       - name: Send notification to lab slack
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: ${{ env.SLACK_WEBHOOK != '' }} # this should only run if SLACK_WEBHOOK exists
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ env.SLACK_WEBHOOK_URL != '' }} # this should only run if SLACK_WEBHOOK exists
         id: slack
         uses: slackapi/slack-github-action@v1.19.0
         with:
@@ -177,5 +177,3 @@ jobs:
               "deploy_url": "https://${{ secrets.EXP_DEPLOY_HOST }}${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}",
               "github_hash": "${{ steps.dotenv_github.outputs.VITE_GIT_HASH }}"
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
