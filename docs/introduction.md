@@ -1,4 +1,4 @@
-# Introduction
+# :cowboy_hat_face: Introduction
 
 The goal of 🫠 **Smile** is to make it easy and fun to collect behavioral data online.
 

@@ -1,4 +1,4 @@
-# Configuration Options
+# :gear: Configuration Options
 <style>
 .note {
     font-size: 0.9em;

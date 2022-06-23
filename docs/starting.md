@@ -50,7 +50,7 @@ const config = reactive({
 </style>
 
 
-# Starting a new project
+# :sparkles: Starting a new project
 
 When you start a new project, there are a few one-time steps you must take.
 These include copying the current version

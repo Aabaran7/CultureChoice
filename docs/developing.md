@@ -1,4 +1,4 @@
-# Developing your experiments
+# :woman_technologist: Developing your experiments
 
 When developing and debugging your experiment it is useful to interact with a webserver running on your local computer (i.e., your laptop or desktop).  This is much faster than waiting for the changes to be uploaded to the cloud and then having your browser download the files again.
 

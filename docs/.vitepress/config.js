@@ -33,20 +33,20 @@ export default defineConfig({
             {
                 text: "Overview",
                 items: [
-                    { text: "Introduction", link: '/introduction' },
-                    { text: "Required software", link: "/requirements"}, 
-                    { text: "Starting a new project", link: "/starting"},  
-                    { text: "Deploying", link: "/deploy"}, 
-                    { text: "Configuring", link: "/configuration"},
-                    { text: "Developing", link: "/developing"},  
-                    { text: "Testing", link: "/testing"}               
+                    { text: "🤠 Introduction", link: '/introduction' },
+                    { text: "👾 Required software", link: "/requirements"}, 
+                    { text: "✨ Starting a new project", link: "/starting"},  
+                    { text: "🖥 Deploying", link: "/deploy"}, 
+                    { text: "⚙️ Configuring", link: "/configuration"},
+                    { text: "👩‍💻 Developing", link: "/developing"},  
+                    { text: "🐞 Testing", link: "/testing"}               
                 ]
             },
             {
                 text: "Planning",
                 items: [
-                    { text: "Manifesto", link: '/manifesto' },
-                    { text: "Design principles", link: '/principles' },
+                    { text: "⚡️ Manifesto", link: '/manifesto' },
+                    { text: "🥸 Design principles", link: '/principles' },
                     { text: "Overview", link: '/research/overview' },
                     { text: "Use-cases", link: '/research/usecases' }
                 ]
