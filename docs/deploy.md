@@ -69,7 +69,10 @@ How do we deal with small changes though?  Like you deploy "experiment 2" run 5 
 
 ## What commits trigger a deployment?
 
-Any commit on any branch that modifies a file in your project will generate a deployment.  The exception is changes that only effect the `docs/` directory.  Additionally, branches names `analysis`, `models`, and `docs` will not generate a deployment with the assumption is this is where you can track code for these purposes. [TODO]
+Any commit on any branch that modifies a file in your project will generate a deployment.  The exceptions are: 
+- Changes that only effect files in the `docs/` directory do not generate an deployment.
+- Additionally, pushes to any branches named `analysis`, `models`, and `docs` will not generate a deployment with the assumption is this is where you can track code for these purposes and are not relevant to the deployment logic.
+
 
 ## Deploying a specific version of your experiment
 

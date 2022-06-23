@@ -6,8 +6,10 @@ name: DEPLOY
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    # branches-ignore:
-    #   - main # want this to be all branches eventually
+    branches-ignore:
+       - analysis # want this to be all branches eventually
+       - models
+       - docs
     paths-ignore:  # ignore any changes to the docs for this workflow
       - 'docs/**'
 
