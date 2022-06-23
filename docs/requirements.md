@@ -4,7 +4,8 @@ Before getting started working on a **🫠 Smile** project you will need to inst
 
 ## 1. Install the latest Node.js
 
-You will need to install Node.js on your computer if you haven't already.  You can download the latest version [here](https://nodejs.org/en/download/).  After the install completes, verify that you have the `npm` command in your terminal program of choice.
+You will need to install Node.js on your computer if you haven't already.  You can download the latest version [here](https://nodejs.org/en/download/).  After the install completes, verify that you have the `npm` command in your terminal program of choice.  If you already have Node installed verify that the version of npm is greater than 8.1.2.  You can check your installed version by typing `npm -v`.
+
 
 ## 2. Create a GitHub account if you haven't and install the command-line tool
 
