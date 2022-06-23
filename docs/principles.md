@@ -1,4 +1,4 @@
-# Design Principles
+# :disguised_face: Design Principles
 
 The design of online experiments (and webpages in general) requires a lot of complex choices.  The goal of **🫠 Smile** is to make sensible choices as much as possible so you don't have to think about things.  Experience developing psiTurk is instructive in many ways.  Reflecting on this leads to several design principles that you should keep in mind while contributing to this project:
 

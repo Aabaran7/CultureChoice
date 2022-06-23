@@ -1,4 +1,4 @@
-# Contributing to the documentation
+# :writing_hand: Contributing to the documentation
 
 This project takes a "docs first" approach by first planning the development in the documentation
 and then working on implementation.  Thus, the place to start is by contributing to the docs.  **It's easy

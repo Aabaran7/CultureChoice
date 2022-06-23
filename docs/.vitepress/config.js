@@ -33,20 +33,30 @@ export default defineConfig({
             {
                 text: "Overview",
                 items: [
-                    { text: "🤠 Introduction", link: '/introduction' },
+                    { text: "👋 Introduction", link: '/introduction' },
                     { text: "👾 Required software", link: "/requirements"}, 
                     { text: "✨ Starting a new project", link: "/starting"},  
-                    { text: "🖥 Deploying", link: "/deploying"}, 
+                    { text: "☁️ Deploying", link: "/deploying"}, 
                     { text: "⚙️ Configuring", link: "/configuration"},
                     { text: "👩‍💻 Developing", link: "/developing"},  
                     { text: "🐞 Testing", link: "/testing"}               
                 ]
             },
             {
+                text: "Contributing",
+                collapsible: false,
+                collapsed: false,
+                items: [
+
+                    { text: "🙋Getting started contributing", link: '/gettingstarted'},
+                    { text: "✍️ Contributing to the docs", link: '/contributing' },
+                    { text: "⚡️ Manifesto", link: '/manifesto' },
+                    { text: "🥸 Design principles", link: '/principles' }
+                ]
+            },
+            {
                 text: "Planning",
                 items: [
-                    { text: "⚡️ Manifesto", link: '/manifesto' },
-                    { text: "🥸 Design principles", link: '/principles' },
                     { text: "Overview", link: '/research/overview' },
                     { text: "Use-cases", link: '/research/usecases' }
                 ]
@@ -62,16 +72,6 @@ export default defineConfig({
                 text: "Front End",
                 items: [
                     { text: "Research Notes", link: "/research/frontend"},
-                ]
-            },
-            {
-                text: "Contributing",
-                collapsible: false,
-                collapsed: false,
-                items: [
-                    { text: "Getting started contributing", link: '/gettingstarted'},
-                    { text: "Contributing to the docs", link: '/contributing' },
-
                 ]
             },
             {

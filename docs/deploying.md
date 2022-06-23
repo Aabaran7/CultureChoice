@@ -1,6 +1,6 @@
 
 
-# :desktop_computer: Deploying your experiment
+# :cloud: Deploying your experiment
 
 Deploying (or hosting) your experiment involves building the web application and then transferring a copy of the files to a suitable public website where participants can access them.
 
