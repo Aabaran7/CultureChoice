@@ -54,7 +54,7 @@ const config = reactive({
 
 When you start a new project, there are a few one-time steps you must take.
 These essentially boil down to copying the current version
-of the Smile project, adjusting the configuration settings for your project,
+of the **🫠 Smile** project, adjusting the configuration settings for your project,
 and running a setup script.
 
 **Don't worry it is easy and most of it you only do once!**
@@ -136,7 +136,7 @@ Finally change into the newly created project directory (assuming you called you
 Information about the configuration setting is [here](/configuration) but if you are in the gureckislab you will want to simply decrypt the files provided in the repository.
 
 ::: danger Warning!
-This will only work if you have first sent Todd your gpg key and waited for him to push a change to the **🫠 Smile** repo.
+This will only work if you have first sent Todd your gpg key and waited for him to push a change to the **🫠 Smile** repo.  See instructions [here](/requirements#_3-request-access-to-the-shared-database-resources).
 :::
 
 To do this simply type: 
@@ -163,16 +163,16 @@ Next run the `npm run setup_project` command:
 npm run setup_project
 ```
 
-This will clean up git history for the base Smile project, remove some files you will not need, and install the required node packages for development.
+This will remove some files you will not need, create and initial deployment/commit, and install the required node packages for local development and testing.
 
 
-## 4. Test the deployment
+## 4. Verify the deployment
 
-If you have properly configured your application the last command should have created an initial deployment of your project.  If you are in the gureckislab look join the `#smile-deploy` slack channel.  A robot there will let you know that your project was deployed and provide you with a web link the the live site.  
+If you have properly configured your application the last command should have created an initial deployment of your project.  If you are in the gureckislab join the `#smile-deploy` slack channel.  A robot :robot: there will let you know that your project was deployed and provide you with a web link to live site.  
 
-If that doesn't work then continue reading to learn more about [deployments](/deploy) including debugging tips.
+If that didn't happen/work then continue reading to learn more about [deployments](/deploy) including [debugging tips](/deploy#debugging-deployment-issues).
 
-From here on out any time you make a change to any file (except in the `docs/` folder), commit it, and push that change to your project repository the Slack bot will confirm your code has been uploaded. 
+From here on out any time you make a change to any file (except in the `docs/` folder or a [few specifically named branches](/deploy#what-commits-trigger-a-deployment)), commit it, and push that change to your project repository the Slack bot will confirm your code has been uploaded to the live webserver and is theoretically ready for participants. 
 
 ## 5. Begin developing!
 

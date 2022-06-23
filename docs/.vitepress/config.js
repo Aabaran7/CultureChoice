@@ -80,7 +80,6 @@ export default defineConfig({
                 collapsed: true,
                 items: [
                     { text: "Setup", link: "/advanced/notes" },
-                    { text: "Understanding deployment", link: "/advanced/deploysteps" }
                 ]
             }
         ],

@@ -1,4 +1,4 @@
-# Required software you will need to install first:
+# Required software you will need to install
 
 Before getting started working on a **🫠 Smile** project you will need to install a few items on your local computer.
 
@@ -21,7 +21,6 @@ gh auth login --web
 ```
 
 into your terminal program.  This will open your default browser and ask you to log in to GitHub.
-You will need to have a (free) [GitHub account](https://github.com/join).
 
 
 ## 3. Request access to the shared database resources
