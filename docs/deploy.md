@@ -58,13 +58,10 @@ gureckis                 <--- github username
 Next within a branch, we will often make a sequence of commits as we implement features, adjust bugs, and so forth.  Generally, these advance forward in a sequence automatically but sometimes it is helpful to reference some particular moment in the development of an experiment.  For this, we use git tags as a final organizing element.  At this final level we adopt the semantic versioning format but with only two values: MAJOR.PATCH.  The MAJOR counter starts at 0 and is incremented for each major release/change to the experiment that you wish to "mark".  PATCH is automatically incremented starting at 0 each time a commit is made to a given branch.
 
 
-
 For each of these paths we can create a unique deploy path
 `gureckis/another_project/pilot/0.0/` or `gureckis/my_cool_project/exp2b/1.0/`.
 
-One reason for keeping all versions is if you later want to share links to the different experiments to reviewers or readers of the paper.  
 
-How do we deal with small changes though?  Like you deploy "experiment 2" run 5 subjects and then realize there was a small bug which you fix and then re-deploy.  How do we keep track of which one is the "real" experiment 2 and help experimenters keep track of things?
 
 
 ## What commits trigger a deployment?

@@ -53,7 +53,7 @@ const config = reactive({
 # Starting a new project
 
 When you start a new project, there are a few one-time steps you must take.
-These essentially boil down to copying the current version
+These include copying the current version
 of the **🫠 Smile** project, adjusting the configuration settings for your project,
 and running a setup script.
 
