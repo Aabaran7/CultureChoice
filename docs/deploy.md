@@ -1,25 +1,32 @@
+
+
 # :desktop_computer: Deploying your experiment
 
 Deploying (or hosting) your experiment involves building the web application and then transferring a copy of the files to a suitable public website where participants can access them.
 
 The steps to deploy are... 
-1. **Use `git` to push changes to a branch of the repo for your project**.  
-1. In response, GitHub will **build your project**.
-1. Next, it will **upload your files** to the [configured](/configuration) server location,
-1. Finally, a bot in the gureckislab slack (`#smile-deploy`) will **send a notification** about the final URL of your project if all of this is successful, providing you with near instant feedback.
+1. **Use `git` to push changes to a branch of the repo for your project**
 
-![typical deployment steps](./images/deploy-steps.png)
+
+In response, GitHub will 
+1. **Build your project**
+1. **Upload your files** to the [configured](/configuration) server location
+1. **Notify a bot** in the gureckislab slack (`#smile-deploy`) about the final URL of your project 
+
+<DarkModeImage imgfile='./images/deploy-steps.png' caption="steps for building"/>
+
+If all of this is successful, it provides you with near instant feedback on putting your code in the cloud.
 
 **That's really it.** :sweat_smile:
 
-For simple things this is all you need to do.  
-- If you have a more complex project with multiple experiments read the section on [organizing your deployments](#organizing-your-deployments).  
+For most people this is all you need to do.  But there is more:
+- If you have a more complex project with multiple experiments read the section on [organizing multiple versions of your experiment](#organizing-versions-of-your-experiment).  
 - If you run into problems try [debugging deployment issues](#debugging-deployment-issues).  
-- If you want to deploy some older version of your code check out [this section](#deploying-a-specific-version-of-your-experiment). 
+- If you want to go back in your development history and deploy some older version of your code check out [this section](#deploying-a-specific-version-of-your-experiment). 
 - If you just want to understand how this magic works jump to [understanding the deployment steps](#understanding-the-deployment-steps).
 
 
-## Organizing your deployments
+## Organizing versions of your experiment
 
 Once you start committing changes to your project, one key challenge becomes dealing with multiple versions of the same experiment:
 
@@ -30,7 +37,7 @@ The idea in **🫠 Smile** is to use the structure of GitHub repos to help organ
 The sequential, number-based system makes sense for simple software projects where there is one "product".  However, in behavioral research, we often have multiple development paths (experiments) and they have conceptual meanings that are not well served by a numbering system.
 
 
-![branching structure of typical behavioral experiment](./images/branchingexps.png)
+<DarkModeImage imgfile='./images/branchingexps.png' caption="branching structure of typical behavioral experiment"/>
 
 
 Instead **🫠 Smile** use GitHub as a project organizing tool.
@@ -66,9 +73,11 @@ For each of these paths we can create a unique deploy path
 
 ## What commits trigger a deployment?
 
-Any commit on any branch that modifies a file in your project will generate a deployment.  The exceptions are: 
-- Changes that only effect files in the `docs/` directory do not generate an deployment.
-- Additionally, pushes to any branches named `analysis`, `models`, and `docs` will not generate a deployment with the assumption is this is where you can track code for these purposes and are not relevant to the deployment logic.
+By default any commit on any branch that modifies a file in your project will generate a deployment.  The concept here is "continuous deployment" where things just are always synced with the online website.  The exceptions are: 
+- Changes that only effect files in the `docs/` directory do not generate a deployment.
+- Additionally, pushes to branches name eitehr `analysis`, `models`, or `docs` will not generate a deployment with the assumption is this is where you can track code for these purposes and are not relevant to the deployment logic.
+
+If you would like to add additional files, folders, or branches to be ignored see the starting section of `.github/workflows/deploy.yml`.
 
 
 ## Deploying a specific version of your experiment

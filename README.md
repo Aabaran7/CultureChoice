@@ -2,7 +2,7 @@
 
 A happy approach to online research.
 
-Online docs: [http://smile.gureckislab.org](http://smile.gureckislab.org)
+Online docs: [https://smile.gureckislab.org](https://smile.gureckislab.org)
 
 
 ## Required software to work on this

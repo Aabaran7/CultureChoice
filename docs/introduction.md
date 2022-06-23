@@ -10,7 +10,7 @@ Before getting started please install the [required software](/requirements).
 
 --- 
 
-::: info What we assume
+::: warning What we assume
 Generally this project assumes you have some familiarity with typing commands in a terminal program, git, [GitHub](https://github.com), and basic concepts about web servers and web design.  Some helpful websites to address deficiencies:
 
 - [The missing semester of your CS education](https://missing.csail.mit.edu) - how to use the shell/terminal program, git, security concepts/encryption
