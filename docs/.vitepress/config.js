@@ -36,7 +36,7 @@ export default defineConfig({
                     { text: "🤠 Introduction", link: '/introduction' },
                     { text: "👾 Required software", link: "/requirements"}, 
                     { text: "✨ Starting a new project", link: "/starting"},  
-                    { text: "🖥 Deploying", link: "/deploy"}, 
+                    { text: "🖥 Deploying", link: "/deploying"}, 
                     { text: "⚙️ Configuring", link: "/configuration"},
                     { text: "👩‍💻 Developing", link: "/developing"},  
                     { text: "🐞 Testing", link: "/testing"}               

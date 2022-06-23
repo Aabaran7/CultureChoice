@@ -170,9 +170,9 @@ This will remove some files you will not need, create and initial deployment/com
 
 If you have properly configured your application the last command should have created an initial deployment of your project.  If you are in the gureckislab join the `#smile-deploy` slack channel.  A robot :robot: there will let you know that your project was deployed and provide you with a web link to live site.  
 
-If that didn't happen/work then continue reading to learn more about [deployments](/deploy) including [debugging tips](/deploy#debugging-deployment-issues).
+If that didn't happen/work then continue reading to learn more about [deployments](/deploying) including [debugging tips](/deploying#debugging-deployment-issues).
 
-From here on out any time you make a change to any file (except in the `docs/` folder or a [few specifically named branches](/deploy#what-commits-trigger-a-deployment)), commit it, and push that change to your project repository the Slack bot will confirm your code has been uploaded to the live webserver and is theoretically ready for participants. 
+From here on out any time you make a change to any file (except in the `docs/` folder or a [few specifically named branches](/deploying#what-commits-trigger-a-deployment)), commit it, and push that change to your project repository the Slack bot will confirm your code has been uploaded to the live webserver and is theoretically ready for participants. 
 
 ## 5. Begin developing!
 
