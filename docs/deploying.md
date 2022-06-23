@@ -13,7 +13,9 @@ In response, GitHub will
 1. **Upload your files** to the [configured](/configuration) server location
 1. **Notify a bot** in the gureckislab slack (`#smile-deploy`) about the final URL of your project 
 
-<DarkModeImage imgfile='./images/deploy-steps.png' caption="steps for building"/>
+
+![steps for building](/images/deploy-steps.png)
+
 
 If all of this is successful, it provides you with nearly instant feedback on putting your code in the cloud.
 
@@ -46,7 +48,9 @@ The idea in **🫠 Smile** is to use the structure of GitHub repos to help organ
 
 The sequential, number-based system makes sense for simple software projects where there is one "product".  However, in behavioral research, we often have multiple development paths (experiments) and they have conceptual meanings that are not well served by a numbering system.
 
-Instead, **🫠 Smile**** uses GitHub as a project organizing tool.
+![branching nature of experiments](./images/branchingexps.png)
+
+Instead, **🫠 Smile** uses GitHub as a project organizing tool.
 
 
 ### Using GitHub as a project organizing tool
@@ -103,7 +107,7 @@ Third, run the `npm run build` and `npm run serve` commands and verify that thes
 
 Finally, go to the GitHub repo for your project on the github.com website and click the "Actions" tab.  This will show a history of recent "workflow" runs.  Runs that fail will have a red :x: next to them.  Clicking on this will lead to a "transcript" of the run which can provide some debugging hints.
 
-![An image](./images/githubactions.png)
+![debugging github actions](./images/githubactions.png)
 
 
 ## Understanding the deployment steps
