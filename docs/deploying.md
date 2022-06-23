@@ -85,14 +85,21 @@ For each of these paths we can create a unique deploy path
 
 ## Deploying a specific version of your experiment
 
-Sometimes it can be helpful to re-deploy an older version of the code (e.g., sharing with a reviewer or collaborator).  Using GitHub hashes (which index individual commits) this is possible.
+Sometimes it can be helpful to re-deploy an older version of the code (e.g., sharing with a reviewer or collaborator).  Using GitHub hashes (which index individual commits) this is possible.  Go to your repository on github: `https://github.com/user/repo/commits/main` (replacing user/repo with your username and the name of your project repo).  This will present you with a list of past commits you can navigate which looks like this:  
+
+![github commit history](./images/githubcommithistory.png)
+
+
+
+
+Find the commit you want to deploy publically and click the button with two boxes to copy the full hash value for that commit to your clickboard.  Then run the following command:
 
 ```
 gh workflow run deploy-hash.yml -f github_sha=XXXXX 
 ```
 
-The code in these folders is deleted every 90 days to save space.
-
+replacing `XXXXX` with the hash you have in your clipboard (it is a long sequence of letters and numbers).  This will deploy that version of the code to a special 
+deploy path `hashes/user/project/SHORTHASH/` where `SHORTHASH` is replaced with the first 7 characters of that hash value you requested.  This way you can share a specific version of the code with people.
 
 
 ## Debugging deployment issues
