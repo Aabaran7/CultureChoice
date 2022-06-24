@@ -8,18 +8,18 @@ The steps to deploy are...
 1. **Use `git` to push changes to a branch of the repo for your project**
 
 
-In response, GitHub will 
+In response, GitHub will automatically
 1. **Build your project**
 1. **Upload your files** to the [configured](/configuration) server location
-1. **Notify a bot** in the gureckislab slack (`#smile-deploy`) about the final URL of your project 
+1. **Notify a bot** in the gureckislab slack (`#smile-deploy`) about the final URL of your project (or if there is an error)
 
 
 ![steps for building](/images/deploy-steps.png)
 
 
-If all of this is successful, it provides you with nearly instant feedback on putting your code in the cloud.
+This process provides you with nearly instant feedback on putting your code in the cloud.
 
-**That's really it.** :sweat_smile:
+**That's really it!** :sweat_smile:
 
 For most people this is all you need to do.  But there is more:
 - If you have a more complex project with multiple experiments read the section on [organizing multiple versions of your experiment](#organizing-versions-of-your-experiment).  
@@ -99,12 +99,12 @@ gh workflow run deploy-hash.yml -f github_sha=XXXXX
 ```
 
 replacing `XXXXX` with the hash you have in your clipboard (it is a long sequence of letters and numbers).  This will deploy that version of the code to a special 
-deploy path `hashes/user/project/SHORTHASH/` where `SHORTHASH` is replaced with the first 7 characters of that hash value you requested.  This way you can share a specific version of the code with people.
+deploy path `hashes/user/project/SHORTHASH/` where `SHORTHASH` is replaced with the first 7 characters of that hash value you requested.  This way you can share a live link to any arbitrary and specific version of the code with people.
 
 
 ## Debugging deployment issues
 
-Sometimes a deployment can fail due to an error in your code or in your setup.  Here are some useful hints for fixing things.
+Sometimes a deployment can fail due to an error in your code or your setup.  When possible an error message will be posted to `#smile-deploy` by the slack bot.  However, sometimes even this fails.  In any case, if you don't get a notification that your app deployed here are some useful hints for fixing things.
 
 First, check the `#smile-deploy` slack channel and see if there are any relevant messages.
 
@@ -144,14 +144,5 @@ The remote host, folder, and other options are set using GitHub Secrets which ar
 ### Notifying the Slack bot
 In the gureckislab the final step is to sent a notification about the deployment to a Slack [Worflow Builder](https://slack.com/help/articles/360035692513-Guide-to-Workflow-Builder) bot.  This lets you verify the code was deployed and provides you with an up-to-date URL to share with participants.
 
-
----
-
-:::tip Notes from lab meeting
-
-- not every push needs to increment a counter, some are just daily code-check ins and fixing minor typos
-- maybe keep copies of files around for old versions for replicability
-- git branches might be a useful organizing structure for different experiments (respecting the parallel development that sometimes happens).  one version of that is that files are uploaded to a url like `http://smile.gureckislab.org/exps/my_cool_exp/branchname-v1.0.1/`
-- every push could make a new version of the code but some clean-up code could run every 30 days deleting any project folders which resulted in no data
-:::
+If the deployment script fails, GitHub will attempt to notify the slack bot about the error.  However, it requires that the GitHub secrets have been properly uploaded with `npm run config:upload` so the absence of an error notification isn't proof things did work.
 

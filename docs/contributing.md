@@ -73,7 +73,7 @@ When you are finished making changes to the docs just use git commands to stage 
 them to the github repo.  There are several useful tutorials available online for using git and GitHub.
 
 ## What happens next?
-Currently, the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the `main` GitHub branch, a Github Actions script runs which automatically builds the static website using VitePress and then syncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**  This is a core design principle of 🫠 Smile: [don't sweat the dumb stuff](/principles.html#don-t-sweat-the-dumb-stuff).
+Currently, the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the `main` GitHub branch, a Github Actions script runs which automatically builds the static website using VitePress and then syncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**  This is a core design principle of **🫠 Smile**: [don't sweat the dumb stuff](/principles.html#don-t-sweat-the-dumb-stuff).
 
 
  If the build fails on the Github Action the website will remain unchanged.  You can get diagnostic information about the auto-deploy process on the [Github Actions tab](https://github.com/NYUCCL/smile/actions) of the repo.  If you suspect your changes to the docs introduced a bug that was not caught by the development server, you can check the build process locally by running `npm run docs:build`. 

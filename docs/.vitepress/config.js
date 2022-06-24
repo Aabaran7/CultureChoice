@@ -39,7 +39,8 @@ export default defineConfig({
                     { text: "☁️ Deploying", link: "/deploying"}, 
                     { text: "⚙️ Configuring", link: "/configuration"},
                     { text: "👩‍💻 Developing", link: "/developing"},  
-                    { text: "🐞 Testing", link: "/testing"}               
+                    { text: "🐞 Testing", link: "/testing"},
+                    { text: "📦 Data storage", link: "/datastorage"}               
                 ]
             },
             {
