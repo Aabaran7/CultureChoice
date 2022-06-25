@@ -4,7 +4,6 @@
 
 export default {
     project_name: import.meta.env.VITE_PROJECT_NAME, // autocompute this on intitialization
-    project_version: '1.2.23', // autocompute this all the time
     github: {
         repo_name: import.meta.env.VITE_GIT_REPO_NAME,
         owner: import.meta.env.VITE_GIT_OWNER,

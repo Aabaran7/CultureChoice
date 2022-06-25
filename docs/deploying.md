@@ -136,7 +136,8 @@ Finally, go to the GitHub repo for your project on the github.com website and cl
 
 
 ## Understanding the deployment steps
- 
+
+<br>
 <SmileText/> deployment is **continuous and automatic** by design.  The purpose of continuous deployment is so that new changes to the code are always placed into a live server environment (which is then helpful for [integration testing](/testing)).
 The purpose of automating deployment is to make it one less thing you need to think about.  However, if something goes wrong, or you need to customize things, it can be helpful to understand the steps.
 

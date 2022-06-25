@@ -6,22 +6,53 @@
 }
 </style>
 
-Applications inevitably need configuration options.  
+Applications inevitably need configuration options.  These control the look and feel of your experiment or have the password for databases or other services.
 
-Configuration options in **🫠 Smile** are stored in various [dotenv](https://dotenv.org) files in the `env` folder of the project.
-[dotenv](https://dotenv.org) files are simply plain text files that typically define lists of configuration options in all caps along with values separated by an equals sign.  For example:
-
-```
-MY_CONFIG_OPTION = 'hi'
-ANOTHER_OPTION = 33
-```
-
-You usually need to configure your application once when you first create your project.  This guide gives you the minimum information you need to get started as well as details on adding new configuration options specific for your project.
-
-[toc]
+This guide gives you the minimum information you need to get started as well as details on adding new configuration options specific for your project.
 
 ## Getting started quickly
 
+Configuration options in <SmileText/> are stored in various [dotenv](https://dotenv.org) files in the `env/` folder of the project.  [dotenv](https://dotenv.org) files are simply plain text files that define configuration options in all caps along with values separated by an equals sign.[^wisdom].  For example:
+
+[^wisdom]: Some wisdom about these things is available on the [12 Factor App](https://12factor.net) site, particularly the section on [config](https://12factor.net/config).  In this document, it is argued that environment variables are the safest way to configure sensitive information (this way they are never mentioned in files that could be accidentally committed.) 
+
+```
+MY_CONFIG_OPTION  = 'hi'
+ANOTHER_OPTION    = 33
+MY_CONFIG         = '${MY_CONFIG_OPTION}1234'
+```
+
+If you are in the <GureckisLabText/>, the <SmileText/> repo contains encrypted versions of our lab configuration files.  As described in the [starting a new project](/starting) guide, you will want to simply decrypt the files provided in the repository.
+
+::: danger Warning!
+This will only work if you have first sent Todd your gpg key and waited for him to push a change to the <SmileText/> repo.  See instructions [here](/requirements#_3-request-access-to-the-shared-database-resources).
+:::
+
+To do this simply type: 
+
+```
+git secret reveal
+```
+
+this should create several `.env.*.local` files in your `env/` directory (the `*` means anything fills in there).
+
+
+
+After all the necessary files are in the `env` folder run:
+
+```
+npm run config:upload
+```
+
+to configure your deployment process.
+
+That's it.  But if you need to customize your options keep reading.
+
+## Types of configuration variables
+
+There are several configuration variables across different files.  The first thing to be aware of is that some variables begin with `VITE_` (e.g., `VITE_BUG_REPORTS`).  These variables can be exported and made available to the Javascript of your experiment.
+
+Variables that do not begin with `VITE_` are only available for other purposes (e.g., configuring GitHub Actions, etc...).
 
 
 ## How configuration files are organized
@@ -30,29 +61,26 @@ Configuration files go in the `env` folder.  Here is a typical listing of this f
 
 ```
 env
-├── .env
-├── .env.deploy.local
+├── .env.local
+├── .env.git.local
 ├── .env.docs.local
-└── .env.local
+└── .env.deploy.local
 ```
 
-You may not see all these files to begin with and so may need to create them.  
+You may not see all these files to begin with and so may need to create them (as just described in a [previous section of this page](#getting-started-quickly) or manually).  
 
-All the filenames begin with `.env` which is the convention used by the [dotenv](https://dotenv.org) package.
+All the filenames begin with `.env` which is the convention used by the [dotenv](https://dotenv.org) package.  This is a growing standard within the web application community.
 
-Notice that some files end in `.local` as the file extension.  These files are by default
+Some files end in `.local` as the file extension.  These files are by default
 ignored by git (via the `.gitignore` file) and so are not version tracked.  This is necessary because some
 configuration options which go in those files are considered "secret" and we don't want them easily searched
 in GitHub when/if your project repository becomes publically shared.
 
-
-### Types of config options: Normal, Automatic, and Secret
-
 Let's consider the files one by one. 
 
-#### Normal Options
+#### Experiment Options (`.env.local`)
 
-`.env.local` contains **normal** configuration options.  Here is a typical file with fake entries for the values (adjust for your situation):
+`.env.local` contains what we will call **experiment** configuration options.  Here is a typical file with fake entries for the values (adjust for your situation):
 
 ```
 # configure your experiment here
@@ -71,102 +99,184 @@ VITE_FIREBASE_APPID              = appid
 ```
 
 Notice that the configuration options in this file begin with `VITE_`.  This means they are made 
-available to the web application.  `VITE_BUG_REPORTS` is a url you want participants to go to 
-report a problem with your experiment.  `VITE_BROWESER_EXCLUDE` is a string that configures which 
-types of browsers can take your experiment.  `VITE_ALLOW_REPEATS` attempts to prevent participants
-from taking your task more than once.  `VITE_SERVICES_ALLOWED` configures which recruitment gateways
+available to the web application/experiment.  
+
+- `VITE_BUG_REPORTS` is a url you want participants to go to 
+report a problem with your experiment.  
+- `VITE_BROWSER_EXCLUDE` is a string that configures which 
+types of browsers can take your experiment.  
+- `VITE_ALLOW_REPEATS` attempts to prevent participants
+from taking your task more than once.  
+- `VITE_SERVICES_ALLOWED` configures which recruitment gateways
 you want to enable for your experiment (e.g., amt - Mechanical Turk, prolific - Prolific.ac, etc...).
-
-Normal configuration options also include several `VITE_FIREBASE_` options for configuring Google's
-Firestore backend.  These options should just be pasted from when you setup Firestore for your project.
-In the gureckislab you can get a copy of these from our password protected lab docs.
+- This file also includes several `VITE_FIREBASE_` options for configuring Google's
+Firestore backend.
 
 
-#### Automatic Options
+#### Code Version Options (`.env.github.local`)
 
-The `.env` file contains automatically determined configuration options.  **🫠 Smile** 
+The `.env.github.local` file contains information about the latest git commit for this project.  The purpose of this file 
+is so that your Javascript application can keep track of which version of the code it is running.
+One key principle of <SmileText/> is that [data must always be linked to the code that created it](principles.html#data-must-always-be-linked-to-the-code-that-created-it).
 
-
-[^secret]: Secret information is information that we don't want easily searchable in GitHub but does **not**.  However because Smile runs as a Single-Page App, most of the configuration options available to the app will also, in theory, be available in the source code of the application.  Thus, it is still not safe to configure the app with sensitive passwords.  Services like Google Cloud/Firebase provide access tokens to web apps that can be exposed to the open web and the security configuration takes place on the server-side. Some of the secret options in Smile are not shared with the web application.
-
-There are several different configuration files.  The reason is that some configuration variables are considered "sensitive" and shouldn't be stored in public GitHub repositories.  Even if you start out developing your experiment in a private GitHub repo
-
-Generally, configuration options can be divided into two groups based on security/privacy concerns.  One set of options can be publically exposed (e.g., published in a public Github repo).  Examples of these might be options related to data collection like "Does the experiment allow repeat participation?"  The second set of options typically needs to be shielded from public GitHub repos because it contains passwords, access keys, or other sensitive URLs that might be best left secure.  
+This file is generated automatically using a [post commit hook](https://www.atlassian.com/git/tutorials/git-hooks) which finds the current information and regenerates the file.  For this reason you should **never edit this file**.  A helpful message at the top of the file will always remind you this.  The post-commit hook logic which generates the file is stored in `scripts/post-commit`.
 
 
 
-Some wisdom about these things is available on the [12 Factor App](https://12factor.net) site, particularly the section on [config](https://12factor.net/config).  In this document, it is argued that environment variables are the safest way to configure sensitive information (this way they are never mentioned in files that could be accidentally committed.)  This is, incidentally, [the approach that has been taken more recently with psiTurk](https://psiturk.readthedocs.io/en/stable/configuration-overview.html#which-go-where-consider-security-and-privacy-as-well-as-science-replicability).
 
-Another issue is making environment variables accessible inside the web application/Single Page App.  To do this the build system can come in handy.  [Vite](https://vitejs.dev) uses the [dotenv Node.js package](https://vitejs.dev/guide/env-and-mode.html) to read in `.env` files and make them accessible in your javascript.  This is done by doing a static string replacement operation on all the files before building them (and is also done as a step in the development server).  The variables become available in your code as `import.meta.env.VITE_XXXX` where `XXX` is the name of the environment variable.
+```
+# DO NOT EDIT THIS FILE IT IS AUTOMATICALLY GENERATED
+# this file is automatically generated by 
+# the post-commit hook (see scripts/post-commit).
 
-When you are relying on Github to manage deployments for you then the way to set environment variables is through ["Secrets"](https://docs.github.com/en/actions/security-guides/encrypted-secrets).  These are variables that you define in the settings section of the repository which can then be accessed by a script at run time using Github Actions.
+VITE_PROJECT_NAME      = my_cool_project
+VITE_GIT_HASH          = de318d8
+VITE_GIT_REPO_NAME     = ${VITE_PROJECT_NAME}
+VITE_GIT_OWNER         = gureckis
+VITE_GIT_BRANCH_NAME   = main
+VITE_GIT_LAST_MSG      = trigger a deployment!!
+VITE_DEPLOY_BASE_PATH  =  "/${VITE_GIT_OWNER}/${VITE_GIT_REPO_NAME}/${VITE_GIT_BRANCH_NAME}/"
 
-See the discussion [here](https://stackoverflow.com/questions/60176044/how-do-i-use-an-env-file-with-github-actions) for some helpful tips.
+# this port might not be correct, but it doesn't really matter
+VITE_DEV_PORT_NUM      =  3000
+VITE_DEPLOY_URL        =  "http://localhost:${VITE_PORT_NUM}${VITE_DEPLOY_BASE_PATH}"
+```
 
+Options include
+- `VITE_PROJECT_NAME` is the name of your project (obtained from your the name of your git repository)
+- `VITE_GIT_HASH` is a [SHA hash](https://www.designveloper.com/blog/hash-values-sha-1-in-git/) that indexes the current commit.  This can be used on GitHub to look up any version of the code as you develop.  
+- `VITE_REPO_NAME` has the same value as `VITE_PROJECT_NAME`.  
+- `VITE_GIT_OWNER` is the username of the owner of the repository 
+- `VITE_BRANCH_NAME` is the name of the branch the most recent commit was made on
+- `VITE_GIT_LAST_MSG` is the last commit message
+- `VITE_DEPLOY_BASE_PATH` is the most important variable in the file because it configures your [deployment path](/deploying.html#using-github-as-a-project-organizing-tool) or where you code will appear on the server.  It is built up out of the configuration options above.
+- `VITE_DEV_PORT_NUM ` is a rough guess about what port Vite will try to use during develeopment (i.e., when you run `npm run dev`).  This isn't actually used for anything so it is fine if it is incorrect.
+- `VITE_DEPLOY_URL` is the expected URL for your application.  When you run the deployment this is set to the final URL of your hosted server.  When debugging locally (`npm run dev`) this is set to the URL you open in your browser to develop/debug.
+  
+##### Docs Deployment Config (`.env.docs.local`)
 
-## What are the relevant options for Smile?
-
-Here's a possible list (which can be added to):
-
-- **Experiment Name**: a short name, might be set random to ensure uniqueness? :robot:
-- **Experiment version**: version info (can use automatic semversioning) :robot:
-- **Git commit hash**: git information that can be stored with data :robot:
-- **Git commit message**: the message that went with the last git commit
-- **Git status**: is the current working directory clean or are there changes?
-- **Browser exclude rule**: rules for which types of browsers/devices can be used :cowboy_hat_face:
-- **Allow repeats**: do we allow people to do the task multiple times? :cowboy_hat_face:
-- **URL to file bug reports**: provide a URL people can go to report problems :cloud:
-- **Final deployment url**: what is the final url we share with participants? :robot: + :cloud:
-- **Services allowed**: do we let amt, prolific or what :cowboy_hat_face:
-- **Database parameters**: probably the firestore info :cloud:
-
-<div class="note">
-    🤖 = should be set automatically<br>
-    🤠 = should have reasonable defaults<br>
-    ☁️ = has to be copied from cloud provider
-</div>
-
-
-## How are they set
-
-The ideal situation is to keep the number of configuration options to a minimum by making reasonable choices for most things.  Also, the web experiment itself may have fewer options than the services (e.g., Mechanical Turk, Prolific).  In cases where there are likely to be different choices for different experiments in the lab (e.g., should mobile devices or tablets be allowed to take the experiment?) then we want to fill in sensible defaults and then let people configure them easily in one place.
-
-Finally, some of the items we need to generate on the fly using other code that might not be part of our final experiment (running in the browser) itself. For instance, the code running in the browser can't access the file system and thus can't look up information about the latest git commit.  Instead, we need to run some other code against the local files to determine these values automatically :robot:.  The purpose of storing the git commit hash in the javascript app is so it can also be entered into the resulting data files (One key principle of **🫠 Smile** is that [data must always be linked to the code that created it](principles.html#data-must-always-be-linked-to-the-code-that-created-it).)
-
-This will likely require an extra build step.
-
-## Example file
-
-Here is an example `.env` file:
-
+This file configures where the <SmileText/> documentation will be deployed to.  This options should generally be shielded from public repositories.  Also note that these variable names do not begin with `VITE_` meaning the are not accessible to your Javascript experiment.
 
 ```
 # this file is not tracked by github and contains
-# semi-sensitive information
-# note these variables are complied in the final javascript
-# source so don't add very high security stuff to them
+# sensitive information inluding write access to our documentation
+# web server!
 
-# configure your experiment here
-VITE_BROWSER_EXCLUDE             = ie
-VITE_ALLOW_REPEATS               = yes
-VITE_SERVICES_ALLOWED            = amt,prolific,sona,web
-VITE_BUG_REPORTS                 = http://smile.gureckislab.org/bugs
-VITE_DEPLOY_URL_BASE             = http://smile.gurecislab.org/exps/
+# enter docs web server information here
+DOCS_DEPLOY_HOST        = "docs.mydomain.org"
+DOCS_DEPLOY_PATH        = "/home/user/domain.org"
+DOCS_DEPLOY_PORT        = 22
+DOCS_DEPLOY_USER        = user
+DOCS_DEPLOY_KEY         = "-----BEGIN RSA PRIVATE KEY-----\nYOURKEY\n-----END RSA PRIVATE KEY-----"
+```
+
+- `DOCS_DEPLOY_HOST` is the hostname of where you upload your files
+- `DOCS_DEPLOY_PATH` is the directory you upload your docs to
+- `DOCS_DEPLOY_PORT` is the ssh port for your server (usually 22)
+- `DOCS_DEPLOY_USER` is the username for your server
+- `DOCS_DEPLOY_KEY` is the RSA private key used to access your server via passwordless ssh[^rsakey]
 
 
-# enter firebase database credentials
-VITE_FIREBASE_APIKEY             = xxxx
-VITE_FIREBASE_AUTHDOMAIN         = xxxx.firebaseapp.com
-VITE_FIREBASE_PROJECTID          = xxxx
-VITE_FIREBASE_STORAGEBUCKET      = xxxx.appspot.com
-VITE_FIREBASE_MESSAGINGSENDERID  = xxxx
-VITE_FIREBASE_APPID              = xxxx
+
+##### Deployment Config (`.env.deploy.local`)
+
+The final file configures similar (secret) deployment options for your actual experiment.
+
+```
+# this file is not tracked by github and contains
+# sensitive information inluding write access to our experiment
+# hosting web server!
+
+# enter experiment hosting web server information here
+EXP_DEPLOY_HOST        = "exps.mydomain.org"
+EXP_DEPLOY_PATH        = "/home/user/exps.mydomain.org"
+EXP_DEPLOY_PORT        = 22
+EXP_DEPLOY_USER        = user
+SLACK_WEBHOOK_URL      = https://hooks.slack.com/workflows/something
+SLACK_WEBHOOK_ERROR_URL= https://hooks.slack.com/workflows/somethingelse
+EXP_DEPLOY_KEY         = "-----BEGIN RSA PRIVATE KEY-----\n-----END RSA PRIVATE KEY-----"
 
 ```
 
----
+- `EXP_DEPLOY_HOST` is the hostname of where you upload your files
+- `EXP_DEPLOY_PATH` is the directory you upload your experiment to
+- `EXP_DEPLOY_PORT` is the ssh port for your server (usually 22)
+- `EXP_DEPLOY_USER` is the username for your server
+- `SLACK_WEBHOOK_URL` is the url for the Slack Webhook for posting deployment messages
+- `SLACK_WEBHOOK_ERROR_URL` is the url for the Slack Webhook for posting error messages
+- `EXP_DEPLOY_KEY` is the RSA private key used to access your server via passwordless ssh[^rsakey]
 
-## Configuration
 
-The build and development server for Smile is Vite which is a really fast
-and amazing tool.  Vite uses .env files to configure options for your application.  In Smile, these configuration options are located in the `env/` folder.  There are two files here `.env` and `.env.local`.  All files with `.local` at the end of them are not traced by git and so are a good place to put "private" information like urls, certain credentials, etc...  
+[^rsakey]: The key needs to be all on one line with `\n` character coding new lines.
+
+
+## Configuring your deployment settings on GitHub
+
+
+Several of the configuration options are designed to configure ["secrets"](https://docs.github.com/en/actions/security-guides/encrypted-secrets) on your GitHub repo.   These are variables that you define in the settings section of the repository which can then be accessed by a script at run time using Github Actions.  The are omitted from version control and from logs making it a good way to share sensitive information without exposing them in a public repo.  When you run `npm run config:upload` you should see output like this (with NYUCCL/smile replaced with your username and repo):
+
+```
+> smile@0.0.0 config:upload
+> sh scripts/update_config.sh
+
+✓ Set Actions secret SECRET_APP_CONFIG for NYUCCL/smile
+✓ Set Actions secret DOCS_DEPLOY_PORT for NYUCCL/smile
+✓ Set Actions secret DOCS_DEPLOY_PATH for NYUCCL/smile
+✓ Set Actions secret DOCS_DEPLOY_USER for NYUCCL/smile
+✓ Set Actions secret DOCS_DEPLOY_HOST for NYUCCL/smile
+✓ Set Actions secret DOCS_DEPLOY_KEY for NYUCCL/smile
+✓ Set Actions secret EXP_DEPLOY_HOST for NYUCCL/smile
+✓ Set Actions secret SLACK_WEBHOOK_ERROR_URL for NYUCCL/smile
+✓ Set Actions secret EXP_DEPLOY_KEY for NYUCCL/smile
+✓ Set Actions secret EXP_DEPLOY_USER for NYUCCL/smile
+✓ Set Actions secret EXP_DEPLOY_PATH for NYUCCL/smile
+✓ Set Actions secret EXP_DEPLOY_PORT for NYUCCL/smile
+✓ Set Actions secret SLACK_WEBHOOK_URL for NYUCCL/smile
+```
+
+These secrets are used by the GitHub actions to properly build and deploy your website and docs without causing problems.  See the discussion [here](https://stackoverflow.com/questions/60176044/how-do-i-use-an-env-file-with-github-actions) for some helpful tips.
+
+
+## Importing configuration settings into your experiment
+
+Variables with the name `VITE_` are made available to your web application/experiment.  [Vite](https://vitejs.dev) uses the [dotenv Node.js package](https://vitejs.dev/guide/env-and-mode.html) to read in `.env` files and make them accessible in your javascript.  This is done by doing a static string replacement operation on all the files before building them (and is also done as a step in the development server).  The variables become available in your code as `import.meta.env.VITE_XXXX` where `XXX` is the name of the environment variable.
+
+If you look at the content of `src/config.js` you can see how these items are pulled into a global configuration object.
+
+```
+// config.js
+
+// global configuration options for the smile app
+
+export default {
+    project_name: import.meta.env.VITE_PROJECT_NAME, // autocompute this on intitialization
+    github: {
+        repo_name: import.meta.env.VITE_GIT_REPO_NAME,
+        owner: import.meta.env.VITE_GIT_OWNER,
+        branch: import.meta.env.VITE_GIT_BRANCH_NAME,
+        last_commit_msg: import.meta.env.VITE_GIT_LAST_MSG,
+        last_commit_hash: import.meta.env.VITE_GIT_HASH, // autocompute this all the time    
+        commit_url: 'https://github.com/' + import.meta.env.VITE_GIT_OWNER + '/' + import.meta.env.VITE_GIT_REPO_NAME + '/commit/' + import.meta.env.VITE_GIT_HASH
+    },
+    browser_exclude: import.meta.env.VITE_BROWSER_EXCLUDE,
+    allow_repeats: import.meta.env.VITE_ALLOW_REPEATS,
+    bug_reports: import.meta.env.VITE_BUG_REPORTS,
+    deploy_url: import.meta.env.VITE_DEPLOY_URL, // auto compute this
+    services_allowed: import.meta.env.VITE_SERVICES_ALLOWED,
+    firebaseConfig : {
+        apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
+        authDomain: import.meta.env.VITE_FIREBASE_AUTHDOMAIN,
+        projectId: import.meta.env.VITE_FIREBASE_PROJECTID,
+        storageBucket: import.meta.env.VITE_FIREBASE_STORAGEBUCKET,
+        messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGINGSENDERID,
+        appId: import.meta.env.VITE_FIREBASE_APPID
+    }
+}
+```
+
+It is important to keep in mind that variables passed to `src/config.js` will not necessarily appear in GitHub but **will** be visible to people performing your experiment via the source code.  So it is useful to keep in mind if a configuration option should or shouldn't be shared with your Javascript experiment.
+
+
+## Adding New Configuration Options
+
+Adding new configuration options should mostly happen in `.env.local`.  You simple make up a new `VITE_SOMETHING` variable.  Then add it to the object in `src/config.js` to expose it to your web application!  The configuration is available as `smileconfig` anywhere in your Vue app.  It's pretty easy.

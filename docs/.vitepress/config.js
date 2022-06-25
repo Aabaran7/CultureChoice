@@ -38,9 +38,9 @@ export default defineConfig({
                     { text: "✨ Starting a new project", link: "/starting"},  
                     { text: "☁️ Deploying", link: "/deploying"}, 
                     { text: "⚙️ Configuring", link: "/configuration"},
+                    { text: "📦 Data storage", link: "/datastorage"},
                     { text: "👩‍💻 Developing", link: "/developing"},  
-                    { text: "🐞 Testing", link: "/testing"},
-                    { text: "📦 Data storage", link: "/datastorage"}             
+                    { text: "🐞 Testing", link: "/testing"}
                 ]
             },
             {
