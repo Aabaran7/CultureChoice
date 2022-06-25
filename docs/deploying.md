@@ -56,7 +56,11 @@ Instead, **🫠 Smile** uses GitHub as a project organizing tool.
 ### Using GitHub as a project organizing tool
 
 
-At the top level of GitHub is the **user account**.  For example, my username is `gureckis`.  Within my user account, there are several repositories for different projects.  The idea in **🫠 Smile** is each new research project gets its own **repository** (repo). Within each repo there are any number of **branches**.  Branches are offshoots of an original code base which can be used for parallel development on a project.  Branches can be merged into one another and shuffled around.  However, we will primarily use them as parallel pipelines capturing different **experiments**.  So conceptually, branches = experiments.  
+At the top level of GitHub is the **user account**.  For example, my username is `gureckis`.  
+
+Within my user account, there are several repositories for different projects.  The idea in **🫠 Smile** is each new research project gets its own **repository** (repo). 
+
+Within each repo there are any number of **branches**.  Branches are offshoots of an original code base that can be used for parallel development on a project.  Branches can be merged into one another and shuffled around.  However, we will primarily use them as parallel pipelines capturing different **experiments**.  So conceptually, branches = experiments.  
 
 
 ```
@@ -71,14 +75,28 @@ gureckis                 <--- github username
     └── pilot
 ```
 
+For each of levels of organiztion a unique "deploy path" which is more or less a url path to your code.  Example are:
+`gureckis/another_project/pilot/` or `gureckis/my_cool_project/exp2b/` which when uploaded to a website turn into something like `http://exps.gureckislab.org/gureckis/another_project/pilot/`.
 
-Next within a branch, we will often make a sequence of commits as we implement features, adjust bugs, and so forth.  Generally, these advance forward in a sequence automatically but sometimes it is helpful to reference some particular moment in the development of an experiment.  For this, we use git tags as a final organizing element.  At this final level we adopt the semantic versioning format but with only two values: MAJOR.PATCH.  The MAJOR counter starts at 0 and is incremented for each major release/change to the experiment that you wish to "mark".  PATCH is automatically incremented starting at 0 each time a commit is made to a given branch.
+So, the steps to make a project are to follow the steps to start a new project and then use new branches to manage different experiments.
 
+Each time you need a new branch the following commands will help.  For example to create a new branch call `pilot` we make the branch locally and the push it to the GitHub repo. 
 
-For each of these paths we can create a unique deploy path
-`gureckis/another_project/pilot/0.0/` or `gureckis/my_cool_project/exp2b/1.0/`.
+```
+git branch -m pilot
+git push origin -u pilot
+```
 
+This generates a deployment which means you'll get a new URL for your project immediately.
 
+For hand reference if you ever want to delete a branch (e.g., `pilot`)you have to do this both locally and remotely:
+
+```
+git branch -d pilot
+git push origin --delete pilot
+```
+
+You shouldn't fear making branches for your projects.  So `pilot` and `exp1` and `exp1-pre-pilot` or `exp1b` are all fine.
 
 
 
@@ -130,19 +148,20 @@ GitHub Actions are a feature of GitHub that allows customizable scripts to run o
 
 ### Building the site
 
-The first step of the GitHub action runs a sequence of shell commands on a linux cloud instance hosted by GitHub (`runs-on: ubuntu-latest`).
-Next, the current version of the code (after the commit) is checked out using git.  
-Next several scripts run to optimize the environment for the app and configure it.  Then relevant software is installed such as Node.js.  The node dependencies are then run using `npm install`.  Then the website is build `npm run build`.  The completed website is located at `dist/`.
+The first step of the GitHub action runs a sequence of shell commands on a Linux cloud instance hosted by GitHub (`runs-on: ubuntu-latest`).
+Next, the current version of the code (after the commit) is checked out using git. 
+
+Next, several scripts run to optimize the environment for the app and configure it.  Then relevant software is installed such as Node.js.  The node dependencies are then run using `npm install`.  Then the website is built `npm run` build`.  The completed website is located at `dist/`.
 
 You can run most of the steps up to this point locally by just typing `npm run build`.
 
 ### Uploading files to an Internet-accessible server
 
 Next, the GitHub action uploads the files to the server using rsync.
-The remote host, folder, and other options are set using GitHub Secrets which are encrypted environment variables which you configure on the repository settings.  Generally in the gureckislab these will be set for you, but read more about [configuration options](configuration) to customize or adjust.
+The remote host, folder, and other options are set using GitHub Secrets which are encrypted environment variables that you configure on the repository settings.  Generally in the gureckislab these will be set for you, but read more about [configuration options](configuration) to customize or adjust.
 
 ### Notifying the Slack bot
-In the gureckislab the final step is to sent a notification about the deployment to a Slack [Worflow Builder](https://slack.com/help/articles/360035692513-Guide-to-Workflow-Builder) bot.  This lets you verify the code was deployed and provides you with an up-to-date URL to share with participants.
+In the gureckislab the final step is to send a notification about the deployment to a Slack [Worflow Builder](https://slack.com/help/articles/360035692513-Guide-to-Workflow-Builder) bot.  This lets you verify the code was deployed and provides you with an up-to-date URL to share with participants.
 
 If the deployment script fails, GitHub will attempt to notify the slack bot about the error.  However, it requires that the GitHub secrets have been properly uploaded with `npm run config:upload` so the absence of an error notification isn't proof things did work.
 

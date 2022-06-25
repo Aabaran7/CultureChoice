@@ -8,6 +8,8 @@ The design of online experiments (and webpages in general) requires a lot of com
 
 The first point is that we want to write high-quality code which is bug-free while smiling the whole time 🫠 (and not melting too much).  We need to do this because we have a moral obligation both in our scientific papers and to our participants to not have mistakes in our empirical data collection.  Messing up a model code is bad but at least you didn't waste the time of 1000 subjects and the money of taxpayers [^moral].  All the subsequent principles are ultimately in the service of this one.
 
+A great article with tips on this by Rouder, Haaf, and Snyder is available [here](https://journals.sagepub.com/doi/10.1177/2515245918801915).
+
 [^moral]: This shouldn't be interpreted as pressure to hide bugs when they happen.  An even more important factor there is humans are humans, bugs happen, and we should fix them and move on even if costly.  The goal actually of this project is to lower the costs and roadblocks that face us as humans.  It's not life or death here.  The moral imperative is higher for honestly fixing things!
 
 ## No code is the best code.
