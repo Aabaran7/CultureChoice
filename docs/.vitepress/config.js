@@ -40,7 +40,7 @@ export default defineConfig({
                     { text: "⚙️ Configuring", link: "/configuration"},
                     { text: "👩‍💻 Developing", link: "/developing"},  
                     { text: "🐞 Testing", link: "/testing"},
-                    { text: "📦 Data storage", link: "/datastorage"}               
+                    { text: "📦 Data storage", link: "/datastorage"}             
                 ]
             },
             {
@@ -53,6 +53,12 @@ export default defineConfig({
                     { text: "✍️ Contributing to the docs", link: '/contributing' },
                     { text: "⚡️ Manifesto", link: '/manifesto' },
                     { text: "🥸 Design principles", link: '/principles' }
+                ]
+            },
+            {
+                text: "Misc",
+                items: [
+                    { text: "📄 Cheat sheet", link: "/cheatsheet"} 
                 ]
             },
             {
@@ -73,16 +79,10 @@ export default defineConfig({
                 text: "Front End",
                 items: [
                     { text: "Research Notes", link: "/research/frontend"},
-                ]
-            },
-            {
-                text: "Misc",
-                collapsible: true,
-                collapsed: true,
-                items: [
                     { text: "Setup", link: "/advanced/notes" },
                 ]
             }
+            
         ],
         footer: {
             message: 'Released under the MIT License.',
