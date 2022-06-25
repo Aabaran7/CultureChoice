@@ -28,5 +28,5 @@ echo 'VITE_DEPLOY_BASE_PATH   =  "/${VITE_GIT_OWNER}/${VITE_GIT_REPO_NAME}/${VIT
 
 echo "" >> $ENV_FILE
 echo "# this port might not be correct, but it doesn't really matter" >> $ENV_FILE
-echo "VITE_PORT_NUM           =  3000" >> $ENV_FILE
-echo 'VITE_DEPLOY_URL         =  "http://localhost:${VITE_PORT_NUM}${VITE_DEPLOY_BASE_PATH}"' >> $ENV_FILE
+echo "VITE_DEV_PORT_NUM           =  3000" >> $ENV_FILE
+echo 'VITE_DEPLOY_URL         =  "http://localhost:${VITE_DEV_PORT_NUM}${VITE_DEPLOY_BASE_PATH}"' >> $ENV_FILE
