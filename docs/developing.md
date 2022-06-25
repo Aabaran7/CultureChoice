@@ -1,10 +1,10 @@
 # :woman_technologist: Developing your experiments
 
-When developing and debugging your experiment it is useful to interact with a webserver running on your local computer (i.e., your laptop or desktop).  This is much faster than waiting for the changes to be uploaded to the cloud and then having your browser download the files again.
+When developing and debugging your experiment it is useful to interact with a web server running on your local computer (i.e., your laptop or desktop).  This is much faster than waiting for the changes to be uploaded to the cloud and then having your browser download the files again.
 
 
 
-In **🫠 Smile** this is all handled by [Vite](https://vitejs.dev).  Vite is a development tool that is heavily optimized for (developer experience (DX).  There is a lot to say about the features of Vite but more directly to test your application locally simple type:
+In <SmileText/> this is all handled by [Vite](https://vitejs.dev).  Vite is a development tool that is heavily optimized for (developer experience (DX).  There is a lot to say about the features of Vite but more directly to test your application locally simple type:
 
 `npm run dev`
 

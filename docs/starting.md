@@ -54,7 +54,7 @@ const config = reactive({
 
 When you start a new project, there are a few one-time steps you must take.
 These include copying the current version
-of the **🫠 Smile** project, adjusting the configuration settings for your project,
+of the <SmileText/> project, adjusting the configuration settings for your project,
 and running a setup script.
 
 **Don't worry it is easy and most of it you only do once!**
@@ -110,7 +110,7 @@ For example, on Mac this might be your desktop
 cd ~/Desktop
 ```
 
-Following the steps below, copy the **🫠 Smile** GitHub repo into a new project name and clone it locally.
+Following the steps below, copy the <SmileText/> GitHub repo into a new project name and clone it locally.
 
 
 In this example command, the new project will be named `{{config.projectname}}` and a copy of the starting project template will be placed in a new folder with that name:
@@ -133,10 +133,10 @@ Finally change into the newly created project directory (assuming you called you
 ## 2. Configure your project
 
 
-Information about the configuration setting is [here](/configuration) but if you are in the gureckislab you will want to simply decrypt the files provided in the repository.
+Information about the configuration setting is [here](/configuration) but if you are in the <GureckisLabText/> you will want to simply decrypt the files provided in the repository.
 
 ::: danger Warning!
-This will only work if you have first sent Todd your gpg key and waited for him to push a change to the **🫠 Smile** repo.  See instructions [here](/requirements#_3-request-access-to-the-shared-database-resources).
+This will only work if you have first sent Todd your gpg key and waited for him to push a change to the <SmileText/> repo.  See instructions [here](/requirements#_3-request-access-to-the-shared-database-resources).
 :::
 
 To do this simply type: 
@@ -168,7 +168,7 @@ This will remove some files you will not need, create and initial deployment/com
 
 ## 4. Verify the deployment
 
-If you have properly configured your application the last command should have created an initial deployment of your project.  If you are in the gureckislab join the `#smile-deploy` slack channel.  A robot :robot: there will let you know that your project was deployed and provide you with a web link to live site.  
+If you have properly configured your application the last command should have created an initial deployment of your project.  If you are in the <GureckisLabText/> join the `#smile-deploy` slack channel.  A robot :robot: there will let you know that your project was deployed and provide you with a web link to live site.  
 
 If that didn't happen/work then continue reading to learn more about [deployments](/deploying) including [debugging tips](/deploying#debugging-deployment-issues).
 

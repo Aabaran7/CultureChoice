@@ -1,6 +1,6 @@
 # :space_invader: Required software you will need to install
 
-Before getting started working on a **🫠 Smile** project you will need to install a few items on your local computer.
+Before getting started working on a <SmileText/> project you will need to install a few items on your local computer.
 
 ## 1. Install the latest Node.js
 
@@ -26,10 +26,10 @@ into your terminal program.  This will open your default browser and ask you to 
 
 ## 3. Request access to the shared database resources
 
-Later you will want to customize the configuration of your application, but if you are in the gureckislab you will want to simply decrypt the pre-configured files provided in the repository.
+Later you will want to customize the configuration of your application, but if you are in the <GureckisLabText/> you will want to simply decrypt the pre-configured files provided in the repository.
 
 ::: info Great news!
-You only need to do this the first time you try out **🫠 Smile**!  Then you will forever be part of the 
+You only need to do this the first time you try out <SmileText/>!  Then you will forever be part of the 
 familia.
 :::
 
@@ -50,7 +50,7 @@ There will be a sequence of questions you answer.  Use your preferred email addr
 
 <div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">gpg --armor --export example@gmail.com</span></span></code></pre></div>
 
-Wait for him to reply and to make a push to the main **🫠 Smile** repo giving access to the encrypted files to your email address.
+Wait for him to reply and to make a push to the main <SmileText/> repo giving access to the encrypted files to your email address.
 
 ## 4. Install VSCode and Volar (optional)
 

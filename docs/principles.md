@@ -1,6 +1,6 @@
 # :disguised_face: Design Principles
 
-The design of online experiments (and webpages in general) requires a lot of complex choices.  The goal of **🫠 Smile** is to make sensible choices as much as possible so you don't have to think about things.  Experience developing psiTurk is instructive in many ways.  Reflecting on this leads to several design principles that you should keep in mind while contributing to this project:
+The design of online experiments (and webpages in general) requires a lot of complex choices.  The goal of <SmileText/> is to make sensible choices as much as possible so you don't have to think about things.  Experience developing psiTurk is instructive in many ways.  Reflecting on this leads to several design principles that you should keep in mind while contributing to this project:
 
 [[toc]]
 
@@ -20,7 +20,7 @@ In trying to keep things simple and easy to maintain it is helpful to keep this 
 
 ## Don't sweat the dumb stuff.
 
-There are a lot of stupid things you need to do in developing and deploying slightly complex software.  These things include uploading your files to the server, etc...  Your daily time as a developer of your experiment is better spent on the code itself and all this stuff should be worked out in advance with reasonable settings by **🫠 Smile**.  
+There are a lot of stupid things you need to do in developing and deploying slightly complex software.  These things include uploading your files to the server, etc...  Your daily time as a developer of your experiment is better spent on the code itself and all this stuff should be worked out in advance with reasonable settings by <SmileText/>.  
 
 Here's an example.  In the past with psiTurk you called `psiturk.saveData()` when you wanted to push the current data from your experiment to the database.  You might do this multiple times in the task, often at the end of a block of trials.  However, it could make sense to engineer this so it happens automatically.  Now you as the task developer don't have to think about when to save the data, you can trust that it has been worked out for you and it means you have one less thing to think about (or possibly forget!).[^forget]
 
@@ -53,7 +53,7 @@ Documentation is often considered to be something you do after you finish writin
 ## Data must always be linked to the code that created it.
 
 Modern software development largely happens using version control software like git/GitHub.  This is incredibly helpful for keeping track of changes, collaborating, and documenting code as it is developed.  However, version control also offers the potential of linking empirical data generated using a software program to the exact version of the software used to create it.  This is helpful for several reasons.
-First, this makes it trivial to limit data analyses to participant data from particular code versions (e.g., removing subjects affected by a bug without looking inside their data file).  Second, this is helpful for replicability since when you share your data and code other scientists can go back and realize if a bug affected only a subset of participants. In 🫠 Smile, a key design goal is to always provide a way to link the current code version history to datasets generated from that code.  This should happen automatically so that users don't forget this important step.
+First, this makes it trivial to limit data analyses to participant data from particular code versions (e.g., removing subjects affected by a bug without looking inside their data file).  Second, this is helpful for replicability since when you share your data and code other scientists can go back and realize if a bug affected only a subset of participants. In <SmileText/>, a key design goal is to always provide a way to link the current code version history to datasets generated from that code.  This should happen automatically so that users don't forget this important step.
 
 ## Trust in useful third-party services but don't tie yourself to them.
 

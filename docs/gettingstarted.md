@@ -1,6 +1,6 @@
 # :raising_hand: Getting started contributing
 
-The **🫠 Smile** repo ([https://github.com/NYUCCL/smile](https://github.com/NYUCCL/smile)) includes both the code and documentation for the code.  The repo is private so you need to be added as a member of the gureckis lab organization (contact Todd and give him your GitHub username).
+The <SmileText/> repo ([https://github.com/NYUCCL/smile](https://github.com/NYUCCL/smile)) includes both the code and documentation for the code.  The repo is private so you need to be added as a member of the <GureckisLabText/> lab organization (contact Todd and give him your GitHub username).
 
 Next, follow the guide on [required software](/requirements).
 
