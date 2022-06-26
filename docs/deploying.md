@@ -19,7 +19,7 @@ In response, GitHub will automatically
 
 This process provides you with nearly instant feedback on putting your code in the cloud.
 
-**That's really it!** :sweat_smile:
+**That's it!** :sweat_smile:
 
 For most people this is all you need to do.  But there is more:
 - If you have a more complex project with multiple experiments read the section on [organizing multiple versions of your experiment](#organizing-versions-of-your-experiment).  
@@ -60,7 +60,7 @@ At the top level of GitHub is the **user account**.  For example, my username is
 
 Within my user account, there are several repositories for different projects.  The idea in <SmileText/> is each new research project gets its own **repository** (repo). 
 
-Within each repo there are any number of **branches**.  Branches are offshoots of an original code base that can be used for parallel development on a project.  Branches can be merged into one another and shuffled around.  However, we will primarily use them as parallel pipelines capturing different **experiments**.  So conceptually, branches = experiments.  
+Within each repo, there is any number of **branches**.  Branches are offshoots of an original code base that can be used for parallel development on a project.  Branches can be merged into one another and shuffled around.  However, we will primarily use them as parallel pipelines capturing different **experiments**.  So conceptually, branches = experiments.  
 
 
 ```
@@ -75,12 +75,12 @@ gureckis                 <--- github username
     └── pilot
 ```
 
-For each of levels of organiztion a unique "deploy path" which is more or less a url path to your code.  Example are:
+For each branch, a unique "deploy path" is created which is more or less a URL path to your code.  Example are:
 `gureckis/another_project/pilot/` or `gureckis/my_cool_project/exp2b/` which when uploaded to a website turn into something like `http://exps.gureckislab.org/gureckis/another_project/pilot/`.
 
 So, the steps to make a project are to follow the steps to start a new project and then use new branches to manage different experiments.
 
-Each time you need a new branch the following commands will help.  For example to create a new branch call `pilot` we make the branch locally and the push it to the GitHub repo. 
+Each time you need a new branch the following commands will help.  For example, to create a new branch call `pilot` we make the branch locally and push it to the GitHub repo. 
 
 ```
 git branch -m pilot
@@ -89,7 +89,7 @@ git push origin -u pilot
 
 This generates a deployment which means you'll get a new URL for your project immediately.
 
-For hand reference if you ever want to delete a branch (e.g., `pilot`)you have to do this both locally and remotely:
+For hand reference if you ever want to delete a branch (e.g., `pilot`) you have to do this both locally and remotely:
 
 ```
 git branch -d pilot
@@ -128,7 +128,7 @@ First, check the `#smile-deploy` slack channel and see if there are any relevant
 
 Second, make sure you have a set of `.env.*.local` files in the `env/` folder (created using `git secret reveal` for <GureckisLabText/>) and have run the `npm run config:upload` command (refer back to the [initial setup instructions](starting)).  This latter command uploads some specific configuration options to GitHub which are needed for your deployment to run.  You can verify these have been set by going to your repository on the GitHub website, clicking Settings, then "Secrets".  There should be several repository secrets including `SECRET_APP_CONFIG` and `EXP_DEPLOY_PATH`, etc...
 
-Third, run the `npm run build` and `npm run serve` commands and verify that these steps complete without error on your local machine.  If there are errors this maybe preventing GitHub from building your site.  Fix the errors locally and push the changes.
+Third, run the `npm run build` and `npm run preview` commands and verify that these steps are completed without error on your local machine.  If there are errors they may be preventing GitHub from building your site.  Fix the errors locally and push the changes.
 
 Finally, go to the GitHub repo for your project on the github.com website and click the "Actions" tab.  This will show a history of recent "workflow" runs.  Runs that fail will have a red :x: next to them.  Clicking on this will lead to a "transcript" of the run which can provide some debugging hints.
 
@@ -145,7 +145,7 @@ Deploying a website involves several steps: triggering the GitHub Actions deploy
 
 ### The Github Actions deployment trigger
 
-GitHub Actions are a feature of GitHub that allows customizable scripts to run on a cloud computer instance whenever certain events happen on a repository.  Examples include running a script when someone leaves a comment on a repo or opens a pull request.  Scripts can also run automatically anytime a push is made to the repository.  In the case of Smile the deployment script is triggers with any push to the repository excluding the documentation folder (`docs/`).  This runs the action located at `.github/workflows/deploy.yml`.  Even without a lot of knowledge about GitHub action you can read this script and understand the basic logic.
+GitHub Actions are a feature of GitHub that allows customizable scripts to run on a cloud computer instance whenever certain events happen on a repository.  Examples include running a script when someone leaves a comment on a repo or opens a pull request.  Scripts can also run automatically anytime a push is made to the repository.  In the case of Smile the deployment script is triggered with any push to the repository excluding the documentation folder (`docs/`).  This runs the action located at `.github/workflows/deploy.yml`.  Even without a lot of knowledge about GitHub action you can read this script and understand the basic logic.
 
 ### Building the site
 
@@ -162,7 +162,7 @@ Next, the GitHub action uploads the files to the server using rsync.
 The remote host, folder, and other options are set using GitHub Secrets which are encrypted environment variables that you configure on the repository settings.  Generally in the <GureckisLabText/> these will be set for you, but read more about [configuration options](configuration) to customize or adjust.
 
 ### Notifying the Slack bot
-In the <GureckisLabText/> the final step is to send a notification about the deployment to a Slack [Workflow Builder](https://slack.com/help/articles/360035692513-Guide-to-Workflow-Builder) bot.  This lets you verify the code was deployed and provides you with an up-to-date URL to share with participants.
+In the <GureckisLabText/>, the final step is to send a notification about the deployment to a Slack [Workflow Builder](https://slack.com/help/articles/360035692513-Guide-to-Workflow-Builder) bot.  This lets you verify the code was deployed and provides you with an up-to-date URL to share with participants.
 
 If the deployment script fails, GitHub will attempt to notify the slack bot about the error.  However, it requires that the GitHub secrets have been properly uploaded with `npm run config:upload` so the absence of an error notification isn't proof things did work.
 

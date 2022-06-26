@@ -44,6 +44,13 @@ export default defineConfig({
                 ]
             },
             {
+                text: "Experiment Design",
+                items: [
+                    { text: "👩‍🎨 Overview", link: "/experimentdesign"},
+                    { text: "🧐 Analyzing data", link: "/analysis" }
+                ]
+            },
+            {
                 text: "Contributing",
                 collapsible: false,
                 collapsed: false,
@@ -62,24 +69,15 @@ export default defineConfig({
                 ]
             },
             {
-                text: "Planning",
+                text: "Notes",
+                collapsible: true,
+                collapsed: true,
                 items: [
                     { text: "Overview", link: '/research/overview' },
-                    { text: "Use-cases", link: '/research/usecases' }
-                ]
-            },
-            {
-                text: "Back End",
-                items: [
-                    { text: "Research notes", link: "/research/backend" },
-                    { text: "Analyzing data", link: "/analysis" }
-                ]
-            },
-            {
-                text: "Front End",
-                items: [
-                    { text: "Research Notes", link: "/research/frontend"},
-                    { text: "Setup", link: "/advanced/notes" },
+                    { text: "Use-cases", link: '/research/usecases' },
+                    { text: "Backend research", link: "/research/backend" },
+                    { text: "Frontend research", link: "/research/frontend"},
+                    { text: "Setup", link: "/advanced/notes" }
                 ]
             }
             

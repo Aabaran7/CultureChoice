@@ -28,6 +28,21 @@ If you have experience with psiTurk you will be familiar with the commands `psit
 and `psiturk debug` which created a local webserver for testing.  `npm run dev` provides the same basic purpose with additional features.
 :::
 
+## Testing the build process
+You can also test the build process locally.  Simply type
+
+```
+npm run build
+```
+
+If the build is successful, the files will be bundled exactly as they will be on your final deployed website. (Files go into the `dist/` folder which is not tracked by git).
+
+Next, you can view the website almost exactly as it will appear online by typing
+
+```
+npm run preview
+```
+
 ## Vite development features
 
 One of the most useful features of Vite in development mode is that it automatically reloads the webpage anytime changes are made to any project files.  This prevents you from having to go back and forth between your editor and the browser and pressing shift-reload.
