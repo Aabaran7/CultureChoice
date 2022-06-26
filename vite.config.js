@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
@@ -10,6 +11,17 @@ export default ({ mode }) => {
   return defineConfig({
       plugins: [vue()],
       envDir: 'env',
-      base: process.env.VITE_DEPLOY_BASE_PATH
+      base: process.env.VITE_DEPLOY_BASE_PATH,
+      server: {
+        port: process.env.VITE_DEV_PORT_NUM,
+        strictPort: true
+      },
+      test: {
+        globals: true,
+        environment: 'happy-dom',
+        coverage: {
+          reporter: ['text', 'json', 'html'],
+        },
+      },
   });
 }

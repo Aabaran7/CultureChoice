@@ -150,12 +150,12 @@ Options include
 - `VITE_BRANCH_NAME` is the name of the branch the most recent commit was made on
 - `VITE_GIT_LAST_MSG` is the last commit message
 - `VITE_DEPLOY_BASE_PATH` is the most important variable in the file because it configures your [deployment path](/deploying.html#using-github-as-a-project-organizing-tool) or where you code will appear on the server.  It is built up out of the configuration options above.
-- `VITE_DEV_PORT_NUM ` is a rough guess about what port Vite will try to use during develeopment (i.e., when you run `npm run dev`).  This isn't actually used for anything so it is fine if it is incorrect.
+- `VITE_DEV_PORT_NUM ` is what port Vite will try to use during development and local integration testing (i.e., when you run `npm run dev`).  Defaults to `3010`.
 - `VITE_DEPLOY_URL` is the expected URL for your application.  When you run the deployment this is set to the final URL of your hosted server.  When debugging locally (`npm run dev`) this is set to the URL you open in your browser to develop/debug.
   
 ##### Docs Deployment Config (`.env.docs.local`)
 
-This file configures where the <SmileText/> documentation will be deployed to.  This options should generally be shielded from public repositories.  Also note that these variable names do not begin with `VITE_` meaning the are not accessible to your Javascript experiment.
+This file configures where the <SmileText/> documentation will be deployed to.  These options should generally be shielded from public repositories.  Note that these variable names do not begin with `VITE_` meaning they are not accessible to your Javascript experiment.
 
 ```
 # this file is not tracked by github and contains
@@ -213,7 +213,7 @@ EXP_DEPLOY_KEY         = "-----BEGIN RSA PRIVATE KEY-----\n-----END RSA PRIVATE 
 ## Configuring your deployment settings on GitHub
 
 
-Several of the configuration options are designed to configure ["secrets"](https://docs.github.com/en/actions/security-guides/encrypted-secrets) on your GitHub repo.   These are variables that you define in the settings section of the repository which can then be accessed by a script at run time using Github Actions.  The are omitted from version control and from logs making it a good way to share sensitive information without exposing them in a public repo.  When you run `npm run config:upload` you should see output like this (with NYUCCL/smile replaced with your username and repo):
+Several of the configuration options are designed to configure ["secrets"](https://docs.github.com/en/actions/security-guides/encrypted-secrets) on your GitHub repo.   These are variables that you define in the settings section of the repository which can then be accessed by a script at run time using Github Actions.  They are omitted from version control and from logs making it a good way to share sensitive information without exposing them in a public repo.  When you run `npm run config:upload` you should see output like this (with NYUCCL/smile replaced with your username and repo):
 
 ```
 > smile@0.0.0 config:upload
