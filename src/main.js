@@ -7,7 +7,8 @@ import App from './App.vue'
 import smileconfig from './plugins/smileconfig'
 
 // 1. Define route components.
-import Config from './patterns/pages/Config.vue'
+import Config from './components/pages/Config.vue'
+import Advertisement from './components/pages/Advertisement.vue'
 
 
 // 2. Define some routes
