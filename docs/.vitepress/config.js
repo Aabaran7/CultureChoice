@@ -47,6 +47,7 @@ export default defineConfig({
                 text: "Experiment Design",
                 items: [
                     { text: "👩‍🎨 Overview", link: "/experimentdesign"},
+                    { text: "🧩 Components", link: "/components"},
                     { text: "🧐 Analyzing data", link: "/analysis" }
                 ]
             },
