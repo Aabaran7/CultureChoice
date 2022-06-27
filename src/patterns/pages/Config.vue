@@ -1,5 +1,8 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { useSmileStore } from '@/stores/smiledata'
+import { ref } from 'vue'
+
+const smiledata = useSmileStore()
 
 defineProps({
   msg: String
@@ -14,13 +17,18 @@ const count = ref(0)
   <h1>{{ msg }}</h1>
   <h3>A happy approach to online behavioral research.</h3>
 
-  Reactivity example: <button type="button" @click="count++">Click me</button><br>
-  You've clicked the button {{ count }} times.
+  Reactivity example: <button type="button" @click="smiledata.counter++">Click me</button><br>
+  You've clicked the button {{ smiledata.counter }} times.
 
   <p>
     Edit
     <code>components/HelloWorld.vue</code> to test hot module replacement.
   </p>
+  <hr>
+  <h4>SmileData state</h4>
+  <code>
+    {{ smiledata }}
+  </code>
   <hr>
   <h4>Smile Configuration Options:</h4>
 
