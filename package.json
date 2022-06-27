@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "test-ui": "cypress open --project tests",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -18,9 +21,13 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
+    "c8": "^7.11.3",
+    "cypress": "^10.2.0",
+    "happy-dom": "^5.3.1",
     "markdown-it-footnote": "^3.0.3",
     "sass": "^1.52.1",
     "vite": "^2.9.9",
-    "vitepress": "^1.0.0-alpha.2"
+    "vitepress": "^1.0.0-alpha.2",
+    "vitest": "^0.16.0"
   }
 }
