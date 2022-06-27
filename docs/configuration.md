@@ -22,7 +22,7 @@ ANOTHER_OPTION    = 33
 MY_CONFIG         = '${MY_CONFIG_OPTION}1234'
 ```
 
-If you are in the <GureckisLabText/>, the <SmileText/> repo contains encrypted versions of our lab configuration files.  As described in the [starting a new project](/starting) guide, you will want to simply decrypt the files provided in the repository.
+If you are in the <GureckisLabText/>, the <SmileText/> repo contains encrypted versions of our lab configuration files.  As described in the ["starting a new project"](/starting) guide, you will want to simply decrypt the files provided in the repository.
 
 ::: danger Warning!
 This will only work if you have first sent Todd your gpg key and waited for him to push a change to the <SmileText/> repo.  See instructions [here](/requirements#_3-request-access-to-the-shared-database-resources).
@@ -67,7 +67,7 @@ env
 └── .env.deploy.local
 ```
 
-You may not see all these files to begin with and so may need to create them (as just described in a [previous section of this page](#getting-started-quickly) or manually).  
+You may not see all these files at first and so may need to create them (as just described in a [previous section of this page](#getting-started-quickly) or manually).  
 
 All the filenames begin with `.env` which is the convention used by the [dotenv](https://dotenv.org) package.  This is a growing standard within the web application community.
 
@@ -119,7 +119,7 @@ The `.env.github.local` file contains information about the latest git commit fo
 is so that your Javascript application can keep track of which version of the code it is running.
 One key principle of <SmileText/> is that [data must always be linked to the code that created it](principles.html#data-must-always-be-linked-to-the-code-that-created-it).
 
-This file is generated automatically using a [post commit hook](https://www.atlassian.com/git/tutorials/git-hooks) which finds the current information and regenerates the file.  For this reason you should **never edit this file**.  A helpful message at the top of the file will always remind you this.  The post-commit hook logic which generates the file is stored in `scripts/post-commit`.
+This file is generated automatically using a [post commit hook](https://www.atlassian.com/git/tutorials/git-hooks) which finds the current information and regenerates the file.  For this reason, you should **never edit this file**.  A helpful message at the top of the file will always remind you of this.  The post-commit hook logic which generates the file is stored in `scripts/post-commit`.
 
 
 
@@ -149,7 +149,7 @@ Options include
 - `VITE_GIT_OWNER` is the username of the owner of the repository 
 - `VITE_BRANCH_NAME` is the name of the branch the most recent commit was made on
 - `VITE_GIT_LAST_MSG` is the last commit message
-- `VITE_DEPLOY_BASE_PATH` is the most important variable in the file because it configures your [deployment path](/deploying.html#using-github-as-a-project-organizing-tool) or where you code will appear on the server.  It is built up out of the configuration options above.
+- `VITE_DEPLOY_BASE_PATH` is the most important variable in the file because it configures your [deployment path](/deploying.html#using-github-as-a-project-organizing-tool) or where your code will appear on the server.  It is built up out of the configuration options above.
 - `VITE_DEV_PORT_NUM ` is what port Vite will try to use during development and local integration testing (i.e., when you run `npm run dev`).  Defaults to `3010`.
 - `VITE_DEPLOY_URL` is the expected URL for your application.  When you run the deployment this is set to the final URL of your hosted server.  When debugging locally (`npm run dev`) this is set to the URL you open in your browser to develop/debug.
   
@@ -279,4 +279,4 @@ It is important to keep in mind that variables passed to `src/config.js` will no
 
 ## Adding New Configuration Options
 
-Adding new configuration options should mostly happen in `.env.local`.  You simple make up a new `VITE_SOMETHING` variable.  Then add it to the object in `src/config.js` to expose it to your web application!  The configuration is available as `smileconfig` anywhere in your Vue app.  It's pretty easy.
+Adding new configuration options should mostly happen in `.env.local`.  You simply make up a new `VITE_SOMETHING` variable.  Then add it to the object in `src/config.js` to expose it to your web application!  The configuration is available as `smileconfig` anywhere in your Vue app.  It's pretty easy.

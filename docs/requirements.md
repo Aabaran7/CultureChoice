@@ -9,7 +9,7 @@ You will need to install Node.js on your computer if you haven't already.  You c
 
 ## 2. Create a GitHub account if you haven't and install the command-line tool
 
-You will also need a [GitHub account](https://github.com/join) (free level is fine).  Tell Todd your username so he can add
+You will also need a [GitHub account](https://github.com/join) (a free account is fine).  Tell Todd your username so he can add
 you as a member of the [NYUCCL organization](https://github.com/nyuccl).  
 
 Next make sure you have the GitHub Command Line Interface (cli) tool installed:
