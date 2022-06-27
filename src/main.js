@@ -3,19 +3,52 @@ import * as VueRouter from 'vue-router'
 import { createPinia } from 'pinia'
 import { useSmileStore } from '@/stores/smiledata'
 
+import { initializeApp } from 'firebase/app'
+import { getFirestore, collection, addDoc } from "firebase/firestore"
 import App from './App.vue'
 import smileconfig from './plugins/smileconfig'
+import appconfig from '@/config.js'
 
 // 1. Define route components.
 import Config from './components/pages/Config.vue'
 import Advertisement from './components/pages/Advertisement.vue'
 
 
+async function startup() {
+    //const smileStore = useSmileStore() // get access to the global store
+    console.log(appconfig.firebaseConfig)
+    const firebaseApp = initializeApp(appconfig.firebaseConfig)
+    const db = getFirestore(firebaseApp)
+    
+    try {
+        const docRef = await addDoc(collection(db, 'users'), {
+            first: 'Ada',
+            last: 'Lovelace',
+            born: 1815
+        });
+        console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+}
+
 // 2. Define some routes
 // Each route should map to a component.
 // We'll talk about nested routes later.
 const routes = [
-   { path: '/', component: Config },
+    { 
+        path: '/', 
+        component: Advertisement,
+        beforeEnter: (to, from) => {
+            // process arguments to see which thing this is
+            // logic 
+            // open firebase connection and db reference
+            startup()
+        } 
+    },
+    {   
+        path: '/config', component: Config 
+    },
 //   { path: '/captcha', component: Captcha },
 //   { path: '/consent', component: InformedConsent },
 //   { path: '/exp', component: Exp},
@@ -38,12 +71,11 @@ const app = Vue.createApp(App)
 const pinia = createPinia()
 // Make sure to _use_ the router instance to make the
 // whole app router-aware.
-app.use(router)
-app.use(pinia)
 app.use(smileconfig, {}) // register plugin.  this provides a variable smileconfig in all components
+app.use(pinia)
+app.use(router)
 
-const smileStore = useSmileStore()
-
+/*
 smileStore.$subscribe((mutation, state) => {
     // something changed do now do the update
     // update local store
@@ -51,5 +83,6 @@ smileStore.$subscribe((mutation, state) => {
     console.log(state.counter)    
     console.log('smileStore mutation: ', mutation)
 })
+*/
 
 app.mount('#app')  // start the app!
