@@ -17,6 +17,7 @@
     "config:upload": "sh scripts/update_config.sh"
   },
   "dependencies": {
+    "@vueuse/core": "^8.7.5",
     "pinia": "^2.0.14",
     "vue": "^3.2.25",
     "vue-router": "^4.0.16"

@@ -1,7 +1,7 @@
 import * as Vue from 'vue'
 import * as VueRouter from 'vue-router'
 import { createPinia } from 'pinia'
-
+import { useSmileStore } from '@/stores/smiledata'
 
 import App from './App.vue'
 import smileconfig from './plugins/smileconfig'
@@ -41,5 +41,14 @@ app.use(router)
 app.use(pinia)
 app.use(smileconfig, {}) // register plugin.  this provides a variable smileconfig in all components
 
+const smileStore = useSmileStore()
+
+smileStore.$subscribe((mutation, state) => {
+    // something changed do now do the update
+    // update local store
+    // update firebase
+    console.log(state.counter)    
+    console.log('smileStore mutation: ', mutation)
+})
 
 app.mount('#app')  // start the app!

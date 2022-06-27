@@ -2,7 +2,7 @@
 import { useSmileStore } from '@/stores/smiledata'
 import { ref } from 'vue'
 
-const smiledata = useSmileStore()
+const smilestore = useSmileStore()
 
 defineProps({
   msg: String
@@ -17,8 +17,8 @@ const count = ref(0)
   <h1>{{ msg }}</h1>
   <h3>A happy approach to online behavioral research.</h3>
 
-  Reactivity example: <button type="button" @click="smiledata.counter++">Click me</button><br>
-  You've clicked the button {{ smiledata.counter }} times.
+  Reactivity example: <button type="button" @click="smilestore.d.counter++">Click me</button><br>
+  You've clicked the button {{ smilestore.d.counter }} times.
 
   <p>
     Edit
@@ -27,7 +27,7 @@ const count = ref(0)
   <hr>
   <h4>SmileData state</h4>
   <code>
-    {{ smiledata }}
+    {{ smilestore.d }}
   </code>
   <hr>
   <h4>Smile Configuration Options:</h4>
