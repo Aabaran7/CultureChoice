@@ -1,5 +1,5 @@
 <script setup>
-import { useSmileStore } from '@/stores/smiledata'
+import useSmileStore from '@/stores/smiledata'
 import { ref } from 'vue'
 
 const smilestore = useSmileStore()

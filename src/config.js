@@ -10,13 +10,9 @@ export default {
     branch: import.meta.env.VITE_GIT_BRANCH_NAME,
     last_commit_msg: import.meta.env.VITE_GIT_LAST_MSG,
     last_commit_hash: import.meta.env.VITE_GIT_HASH, // autocompute this all the time
-    commit_url:
-      `https://github.com/${
-        import.meta.env.VITE_GIT_OWNER
-      }/${
-        import.meta.env.VITE_GIT_REPO_NAME
-      }/commit/${
-        import.meta.env.VITE_GIT_HASH}`,
+    commit_url: `https://github.com/${import.meta.env.VITE_GIT_OWNER}/${
+      import.meta.env.VITE_GIT_REPO_NAME
+    }/commit/${import.meta.env.VITE_GIT_HASH}`,
   },
   browser_exclude: import.meta.env.VITE_BROWSER_EXCLUDE,
   allow_repeats: import.meta.env.VITE_ALLOW_REPEATS,
@@ -31,4 +27,4 @@ export default {
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGINGSENDERID,
     appId: import.meta.env.VITE_FIREBASE_APPID,
   },
-};
+}
