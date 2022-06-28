@@ -166,3 +166,19 @@ In the <GureckisLabText/>, the final step is to send a notification about the de
 
 If the deployment script fails, GitHub will attempt to notify the slack bot about the error.  However, it requires that the GitHub secrets have been properly uploaded with `npm run config:upload` so the absence of an error notification isn't proof things did work.
 
+## Blocking web crawlers
+
+It usually makes sense not to have Google and other search engines index your experiment deployments.  For this we recommend installing a [robots.txt](http://www.robotstxt.org) file at the root folder of your web server containing the following:
+
+```
+User-agent: *
+Disallow: /
+```
+
+In addition, the `index.html` of your project should include the `noindex` meta field:
+
+```
+<meta name="robots" content="noindex">
+```
+
+Google offers a [robots.text testing tool](https://www.google.com/webmasters/tools/robots-testing-tool) which can verify that your settings will be respected by at least Google.
