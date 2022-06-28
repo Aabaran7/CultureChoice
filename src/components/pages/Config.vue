@@ -10,6 +10,10 @@ defineProps({
 
 const count = ref(0)
 
+function resetLocalState() {
+  localStorage.removeItem('smilestore') // delete the local store
+  smilestore.$reset()
+}
 </script>
 
 <template>
@@ -17,8 +21,8 @@ const count = ref(0)
   <h1>{{ msg }}</h1>
   <h3>A happy approach to online behavioral research.</h3>
 
-  Reactivity example: <button type="button" @click="smilestore.counter++">Click me</button><br>
-  You've clicked the button {{ smilestore.counter }} times.
+  Reactivity example: <button type="button" @click="count++">Click me</button><br>
+  You've clicked the button {{ count }} times.
 
   <p>
     Edit
@@ -27,7 +31,12 @@ const count = ref(0)
   <hr>
   <h4>SmileData state</h4>
   <code>
-    {{ smilestore }}
+    {{ smilestore.local }}
+  </code>
+  <button @click=resetLocalState>reset local store</button>
+  <br><br>
+  <code>
+    {{ smilestore.data }}
   </code>
   <hr>
   <h4>Smile Configuration Options:</h4>

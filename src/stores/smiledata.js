@@ -9,20 +9,30 @@ export const useSmileStore = defineStore('smilestore', {
     // arrow function recommended for full type inference
     state: () => {
         return {
-            counter: 0,
-            hasConsents: false,
-            trials: 0,
-            amt: {  // these are things that jsPsych tracks
-                previewMode: false,
-                outsideTurk: true,
-                hitId: null,
-                assignmentId: null,
-                workerId: null,
-                turkSubmitTo: null,
-            }
+            local: useStorage('smilestore',{
+                knownUser: false,
+                lastRoute: 'home'
+            })
         }
+        
     },
-    methods: {
-
+    getters: {
+        isKnownUser: (state) => state.local.knownUser,
+        lastRoute: (state) => state.local.lastRoute,
+    },
+    actions: {
+        setKnown() {
+            this.local.knownUser = true;
+        },
+        setLastRoute(route) {
+            this.local.lastRoute = route;
+        },
+        resetLocal() {
+            console.log("resetting state")
+            this.local = null
+            console.log(this.local)
+            this.$reset()
+            console.log(this.local)
+        }
     }
 })

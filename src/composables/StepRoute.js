@@ -1,8 +1,10 @@
 import { useRouter, useRoute } from 'vue-router'
 import { computed } from 'vue'
+import { useSmileStore } from '@/stores/smiledata'
 
 export function useStepRoute() {
 
+    const smileStore = useSmileStore()
     const router = useRouter()
     const route = useRoute()
 
@@ -16,11 +18,13 @@ export function useStepRoute() {
     
     const next = computed(() => {
         const nextRoute = routes.value[routeIndex.value + 1]
+        smileStore.setLastRoute(nextRoute.name);
         return nextRoute && { name: nextRoute.name }
     })
 
     const prev = computed(() => {
         const prevRoute = routes.value[routeIndex.value - 1]
+        smileStore.setLastRoute(prevRoute.name);
         return prevRoute && { name: prevRoute.name }
     }) 
 

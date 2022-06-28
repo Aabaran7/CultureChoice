@@ -37,6 +37,7 @@ async function startup() {
     }
 }
 
+
 // 2. Define some routes
 // Each route should map to a component.
 // Each needs a name
@@ -92,15 +93,50 @@ const router = createRouter({
 });
 
 
+
 // 5. Create and mount the root instance.
 const app = createApp(App)
 const pinia = createPinia()
+
 // Make sure to _use_ the router instance to make the
 // whole app router-aware.
 app.use(smileconfig, {}) // register plugin.  this provides a variable smileconfig in all components
 app.use(pinia)
 app.use(router)
 
+
+router.beforeEach((to, from) => {
+    // check what the  
+    console.log('before the route')
+    const smileStore = useSmileStore()
+    console.log(smileStore.isKnownUser)
+    if(!smileStore.isKnownUser) { // not isKnownUser
+        console.log("not known user")
+        smileStore.setKnown()
+        //smileStore.setLastRoute('home')
+        if(to.name === 'home') {
+            return true; // good
+        } else {
+            return { name: smileStore.lastRoute, replace: true }  // go to home
+        }
+    } else {
+        console.log("known user")
+        console.log(smileStore.lastRoute)
+        console.log(to.name)
+        if (smileStore.lastRoute==to.name) {
+            console.log("last route is home")
+            return true;
+        } else {
+            return { name: smileStore.lastRoute, replace: true }
+        }
+    }
+})
+
+router.afterEach((to,from) => {
+    const smileStore = useSmileStore()
+    console.log('setting last route to ', to.name)
+    smileStore.setLastRoute(to.name);
+})
 /*
 smileStore.$subscribe((mutation, state) => {
     // something changed do now do the update
