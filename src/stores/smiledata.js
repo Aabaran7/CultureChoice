@@ -1,10 +1,10 @@
-import { defineStore } from 'pinia';
-import { useStorage } from '@vueuse/core';
+import { defineStore } from 'pinia'
+import { useStorage } from '@vueuse/core'
 
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app'
+import { getFirestore, collection, addDoc } from 'firebase/firestore'
 
-export const useSmileStore = defineStore('smilestore', {
+export default defineStore('smilestore', {
   // arrow function recommended for full type inference
   state: () => ({
     local: useStorage('smilestore', {
@@ -20,17 +20,17 @@ export const useSmileStore = defineStore('smilestore', {
 
   actions: {
     setKnown() {
-      this.local.knownUser = true;
+      this.local.knownUser = true
     },
     setLastRoute(route) {
-      this.local.lastRoute = route;
+      this.local.lastRoute = route
     },
     resetLocal() {
-      console.log('resetting state');
-      this.local = null;
-      console.log(this.local);
-      this.$reset();
-      console.log(this.local);
+      console.log('resetting state')
+      this.local = null
+      console.log(this.local)
+      this.$reset()
+      console.log(this.local)
     },
   },
-});
+})
