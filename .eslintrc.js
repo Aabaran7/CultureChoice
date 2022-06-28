@@ -10,5 +10,9 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['vue'],
-  rules: {},
+  rules: {
+    "import/extensions": [<severity>, {
+      "js": "never"
+    }]
+  },
 };
