@@ -1,18 +1,23 @@
-import * as Vue from 'vue'
-import * as VueRouter from 'vue-router'
+import { createApp } from 'vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import { useSmileStore } from '@/stores/smiledata'
 
 import { initializeApp } from 'firebase/app'
 import { getFirestore, collection, addDoc } from "firebase/firestore"
-import App from './App.vue'
-import smileconfig from './plugins/smileconfig'
+
+import App from '@/App.vue'
+import smileconfig from '@/plugins/smileconfig'
 import appconfig from '@/config.js'
 
 // 1. Define route components.
-import Config from './components/pages/Config.vue'
-import Advertisement from './components/pages/Advertisement.vue'
-
+import Advertisement from '@/components/pages/Advertisement.vue'
+import Captcha from '@/components/pages/Captcha.vue'
+import Consent from '@/components/pages/Consent.vue'
+import Exp from '@/components/pages/Exp.vue'
+import Debrief from '@/components/pages/Debrief.vue'
+import Thanks from '@/components/pages/Thanks.vue'
+import Config from '@/components/pages/Config.vue'
 
 async function startup() {
     //const smileStore = useSmileStore() // get access to the global store
@@ -34,40 +39,61 @@ async function startup() {
 
 // 2. Define some routes
 // Each route should map to a component.
+// Each needs a name
 // We'll talk about nested routes later.
 const routes = [
     { 
         path: '/', 
+        name: 'home',
         component: Advertisement,
         beforeEnter: (to, from) => {
-            // process arguments to see which thing this is
-            // logic 
-            // open firebase connection and db reference
-            startup()
+            const smileStore = useSmileStore()
+            smileStore.trials++;
         } 
     },
-    {   
-        path: '/config', component: Config 
+    { 
+        path: '/captcha', 
+        name: 'captcha', 
+        component: Captcha 
     },
-//   { path: '/captcha', component: Captcha },
-//   { path: '/consent', component: InformedConsent },
-//   { path: '/exp', component: Exp},
-//   { path: '/debreif', component: Debrief},
-//   { path: '/thanks', component: Thanks },
+    { 
+        path: '/consent', 
+        name: 'consent',
+        component: Consent 
+    },
+    { 
+        path: '/exp', 
+        name: 'exp', 
+        component: Exp
+    },
+    {
+        path: '/debrief', 
+        name: 'debrief',
+        component: Debrief
+    },
+    { 
+        path: '/thanks', 
+        name: 'thanks',
+        component: Thanks 
+    },
+    {   
+        path: '/config', 
+        name: 'config',
+        component: Config 
+    },
 ]
 
 // 3. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
 // keep it simple for now.
-const router = VueRouter.createRouter({
-  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
-  history: VueRouter.createWebHashHistory(),
-  routes, // short for `routes: routes`
+const router = createRouter({
+  history: createWebHashHistory(), //We are using the hash history for now/simplicity
+  routes: routes, 
 });
 
 
 // 5. Create and mount the root instance.
-const app = Vue.createApp(App)
+const app = createApp(App)
 const pinia = createPinia()
 // Make sure to _use_ the router instance to make the
 // whole app router-aware.
