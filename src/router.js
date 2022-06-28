@@ -95,4 +95,6 @@ router.afterEach((to, from) => {
   smileStore.setLastRoute(to.name)
 })
 
+export { routes }
+
 export default router
