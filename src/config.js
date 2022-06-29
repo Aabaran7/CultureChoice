@@ -3,6 +3,7 @@
 // global configuration options for the smile app
 
 export default {
+  mode: import.meta.env.MODE,
   project_name: import.meta.env.VITE_PROJECT_NAME, // autocompute this on intitialization
   code_name: import.meta.env.VITE_CODE_NAME,
   code_name_url: import.meta.env.VITE_CODE_NAME_DEPLOY_URL,

@@ -5,6 +5,8 @@
 </script>
 
 <template>
+  <div v-if="smileconfig.mode=='development'" class="mode">DEVELOPER MODE</div>
+  <div v-else class="mode">PRODUCTION/LIVE MODE</div>
   <router-view></router-view>
 </template>
 
@@ -14,6 +16,9 @@
     --vp-font-family-mono: Menlo, Monaco, Consolas, "Courier New", monospace
 }
 
+.mode {
+  font-size: 12px;
+}
 #app {
   font-family: var(--vp-font-family-base);
   -webkit-font-smoothing: antialiased;
