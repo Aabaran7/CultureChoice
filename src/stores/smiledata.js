@@ -19,7 +19,7 @@ export default defineStore('smilestore', {
   },
 
   actions: {
-    known() {
+    setKnown() {
       console.log('inSetKnown')
       this.local.knownUser = true
       console.log('set knownUser to true')

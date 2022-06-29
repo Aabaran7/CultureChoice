@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
 
-// 1. Define route components.
+// 1. Import route components.
 import Advertisement from '@/components/pages/AdvertisementPage.vue'
 import Captcha from '@/components/pages/CaptchaPage.vue'
 import Consent from '@/components/pages/ConsentPage.vue'
@@ -56,38 +56,22 @@ const routes = [
   },
 ]
 
-// 3. Create the router instance and pass the `routes` option
-// You can pass in additional options here, but let's
-// keep it simple for now.
-const router = createRouter({
-  history: createWebHashHistory(), // We are using the hash history for now/simplicity
-  routes,
-})
-
+// 3. add navigation guards
+//    currently these check if user is known
+//    and if they are, they redirect to last route
 function addGuards(r) {
   r.beforeEach((to, from) => {
     // check what the
-    console.log('before the route', to.name)
     const smileStore = useSmileStore()
-    console.log(smileStore.local)
-    console.log('is user known?', smileStore.isKnownUser)
     if (!smileStore.isKnownUser) {
       // not isKnownUser
-      console.log('not known user')
-      console.log('calling setknown')
-      smileStore.known()
-      console.log('is user known?', smileStore.isKnownUser)
-      // smileStore.setLastRoute('home')
+      smileStore.setKnown()
       if (to.name === 'home') {
         return true // good
       }
       return { name: smileStore.lastRoute, replace: true } // go to last route
     }
-    console.log('known user')
-    console.log(smileStore.lastRoute)
-    console.log(to.name)
     if (smileStore.lastRoute == to.name) {
-      console.log('last route is home')
       return true
     }
     return { name: smileStore.lastRoute, replace: true }
@@ -95,10 +79,17 @@ function addGuards(r) {
 
   r.afterEach((to, from) => {
     const smileStore = useSmileStore()
-    console.log('setting last route to ', to.name)
     smileStore.setLastRoute(to.name)
   })
 }
+
+// 4. Create the router instance and pass the `routes` option
+// You can pass in additional options here, but let's
+// keep it simple for now.
+const router = createRouter({
+  history: createWebHashHistory(), // We are using the hash history for now/simplicity
+  routes,
+})
 
 addGuards(router)
 

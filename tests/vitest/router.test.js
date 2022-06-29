@@ -1,7 +1,5 @@
 // import { describe, it, expect } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import { setActivePinia, createPinia } from 'pinia'
-import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { createTestingPinia } from '@pinia/testing'
 import App from '@/App.vue'
