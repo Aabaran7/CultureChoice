@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 
-import { initializeApp } from 'firebase/app'
-import { getFirestore, collection, addDoc } from 'firebase/firestore'
+// import { initializeApp } from 'firebase/app'
+// import { getFirestore, collection, addDoc } from 'firebase/firestore'
 
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
@@ -19,8 +19,10 @@ export default defineStore('smilestore', {
   },
 
   actions: {
-    setKnown() {
+    known() {
+      console.log('inSetKnown')
       this.local.knownUser = true
+      console.log('set knownUser to true')
     },
     setLastRoute(route) {
       this.local.lastRoute = route

@@ -20,8 +20,8 @@ const routes = [
     name: 'home',
     component: Advertisement,
     beforeEnter: (to, from) => {
-      const smileStore = useSmileStore()
-      smileStore.trials += 1
+      // const smileStore = useSmileStore()
+      // smileStore.trials += 1
     },
   },
   {
@@ -64,37 +64,44 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from) => {
-  // check what the
-  console.log('before the route')
-  const smileStore = useSmileStore()
-  console.log(smileStore.isKnownUser)
-  if (!smileStore.isKnownUser) {
-    // not isKnownUser
-    console.log('not known user')
-    smileStore.setKnown()
-    // smileStore.setLastRoute('home')
-    if (to.name === 'home') {
-      return true // good
+function addGuards(r) {
+  r.beforeEach((to, from) => {
+    // check what the
+    console.log('before the route', to.name)
+    const smileStore = useSmileStore()
+    console.log(smileStore.local)
+    console.log('is user known?', smileStore.isKnownUser)
+    if (!smileStore.isKnownUser) {
+      // not isKnownUser
+      console.log('not known user')
+      console.log('calling setknown')
+      smileStore.known()
+      console.log('is user known?', smileStore.isKnownUser)
+      // smileStore.setLastRoute('home')
+      if (to.name === 'home') {
+        return true // good
+      }
+      return { name: smileStore.lastRoute, replace: true } // go to last route
     }
-    return { name: smileStore.lastRoute, replace: true } // go to home
-  }
-  console.log('known user')
-  console.log(smileStore.lastRoute)
-  console.log(to.name)
-  if (smileStore.lastRoute == to.name) {
-    console.log('last route is home')
-    return true
-  }
-  return { name: smileStore.lastRoute, replace: true }
-})
+    console.log('known user')
+    console.log(smileStore.lastRoute)
+    console.log(to.name)
+    if (smileStore.lastRoute == to.name) {
+      console.log('last route is home')
+      return true
+    }
+    return { name: smileStore.lastRoute, replace: true }
+  })
 
-router.afterEach((to, from) => {
-  const smileStore = useSmileStore()
-  console.log('setting last route to ', to.name)
-  smileStore.setLastRoute(to.name)
-})
+  r.afterEach((to, from) => {
+    const smileStore = useSmileStore()
+    console.log('setting last route to ', to.name)
+    smileStore.setLastRoute(to.name)
+  })
+}
 
-export { routes }
+addGuards(router)
+
+export { routes, addGuards }
 
 export default router

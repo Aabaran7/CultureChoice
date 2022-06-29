@@ -45,7 +45,7 @@ function resetLocalState() {
   <code>
   <ul>
     <li class="config" v-for="option, key in smileconfig" :key="key">
-      <span v-if=" ypeof(option)=='string' ">
+      <span v-if=" typeof(option)=='string' ">
         <b>{{key}}</b>: {{option}}
       </span>
       <span v-else>
