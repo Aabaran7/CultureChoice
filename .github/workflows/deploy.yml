@@ -142,7 +142,7 @@ jobs:
           DEPLOY_ENV_FILE: 'env/.env.deploy.local'
         run: |
           echo "VITE_DEPLOY_URL = 'https://${{ secrets.EXP_DEPLOY_HOST }}${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}'" > $DEPLOY_ENV_FILE
-          echo 'VITE_CODE_NAME_DEPLOY_URL         =  "https://${{ secrets.EXP_DEPLOY_HOST }}/e/${VITE_CODE_NAME}"' >> $ENV_FILE
+          echo 'VITE_CODE_NAME_DEPLOY_URL         =  "https://${{ secrets.EXP_DEPLOY_HOST }}/e/${VITE_CODE_NAME}"' >> $DEPLOY_ENV_FILE
           cat $DEPLOY_ENV_FILE
 
       # Build the web app
