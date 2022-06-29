@@ -11,8 +11,12 @@ module.exports = {
   },
   plugins: ['vue'],
   rules: {
-    "import/extensions": [<severity>, {
-      "js": "never"
-    }]
+    'import/extensions': [
+      'error',
+      {
+        js: 'never',
+      },
+    ],
+    'vue/no-multiple-template-root': 'off',
   },
-};
+}
