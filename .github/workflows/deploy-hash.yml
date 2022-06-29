@@ -28,6 +28,16 @@ jobs:
         with:
           ref: ${{ inputs.github_sha }}
 
+      # setup node.js
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.1 # this is what i'm using locally
+
+      # install node packages
+      - name: Install node dependencies
+        run: npm install
+
       # accesses some git variables and processes them to be lower case/short/escaped
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
@@ -35,7 +45,7 @@ jobs:
       # Configure git-specific .env file
       - name: Expose git-specific information to the Vite environment
         env:
-          ENV_FILE: "env/.env.git.local"
+          ENV_FILE: 'env/.env.git.local'
         run: |
           echo "------"
           if test -z "${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}"
@@ -87,54 +97,48 @@ jobs:
             VITE_GIT_LAST_MSG='${{ github.event.head_commit.message }}'
           fi
           echo "VITE_DEPLOY_BASE_PATH   =  '/hashes/${VITE_GIT_OWNER}/${VITE_GIT_REPO_NAME}/${VITE_GIT_HASH}/'" >> $ENV_FILE
+          CODENAME=$(node scripts/codenamize.js "/${OWNER}/${PROJECT_NAME}/${BRANCH}")
+          echo "VITE_CODE_NAME          = ${CODENAME}" >> $ENV_FILE
           cat $ENV_FILE
-      
+
       # put the full path name in VITE_DEPLOY_BASE_PATH
-      
+
       # Configure secure information configuration
       - name: Expose secret information to the Vite environment
         env:
           SECRET_APP_CONFIG: ${{ secrets.SECRET_APP_CONFIG }}
-          SECRET_ENV_FILE: "env/.env.local"
+          SECRET_ENV_FILE: 'env/.env.local'
         run: |
           echo "------"
           echo $SECRET_APP_CONFIG | base64 --decode > $SECRET_ENV_FILE
 
-      # setup node.js
-      - name: Setup node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.15.1 # this is what i'm using locally
-        
       # load the environment
       - name: Load the github dotenv file
         id: dotenv_github
         uses: falti/dotenv-action@v0.2.8
         with:
-          path: "./env/.env.git.local"
+          path: './env/.env.git.local'
 
       - name: Load the general config dotenv file
         id: dotenv_config
         uses: falti/dotenv-action@v0.2.8
         with:
-          path: "./env/.env.local"
+          path: './env/.env.local'
 
       # echo all the environment variables
       - name: echo the environment variables
         run: |
           echo "deploy url: ${{ secrets.EXP_DEPLOY_PATH }}${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}"
-        
+
       # place the deploy settings into the environment files
-       # this one needs to be made available to vite.config.js
+      # this one needs to be made available to vite.config.js
       - name: create deploy file
         env:
-          DEPLOY_ENV_FILE: "env/.env.deploy.local"
+          DEPLOY_ENV_FILE: 'env/.env.deploy.local'
         run: |
           echo "VITE_DEPLOY_URL = 'https://${{ secrets.EXP_DEPLOY_HOST }}${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}'" > $DEPLOY_ENV_FILE
-      
-      # install node packages
-      - name: Install node dependencies
-        run: npm install
+          echo 'VITE_CODE_NAME_DEPLOY_URL         =  "https://${{ secrets.EXP_DEPLOY_HOST }}/e/${{ steps.dotenv_github.outputs.VITE_CODE_NAME }}"' >> $DEPLOY_ENV_FILE
+          cat $DEPLOY_ENV_FILE
 
       # Build the web app
       - name: Build web app
@@ -149,7 +153,7 @@ jobs:
           key: ${{ secrets.EXP_DEPLOY_KEY  }}
           port: ${{ secrets.EXP_DEPLOY_PORT }}
           script: mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}
-          
+
       # Deploy files to web server
       - name: rsync to server
         uses: burnett01/rsync-deployments@5.2
@@ -160,7 +164,7 @@ jobs:
           remote_host: ${{ secrets.EXP_DEPLOY_HOST }}
           remote_port: ${{ secrets.EXP_DEPLOY_PORT }}
           remote_user: ${{ secrets.EXP_DEPLOY_USER }}
-          remote_key:  ${{ secrets.EXP_DEPLOY_KEY  }}
+          remote_key: ${{ secrets.EXP_DEPLOY_KEY  }}
 
       # send a notification at the end
       - name: Send notification to lab slack
