@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "test-ui": "cypress open --project tests",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -14,13 +17,30 @@
     "config:upload": "sh scripts/update_config.sh"
   },
   "dependencies": {
-    "vue": "^3.2.25"
+    "@vueuse/core": "^8.7.5",
+    "firebase": "^9.8.4",
+    "pinia": "^2.0.14",
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.16"
   },
   "devDependencies": {
+    "@codenamize/codenamize": "^1.1.1",
+    "@pinia/testing": "^0.0.12",
     "@vitejs/plugin-vue": "^2.3.3",
+    "@vue/test-utils": "^2.0.0-rc.18",
+    "c8": "^7.11.3",
+    "cypress": "^10.2.0",
+    "eslint": "^8.18.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-vue": "^9.1.1",
+    "happy-dom": "^5.3.1",
     "markdown-it-footnote": "^3.0.3",
+    "prettier": "^2.7.1",
     "sass": "^1.52.1",
     "vite": "^2.9.9",
-    "vitepress": "^1.0.0-alpha.2"
+    "vitepress": "^1.0.0-alpha.2",
+    "vitest": "^0.16.0"
   }
 }

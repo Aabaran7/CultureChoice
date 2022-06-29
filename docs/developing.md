@@ -6,7 +6,10 @@ When developing and debugging your experiment it is useful to interact with a we
 
 In <SmileText/> this is all handled by [Vite](https://vitejs.dev).  Vite is a development tool that is heavily optimized for (developer experience (DX).  There is a lot to say about the features of Vite but more directly to test your application locally simple type:
 
-`npm run dev`
+```
+npm run dev
+```
+
 
 in the project folder.  You should see something like this:
 

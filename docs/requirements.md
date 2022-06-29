@@ -52,13 +52,18 @@ There will be a sequence of questions you answer.  Use your preferred email addr
 
 Wait for him to reply and to make a push to the main <SmileText/> repo giving access to the encrypted files to your email address.
 
-## 4. Install VSCode and Volar (optional)
+## 4. Install a web browser (or two or three)
 
-It is highly recommended that you use [VS Code](https://code.visualstudio.com/) and the [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension as your text editor/development environment.
+Install Safari, Chrome and/or Firefox.  It can make sense to install multiple browsers and test your code against each of them. However for developing/testing your code Chrome is particularly recommended because of range extensions.
 
 ## 5. Install Vue Devtools (optional)
 
 Optionally install the [Vue Devtools](https://devtools.vuejs.org) in your browser (e.g., Chrome).  This can help in debugging your experiment.
+
+## 6. Install VSCode and Volar (optional)
+
+It is highly recommended that you use [VS Code](https://code.visualstudio.com/) and the [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension as your text editor/development environment.
+
 
 
 
