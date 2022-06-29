@@ -60,7 +60,7 @@ const routes = [
 //    currently these check if user is known
 //    and if they are, they redirect to last route
 function addGuards(r) {
-  r.beforeEach((to, from) => {
+  r.beforeEach((to) => {
     // check what the
     const smileStore = useSmileStore()
     if (!smileStore.isKnownUser) {
@@ -71,13 +71,13 @@ function addGuards(r) {
       }
       return { name: smileStore.lastRoute, replace: true } // go to last route
     }
-    if (smileStore.lastRoute == to.name) {
+    if (smileStore.lastRoute === to.name) {
       return true
     }
     return { name: smileStore.lastRoute, replace: true }
   })
 
-  r.afterEach((to, from) => {
+  r.afterEach((to) => {
     const smileStore = useSmileStore()
     smileStore.setLastRoute(to.name)
   })
