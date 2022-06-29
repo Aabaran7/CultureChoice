@@ -32,6 +32,16 @@ jobs:
       - name: Checkout committed to branch
         uses: actions/checkout@v3
 
+      # setup node.js
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.1 # this is what i'm using locally
+
+      # install node packages
+      - name: Install node dependencies
+        run: npm install
+
       # accesses some git variables and processes them to be lower case/short/escaped
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
@@ -107,12 +117,6 @@ jobs:
           echo "------"
           echo $SECRET_APP_CONFIG | base64 --decode > $SECRET_ENV_FILE
 
-      # setup node.js
-      - name: Setup node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.15.1 # this is what i'm using locally
-
       # load the environment
       - name: Load the github dotenv file
         id: dotenv_github
@@ -141,10 +145,6 @@ jobs:
           echo 'VITE_CODE_NAME_DEPLOY_URL         =  "https://${{ secrets.EXP_DEPLOY_HOST }}/e/${VITE_CODE_NAME}"' >> $ENV_FILE
           cat $DEPLOY_ENV_FILE
 
-      # install node packages
-      - name: Install node dependencies
-        run: npm install
-
       # Build the web app
       - name: Build web app
         run: npm run build
@@ -158,6 +158,16 @@ jobs:
           key: ${{ secrets.EXP_DEPLOY_KEY  }}
           port: ${{ secrets.EXP_DEPLOY_PORT }}
           script: mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}
+
+      # link to code name path
+      - name: create the remote folder if it doesn't exist
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EXP_DEPLOY_HOST }}
+          username: ${{ secrets.EXP_DEPLOY_USER }}
+          key: ${{ secrets.EXP_DEPLOY_KEY  }}
+          port: ${{ secrets.EXP_DEPLOY_PORT }}
+          script: ln -s ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }} ${{ secrets.EXP_DEPLOY_PATH }}/e/${{ steps.dotenv_github.outputs.VITE_CODE_NAME }}
 
       # Deploy files to web server
       - name: rsync to server
