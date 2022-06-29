@@ -2,13 +2,13 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
 
 // 1. Define route components.
-import Advertisement from '@/components/pages/Advertisement.vue'
-import Captcha from '@/components/pages/Captcha.vue'
-import Consent from '@/components/pages/Consent.vue'
-import Exp from '@/components/pages/Exp.vue'
-import Debrief from '@/components/pages/Debrief.vue'
-import Thanks from '@/components/pages/Thanks.vue'
-import Config from '@/components/pages/Config.vue'
+import Advertisement from '@/components/pages/AdvertisementPage.vue'
+import Captcha from '@/components/pages/CaptchaPage.vue'
+import Consent from '@/components/pages/ConsentPage.vue'
+import Exp from '@/components/pages/ExpPage.vue'
+import Debrief from '@/components/pages/DebriefPage.vue'
+import Thanks from '@/components/pages/ThanksPage.vue'
+import Config from '@/components/pages/ConfigPage.vue'
 
 // 2. Define some routes
 // Each route should map to a component.

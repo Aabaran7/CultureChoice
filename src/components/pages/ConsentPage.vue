@@ -5,8 +5,6 @@ const { next, prev } = useStepRoute()
 </script>
 
 <template>
-    <div>
-        <h1>Informed Consent</h1>
-        <button @click="$router.push(next)">next</button>
-    </div>
+    <h1>Informed Consent</h1>
+    <button @click="$router.push(next)">next</button>
 </template>

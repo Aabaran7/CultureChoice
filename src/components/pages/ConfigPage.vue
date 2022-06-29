@@ -1,6 +1,7 @@
 <script setup>
-import useSmileStore from '@/stores/smiledata'
 import { ref } from 'vue'
+import useSmileStore from '@/stores/smiledata'
+
 
 const smilestore = useSmileStore()
 
@@ -43,14 +44,14 @@ function resetLocalState() {
 
   <code>
   <ul>
-    <li class="config" v-for="option, key in smileconfig">
-      <span v-if=" typeof(option)=='string' ">
+    <li class="config" v-for="option, key in smileconfig" :key="key">
+      <span v-if=" ypeof(option)=='string' ">
         <b>{{key}}</b>: {{option}}
       </span>
       <span v-else>
         <b>{{key}}</b>: 
           <ul>
-            <li v-for="option2,key2 in option">
+            <li v-for="option2,key2 in option" :key="key2">
               <b>{{key2}}</b>: {{option2}}
             </li>
           </ul>
