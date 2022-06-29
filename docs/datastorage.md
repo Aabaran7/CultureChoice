@@ -2,7 +2,7 @@
 
 Data recording and storage are critical functions of an experiment.  
 
-Depending on your experiment design you may need to develop custom data storage code.  However, for most simple cases <SmileText/> provides a robust solution that requires little to no configuration or code.   Dealing with data is so important, [it isn't something you should even have to think about](/principles#no-code-is-the-best-code)!
+Depending on your experiment design you may need to develop custom data storage code.  But in most cases <SmileText/> provides a robust solution that requires little to no configuration or code.   Dealing with data is so important, [it isn't something you should even have to think about](/principles#no-code-is-the-best-code)!
 
 This document describes the basics of <SmileText/> data storage including how to configure the system, how use the data storage techniques manually in your code, the overall logic behind how it works, and how to set it up for a new lab.
 

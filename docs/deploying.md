@@ -99,6 +99,9 @@ git push origin --delete pilot
 You shouldn't fear making branches for your projects.  So `pilot` and `exp1` and `exp1-pre-pilot` or `exp1b` are all fine.
 
 
+## What URL do you send participants to?
+
+The default deploy which combines your github username, project, and branch (e.g., `gureckis/my_cool_project/exp2b/`) turns into something like `http://exps.gureckislab.org/gureckis/another_project/pilot/` on your website.  One issue is this includes information about yourself and even the location of your code!  As a result <SmileText/> automatically creates a "code name" for your project.  This is a deterministic hash of your project deployment into a string of readable words (e.g., `hike-shark-kite`).  A symbolic link is made to your normal deploy path on your server automatically.  As a results you get a second URL like `http://exps.gureckislab.org/e/hike-shark-kite`.  This code name URL can be shared publically without exposing information.  See configuration options for more information.
 
 
 ## Deploying a specific version of your experiment

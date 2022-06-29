@@ -136,10 +136,12 @@ VITE_GIT_OWNER         = gureckis
 VITE_GIT_BRANCH_NAME   = main
 VITE_GIT_LAST_MSG      = trigger a deployment!!
 VITE_DEPLOY_BASE_PATH  =  "/${VITE_GIT_OWNER}/${VITE_GIT_REPO_NAME}/${VITE_GIT_BRANCH_NAME}/"
+VITE_CODE_NAME         = something-something-something
 
 # this port might not be correct, but it doesn't really matter
 VITE_DEV_PORT_NUM      =  3000
 VITE_DEPLOY_URL        =  "http://localhost:${VITE_PORT_NUM}${VITE_DEPLOY_BASE_PATH}"
+VITE_CODE_NAME_DEPLOY_URL         =  "http://localhost:${VITE_DEV_PORT_NUM}/e/${VITE_CODE_NAME}"
 ```
 
 Options include
@@ -150,8 +152,10 @@ Options include
 - `VITE_BRANCH_NAME` is the name of the branch the most recent commit was made on
 - `VITE_GIT_LAST_MSG` is the last commit message
 - `VITE_DEPLOY_BASE_PATH` is the most important variable in the file because it configures your [deployment path](/deploying.html#using-github-as-a-project-organizing-tool) or where you code will appear on the server.  It is built up out of the configuration options above.
+- `VITE_CODE_NAME` is a unique hash of `VITE_DEPLOY_BASE_PATH`` using human readable words (via [codenamize](https://github.com/stemail23/codenamize-js))
 - `VITE_DEV_PORT_NUM ` is what port Vite will try to use during development and local integration testing (i.e., when you run `npm run dev`).  Defaults to `3010`.
 - `VITE_DEPLOY_URL` is the expected URL for your application.  When you run the deployment this is set to the final URL of your hosted server.  When debugging locally (`npm run dev`) this is set to the URL you open in your browser to develop/debug.
+- `VITE_CODE_NAME_DEPLOY_URL` is the version of the deploy URL masked by the `VITE_CODE_NAME`
   
 ##### Docs Deployment Config (`.env.docs.local`)
 
@@ -250,6 +254,8 @@ If you look at the content of `src/config.js` you can see how these items are pu
 
 export default {
     project_name: import.meta.env.VITE_PROJECT_NAME, // autocompute this on intitialization
+    code_name: import.meta.env.VITE_CODE_NAME,
+    code_name_url: import.meta.env.VITE_CODE_NAME_DEPLOY_URL,
     github: {
         repo_name: import.meta.env.VITE_GIT_REPO_NAME,
         owner: import.meta.env.VITE_GIT_OWNER,
