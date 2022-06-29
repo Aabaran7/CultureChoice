@@ -1,19 +1,24 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import useSmileStore from '@/stores/smiledata'
-
+import { useRouter } from 'vue-router'
 
 const smilestore = useSmileStore()
+const router = useRouter()
 
 defineProps({
   msg: String
 })
 
+const smileconfig = inject('smileconfig')
 const count = ref(0)
 
+console.log(smileconfig);
+
 function resetLocalState() {
-  localStorage.removeItem('smilestore') // delete the local store
+  localStorage.removeItem(smileconfig.local_storage_key) // delete the local store
   smilestore.$reset()
+  router.push('/')
 }
 </script>
 

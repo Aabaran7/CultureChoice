@@ -61,9 +61,10 @@ const routes = [
 //    and if they are, they redirect to last route
 function addGuards(r) {
   r.beforeEach((to) => {
-    // check what the
+    // create the data store reference
     const smileStore = useSmileStore()
     if (!smileStore.isKnownUser) {
+      // if user hasn't been here befer
       // not isKnownUser
       smileStore.setKnown()
       if (to.name === 'home') {

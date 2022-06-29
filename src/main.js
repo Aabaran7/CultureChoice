@@ -13,8 +13,8 @@ const pinia = createPinia()
 
 // Make sure to _use_ the router instance to make the
 // whole app router-aware.
-app.use(smileconfig, {}) // register plugin.  this provides a variable smileconfig in all components
 app.use(pinia)
 app.use(router)
+app.use(smileconfig) // register plugin.  this provides a variable smileconfig in all components
 
 app.mount('#app') // start the app!

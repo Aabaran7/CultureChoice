@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
+import appconfig from '@/config.js'
 
 // import { initializeApp } from 'firebase/app'
 // import { getFirestore, collection, addDoc } from 'firebase/firestore'
@@ -7,7 +8,7 @@ import { useStorage } from '@vueuse/core'
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
   state: () => ({
-    local: useStorage('smilestore', {
+    local: useStorage(appconfig.local_storage_key, {
       knownUser: false,
       lastRoute: 'home',
     }),

@@ -6,6 +6,7 @@ import App from '@/App.vue'
 import { routes, addGuards } from '@/router' // This import should point to your routes file declared above
 import useSmileStore from '@/stores/smiledata'
 import smileconfig from '@/plugins/smileconfig'
+import appconfig from '@/config'
 
 let router
 let pinia
@@ -36,7 +37,7 @@ describe('App tests', () => {
 
   /* now test the app */
   it('there should be no smilestore before the app created', () => {
-    expect(localStorage.getItem('smilestore')).toBe(null)
+    expect(localStorage.getItem(appconfig.local_storage_key)).toBe(null)
   })
 
   it('there should be smilestore after the app started', async () => {
@@ -47,12 +48,12 @@ describe('App tests', () => {
     })
     await router.isReady()
     // local storage created here by the import of the useSmileStore in the app
-    expect(localStorage.getItem('smilestore')).not.toBe(null)
+    expect(localStorage.getItem(appconfig.local_storage_key)).not.toBe(null)
   })
 
   it('there should be no localstorage if it is reset', () => {
-    localStorage.setItem('smilestore', null)
-    expect(localStorage.getItem('smilestore')).toBe(null)
+    localStorage.setItem(appconfig.local_storage_key, null)
+    expect(localStorage.getItem(appconfig.local_storage_key)).toBe(null)
   })
 
   // should first render the welcome

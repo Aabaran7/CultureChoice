@@ -7,6 +7,8 @@ import appconfig from '@/config.js'
 export default {
   install: (app, options) => {
     // plugin code goes here
-    app.config.globalProperties.smileconfig = appconfig
+    // app.config.globalProperties.smileconfig = appconfig
+
+    app.provide('smileconfig', appconfig)
   },
 }
