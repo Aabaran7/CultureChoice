@@ -10,6 +10,7 @@ const smileconfig = inject('smileconfig')
 <template>
   <div v-if="smileconfig.mode=='development'" class="devmode">DEVELOPER MODE</div>
   <div v-else class="devmode">PRODUCTION/LIVE MODE</div>
+  <br>
   <router-view></router-view>
 </template>
 

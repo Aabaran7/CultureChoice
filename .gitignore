@@ -25,3 +25,4 @@ dist-ssr
 *.sw?
 .gitsecret/keys/random_seed
 !*.secret
+/css/styles.css

@@ -14,7 +14,9 @@
     "docs:serve": "vitepress serve docs",
     "docs:clean": "rm -rf docs/.vitepress/dist",
     "setup_project": "sh scripts/setup_project.sh",
-    "config:upload": "sh scripts/update_config.sh"
+    "config:upload": "sh scripts/update_config.sh",
+    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/styles.css",
+    "css-watch": "npm run css-build -- --watch"
   },
   "dependencies": {
     "@vueuse/core": "^8.7.5",
@@ -25,9 +27,11 @@
   },
   "devDependencies": {
     "@codenamize/codenamize": "^1.1.1",
+    "@creativebulma/bulma-divider": "^1.1.0",
     "@pinia/testing": "^0.0.12",
     "@vitejs/plugin-vue": "^2.3.3",
     "@vue/test-utils": "^2.0.0-rc.18",
+    "bulma": "^0.9.4",
     "c8": "^7.11.3",
     "cypress": "^10.2.0",
     "eslint": "^8.18.0",
@@ -38,6 +42,7 @@
     "eslint-plugin-vue": "^9.1.1",
     "happy-dom": "^5.3.1",
     "markdown-it-footnote": "^3.0.3",
+    "node-sass": "^7.0.1",
     "prettier": "^2.7.1",
     "sass": "^1.52.1",
     "vite": "^2.9.9",

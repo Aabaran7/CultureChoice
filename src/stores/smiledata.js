@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
-import appconfig from '@/config.js'
+import appconfig from '@/config'
 
 // import { initializeApp } from 'firebase/app'
 // import { getFirestore, collection, addDoc } from 'firebase/firestore'

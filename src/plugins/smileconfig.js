@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 // plugins/smileconfig.js
 
-import appconfig from '@/config.js'
+import appconfig from '@/config'
 
 export default {
   install: (app, options) => {

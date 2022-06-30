@@ -24,47 +24,47 @@ function resetLocalState() {
 
 <template>
   <span id="bigsmile">🫠</span>
-  <h1>{{ msg }}</h1>
-  <h3>A happy approach to online behavioral research.</h3>
-
-  Reactivity example: <button type="button" @click="count++">Click me</button><br>
+  <h1 class="title is-4">A happy approach to online behavioral research.</h1>
+  <b>Reactivity example:</b> <button   class="button is-success is-small is-light" type="button" @click="count++">Click me</button><br><br>
+  
+  <p>
   You've clicked the button {{ count }} times.
+  </p>
 
   <p>
     Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
+    <code>components/pages/ConfigPage.vue</code> to test hot module replacement.
   </p>
-  <hr>
-  <h4>SmileData state</h4>
+  <div class="divider">Local State</div>
+  <h4>SmileData state:</h4>
   <code>
     {{ smilestore.local }}
   </code>
-  <button @click=resetLocalState>reset local store</button>
-  <br><br>
-  <code>
-    {{ smilestore.data }}
-  </code>
-  <hr>
+  <br>
+  <br>
+  <button class="button is-warning is-small" @click="resetLocalState">reset</button>
+  <br>
+  <div class="divider">Configuration</div>
   <h4>Smile Configuration Options:</h4>
 
-  <code>
+  
   <ul>
     <li class="config" v-for="option, key in smileconfig" :key="key">
       <span v-if=" typeof(option)=='string' ">
-        <b>{{key}}</b>: {{option}}
+        <code><b>{{key}}</b>: {{option}}</code>
       </span>
       <span v-else>
-        <b>{{key}}</b>: 
+        <code><b>{{key}}</b></code>: 
           <ul>
             <li v-for="option2,key2 in option" :key="key2">
-              <b>{{key2}}</b>: {{option2}}
+              <code><b>{{key2}}</b>: {{option2}}</code>
             </li>
           </ul>
       </span>
 
     </li>
   </ul>
-  </code>
+
 
 </template>
 
