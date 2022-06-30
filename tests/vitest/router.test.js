@@ -1,4 +1,6 @@
-// import { describe, it, expect } from 'vitest'
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/no-unresolved */
+import { describe, it, expect, beforeEach } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { createTestingPinia } from '@pinia/testing'

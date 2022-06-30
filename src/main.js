@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable import/no-unresolved */
 import { createApp } from 'vue'
 
 import { createPinia } from 'pinia'
 
-import router from '@/router.js'
+import router from '@/router'
 import App from '@/App.vue'
 import smileconfig from '@/plugins/smileconfig'
 
