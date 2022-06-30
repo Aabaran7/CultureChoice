@@ -20,8 +20,11 @@ const routes = [
     name: 'home',
     component: Advertisement,
     beforeEnter: (to, from) => {
-      // const smileStore = useSmileStore()
-      // smileStore.trials += 1
+      const smileStore = useSmileStore()
+      if (!smileStore.isKnownUser) {
+        smileStore.setKnown()
+        // setup database
+      }
     },
   },
   {
@@ -61,27 +64,38 @@ const routes = [
 //    and if they are, they redirect to last route
 function addGuards(r) {
   r.beforeEach((to) => {
-    // create the data store reference
-    const smileStore = useSmileStore()
-    if (!smileStore.isKnownUser) {
-      // if user hasn't been here befer
-      // not isKnownUser
-      smileStore.setKnown()
-      if (to.name === 'home') {
-        return true // good
-      }
-      return { name: smileStore.lastRoute, replace: true } // go to last route
-    }
-    if (smileStore.lastRoute === to.name) {
+    if (to.name === 'config') {
       return true
     }
-    return { name: smileStore.lastRoute, replace: true }
+    const smileStore = useSmileStore()
+    // if not known and requesting home
+    if (!smileStore.isKnownUser) {
+      if (to.name === 'home') {
+        return true // great!
+      }
+      return { name: 'home', replace: true }
+    }
+
+    if (smileStore.local.lastRoute === to.name) {
+      return true
+    }
+    // otherwise check if database exists
+    // and then go to where you left off
+    // go to where you left off
+    return {
+      name: smileStore.lastRoute,
+      replace: true,
+    }
   })
 
-  r.afterEach((to) => {
-    const smileStore = useSmileStore()
-    smileStore.setLastRoute(to.name)
-  })
+  // r.afterEach((to) => {
+  //   console.log('after each', to.name)
+  //   if (to.name !== 'config') {
+  //     const smileStore = useSmileStore()
+  //     console.log(to.name)
+  //     smileStore.setLastRoute(to.name)
+  //   }
+  // })
 }
 
 // 4. Create the router instance and pass the `routes` option

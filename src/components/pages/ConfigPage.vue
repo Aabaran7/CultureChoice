@@ -13,8 +13,6 @@ defineProps({
 const smileconfig = inject('smileconfig')
 const count = ref(0)
 
-console.log(smileconfig);
-
 function resetLocalState() {
   localStorage.removeItem(smileconfig.local_storage_key) // delete the local store
   smilestore.$reset()
@@ -37,7 +35,17 @@ function resetLocalState() {
   </div>
 </section>
   
-  
+  <div class="divider">Code Version Info</div>
+  <div class="code">
+    <ul>
+      <li class="config" v-for="option, key in smileconfig.github" :key="key">
+        <b>{{ key }}</b>: {{ option }}
+      </li>
+    </ul>
+  </div>
+  <br>
+  <br>
+
   <div class="divider">Vue.js Reactivity Example</div>
   <b>Reactivity example:</b> <button   class="button is-success is-small is-light" type="button" @click="count++">Click me</button><br><br>
   
@@ -113,6 +121,7 @@ a {
   margin-left: 20px;
   font-family: monospace;
   font-size: 0.9em;
+  font-weight: 500;
 }
 
 .config b {

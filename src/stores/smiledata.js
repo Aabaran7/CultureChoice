@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import appconfig from '@/config'
-
-// import { initializeApp } from 'firebase/app'
-// import { getFirestore, collection, addDoc } from 'firebase/firestore'
+// import createDoc from './firestore-db'
 
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
@@ -12,6 +10,12 @@ export default defineStore('smilestore', {
       knownUser: false,
       lastRoute: 'home',
     }),
+    db: {
+      docRef: null,
+    },
+    data: {
+      trial_num: 0,
+    },
   }),
 
   getters: {
@@ -21,39 +25,18 @@ export default defineStore('smilestore', {
 
   actions: {
     setKnown() {
-      console.log('inSetKnown')
       this.local.knownUser = true
-      console.log('set knownUser to true')
+      // this.db.docRef = createDoc(appconfig)
     },
     setLastRoute(route) {
-      this.local.lastRoute = route
+      if (route !== 'config') {
+        this.local.lastRoute = route
+      }
     },
     resetLocal() {
-      console.log('resetting state')
-      this.local = null
-      console.log(this.local)
-      this.$reset()
-      console.log(this.local)
+      this.local.knownUser = false
+      this.local.lastRoute = 'home'
+      // this.$reset()
     },
   },
 })
-
-/*
-async function startup() {
-  // const smileStore = useSmileStore() // get access to the global store
-  console.log(appconfig.firebaseConfig);
-  const firebaseApp = initializeApp(appconfig.firebaseConfig);
-  const db = getFirestore(firebaseApp);
-
-  try {
-    const docRef = await addDoc(collection(db, 'users'), {
-      first: 'Ada',
-      last: 'Lovelace',
-      born: 1815,
-    });
-    console.log('Document written with ID: ', docRef.id);
-  } catch (e) {
-    console.error('Error adding document: ', e);
-  }
-}
-*/
