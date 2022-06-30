@@ -8,10 +8,13 @@ const smileconfig = inject('smileconfig')
 </script>
 
 <template>
-  <div v-if="smileconfig.mode=='development'" class="devmode">DEVELOPER MODE</div>
-  <div v-else class="devmode">PRODUCTION/LIVE MODE</div>
-  <br>
-  <router-view></router-view>
+  <nav class="navbar">
+        <div v-if="smileconfig.mode=='development'" class="devmode">DEVELOPER MODE</div>
+        <div v-else class="devmode">PRODUCTION/LIVE MODE</div>
+  </nav>
+  <div class="router">
+    <router-view></router-view>
+  </div>
 </template>
 
 <style>
@@ -20,8 +23,22 @@ const smileconfig = inject('smileconfig')
     --vp-font-family-mono: Menlo, Monaco, Consolas, "Courier New", monospace
 }
 
-.devmode {
+.navbar {
   font-size: 12px;
+  background: rgb(63, 160, 149);
+  color: #fff;
+  height: 5px;
+  padding: 0px;
+  margin: 0px;
+  min-height: 30px;
+}
+
+.devmode {
+  padding-top: 8px;
+}
+
+.router {
+  padding-top:0px;
 }
 
 #app {
@@ -30,6 +47,5 @@ const smileconfig = inject('smileconfig')
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

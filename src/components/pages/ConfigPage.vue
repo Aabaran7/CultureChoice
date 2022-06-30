@@ -23,8 +23,22 @@ function resetLocalState() {
 </script>
 
 <template>
-  <span id="bigsmile">🫠</span>
-  <h1 class="title is-4">A happy approach to online behavioral research.</h1>
+  <section class="hero">
+  <div class="hero-body">
+    <p class="title">
+      <span id="bigsmile">🤠</span>
+    </p>
+    <p class="subtitle ">
+      <h1  class="title is-1">Smile!</h1>
+    </p>
+    <p>
+      <h1 class="title is-4">A happy approach to online behavioral research.</h1>
+    </p>
+  </div>
+</section>
+  
+  
+  <div class="divider">Vue.js Reactivity Example</div>
   <b>Reactivity example:</b> <button   class="button is-success is-small is-light" type="button" @click="count++">Click me</button><br><br>
   
   <p>
@@ -46,8 +60,6 @@ function resetLocalState() {
   <br>
   <div class="divider">Configuration</div>
   <h4>Smile Configuration Options:</h4>
-
-  
   <ul>
     <li class="config" v-for="option, key in smileconfig" :key="key">
       <span v-if=" typeof(option)=='string' ">
@@ -69,6 +81,14 @@ function resetLocalState() {
 </template>
 
 <style scoped>
+.hero {
+  background-color: #79f2cc;
+  margin-bottom: 0px;
+}
+.hero-body{
+  padding-bottom: 0px;
+  margin-butom: 0px;
+}
 a {
   color: #42b983;
 }

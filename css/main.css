@@ -1,2 +1,6 @@
 @import './styles.css';
 @import "../node_modules/@creativebulma/bulma-divider";
+
+.prompt {
+    margin-top: 200px;
+}
