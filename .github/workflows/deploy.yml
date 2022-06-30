@@ -149,6 +149,10 @@ jobs:
       - name: Build web app
         run: npm run build
 
+      # Build the web app
+      - name: Build css files
+        run: npm run css-build
+
       # make remote folder if necessar
       - name: create the remote folder if it doesn't exist
         uses: appleboy/ssh-action@master
