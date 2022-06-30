@@ -50,33 +50,40 @@ function resetLocalState() {
     <code>components/pages/ConfigPage.vue</code> to test hot module replacement.
   </p>
   <div class="divider">Local State</div>
-  <h4>SmileData state:</h4>
-  <code>
-    {{ smilestore.local }}
-  </code>
-  <br>
-  <br>
+  <h4 class="title is-6">SmileData state:</h4>
   <button class="button is-warning is-small" @click="resetLocalState">reset</button>
+  <div class="code">
+    <ul>
+      <li class="config" v-for="option, key in smilestore.local" :key="key">
+        <b>{{ key }}</b>: {{ option }}
+      </li>
+    </ul>
+  </div>
+  <br>
+  <br>
+  
   <br>
   <div class="divider">Configuration</div>
-  <h4>Smile Configuration Options:</h4>
+  <h4 class="title is-6">Smile Configuration Options:</h4>
+  <div class="code">
   <ul>
     <li class="config" v-for="option, key in smileconfig" :key="key">
       <span v-if=" typeof(option)=='string' ">
-        <code><b>{{key}}</b>: {{option}}</code>
+        <b>{{key}}</b>: {{option}}
       </span>
       <span v-else>
-        <code><b>{{key}}</b></code>: 
+        <b>{{key}}</b>: 
           <ul>
             <li v-for="option2,key2 in option" :key="key2">
-              <code><b>{{key2}}</b>: {{option2}}</code>
+              <b>{{key2}}</b>: {{option2}}
             </li>
           </ul>
       </span>
 
     </li>
+    
   </ul>
-
+</div>
 
 </template>
 
@@ -85,6 +92,15 @@ function resetLocalState() {
   background-color: #79f2cc;
   margin-bottom: 0px;
 }
+
+.code {
+  width: 600px;
+  background: rgb(251, 251, 251);
+  margin: auto;
+  margin-top: 20px;
+  padding: 10px;
+}
+
 .hero-body{
   padding-bottom: 0px;
   margin-butom: 0px;
@@ -95,6 +111,12 @@ a {
 .config {
   text-align: left;
   margin-left: 20px;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.config b {
+  color: #639aa6;
 }
 #bigsmile {
   font-size: 100px;

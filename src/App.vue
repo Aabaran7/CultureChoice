@@ -2,15 +2,16 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { inject } from 'vue'
-
+import DeveloperNavBar from '@/components/pages/organisms/DeveloperNavBar.vue';
+import StatusBar from '@/components/pages/organisms/StatusBar.vue';
+//<StatusBar></StatusBar>
 const smileconfig = inject('smileconfig')
 
 </script>
 
 <template>
-  <nav v-if="smileconfig.mode=='development'" class="navbar">
-        <div class="devmode">DEVELOPER MODE</div>
-  </nav>
+  <DeveloperNavBar v-if="smileconfig.mode=='development'"></DeveloperNavBar>
+  
   <div class="router">
     <router-view></router-view>
   </div>
@@ -20,20 +21,6 @@ const smileconfig = inject('smileconfig')
 :root {
     --vp-font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     --vp-font-family-mono: Menlo, Monaco, Consolas, "Courier New", monospace
-}
-
-.navbar {
-  font-size: 12px;
-  background: rgb(63, 160, 149);
-  color: #fff;
-  height: 5px;
-  padding: 0px;
-  margin: 0px;
-  min-height: 30px;
-}
-
-.devmode {
-  padding-top: 8px;
 }
 
 .router {
