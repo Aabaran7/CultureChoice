@@ -8,9 +8,8 @@ const smileconfig = inject('smileconfig')
 </script>
 
 <template>
-  <nav class="navbar">
-        <div v-if="smileconfig.mode=='development'" class="devmode">DEVELOPER MODE</div>
-        <div v-else class="devmode">PRODUCTION/LIVE MODE</div>
+  <nav v-if="smileconfig.mode=='development'" class="navbar">
+        <div class="devmode">DEVELOPER MODE</div>
   </nav>
   <div class="router">
     <router-view></router-view>
