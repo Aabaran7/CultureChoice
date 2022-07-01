@@ -1,8 +1,5 @@
 <script setup>
 import { routes } from '@/router' 
-
-
-
 </script>
 
 <template>
@@ -10,13 +7,13 @@ import { routes } from '@/router'
     <div class="navbar-brand">
         <div class="devmode-title">DEVELOPER MODE</div>
         <div class="devmode">
-          --> [ Config: 
+          -- &nbsp; Config: 
           <a href="/#/config" alt="View config">
             <fa-icon icon="fa-solid fa-gear" />
           </a>
         </div>
         <div class="devmode">
-          Docs: 
+          | &nbsp; Docs: 
           <a href="https://smile.gureckislab.org" alt="View docs" target="_new">
             <fa-icon icon="fa-solid fa-book" />
           </a>
@@ -24,28 +21,63 @@ import { routes } from '@/router'
         <div class="devmode">
           <div class="dropdown is-hoverable">
             <div class="dropdown-trigger">
-              Jump to: 
+              | &nbsp; Jump: 
               <a alt="Skip sections">
                 <fa-icon icon="fa-solid fa-rainbow" />
               </a>
             </div>
             <div class="dropdown-menu" id="dropdown-menu" role="menu">
               <div class="dropdown-content">
-                <a class="dropdown-item" v-for="r in routes" :href="'#'+r.path" >
-                  <fa-icon icon="fa-solid fa-arrows-turn-to-dots" /> {{ r.name }}
+                <a class="dropdown-item routelink" v-for="r in routes" :href="'#'+r.path" :key="r.name">
+                  /{{ r.name }}
                 </a>
-                <hr class="dropdown-divider">
               </div>
             </div>
           </div>
         </div>
         <div class="devmode">
-          Data: 
+          | &nbsp; Data: 
           <a href="/#/data" alt="View config">
             <fa-icon icon="fa-solid fa-database" />
           </a>
-          ]
         </div>
+        <div class="devmode">
+          <div class="dropdown is-hoverable">
+            <div class="dropdown-trigger">
+              | &nbsp; Useful: 
+              <a alt="Skip sections">
+                <fa-icon icon="fa-solid fa-face-laugh-beam" />
+              </a>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+              <div class="dropdown-content">
+                <a href="https://github.com/NYUCCL/smile" class="dropdown-item" target="_new">
+                  <fa-icon icon="fa-solid fa-globe" /> Smile GitHub
+                </a>
+                <a href="https://vuejs.org" class="dropdown-item" target="_new">
+                  <fa-icon icon="fa-solid fa-globe" /> Vuejs
+                </a>
+                <a href="https://sfc.vuejs.org" class="dropdown-item" target="_new">
+                  <fa-icon icon="fa-solid fa-globe" /> Vuejs SFC Playground
+                </a>
+                <a href="https://bulma.io" class="dropdown-item" target="_new">
+                  <fa-icon icon="fa-solid fa-globe" /> Bulma
+                </a>
+                <a href="https://fontawesome.com" class="dropdown-item" target="_new">
+                  <fa-icon icon="fa-solid fa-globe" /> FontAwesome
+                </a>
+                <a href="https://www.internetingishard.com" class="dropdown-item" target="_new">
+                  <fa-icon icon="fa-solid fa-globe" /> Interneting is hard
+                </a>
+                <a href="https://javascript.info" class="dropdown-item" target="_new">
+                  <fa-icon icon="fa-solid fa-globe" /> The Modern Javascript Tutorial
+                </a>
+              </div>
+            </div>
+          </div>&nbsp;
+
+        </div>
+
     </div>
         
   </nav>
@@ -60,6 +92,10 @@ a {
   border-radius: 0;
   padding-top:0;
   padding-bottom:0;
+}
+
+.routelink {
+  font-family: monospace;
 }
 
 .dropdown-content b {
@@ -80,6 +116,9 @@ a:hover {
   color: #10dffa;
 }
 
+.iconcolor {
+  color: #10dffa;
+}
 .navbar {
   font-size: 13px;
   background: rgb(63, 160, 149);
@@ -94,7 +133,7 @@ a:hover {
 
 .devmode-title {
     padding-top: 8px;
-  font-weight: 800;
+  font-weight: 500;
   padding-left: 10px;
 }
 .devmode {

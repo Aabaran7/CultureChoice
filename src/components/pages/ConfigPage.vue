@@ -26,14 +26,14 @@ function resetLocalState() {
     <p class="title">
       <span id="bigsmile">🤠</span>
     </p>
-    <p class="subtitle ">
-      <h1  class="title is-1">Smile!</h1>
+    <p class="subtitle">
+      <h1 class="title is-1">Smile!</h1>
     </p>
     <p>
       <h1 class="title is-4">A happy approach to online behavioral research.</h1>
     </p>
   </div>
-</section>
+  </section>
   
   <div class="divider">Code Version Info</div>
   <div class="code">

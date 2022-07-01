@@ -1,6 +1,7 @@
 <script setup>
 import { inject } from 'vue'
 import useStepRoute from '@/composables/StepRoute'
+
 const smileconfig = inject('smileconfig')
 
 const { next, prev } = useStepRoute()
