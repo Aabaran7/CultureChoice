@@ -3,7 +3,7 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { inject } from 'vue'
 import DeveloperNavBar from '@/components/pages/organisms/DeveloperNavBar.vue';
-import StatusBar from '@/components/pages/organisms/StatusBar.vue';
+//import StatusBar from '@/components/pages/organisms/StatusBar.vue';
 //<StatusBar></StatusBar>
 const smileconfig = inject('smileconfig')
 
