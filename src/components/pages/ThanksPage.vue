@@ -8,7 +8,8 @@ const { next, prev } = useStepRoute()
 
 <template>
     <div class="prompt">
+        <h1  class="title is-3"><fa-icon icon="fa-solid fa-square-check" /></h1>
         <h1  class="title is-3">Thanks</h1>
-        <button v-if="smileconfig.mode=='development'" class="button is-success is-light" @click="$router.push(next)">next</button>
+        <button v-if="smileconfig.mode=='development'" class="button is-success is-light" @click="$router.push(next)">next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>
