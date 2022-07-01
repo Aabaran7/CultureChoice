@@ -16,6 +16,8 @@ export default function useStepRoute() {
   const next = computed(() => {
     const nextRoute = routes.value[routeIndex.value + 1]
     smileStore.setLastRoute(nextRoute.name)
+    smileStore.data.trial_num += 1
+    smileStore.saveData()
     return nextRoute && { name: nextRoute.name }
   })
 

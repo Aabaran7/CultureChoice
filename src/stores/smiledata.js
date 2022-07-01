@@ -5,7 +5,7 @@ import { useStorage } from '@vueuse/core'
 // import { getFirestore, collection, addDoc } from 'firebase/firestore'
 import appconfig from '@/config'
 
-import { createDoc } from './firestore-db'
+import { createDoc, updateDoc } from './firestore-db'
 
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
@@ -14,12 +14,11 @@ export default defineStore('smilestore', {
       knownUser: false,
       lastRoute: 'home',
       allowJumps: false,
-    }),
-    db: {
       docRef: null,
-    },
+    }),
     data: {
       trial_num: 0,
+      service: 'prolific',
     },
   }),
 
@@ -31,12 +30,15 @@ export default defineStore('smilestore', {
   actions: {
     async setKnown() {
       this.local.knownUser = true
-      const docRef = createDoc(appconfig)
+      this.local.docRef = await createDoc(this.data, appconfig)
     },
     setLastRoute(route) {
       if (route !== 'config') {
         this.local.lastRoute = route
       }
+    },
+    async saveData() {
+      await updateDoc(this.data, this.local.docRef, appconfig)
     },
     resetLocal() {
       this.local.knownUser = false
