@@ -13,6 +13,7 @@ export default defineStore('smilestore', {
     local: useStorage(appconfig.local_storage_key, {
       knownUser: false,
       lastRoute: 'home',
+      allowJumps: false,
     }),
     db: {
       docRef: null,
@@ -40,6 +41,7 @@ export default defineStore('smilestore', {
     resetLocal() {
       this.local.knownUser = false
       this.local.lastRoute = 'home'
+      this.local.allowJumps = false
       // this.$reset()
     },
   },

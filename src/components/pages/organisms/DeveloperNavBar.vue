@@ -1,5 +1,7 @@
 <script setup>
 import { routes } from '@/router' 
+import useSmileStore from '@/stores/smiledata'
+const smilestore = useSmileStore()
 </script>
 
 <template>
@@ -21,13 +23,18 @@ import { routes } from '@/router'
         <div class="devmode">
           <div class="dropdown is-hoverable">
             <div class="dropdown-trigger">
-              | &nbsp; Jump: 
+              | &nbsp; Jump
+              
               <a alt="Skip sections">
                 <fa-icon icon="fa-solid fa-rainbow" />
               </a>
             </div>
-            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-menu" id="dropdown-menu" role="menu" >
               <div class="dropdown-content">
+                <br>
+                <input type="checkbox" v-model='smilestore.local.allowJumps'/> <b>Allow</b>
+                <br><br>
+                <hr class="dropdown-divider">
                 <a class="dropdown-item routelink" v-for="r in routes" :href="'#'+r.path" :key="r.name">
                   /{{ r.name }}
                 </a>
@@ -59,6 +66,9 @@ import { routes } from '@/router'
                 </a>
                 <a href="https://sfc.vuejs.org" class="dropdown-item" target="_new">
                   <fa-icon icon="fa-solid fa-globe" /> Vuejs SFC Playground
+                </a>
+                <a href="https://devtools.vuejs.org/" class="dropdown-item" target="_new">
+                  <fa-icon icon="fa-solid fa-globe" /> Vue Dev Tools (Chrome)
                 </a>
                 <a href="https://bulma.io" class="dropdown-item" target="_new">
                   <fa-icon icon="fa-solid fa-globe" /> Bulma
@@ -92,6 +102,7 @@ a {
   border-radius: 0;
   padding-top:0;
   padding-bottom:0;
+  color: #000;
 }
 
 .routelink {

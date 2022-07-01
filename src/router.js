@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
+import appconfig from '@/config'
 
 // 1. Import route components.
 import Advertisement from '@/components/pages/AdvertisementPage.vue'
@@ -64,10 +65,15 @@ const routes = [
 //    and if they are, they redirect to last route
 function addGuards(r) {
   r.beforeEach((to) => {
-    if (to.name === 'config') {
+    const smileStore = useSmileStore()
+
+    if (
+      to.name === 'config' ||
+      (smileStore.local.allowJumps && appconfig.mode == 'development')
+    ) {
       return true
     }
-    const smileStore = useSmileStore()
+
     // if not known and requesting home
     if (!smileStore.isKnownUser) {
       if (to.name === 'home') {
