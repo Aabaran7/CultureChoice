@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
+
+// import { initializeApp } from 'firebase/app'
+// import { getFirestore, collection, addDoc } from 'firebase/firestore'
 import appconfig from '@/config'
-// import createDoc from './firestore-db'
+
+import { createDoc } from './firestore-db'
 
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
@@ -24,9 +28,9 @@ export default defineStore('smilestore', {
   },
 
   actions: {
-    setKnown() {
+    async setKnown() {
       this.local.knownUser = true
-      // this.db.docRef = createDoc(appconfig)
+      const docRef = createDoc(appconfig)
     },
     setLastRoute(route) {
       if (route !== 'config') {
