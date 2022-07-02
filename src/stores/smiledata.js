@@ -18,6 +18,8 @@ export default defineStore('smilestore', {
     }),
     data: {
       trial_num: 0,
+      consented: false,
+      working: true,
       service: 'prolific',
     },
   }),

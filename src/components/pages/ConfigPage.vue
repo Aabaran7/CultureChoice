@@ -27,7 +27,7 @@ function createLink(option) {
 }
 function resetLocalState() {
   localStorage.removeItem(smileconfig.local_storage_key) // delete the local store
-  smilestore.$reset()
+  smilestore.$reset()  // reset all the data even
   router.push('/')
 }
 </script>
@@ -92,7 +92,7 @@ function resetLocalState() {
 
       <div class="column is-8">
         
-        <div class="divider">Configuration</div>
+        <div class="divider">Full Configuration</div>
         <div class="code">
           <ul>
             <li class="config" v-for="option, key in smileconfig" :key="key">

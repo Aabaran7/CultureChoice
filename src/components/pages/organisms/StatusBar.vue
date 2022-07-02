@@ -1,8 +1,9 @@
 <script setup>
 import { ref, inject } from 'vue'
-
+import useSmileStore from '@/stores/smiledata'
 const smileconfig = inject('smileconfig')
 
+const smilestore = useSmileStore()
 const exp = {
     consented: false,
     working: false,
@@ -24,13 +25,13 @@ const exp = {
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                    <a class="button is-info is-small" v-if="exp.consented">
+                    <a class="button is-info is-small" v-if="smilestore.data.consented">
                         <fa-icon icon="magnifying-glass" />&nbsp;&nbsp;<strong>View consent</strong>
                     </a>
-                    <a class="button is-danger is-small" v-if="exp.consented">
+                    <a class="button is-danger is-small" v-if="smilestore.data.consented">
                         <fa-icon icon="circle-xmark" />&nbsp;&nbsp;<strong>Withdraw</strong>
                     </a>
-                    <a class="button is-warning is-small" v-if="exp.working">
+                    <a class="button is-warning is-small" v-if="smilestore.data.working">
                         <fa-icon icon="hand" />&nbsp;&nbsp;<strong>Report an issue</strong>
                     </a>
                 </div>
