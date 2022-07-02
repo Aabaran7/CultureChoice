@@ -62,7 +62,7 @@ onMounted(() => {
         </div>
         <div class="devmode">
           | &nbsp; Data: 
-          <a href="/#/data" alt="View config">
+          <a href="/#/config/#data" alt="View config">
             <fa-icon icon="fa-solid fa-database" />
           </a>
         </div>
