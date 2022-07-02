@@ -1,17 +1,17 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import { inject } from 'vue'
+import { ref, inject, onMounted } from 'vue'
 import DeveloperNavBar from '@/components/pages/organisms/DeveloperNavBar.vue';
-//import StatusBar from '@/components/pages/organisms/StatusBar.vue';
-//<StatusBar></StatusBar>
+import StatusBar from './components/pages/organisms/StatusBar.vue';
 const smileconfig = inject('smileconfig')
 
 </script>
 
 <template>
-  <DeveloperNavBar v-if="smileconfig.mode=='development'"></DeveloperNavBar>
   
+  <DeveloperNavBar v-if="smileconfig.mode=='development'"></DeveloperNavBar>
+  <StatusBar v-if="$route.name!=='config'"></StatusBar>
   <div class="router">
     <router-view></router-view>
   </div>

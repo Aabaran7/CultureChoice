@@ -59,8 +59,8 @@ function resetLocalState() {
         <button class="button is-warning is-small" @click="resetLocalState"><fa-icon icon="fa-solid fa-arrow-rotate-left" /> &nbsp; reset</button>
         <div class="code">
           <ul>
-            <li class="config" v-for="(option, key) in smilestore.local" :key="key">
-              <b>{{ key }}</b>: option
+            <li class="config" v-for="option, key in smilestore.local" :key="key">
+              <b>{{ key }}</b>: <span v-html='createLink(option)'></span>
             </li>
           </ul>
         </div>
