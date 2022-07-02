@@ -1,7 +1,25 @@
 <script setup>
 import { routes } from '@/router' 
 import useSmileStore from '@/stores/smiledata'
+import { useMouse } from '@vueuse/core'
+import { onMounted } from 'vue';
+import { useRouter  } from 'vue-router'
 const smilestore = useSmileStore()
+const { x, y } = useMouse({ touch: false })
+const router = useRouter()
+
+onMounted(() => {
+  window.addEventListener('keyup', (ev) => {
+      if((x.value<5) && (y.value<30) && (ev.key==='2')) {
+        router.push('/config')
+      }
+      if((x.value<5) && (y.value<30) && (ev.key==='1')) {
+        router.push('/')
+      }
+  })
+})
+
+
 </script>
 
 <template>
@@ -85,7 +103,6 @@ const smilestore = useSmileStore()
               </div>
             </div>
           </div>&nbsp;
-
         </div>
 
     </div>

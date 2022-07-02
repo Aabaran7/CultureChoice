@@ -1,1 +1,1 @@
-The data should be json
+The data should be JSON.
