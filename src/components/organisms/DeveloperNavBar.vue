@@ -52,7 +52,7 @@ onMounted(() => {
             <div class="dropdown-menu" id="dropdown-menu" role="menu" >
               <div class="dropdown-content">
                 <br>
-                <input type="checkbox" v-model='smilestore.local.allowJumps'/> <b>Allow</b>
+                <input type="checkbox" v-model='smilestore.local.allowJumps'/> <b>Force</b>
                 <br><br>
                 <hr class="dropdown-divider">
                 <a class="dropdown-item routelink" v-for="r in routes" :href="'#'+r.path" :key="r.name">
@@ -152,7 +152,7 @@ a:hover {
   text-align: center;
 }
 .devmode-title {
-    padding-top: 8px;
+  padding-top: 8px;
   font-weight: 500;
   padding-left: 10px;
 }
