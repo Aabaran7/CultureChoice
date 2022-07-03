@@ -48,6 +48,10 @@ export default defineConfig({
         ],
       },
       {
+        text: 'Recruiting participants',
+        items: [{ text: '🙋 Overview', link: '/recruitment' }],
+      },
+      {
         text: 'Contributing',
         collapsible: false,
         collapsed: false,
