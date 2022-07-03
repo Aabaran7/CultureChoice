@@ -35,15 +35,15 @@ const routes = [
     },
   },
   {
-    path: '/captcha',
-    name: 'captcha',
-    component: Captcha,
-    meta: { progress: (100 * route_index++) / total_non_config_routes },
-  },
-  {
     path: '/consent',
     name: 'consent',
     component: Consent,
+    meta: { progress: (100 * route_index++) / total_non_config_routes },
+  },
+  {
+    path: '/captcha',
+    name: 'captcha',
+    component: Captcha,
     meta: { progress: (100 * route_index++) / total_non_config_routes },
   },
   {
