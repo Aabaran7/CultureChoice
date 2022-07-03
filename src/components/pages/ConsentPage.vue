@@ -1,5 +1,5 @@
 <script setup>
-//import { inject } from 'vue'
+import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useStepRoute from '@/composables/StepRoute'
 
@@ -20,26 +20,29 @@ function finish(goto) {
     smileStore.data.consented=true
     router.push(goto)
 }
+const agree = ref(false)
 </script>
 
 <template>
     <div class="content">
         <div class="columns">
             <div class="column is-one-third">
-                <p class="is-size-8 leftalign">
+                <p class="is-size-8 leftalign emph">
                     Informed consent is an important part of a research study verifying that you are 
                     participating willingly and know your rights. Please take the time to read
                     the consent form (you can scroll the page if it not entirely visible).
                 </p>
-                <button class="button is-success is-light" @click="finish(next)">
-                    next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" />
+                <hr>
+                <p class="leftalign"><input type="checkbox" v-model='agree'/> I have read 
+                and agree to the terms of the consent form.  I am also over 18 years old.</p>
+                <hr>
+                <button class="button is-success is-light" v-if='agree' @click="finish(next)">
+                    Let's start &nbsp;<fa-icon icon="fa-solid fa-arrow-right" />
                 </button>
 
             </div>
             <div class="column has-background-info-light informedconsent">
-                <div class="columns">
-                    <InformedConsentText/>
-                </div>        
+                <InformedConsentText/>
             </div>
         </div>
     </div>
@@ -50,7 +53,19 @@ function finish(goto) {
 .leftalign {
     text-align: left;
 }
+
+.emph {
+    font-weight: 600;
+}
 .content {
     margin: 50px;
+}
+
+.column {
+    padding: 40px;
+}
+
+.informedconsent {
+    border-radius: 15px;
 }
 </style>

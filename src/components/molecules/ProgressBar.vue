@@ -30,6 +30,7 @@ const smilestore = useSmileStore() // get the global store
   color: #fff;
   height: 5px;
   padding: 0px;
+  padding-top: 20px;
   padding-left: 0px;
   padding-bottom: 50px;
   margin: 0px;

@@ -2,12 +2,11 @@
 
     <div class="informedconsent">
         <h1 class="is-size-4">Informed Consent Statement</h1>
-        
         <p>
             If you agree to be in this study, you will be asked to look at pictures of objects or pictures presented on a computer display, watch videos, listen to sounds, or observe lights controlled by the computer and to make judgments about them using a keyboard, mouse, or other input device attached to a computer.
             <ul>
                 <li>
-                    <b>Participation in this study will take about 30 minutes to complete, and you will receive $4.50 for your participation. As an additional incentive to try your best at the task, you may earn a cash bonus of up to $10.00 based on your performance.</b>
+                    Participation in this study will take about 30 minutes to complete, and you will receive $4.50 for your participation. As an additional incentive to try your best at the task, you may earn a cash bonus of up to $10.00 based on your performance.
                 </li>
                 <li>
                     When you complete the study, a thorough verbal and written explanation of it will be provided.
@@ -36,9 +35,9 @@
 
 <style>
 .informedconsent {
-    padding: 30px;
+    padding: 10px;
     text-align: left;
-    font-size: 0.9em;
+    font-size: 0.95em;
 }
 
 .informedconsent ul {

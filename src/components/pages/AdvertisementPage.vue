@@ -12,7 +12,9 @@ const smileStore = useSmileStore()
 
 const { next, prev } = useStepRoute()
 
+
 if(route.meta.progress) smileStore.global.progress = route.meta.progress
+
 
 function finish(goto) { 
     router.push(goto)
