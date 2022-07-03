@@ -1,5 +1,6 @@
 @import './styles.css';
 @import "../node_modules/@creativebulma/bulma-divider";
+@import "@vueform/toggle/themes/default.css";
 
 .prompt {
     margin-top: 200px;
