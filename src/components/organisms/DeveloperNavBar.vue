@@ -1,25 +1,27 @@
 <script setup>
-import { routes } from '@/router' 
-import useSmileStore from '@/stores/smiledata'
-import { useMouse } from '@vueuse/core'
 import { onMounted } from 'vue';
+import { useMouse } from '@vueuse/core'
 import { useRouter  } from 'vue-router'
-const smilestore = useSmileStore()
-const { x, y } = useMouse({ touch: false })
-const router = useRouter()
 
+import useSmileStore from '@/stores/smiledata'
+import { routes } from '@/router' 
+
+const smilestore = useSmileStore() // load the global store
+const { x, y } = useMouse({ touch: false }) // tracks mouse reactively
+const router = useRouter()  // this is needed in composition API because this.$router not availabel
+
+
+// easter egg to jump to config page (press 2 with mouse in top right of screen)
 onMounted(() => {
   window.addEventListener('keyup', (ev) => {
       if((x.value<5) && (y.value<30) && (ev.key==='2')) {
-        router.push('/config')
+        router.push('/config') // jump to the config page
       }
       if((x.value<5) && (y.value<30) && (ev.key==='1')) {
-        router.push('/')
+        router.push('/') // jump to the start page (or get redirected)
       }
   })
 })
-
-
 </script>
 
 <template>
@@ -59,12 +61,6 @@ onMounted(() => {
               </div>
             </div>
           </div>
-        </div>
-        <div class="devmode">
-          | &nbsp; Data: 
-          <a href="/#/config/#data" alt="View config">
-            <fa-icon icon="fa-solid fa-database" />
-          </a>
         </div>
         <div class="devmode">
           <div class="dropdown is-hoverable">
@@ -114,18 +110,15 @@ onMounted(() => {
 a {
   color: #fff;
 }
-
 .dropdown-content {
   border-radius: 0;
   padding-top:0;
   padding-bottom:0;
   color: #000;
 }
-
 .routelink {
   font-family: monospace;
 }
-
 .dropdown-content b {
   color: #000;
   font-size: 13px;
@@ -158,7 +151,6 @@ a:hover {
   min-height: 32px;
   text-align: center;
 }
-
 .devmode-title {
     padding-top: 8px;
   font-weight: 500;

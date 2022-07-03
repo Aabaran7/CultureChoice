@@ -1,6 +1,7 @@
 // config.js
 
 // global configuration options for the smile app
+// fields import.meta.env.XXXX are string replaced by vite
 
 export default {
   mode: import.meta.env.MODE,

@@ -1,9 +1,9 @@
 <template>
 
     <div class="informedconsent">
-        <h1 class="is-size-5">Official, IRB approved NYU Informed Consent Form</h1>
-        <hr>
-        <p class="is-size-6">
+        <h1 class="is-size-4">Informed Consent Statement</h1>
+        
+        <p>
             If you agree to be in this study, you will be asked to look at pictures of objects or pictures presented on a computer display, watch videos, listen to sounds, or observe lights controlled by the computer and to make judgments about them using a keyboard, mouse, or other input device attached to a computer.
             <ul>
                 <li>
@@ -26,7 +26,7 @@
                 </li>
             </ul>
         </p>
-        <p class="is-size-6">
+        <p>
             If there is anything about the study or your participation that is unclear or that you do not understand, if you have questions or wish to report a research-related problem, you may contact the principal investigator, <a href="http://todd.gureckislab.org">Todd M. Gureckis</a> at 6 Washington Place (409), New York, NY, 10003, (212) 998-3794, <a href="mailto:todd.gureckis@nyu.edu">todd.gureckis@nyu.edu</a>. For questions about your rights as a research participant, you may contact the University Committee on Activities Involving Human Subjects, New York University, 665 Broadway, Suite 804, New York, NY 10012, at ask.humansubjects@nyu.edu or (212) 998-4808.
         </p>
     </div>    
@@ -36,10 +36,9 @@
 
 <style>
 .informedconsent {
-    background-color: #fff;
     padding: 30px;
     text-align: left;
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 
 .informedconsent ul {

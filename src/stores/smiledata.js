@@ -16,6 +16,9 @@ export default defineStore('smilestore', {
       allowJumps: false,
       docRef: null,
     }),
+    global: {
+      progress: 0,
+    },
     data: {
       trial_num: 0,
       consented: false,
