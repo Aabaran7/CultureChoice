@@ -28,6 +28,7 @@
     "@vueuse/core": "^8.7.5",
     "firebase": "^9.8.4",
     "pinia": "^2.0.14",
+    "seedrandom": "^3.0.5",
     "vue": "^3.2.25",
     "vue-router": "^4.0.16"
   },
