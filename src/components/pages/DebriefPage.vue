@@ -6,7 +6,8 @@ import useStepRoute from '@/composables/StepRoute'
 const router = useRouter()
 const route = useRoute()
 
-import useSmileStore from '@/stores/smiledata' // get access to the global store
+import useSmileStore from '@/stores/smiledata'
+import DebriefText from '@/components/atoms/DebriefText.vue'; // get access to the global store
 //const smileconfig = inject('smileconfig')
 const smileStore = useSmileStore()
 
@@ -21,8 +22,9 @@ function finish(goto) {
 </script>
 
 <template>
-    <div class="prompt">
-        <h1 class="title is-3">Debrief</h1>
+    <div class="content prompt">
+        <h1 class="title is-3">What was that about?</h1>
+        <DebriefText />
         <button class="button is-success is-light" @click="finish(next)">next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>
