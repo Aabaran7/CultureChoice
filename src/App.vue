@@ -1,5 +1,5 @@
 <script setup>
-import { inject} from 'vue'  // required to inject smileconfig
+import useSmileStore from '@/stores/smiledata'
 
 // load sub-components used in this compomnents
 import DeveloperNavBar from '@/components/organisms/DeveloperNavBar.vue';
@@ -7,29 +7,30 @@ import StatusBar from '@/components/organisms/StatusBar.vue';
 import ProgressBar from './components/molecules/ProgressBar.vue';
 
 // imports the global config object
-const smileconfig = inject('smileconfig') 
+const smilestore = useSmileStore()
 </script>
 
 <template>
-  <DeveloperNavBar v-if="smileconfig.mode=='development'"></DeveloperNavBar>
+  <DeveloperNavBar v-if="smilestore.config.mode=='development'"></DeveloperNavBar>
   <StatusBar v-if="$route.name!=='config'"></StatusBar>
-  <ProgressBar v-if="$route.name!=='config'"></ProgressBar>
   <div class="router">
     <router-view></router-view> <!-- the router loads here -->
   </div>
-  
+  <ProgressBar v-if="$route.name!=='config'"></ProgressBar>
 </template>
 
 <style>
-
 /* global fonts **/
 :root {
+    
     --vp-font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    --vp-font-family-mono: Menlo, Monaco, Consolas, "Courier New", monospace
+    --vp-font-family-mono: Menlo, Monaco, Consolas, "Courier New", monospace;
+    background: v-bind(smilestore.global.page_bg_color);
+    
 }
 
-.router {
-  padding-top:0px;
+html {
+  background: v-bind(smilestore.global.page_bg_color);
 }
 
 #app {

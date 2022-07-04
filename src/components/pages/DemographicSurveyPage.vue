@@ -24,18 +24,12 @@ function finish(goto) {
 }
 </script>
 
+
 <template>
     <div class="page">
-        <h1 class="title is-3">Welcome to</h1>
-        <p class="is-family-monospace">{{ smilestore.config.code_name }}</p>
+        <h1 class="title is-3">Demographic Questionaire</h1>
+        <p>To do this</p>
         <br>
         <button class="button is-success is-light" @click="finish(next)">next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>
-
-<style scoped>
-.page {
-    padding-top: 40px;
-}
-
-</style>

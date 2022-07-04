@@ -7,7 +7,6 @@ import { createTestingPinia } from '@pinia/testing'
 import App from '@/App.vue'
 import { routes, addGuards } from '@/router' // This import should point to your routes file declared above
 import useSmileStore from '@/stores/smiledata'
-import smileconfig from '@/plugins/smileconfig'
 import appconfig from '@/config'
 
 let router
@@ -21,7 +20,7 @@ describe('App tests', () => {
   function setupapp() {
     const wrapper = mount(App, {
       global: {
-        plugins: [router, pinia, smileconfig],
+        plugins: [router, pinia],
       },
     })
     return wrapper

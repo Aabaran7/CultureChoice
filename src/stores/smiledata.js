@@ -18,6 +18,10 @@ export default defineStore('smilestore', {
     }),
     global: {
       progress: 0,
+      page_bg_color: '#000',
+      page_text_color: '#000',
+      status_bar_bg_color: '#fff',
+      status_bar_text_color: '#000',
     },
     data: {
       trial_num: 0,
@@ -25,6 +29,7 @@ export default defineStore('smilestore', {
       working: true,
       service: 'prolific',
     },
+    config: appconfig,
   }),
 
   getters: {

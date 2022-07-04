@@ -1,5 +1,5 @@
 <script setup>
-import { ref, inject } from 'vue'
+import { ref } from 'vue'
 import useSmileStore from '@/stores/smiledata'
 import { useRouter } from 'vue-router'
 
@@ -10,7 +10,11 @@ defineProps({
   msg: String
 })
 
-const smileconfig = inject('smileconfig')
+smilestore.global.page_bg_color = '#fff'
+smilestore.global.page_text_color = '#000'
+smilestore.global.status_bar_bg_color = '#fff'
+smilestore.global.status_bar_text_color = '#000'
+
 const count = ref(0)
 
 function createLink(option) {
@@ -26,7 +30,7 @@ function createLink(option) {
   }
 }
 function resetLocalState() {
-  localStorage.removeItem(smileconfig.local_storage_key) // delete the local store
+  localStorage.removeItem(smilestore.config.local_storage_key) // delete the local store
   smilestore.$reset()  // reset all the data even
   router.push('/')
 }
@@ -69,7 +73,7 @@ function resetLocalState() {
         <div class="divider">Code Version Info</div>
         <div class="code">
           <ul>
-            <li class="config" v-for="option, key in smileconfig.github" :key="key">
+            <li class="config" v-for="option, key in smilestore.config.github" :key="key">
               <b>{{ key }}</b>: <span v-html='createLink(option)'></span>
             </li>
           </ul>
@@ -95,7 +99,7 @@ function resetLocalState() {
         <div class="divider">Full Configuration</div>
         <div class="code">
           <ul>
-            <li class="config" v-for="option, key in smileconfig" :key="key">
+            <li class="config" v-for="option, key in smilestore.config" :key="key">
               <span v-if=" typeof(option)=='string' ">
                 <b>{{key}}</b>: <span v-html='createLink(option)'></span>
               </span>
@@ -140,6 +144,7 @@ function resetLocalState() {
 </template>
 
 <style scoped>
+
 .hero {
   background-color: #79f2cc;
   margin-bottom: 0px;

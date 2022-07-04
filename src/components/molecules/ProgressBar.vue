@@ -1,10 +1,6 @@
 <script setup>
-import { ref, inject } from 'vue'
 import useSmileStore from '@/stores/smiledata'
-
-//const smileconfig = inject('smileconfig') // get the config options
 const smilestore = useSmileStore() // get the global store
-
 </script>
 
 
