@@ -37,7 +37,7 @@ const agree = ref(false)
                     <InformedConsentText/>
                 </div>
                 <div class="column is-one-third">
-                    <div class="box">
+                    <div class="box consentbox">
                         <p class="leftalign emph">
                             We first must verify that you are
                             participating willingly and know your rights. Please take the time to read
@@ -66,7 +66,9 @@ const agree = ref(false)
 </template>
 
 <style scoped>
-
+.consentbox {
+    margin-bottom: 20px;
+}
 .widetoggle{
   --toggle-width: 5.9rem;
 }
