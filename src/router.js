@@ -126,6 +126,9 @@ function addGuards(r) {
 const router = createRouter({
   history: createWebHashHistory(), // We are using the hash history for now/simplicity
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 }
+  },
 })
 
 addGuards(router) // add the guards defined above
