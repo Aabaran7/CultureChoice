@@ -15,9 +15,7 @@ smilestore.global.page_text_color = '#000'
 smilestore.global.status_bar_bg_color = '#fff'
 smilestore.global.status_bar_text_color = '#000'
 
-
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
-
 
 function finish(goto) { 
     router.push(goto)
@@ -26,16 +24,18 @@ function finish(goto) {
 
 <template>
     <div class="page">
-        <h1 class="title is-3">Welcome to</h1>
-        <p class="is-family-monospace">{{ smilestore.config.code_name }}</p>
+        <br><br><br>
+        <img src="https://mbm.cds.nyu.edu/assets/images/brain.svg" width="220">
+        <h1 class="title is-3">Please help us understand the mind!</h1>
+        <p>
+            Take part in a short experiment where you play a game for money.
+        </p>
         <br>
-        <button class="button is-success is-light" @click="finish(next)">next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
+        <button class="button is-warning" @click="finish(next)">I'm ready! &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>
 
 <style scoped>
-.page {
-    padding-top: 40px;
-}
+
 
 </style>

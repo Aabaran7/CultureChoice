@@ -39,14 +39,14 @@ const agree = ref(false)
                 <div class="column is-one-third">
                     <div class="box">
                         <p class="leftalign emph">
-                            Informed consent verifies that you are
+                            We first must verify that you are
                             participating willingly and know your rights. Please take the time to read
                             the consent form (you can scroll the page).
                         </p>
                         <hr>
                         <p class="leftalign">
-                            I have read and agree to the terms of the
-                            consent form.  I also verify I am over 18 years old.
+                            Click below to verify you read and agree to the terms of the
+                            consent form and that you are <b>over 18 years old</b>.
                         </p>
                         <p>
                         <Toggle v-model="agree"

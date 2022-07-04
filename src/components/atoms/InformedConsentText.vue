@@ -1,7 +1,8 @@
 <template>
 
     <div class="informedconsent">
-        <h1 class="is-size-4">Informed Consent Statement</h1>
+        <h1 class="is-size-5">Informed Consent Statement</h1>
+        <hr>
         <p>
             If you agree to be in this study, you will be asked to look at pictures of objects or pictures presented on a computer display, watch videos, listen to sounds, or observe lights controlled by the computer and to make judgments about them using a keyboard, mouse, or other input device attached to a computer.
             <ul>
@@ -40,6 +41,12 @@
     font-size: 0.95em;
 }
 
+.informedconsent hr {
+    background-color: rgb(210, 210, 210);
+    margin-top: 7px;
+    margin-bottom: 10px;
+    height: 1px;
+}
 .informedconsent ul {
     padding-left: 30px;
     padding-top: 10px;

@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 import useSmileStore from '@/stores/smiledata'
 
 // load sub-components used in this compomnents
@@ -8,6 +9,7 @@ import ProgressBar from './components/molecules/ProgressBar.vue';
 
 // imports the global config object
 const smilestore = useSmileStore()
+const bgcolor = ref('green')
 </script>
 
 <template>
@@ -22,15 +24,13 @@ const smilestore = useSmileStore()
 <style>
 /* global fonts **/
 :root {
-    
     --vp-font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     --vp-font-family-mono: Menlo, Monaco, Consolas, "Courier New", monospace;
-    background: v-bind(smilestore.global.page_bg_color);
-    
 }
 
-html {
-  background: v-bind(smilestore.global.page_bg_color);
+.router {
+  height: 100vh;
+  background-color: v-bind(smilestore.global.page_bg_color);
 }
 
 #app {

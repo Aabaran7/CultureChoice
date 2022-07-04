@@ -28,7 +28,9 @@ function finish(goto) {
 <template>
     <div class="page">
         <h1 class="title is-3">Demographic Questionaire</h1>
-        <p>To do this</p>
+        <FormKit type="text" />
+        <FormKit type="select" />
+        <FormKit type="textarea" />
         <br>
         <button class="button is-success is-light" @click="finish(next)">next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
     </div>
