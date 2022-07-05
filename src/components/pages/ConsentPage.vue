@@ -7,7 +7,6 @@ import InformedConsentText from '@/components/atoms/InformedConsentText.vue';
 const router = useRouter()
 const route = useRoute()
 
-//http://haacked.com/archive/2007/09/11/honeypot-captcha.aspx/
 import useSmileStore from '@/stores/smiledata'
 const smilestore = useSmileStore()
 
@@ -26,6 +25,8 @@ function finish(goto) {
     router.push(goto)
 }
 const agree = ref(false)
+const name = ref('enter your name')
+
 </script>
 
 <template>
@@ -54,6 +55,9 @@ const agree = ref(false)
                                     validation-visibility="dirty"
                                     label-class="has-text-left"
                                     />
+                                <div class="honeyname">
+                                    Required!  Please enter your name: <input type="text" name="your name" label="enter your name" v-model='name' />
+                                </div>
                             </p>
                             <br>
             

@@ -18,3 +18,7 @@
     height: 100vh;
 }
 
+.honeyname {
+    visibility: hidden;
+    display: none;
+}
