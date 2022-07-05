@@ -21,3 +21,6 @@ git push
 
 echo "Installing dependencies"
 npm install
+
+echo "Buliding Bulma CSS"
+npm run css-build
