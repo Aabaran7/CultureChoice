@@ -1,11 +1,10 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import useStepRoute from '@/composables/StepRoute'
+import useSmileStore from '@/stores/smiledata' // get access to the global store
 
 const router = useRouter()
 const route = useRoute()
-
-import useSmileStore from '@/stores/smiledata' // get access to the global store
 const smilestore = useSmileStore()
 
 const { next, prev } = useStepRoute()
@@ -36,6 +35,5 @@ function finish(goto) {
 </template>
 
 <style scoped>
-
 
 </style>

@@ -2,12 +2,12 @@
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useStepRoute from '@/composables/StepRoute'
+import useSmileStore from '@/stores/smiledata'
 
 import InformedConsentText from '@/components/atoms/InformedConsentText.vue';
+
 const router = useRouter()
 const route = useRoute()
-
-import useSmileStore from '@/stores/smiledata'
 const smilestore = useSmileStore()
 
 smilestore.global.page_bg_color = '#fff'

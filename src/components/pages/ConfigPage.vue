@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import useSmileStore from '@/stores/smiledata'
 import { useRouter } from 'vue-router'
+import useSmileStore from '@/stores/smiledata'
 
 const smilestore = useSmileStore()
 const router = useRouter()
