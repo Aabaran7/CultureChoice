@@ -44,6 +44,7 @@ function finish(goto) {
                     <div class="box is-shadowless formbox">
                         <FormKit type="date"
                                  label="Date of Birth"
+                                 placeholder="1/1/1960"
                                  help="Enter your birthday (required)"
                                  validation="required"
                                  validation-visibility="live"/>
@@ -81,6 +82,11 @@ function finish(goto) {
                                  placeholder="Select an option"
                                  :options="['Yes', 'No']"/>
                         <FormKit type="select" 
+                                 label="Do you have normal vision (or corrected to be normal)?"
+                                 help="Do you have normal vision?"
+                                 placeholder="Select an option"
+                                 :options="['Yes', 'No']"/>
+                        <FormKit type="select" 
                                  label="Are you color blind?"
                                  help="Do you have any color blindness?"
                                  placeholder="Select an option"
@@ -115,13 +121,19 @@ function finish(goto) {
                     <div class="box is-shadowless formbox">
                         <FormKit type="select" 
                                  label="Country"
-                                 help="Select the country in which you reside."/>
+                                 placeholder="Select an option"
+                                 help="Select the country in which you reside."
+                                 :options="['Afghanistan','Albania','Algeria','Andorra','Angola','Antigua & Deps','Argentina','Armenia','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina','Burundi','Cambodia','Cameroon','Canada','Cape Verde','Central African Rep','Chad','Chile','China','Colombia','Comoros','Congo','Congo {Democratic Rep}','Costa Rica','Croatia','Cuba','Cyprus','Czech Republic','Denmark','Djibouti','Dominica','Dominican Republic','East Timor','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Ethiopia','Fiji','Finland','France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana','Haiti','Honduras','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland {Republic}','Israel','Italy','Ivory Coast','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Korea North','Korea South','Kosovo','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Macedonia','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar, {Burma}','Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','Norway','Oman','Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Romania','Russian Federation','Rwanda','St Kitts & Nevis','St Lucia','Saint Vincent & the Grenadines','Samoa','San Marino','Sao Tome & Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Swaziland','Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Togo','Tonga','Trinidad & Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Yemen','Zambia','Zimbabwe']"
+                                 />
                         <FormKit type="text" 
                                  label="Zipcode/Postal Code"
                                  help="Select zipcode or postal code of your primary residence."/>
                         <FormKit type="select" 
                                  label="Highest level of education"
-                                 help="What is your highest level of schooling that you completed?"/>
+                                 placeholder="Select an option"
+                                 help="What is your highest level of schooling that you completed?"
+                                 :options="['No Formal Qualifications', 'Secondary Education (ie. GED/GCSE)', 'High School Diploma (A-levels)', 'Technical/Community College', 'Undergraduate Degree (BA/BS/Other)', 'Graduate Degree (MA/MS/MPhil/Other)', 'Doctorate Degree (PhD/Other)', 'Don’t Know/Not Applicable']"
+                                 />
                         <FormKit type="select" 
                                  label="Enter your approximate household income."
                                  help="What is your approximate household income?"
@@ -142,7 +154,7 @@ function finish(goto) {
 
 <style>
 
-:root{
+:root {
     --fk-bg-input: #fff;
     --fk-max-width-input: 100%;
 }

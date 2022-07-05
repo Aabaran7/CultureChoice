@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useStepRoute from '@/composables/StepRoute'
 
-import Toggle from '@vueform/toggle' // https://github.com/vueform/toggle
 import InformedConsentText from '@/components/atoms/InformedConsentText.vue';
 const router = useRouter()
 const route = useRoute()
@@ -31,33 +30,37 @@ const agree = ref(false)
 
 <template>
     <div class="page">
-        <div class="content has-background-light">
-            <div class="columns">
-                <div class="column informedconsent">
-                    <InformedConsentText/>
-                </div>
-                <div class="column is-one-third">
-                    <div class="box consentbox">
-                        <p class="leftalign emph">
-                            We first must verify that you are
-                            participating willingly and know your rights. Please take the time to read
-                            the consent form (you can scroll the page).
-                        </p>
-                        <hr>
-                        <p class="leftalign">
-                            Click below to verify you read and agree to the terms of the
-                            consent form and that you are <b>over 18 years old</b>.
-                        </p>
-                        <p>
-                        <Toggle v-model="agree"
-                        on-label="Consented"
-                        off-label="Verify"
-                        class="widetoggle"/>
-                        </p>
-        
-                        <button class="button is-success is-fullwidth" v-if='agree' @click="finish(next)">
-                            Let's start &nbsp;<fa-icon icon="fa-solid fa-arrow-right" />
-                        </button>
+        <div class="pagecontent">
+            <div class="has-background-light  bumper">
+                <div class="columns">
+                    <div class="column">
+                        <InformedConsentText/>
+                    </div>
+                    <div class="column is-one-third">
+                        <div class="box consentbox">
+                            <p class="has-text-left has-text-weight-semibold">
+                                We first must verify that you are
+                                participating willingly and know your rights. Please take the time to read
+                                the consent form (you can scroll the page).
+                            </p>
+                            <hr>
+                            <p>
+                                <FormKit
+                                    v-model="agree"
+                                    type="checkbox"
+                                    label="I consent and am over 18 years old."
+                                    help="Do you consent to participate in this study?"
+                                    validation="accepted"
+                                    validation-visibility="dirty"
+                                    label-class="has-text-left"
+                                    />
+                            </p>
+                            <br>
+            
+                            <button class="button is-success is-fullwidth" v-if='agree' @click="finish(next)">
+                                Let's start &nbsp;<fa-icon icon="fa-solid fa-arrow-right" />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,29 +69,20 @@ const agree = ref(false)
 </template>
 
 <style scoped>
+
+.pagecontent {
+    padding-bottom: 100px;
+    margin-bottom: 20px;
+        margin: 50px;
+    margin-top: 0px;
+  
+}
 .consentbox {
     margin-bottom: 20px;
-}
-.widetoggle{
-  --toggle-width: 5.9rem;
-}
-
-.box {
     margin-top: 30px;
 }
-.leftalign {
-    text-align: left;
-    font-size: 0.9em;
-}
-
-.emph {
-    font-weight: 600;
-}
-.content {
-    margin: 50px;
-    margin-top: 0px;
-    
-    
+.widetoggle {
+  --toggle-width: 5.9rem;
 }
 
 .column {
@@ -96,12 +90,5 @@ const agree = ref(false)
     padding-top: 0px;
 }
 
-.form {
-    padding: 0px;
-}
 
-.informedconsent {
-    border-radius: 15px;
-    padding-top: 20px;
-}
 </style>

@@ -29,8 +29,8 @@ function toggleReport() {
 <template>
     <div class="navbar" role="navigation" aria-label="main navigation" >
         <div class="navbar-brand">
-            <a class="navbar-item" href="https://bulma.io" >
-                <img src="@/assets/arts_science_short_black.png" width="220">
+            <a class="navbar-item" href="https://gureckislab.org" >
+                <img src="@/assets/nyu.png" width="90">
             </a>
             <div class="navbar-item" >
                 <p class="is-size-7 studyinfo">Study: {{ smilestore.config.code_name }}<br>Version: {{ smilestore.config.github.last_commit_hash }}</p>
@@ -47,7 +47,7 @@ function toggleReport() {
                             <fa-icon icon="circle-xmark" />&nbsp;&nbsp;Withdraw
                         </button>
                         <button class="button is-warning is-small is-light" @click="toggleReport()">
-                            <fa-icon icon="hand" />&nbsp;&nbsp;Report an issue
+                            <fa-icon icon="hand" />&nbsp;&nbsp;Report issue
                         </button>
                     </div>
                 </div>

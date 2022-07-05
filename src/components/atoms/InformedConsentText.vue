@@ -37,6 +37,7 @@
 <style>
 .informedconsent {
     padding: 10px;
+    padding-top: 30px;
     text-align: left;
     font-size: 0.95em;
 }
