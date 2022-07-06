@@ -42,6 +42,10 @@ jobs:
       - name: Install node dependencies
         run: npm install
 
+      # install node packages
+      - name: Build css from scss
+        run: npm run css-build
+        
       # accesses some git variables and processes them to be lower case/short/escaped
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x

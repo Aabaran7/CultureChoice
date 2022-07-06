@@ -7,7 +7,6 @@ import { createTestingPinia } from '@pinia/testing'
 import App from '@/App.vue'
 import { routes, addGuards } from '@/router' // This import should point to your routes file declared above
 import useSmileStore from '@/stores/smiledata'
-import smileconfig from '@/plugins/smileconfig'
 import appconfig from '@/config'
 
 let router
@@ -18,13 +17,22 @@ describe('App tests', () => {
   // before each test we need to set up
   // pinia (because the router depends on it)
 
+  function setupapp() {
+    const wrapper = mount(App, {
+      global: {
+        plugins: [router, pinia],
+      },
+    })
+    return wrapper
+  }
+
   beforeEach(() => {
+    pinia = createTestingPinia({ stubActions: false })
     router = createRouter({
       history: createWebHashHistory(),
       routes,
     })
     addGuards(router)
-    pinia = createTestingPinia({ stubActions: false })
   })
 
   /* there are some basic sanity checks */
@@ -43,11 +51,7 @@ describe('App tests', () => {
   })
 
   it('there should be smilestore after the app started', async () => {
-    const wrapper = mount(App, {
-      global: {
-        plugins: [router, pinia, smileconfig],
-      },
-    })
+    const wrapper = setupapp()
     await router.isReady()
     // local storage created here by the import of the useSmileStore in the app
     expect(localStorage.getItem(appconfig.local_storage_key)).not.toBe(null)
@@ -60,11 +64,7 @@ describe('App tests', () => {
 
   // should first render the welcome
   it('should render welcome then the captcha', async () => {
-    const wrapper = mount(App, {
-      global: {
-        plugins: [router, pinia, smileconfig], // i'm worried this testing pinia
-      }, // is different from above
-    })
+    const wrapper = setupapp()
 
     router.push('/')
     await router.isReady()
@@ -80,12 +80,8 @@ describe('App tests', () => {
     expect(smilestore.local.lastRoute).toBe('captcha')
   })
 
-  it('should render the captcha, and the store though reflect last route', async () => {
-    const wrapper = mount(App, {
-      global: {
-        plugins: [router, pinia, smileconfig], // i'm worried this testing pinia
-      }, // is different from above
-    })
+  it('should render the captcha, then the consent, and the localstore though reflect last route is consent', async () => {
+    const wrapper = setupapp()
 
     await router.isReady()
     expect(wrapper.html()).toContain('Captcha')
@@ -97,69 +93,70 @@ describe('App tests', () => {
     expect(smilestore.local.lastRoute).toBe('consent')
   })
 
-  // should first render the welcome
-  /*
-  it('should render welcome again', async () => {
-    router.push('/')
-    await router.isReady()
-
-    const wrapper = mount(App, {
-      global: {
-        plugins: [router, pinia], // i'm worried this testing pinia
-      }, // is different from above
-    })
+  it('should redirect you to home if you are unknown', async () => {
     const smilestore = useSmileStore()
-    expect(smilestore.local.knownUser).toBe(true)
-    // maybe can useSmileStore here
-
-    expect(wrapper.html()).toContain('Welcome')
-  })
-  */
-  /*
-  it('should render welcome again', async () => {
-    router.push('/')
+    const wrapper = setupapp()
     await router.isReady()
-    const wrapper = mount(App, {
-      global: {
-        plugins: [router, createTestingPinia()], // i'm worried this testing pinia
-      }, // is different from above
-    })
-    // const smilestore = useSmileStore()
-    expect(smilestore.local.knownUser).toBe(true)
-
-    expect(wrapper.html()).toContain('Welcome')
+    await flushPromises()
+    smilestore.resetLocal()
+    await router.isReady()
+    await flushPromises()
+    expect(smilestore.isKnownUser).toBe(false)
+    expect(smilestore.lastRoute).toBe('home')
+    router.push('/exp')
+    await router.isReady()
+    await flushPromises()
+    expect(router.currentRoute.value.name).toBe('home')
+    expect(wrapper.html()).toContain('Welcome') // verify
   })
-  */
 
-  /*
-  // should render the captcha when you click the button
-  it('should follow sequence', async () => {
+  it('should let you access config even if known and last route set', async () => {
     const smilestore = useSmileStore()
-
-    router.push('/')
+    smilestore.setKnown()
+    smilestore.setLastRoute('consent') // pretend we stopped on consent
+    const wrapper = setupapp()
     await router.isReady()
-
-    const wrapper = mount(App, {
-      global: {
-        plugins: [router, createTestingPinia()], // i'm worried this testing pinia is different from above
-      },
-    })
-    const screens = [
-      'Welcome',
-      'Captcha',
-      'Consent',
-      'Exp',
-      'Debrief',
-      'Thanks',
-    ]
-    for (let i = 0; i < screens.length; i++) {
-      expect(wrapper.html()).toContain(screens[i])
-      await wrapper.find('button').trigger('click')
-      await flushPromises()
-    }
-    expect(smilestore.local.knownUser).toBe(true)
+    await flushPromises()
+    router.push('/config') // go to home
+    await router.isReady()
+    await flushPromises()
+    expect(router.currentRoute.value.name).not.toBe('consent') // not this
+    expect(router.currentRoute.value.name).toBe('config') // yes this
   })
-  */
 
-  // should render the captcha when you click the button
+  it('it should redirect you to the last route if you are known ', async () => {
+    const smilestore = useSmileStore()
+    smilestore.setKnown()
+    smilestore.setLastRoute('consent') // pretend we stopped on consent
+
+    const wrapper = setupapp()
+    await router.isReady()
+    await flushPromises()
+    expect(smilestore.isKnownUser).toBe(true)
+    expect(smilestore.lastRoute).toBe('consent')
+    await router.isReady()
+    router.push('/') // go to home
+    await flushPromises()
+    expect(router.currentRoute.value.name).not.toBe('config') // not this
+    expect(router.currentRoute.value.name).toBe('consent') // yes this
+    expect(wrapper.html()).toContain('Consent') // verify
+  })
+
+  it('should send you to the last route if you are known and you try to access a different route', async () => {
+    const smilestore = useSmileStore()
+    smilestore.setKnown()
+    smilestore.setLastRoute('consent') // pretend we stopped on consent
+
+    const wrapper = setupapp()
+    await router.isReady()
+    await flushPromises()
+    expect(smilestore.isKnownUser).toBe(true)
+    expect(smilestore.lastRoute).toBe('consent')
+    await router.isReady()
+    router.push('/exp') // go to something different
+    await flushPromises()
+    expect(router.currentRoute.value.name).not.toBe('exp') // not this
+    expect(router.currentRoute.value.name).toBe('consent') // yes this
+    expect(wrapper.html()).toContain('Consent') // verify
+  })
 })

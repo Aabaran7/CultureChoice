@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
-import appconfig from '@/config'
 
 // import { initializeApp } from 'firebase/app'
 // import { getFirestore, collection, addDoc } from 'firebase/firestore'
+import appconfig from '@/config'
+
+import { createDoc, updateDoc } from './firestore-db'
 
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
@@ -11,7 +13,23 @@ export default defineStore('smilestore', {
     local: useStorage(appconfig.local_storage_key, {
       knownUser: false,
       lastRoute: 'home',
+      allowJumps: false,
+      docRef: null,
     }),
+    global: {
+      progress: 0,
+      page_bg_color: '#fff',
+      page_text_color: '#000',
+      status_bar_bg_color: '#fff',
+      status_bar_text_color: '#000',
+    },
+    data: {
+      trial_num: 0,
+      consented: false,
+      working: true,
+      service: 'prolific',
+    },
+    config: appconfig,
   }),
 
   getters: {
@@ -20,40 +38,23 @@ export default defineStore('smilestore', {
   },
 
   actions: {
-    setKnown() {
-      console.log('inSetKnown')
+    async setKnown() {
       this.local.knownUser = true
-      console.log('set knownUser to true')
+      this.local.docRef = await createDoc(this.data, appconfig)
     },
     setLastRoute(route) {
-      this.local.lastRoute = route
+      if (route !== 'config') {
+        this.local.lastRoute = route
+      }
+    },
+    async saveData() {
+      await updateDoc(this.data, this.local.docRef, appconfig)
     },
     resetLocal() {
-      console.log('resetting state')
-      this.local = null
-      console.log(this.local)
-      this.$reset()
-      console.log(this.local)
+      this.local.knownUser = false
+      this.local.lastRoute = 'home'
+      this.local.allowJumps = false
+      // this.$reset()
     },
   },
 })
-
-/*
-async function startup() {
-  // const smileStore = useSmileStore() // get access to the global store
-  console.log(appconfig.firebaseConfig);
-  const firebaseApp = initializeApp(appconfig.firebaseConfig);
-  const db = getFirestore(firebaseApp);
-
-  try {
-    const docRef = await addDoc(collection(db, 'users'), {
-      first: 'Ada',
-      last: 'Lovelace',
-      born: 1815,
-    });
-    console.log('Document written with ID: ', docRef.id);
-  } catch (e) {
-    console.error('Error adding document: ', e);
-  }
-}
-*/

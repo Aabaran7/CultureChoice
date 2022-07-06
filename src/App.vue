@@ -1,27 +1,38 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import { inject } from 'vue'
+import { ref } from 'vue'
+import useSmileStore from '@/stores/smiledata'
 
-const smileconfig = inject('smileconfig')
+// load sub-components used in this compomnents
+import DeveloperNavBar from '@/components/organisms/DeveloperNavBar.vue';
+import StatusBar from '@/components/organisms/StatusBar.vue';
+import ProgressBar from './components/molecules/ProgressBar.vue';
 
+// imports the global config object
+const smilestore = useSmileStore()
+const bgcolor = ref('green')
 </script>
 
 <template>
-  <div v-if="smileconfig.mode=='development'" class="devmode">DEVELOPER MODE</div>
-  <div v-else class="devmode">PRODUCTION/LIVE MODE</div>
-  <br>
-  <router-view></router-view>
+  <DeveloperNavBar v-if="smilestore.config.mode=='development'"></DeveloperNavBar>
+  <StatusBar v-if="$route.name!=='config'"></StatusBar>
+  <div class="router">
+    <router-view></router-view> <!-- the router loads here -->
+  </div>
+  <ProgressBar v-if="$route.name!=='config'"></ProgressBar>
 </template>
 
 <style>
+/* global fonts **/
 :root {
     --vp-font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    --vp-font-family-mono: Menlo, Monaco, Consolas, "Courier New", monospace
+    --vp-font-family-mono: Menlo, Monaco, Consolas, "Courier New", monospace;
+    /* fontkit overrides */
+    --fk-color-primary: #48c78e;
 }
 
-.devmode {
-  font-size: 12px;
+.router {
+  height: 100vh;
+  background-color: v-bind(smilestore.global.page_bg_color);
 }
 
 #app {
@@ -30,6 +41,5 @@ const smileconfig = inject('smileconfig')
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
