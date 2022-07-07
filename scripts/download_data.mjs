@@ -87,14 +87,12 @@ const getData = async (path, completeOnly, filename) => {
     data.push({ id: doc.id, data: doc.data() })
   })
 
-  await storeData(data, `data_downloads/${filename}.json`)
+  await storeData(data, `data/${filename}.json`)
 }
 
 const success = (filename) => {
   console.log(
-    chalk.green(
-      `your data has been exported to 'data_downloads/${filename}.json'.`
-    )
+    chalk.green(`your data has been exported to 'data/${filename}.json'.`)
   )
 }
 
