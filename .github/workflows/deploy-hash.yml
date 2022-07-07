@@ -145,6 +145,10 @@ jobs:
           cat $DEPLOY_ENV_FILE
 
       # Build the web app
+      - name: Build css files
+        run: npm run css-build
+      
+      # Build the web app
       - name: Build web app
         run: npm run build
 
