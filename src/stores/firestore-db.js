@@ -5,65 +5,46 @@ import {
   doc,
   addDoc,
   setDoc,
+  getDoc,
 } from 'firebase/firestore'
 import appconfig from '@/config'
 
-let firebaseApp
-let db
+// initialize firebase connection
+// since this is a module these will run once at the start
+const firebaseApp = initializeApp(appconfig.firebaseConfig)
+const db = getFirestore(firebaseApp)
+let mode = 'real'
+if (appconfig.mode === 'development') {
+  mode = 'testing'
+}
 
 // create a collection
-
-export const updateDoc = async (data, docref, appconfig) => {
-  let mode = 'real'
-  if (appconfig.mode === 'development') {
-    mode = 'testing'
-  }
-  const firebaseApp = initializeApp(appconfig.firebaseConfig)
-  const db = getFirestore(firebaseApp)
+export const updateDoc = async (data, docid) => {
   try {
-    await setDoc(
-      doc(db, `${mode}/${appconfig.project_ref}/data/`, docref),
-      data,
-      {
-        merge: true,
-      }
-    )
+    const docRef = doc(db, `${mode}/${appconfig.project_ref}/data/`, docid)
+    await setDoc(docRef, data, {
+      merge: true,
+    })
   } catch (e) {
     console.error('Error updating document', e)
     return null
   }
 }
 
-export const createDoc = async (data, appconfig) => {
-  // const smileStore = useSmileStore() // get access to the global store
-  const firebaseApp = initializeApp(appconfig.firebaseConfig)
-  const db = getFirestore(firebaseApp)
-
-  let mode = 'real'
-  if (appconfig.mode === 'development') {
-    mode = 'testing'
+export const loadDoc = async (docid) => {
+  const docRef = doc(db, `${mode}/${appconfig.project_ref}/data/`, docid)
+  const docSnap = await getDoc(docRef)
+  if (docSnap.exists()) {
+    const data = docSnap.data()
+    console.log('Document data:', data)
+    return data
   }
+  // doc.data() will be undefined in this case
+  console.log('No such document!')
+  return undefined
+}
 
-  // const db_type = collection(db, mode) // or should this be collection?
-
-  // first get mode (development or live)
-  // next try to see if a document exists in that collection or not
-  // if not create one with the name of the experiment
-  // add code name to the document as well
-
-  // setDoc - write if no exist, or replace if there is one at that name
-  // updateDoc - only overwrite fields you specify by error if doesn't exist
-  // setDoc(,,{merge: true}) - create if doesn't exist, or update if it does
-  // each as async away or .then()
-  // addDoc gives you a random reference
-  // getDoc to read in with document snamshop
-  //   async function readASingleDocument() {
-  //     const mySnapshot = await getDoc(specialofthedata)
-  //     if (mydoc.exists()) {  // if it exists
-  //         const mydata = mydown.data() // method
-  //     }
-  // }
-
+export const createDoc = async (data) => {
   try {
     const expRef = doc(db, mode, appconfig.project_ref)
     await setDoc(
@@ -96,3 +77,23 @@ export const createDoc = async (data, appconfig) => {
 
 // export default createDoc
 export default db
+
+// const db_type = collection(db, mode) // or should this be collection?
+
+// first get mode (development or live)
+// next try to see if a document exists in that collection or not
+// if not create one with the name of the experiment
+// add code name to the document as well
+
+// setDoc - write if no exist, or replace if there is one at that name
+// updateDoc - only overwrite fields you specify by error if doesn't exist
+// setDoc(,,{merge: true}) - create if doesn't exist, or update if it does
+// each as async away or .then()
+// addDoc gives you a random reference
+// getDoc to read in with document snamshop
+//   async function readASingleDocument() {
+//     const mySnapshot = await getDoc(specialofthedata)
+//     if (mydoc.exists()) {  // if it exists
+//         const mydata = mydown.data() // method
+//     }
+// }

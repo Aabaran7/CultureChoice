@@ -21,7 +21,7 @@ if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 
 function finish(goto) { 
-    smilestore.data.consented=true
+    smilestore.setConsented()
     router.push(goto)
 }
 const agree = ref(false)

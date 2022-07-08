@@ -27,10 +27,10 @@ const routes = [
     component: Advertisement,
     meta: { progress: (100 * route_index++) / total_non_config_routes },
     beforeEnter: (to, from) => {
-      // before loading this route, idenify the user
+      // before loading this route, identify the user
       const smilestore = useSmileStore()
       if (!smilestore.isKnownUser) {
-        smilestore.setKnown()
+        smilestore.setKnown() // set new user and add document
       }
     },
   },
@@ -83,6 +83,7 @@ const routes = [
 function addGuards(r) {
   r.beforeEach((to) => {
     const smilestore = useSmileStore()
+    smilestore.saveData()
 
     if (
       to.name === 'config' ||
@@ -94,18 +95,23 @@ function addGuards(r) {
     // if not known and requesting home
     if (!smilestore.isKnownUser) {
       if (to.name === 'home') {
+        // if requesting home, allow it
         return true // allow the requested route to load
       }
       return { name: 'home', replace: true } // redirect to home
+    }
+
+    // otherwise is known so check if database connected
+    // if not connect and load existing data
+    // if yes just continue
+    if (smilestore.isKnownUser && !smilestore.isDBConnected) {
+      smilestore.loadData()
     }
 
     if (smilestore.local.lastRoute === to.name) {
       return true // allow the requested route to load, prevent infinite redirects
     }
 
-    // this will cover known users
-    // otherwise check if database exists TODO
-    // and then go to where you left off
     // go to where you left off
     return {
       name: smilestore.lastRoute, // to go where you leave off
