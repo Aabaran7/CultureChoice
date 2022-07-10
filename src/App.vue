@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
 
 // load sub-components used in this compomnents
@@ -8,8 +8,16 @@ import StatusBar from '@/components/organisms/StatusBar.vue';
 import ProgressBar from './components/molecules/ProgressBar.vue';
 
 // imports the global config object
+const router = useRouter()
 const smilestore = useSmileStore()
-const bgcolor = ref('green')
+
+// monitor changes to local state and force router changes
+smilestore.$subscribe((mutation, state) => {
+  // go to the new route
+  router.push({name: state.local.lastRoute})
+})
+
+
 </script>
 
 <template>

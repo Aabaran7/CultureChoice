@@ -53,27 +53,32 @@ export default defineStore('smilestore', {
       }
     },
     async loadData() {
-      const data = await loadDoc(this.local.docRef)
+      let data
+      if (this.local.docRef) {
+        data = await loadDoc(this.local.docRef)
+      }
       if (data) {
         this.data = data
         this.setDBConnected()
       }
     },
     setLastRoute(route) {
-      if (route !== 'config') {
-        this.local.lastRoute = route
-      }
+      this.local.lastRoute = route
+      // if (route !== 'config') {
+      //   this.local.lastRoute = route
+      // }
     },
     async saveData() {
       if (this.isDBConnected) {
-        await updateDoc(this.data, this.local.docRef)
+        updateDoc(this.data, this.local.docRef)
       }
     },
     resetLocal() {
-      this.local.knownUser = false
-      this.local.lastRoute = 'home'
-      this.local.allowJumps = false
-      // this.$reset()
+      // this.local.knownUser = false
+      // this.local.lastRoute = 'home'
+      // this.local.allowJumps = false
+      // this.global.db_connected = false
+      this.$reset()
     },
   },
 })

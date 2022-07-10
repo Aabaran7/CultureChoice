@@ -19,15 +19,15 @@ if (appconfig.mode === 'development') {
 }
 
 // create a collection
-export const updateDoc = async (data, docid) => {
+export const updateDoc = (data, docid) => {
+  // is it weird to have a aync method that doesn't return anything?
   try {
     const docRef = doc(db, `${mode}/${appconfig.project_ref}/data/`, docid)
-    await setDoc(docRef, data, {
+    setDoc(docRef, data, {
       merge: true,
     })
   } catch (e) {
     console.error('Error updating document', e)
-    return null
   }
 }
 
