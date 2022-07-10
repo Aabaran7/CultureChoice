@@ -1,3 +1,4 @@
+// import { ref } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 
@@ -20,12 +21,14 @@ import Config from '@/components/pages/ConfigPage.vue'
 // to the end of this list
 const total_non_config_routes = 6
 let route_index = 0
+const totalNonConfigRoutes = 6
+let routeIndex = 0
 const routes = [
   {
     path: '/',
     name: 'home',
     component: Advertisement,
-    meta: { progress: (100 * route_index++) / total_non_config_routes },
+    meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
     beforeEnter: (to, from) => {
       // before loading this route, identify the user
       const smilestore = useSmileStore()
@@ -38,37 +41,37 @@ const routes = [
     path: '/consent',
     name: 'consent',
     component: Consent,
-    meta: { progress: (100 * route_index++) / total_non_config_routes },
+    meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
   },
   {
     path: '/demograph',
     name: 'demograph',
     component: DemographicSurveyPage,
-    meta: { progress: (100 * route_index++) / total_non_config_routes },
+    meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
   },
   {
     path: '/captcha',
     name: 'captcha',
     component: Captcha,
-    meta: { progress: (100 * route_index++) / total_non_config_routes },
+    meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
   },
   {
     path: '/exp',
     name: 'exp',
     component: Exp,
-    meta: { progress: (100 * route_index++) / total_non_config_routes },
+    meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
   },
   {
     path: '/debrief',
     name: 'debrief',
     component: Debrief,
-    meta: { progress: (100 * route_index++) / total_non_config_routes },
+    meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
   },
   {
     path: '/thanks',
     name: 'thanks',
     component: Thanks,
-    meta: { progress: (100 * route_index++) / total_non_config_routes },
+    meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
   },
   {
     path: '/config',
@@ -83,7 +86,6 @@ const routes = [
 function addGuards(r) {
   r.beforeEach((to) => {
     const smilestore = useSmileStore()
-    smilestore.saveData()
 
     if (
       to.name === 'config' ||
