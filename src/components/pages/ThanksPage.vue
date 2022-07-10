@@ -13,6 +13,7 @@ if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 
 function finish(goto) { 
+    smilestore.saveData()
     router.push(goto)
 }
 </script>
@@ -21,6 +22,6 @@ function finish(goto) {
     <div class="page">
         <h1 class="title is-3"><fa-icon icon="fa-solid fa-square-check" /></h1>
         <h1 class="title is-3">Thanks</h1>
-        <button v-if="smilestore.config.mode=='development'" class="button is-success is-light" @click="finish(next)">next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
+        <button class="button is-success is-light" @click="finish(next)" v-if="smilestore.config.mode=='development'">next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>

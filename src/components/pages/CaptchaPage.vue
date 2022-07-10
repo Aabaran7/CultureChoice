@@ -12,6 +12,7 @@ const { next, prev } = useStepRoute()
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 function finish(goto) { 
+    smilestore.saveData()
     router.push(goto)
 }
 </script>
