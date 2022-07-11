@@ -4,6 +4,9 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { createTestingPinia } from '@pinia/testing'
+import { plugin, defaultConfig } from '@formkit/vue'
+import '@/icons' // configure fontawesome
+
 import App from '@/App.vue'
 import { routes, addGuards } from '@/router' // This import should point to your routes file declared above
 import useSmileStore from '@/stores/smiledata'
@@ -20,7 +23,8 @@ describe('App tests', () => {
   function setupapp() {
     const wrapper = mount(App, {
       global: {
-        plugins: [router, pinia],
+        plugins: [router, pinia, [plugin, defaultConfig]],
+        stubs: ['fa-icon'],
       },
     })
     return wrapper
@@ -63,51 +67,53 @@ describe('App tests', () => {
   })
 
   // should first render the welcome
-  it('should render welcome then the captcha', async () => {
+  it('should render welcome then the informed consent', async () => {
     const wrapper = setupapp()
-
+    const smilestore = useSmileStore()
+    localStorage.setItem(appconfig.local_storage_key, null)
     router.push('/')
     await router.isReady()
-    // await flushPromises() // wait to make sure this workd
-    // console.log(localStorage.getItem('smilestore'))  this won't work because it has been serialized
-
-    // maybe can useSmileStore here
-    expect(wrapper.html()).toContain('Welcome')
-    await wrapper.find('button').trigger('click')
-    await flushPromises()
-    expect(wrapper.html()).toContain('Captcha')
-    const smilestore = useSmileStore()
-    expect(smilestore.local.lastRoute).toBe('captcha')
+    expect(wrapper.html()).toContain('Please help us')
+    expect(smilestore.local.lastRoute).toBe('home')
+    await new Promise((r) => setTimeout(r, 10)) // wait for db connection
+    await wrapper.find('#finish').trigger('click')
+    // await router.isReady()
+    await new Promise((r) => setTimeout(r, 10)) // wait for db connection
+    expect(wrapper.html()).toContain('Please take the time to read')
+    expect(smilestore.local.lastRoute).toBe('consent') // check that smilestore was updated
   })
 
-  it('should render the captcha, then the consent, and the localstore though reflect last route is consent', async () => {
+  it('should render the consent, then the demographic survey, and the localstore though reflect last route is demograph', async () => {
     const wrapper = setupapp()
-
-    await router.isReady()
-    expect(wrapper.html()).toContain('Captcha')
-
-    await wrapper.find('button').trigger('click')
-    await flushPromises()
-    expect(wrapper.html()).toContain('Consent')
     const smilestore = useSmileStore()
+    await router.isReady()
+    expect(wrapper.html()).toContain(
+      'Please take the time to read the consent form'
+    )
     expect(smilestore.local.lastRoute).toBe('consent')
+    const checkbox = wrapper.find('#input_1')
+    checkbox.element.checked = true // ugh what a nightmare
+    checkbox.trigger('input')
+    await new Promise((r) => setTimeout(r, 200)) // wait for db connection
+    await wrapper.find('#finish').trigger('click')
+    await new Promise((r) => setTimeout(r, 50)) // wait for db connection
+    expect(wrapper.html()).toContain('Demographic Information')
+    expect(smilestore.local.lastRoute).toBe('demograph')
   })
 
   it('should redirect you to home if you are unknown', async () => {
-    const smilestore = useSmileStore()
     const wrapper = setupapp()
+    const smilestore = useSmileStore()
     await router.isReady()
-    await flushPromises()
+    localStorage.setItem(appconfig.local_storage_key, null)
     smilestore.resetLocal()
-    await router.isReady()
-    await flushPromises()
     expect(smilestore.isKnownUser).toBe(false)
     expect(smilestore.lastRoute).toBe('home')
     router.push('/exp')
     await router.isReady()
     await flushPromises()
     expect(router.currentRoute.value.name).toBe('home')
-    expect(wrapper.html()).toContain('Welcome') // verify
+    expect(wrapper.html()).toContain('Please help us') // verify
   })
 
   it('should let you access config even if known and last route set', async () => {

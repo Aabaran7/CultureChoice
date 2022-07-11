@@ -145,7 +145,7 @@ function finish(goto) {
                 </div>
             </div>
             <div class="has-text-right">
-            <button class="button is-warning" @click="finish(next)">Continue &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
+            <button class="button is-warning" id='finish' @click="finish(next)">Continue &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
             </div> 
         </div>
     </div>

@@ -25,6 +25,6 @@ function finish(goto) {
             just to warm up your brain.
         </p>
         <br>
-        <button class="button is-success is-light" @click="finish(next)">next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
+        <button class="button is-success is-light" id='finish' @click="finish(next)">next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>
