@@ -2,21 +2,32 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Advertisement from '@/components/pages/AdvertisementPage.vue'
-import smileconfig from '@/plugins/smileconfig'
+// import useSmileStore from '@/stores/smiledata'
+import { routes } from '@/router' // This import should point to your routes file declared above
+
+let router
+let pinia
 
 describe('Advertisement tests', () => {
   beforeEach(() => {
-    setActivePinia(createPinia())
+    pinia = createTestingPinia({ stubActions: false })
+    router = createRouter({
+      history: createWebHashHistory(),
+      routes,
+    })
   })
 
-  it('should render', () => {
+  it('should render', async () => {
     const wrapper = mount(Advertisement, {
       global: {
-        plugins: [smileconfig],
+        plugins: [router, pinia],
+        stubs: ['fa-icon'],
       },
     })
-
-    expect(wrapper.html()).toContain('Welcome')
+    await new Promise((r) => setTimeout(r, 200)) // wait for db connection
+    expect(wrapper.html()).toContain('Please help us')
   })
 })
