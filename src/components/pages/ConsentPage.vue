@@ -50,6 +50,7 @@ const name = ref('enter your name')
                                 <FormKit
                                     v-model="agree"
                                     type="checkbox"
+                                    name="consent_toggle"
                                     label="I consent and am over 18 years old."
                                     help="Do you consent to participate in this study?"
                                     validation="accepted"
@@ -57,7 +58,7 @@ const name = ref('enter your name')
                                     label-class="has-text-left"
                                     />
                                 <div class="honeyname">
-                                    Required!  Please enter your name: <input type="text" name="your name" label="enter your name" v-model='name' />
+                                    Required!  Please enter your name: <input type="text" name="your_name" label="enter your name" v-model='name' />
                                 </div>
                             </p>
                             <br>
