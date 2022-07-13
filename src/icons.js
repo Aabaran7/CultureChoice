@@ -18,6 +18,7 @@ import { faDatabase } from '@fortawesome/free-solid-svg-icons'
 import { faRainbow } from '@fortawesome/free-solid-svg-icons'
 import { faFaceLaughBeam } from '@fortawesome/free-solid-svg-icons'
 import { faGlobe } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
 import { faHand } from '@fortawesome/free-solid-svg-icons'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
@@ -31,4 +32,11 @@ import { faImage } from '@fortawesome/free-solid-svg-icons'
 library.add(faUserSecret, faGear, faBook, faArrowsTurnToDots, faArrowRotateLeft)
 library.add(faExplosion, faArrowLeft, faArrowRight, faSquareCheck, faDatabase)
 library.add(faFaceLaughBeam, faGlobe, faHand, faMagnifyingGlass, faCircleXmark)
-library.add(faBahai, faFaceGrinWide, faShapes, faImage, faRainbow)
+library.add(
+  faBahai,
+  faFaceGrinWide,
+  faShapes,
+  faImage,
+  faRainbow,
+  faPenToSquare
+)

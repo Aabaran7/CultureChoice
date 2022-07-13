@@ -50,9 +50,30 @@ const page_three_complete = computed(() => {
     return forminfo.country!==''&&forminfo.education_level!==''&&forminfo.household_income!==''
 })
 
+
+function autofill () {
+    forminfo.dob = '1978-09-12'
+    forminfo.gender = 'Male'
+    forminfo.race = 'Caucasian/White'
+    forminfo.hispanic = 'No'
+    forminfo.fluent_english = 'Yes'
+    forminfo.normal_vision = 'Yes'
+    forminfo.color_blind = 'No'
+    forminfo.learning_disability = 'No'
+    forminfo.neurodevelopmental_disorder = 'No'
+    forminfo.psychiatric_disorder = 'No'
+    forminfo.country = 'United States'
+    forminfo.zipcode = '12345'
+    forminfo.education_level = 'Doctorate Degree (PhD/Other)'
+    forminfo.household_income = '$100,000-$199,999'
+}
+
+if(smilestore.config.mode==='development') smilestore.setPageAutofill(autofill)
+
 function finish(goto) { 
     smilestore.saveDemographicForm(forminfo);
     smilestore.saveData()
+    if(smilestore.config.mode=='development') smilestore.removePageAutofill()
     router.push(goto)
 }
 </script>

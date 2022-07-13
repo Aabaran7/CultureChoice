@@ -23,6 +23,10 @@ export default defineStore('smilestore', {
       status_bar_text_color: '#000',
       db_connected: false,
     },
+    dev: {
+      // ephemeral state, utilized by developer mode functions
+      page_provides_autofill: null,
+    },
     data: {
       // syncs with firestore
       trial_num: 0, // not being updated correctly
@@ -37,6 +41,7 @@ export default defineStore('smilestore', {
     isKnownUser: (state) => state.local.knownUser,
     lastRoute: (state) => state.local.lastRoute,
     isDBConnected: (state) => state.global.db_connected,
+    hasAutofill: (state) => state.dev.page_provides_autofill,
   },
 
   actions: {
@@ -45,6 +50,17 @@ export default defineStore('smilestore', {
     },
     setConsented() {
       this.data.consented = true
+    },
+    setPageAutofill(fn) {
+      this.dev.page_provides_autofill = fn
+    },
+    removePageAutofill() {
+      this.dev.page_provides_autofill = null
+    },
+    autofill() {
+      if (this.dev.page_provides_autofill) {
+        this.dev.page_provides_autofill()
+      }
     },
     saveDemographicForm(data) {
       this.data.demographic_form = data

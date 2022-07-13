@@ -10,16 +10,19 @@ const smilestore = useSmileStore() // load the global store
 const { x, y } = useMouse({ touch: false }) // tracks mouse reactively
 const router = useRouter()  // this is needed in composition API because this.$router not availabel
 
-
 // easter egg to jump to config page (press 2 with mouse in top right of screen)
 onMounted(() => {
   window.addEventListener('keyup', (ev) => {
-      if((x.value<5) && (y.value<30) && (ev.key==='2')) {
+      if((x.value<10) && (y.value<50) && (ev.key==='2')) {
         router.push('/config') // jump to the config page
       }
-      if((x.value<5) && (y.value<30) && (ev.key==='1')) {
+      if((x.value<10) && (y.value<50) && (ev.key==='1')) {
         router.push('/') // jump to the start page (or get redirected)
       }
+      if((x.value<10) && (y.value<50) && (ev.key==='a')) {
+        smilestore.autofill()
+      }
+
   })
 })
 </script>
@@ -27,6 +30,7 @@ onMounted(() => {
 <template>
   <nav class="navbar">
     <div class="navbar-brand">
+
         <div class="devmode-title">DEVELOPER MODE</div>
         <div class="devmode">
           -- &nbsp; Config: 
@@ -34,12 +38,14 @@ onMounted(() => {
             <fa-icon icon="fa-solid fa-gear" />
           </a>
         </div>
+
         <div class="devmode">
           | &nbsp; Docs: 
           <a href="https://smile.gureckislab.org" alt="View docs" target="_new">
             <fa-icon icon="fa-solid fa-book" />
           </a>
         </div>
+
         <div class="devmode">
           <div class="dropdown is-hoverable">
             <div class="dropdown-trigger">
@@ -62,6 +68,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
+        
         <div class="devmode">
           <div class="dropdown is-hoverable">
             <div class="dropdown-trigger">
@@ -99,6 +106,13 @@ onMounted(() => {
               </div>
             </div>
           </div>&nbsp;
+        </div>
+
+        <div class="devmode" v-if="smilestore.hasAutofill">
+          | &nbsp; Autofill Form: 
+          <a @click="smilestore.autofill()" alt="View docs" >
+            <fa-icon icon="fa-solid fa-pen-to-square" />
+          </a>
         </div>
 
     </div>
