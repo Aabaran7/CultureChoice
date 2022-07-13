@@ -9,7 +9,7 @@ Using components, the meaningful parts of a complex webpage are broken down into
 ![components](/images/components.png)
 
 
-Component development speeds the process of designing a new experiment because you don't have to understand every part of the code in order to begin adding new interface elements and logic. 
+[Component development](https://www.componentdriven.org) speeds the process of designing a new experiment because you don't have to understand every part of the code in order to begin adding new interface elements and logic. 
 
 Well-designed components are reuseable across projects so that if someone else develops a useful component you can easily import it into your project.  In addition, novel components are easily built up out of other components leveraging modularity and code resuse.  
 
