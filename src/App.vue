@@ -12,10 +12,14 @@ const router = useRouter()
 const smilestore = useSmileStore()
 
 // monitor changes to local state and force router changes
-smilestore.$subscribe((mutation, state) => {
-  // go to the new route
-  router.push({name: state.local.lastRoute})
-})
+
+
+// smilestore.$subscribe((mutation, state) => {
+//   // go to the new route
+//   if(!state.local.allowJumps && smilestore.config.mode === 'development') {
+//     router.push({name: state.local.lastRoute})
+//   }
+// })
 
 
 </script>
