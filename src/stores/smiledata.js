@@ -28,6 +28,7 @@ export default defineStore('smilestore', {
       trial_num: 0, // not being updated correctly
       consented: false,
       service: 'prolific', // fake
+      demographic_form: {}, // empty
     },
     config: appconfig,
   }),
@@ -44,6 +45,9 @@ export default defineStore('smilestore', {
     },
     setConsented() {
       this.data.consented = true
+    },
+    saveDemographicForm(data) {
+      this.data.demographic_form = data
     },
     async setKnown() {
       this.local.knownUser = true

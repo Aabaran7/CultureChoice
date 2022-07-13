@@ -51,6 +51,7 @@ const page_three_complete = computed(() => {
 })
 
 function finish(goto) { 
+    smilestore.saveDemographicForm(forminfo);
     smilestore.saveData()
     router.push(goto)
 }
