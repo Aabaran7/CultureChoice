@@ -6,6 +6,7 @@ import {
   addDoc,
   setDoc,
   getDoc,
+  Timestamp,
 } from 'firebase/firestore'
 import appconfig from '@/config'
 
@@ -17,6 +18,8 @@ let mode = 'real'
 if (appconfig.mode === 'development') {
   mode = 'testing'
 }
+
+export const fsnow = () => Timestamp.now()
 
 // create a collection
 export const updateDoc = (data, docid) => {

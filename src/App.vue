@@ -6,10 +6,27 @@ import useSmileStore from '@/stores/smiledata'
 import DeveloperNavBar from '@/components/organisms/DeveloperNavBar.vue';
 import StatusBar from '@/components/organisms/StatusBar.vue';
 import ProgressBar from './components/molecules/ProgressBar.vue';
+import { onMounted } from 'vue';
 
 // imports the global config object
 const router = useRouter()
 const smilestore = useSmileStore()
+
+
+// monitor events on the main window
+onMounted(() => {
+  window.addEventListener('resize', (event) => { 
+    smilestore.recordWindowEvent('resize', {width: window.innerWidth, height: window.innerHeight})
+  })
+
+  window.addEventListener('focus', (event) => {
+    smilestore.recordWindowEvent('focus')
+  })
+
+  window.addEventListener('blur', (event) => {
+    smilestore.recordWindowEvent('blur')
+  })
+})
 
 // monitor changes to local state and force router changes
 

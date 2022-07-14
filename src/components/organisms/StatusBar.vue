@@ -40,10 +40,10 @@ function toggleReport() {
             <div class="navbar-end">
                 <div class="navbar-item" >
                     <div class="buttons">
-                        <button class="button is-info is-small is-light" v-if="smilestore.data.consented" @click="toggleConsent()">
+                        <button class="button is-info is-small is-light" v-if="smilestore.isConsented" @click="toggleConsent()">
                             <fa-icon icon="magnifying-glass" />&nbsp;&nbsp;View consent
                         </button>
-                        <button class="button is-danger is-small is-light" v-if="smilestore.data.consented" @click="toggleWithdraw()">
+                        <button class="button is-danger is-small is-light" v-if="smilestore.isConsented" @click="toggleWithdraw()">
                             <fa-icon icon="circle-xmark" />&nbsp;&nbsp;Withdraw
                         </button>
                         <button class="button is-warning is-small is-light" @click="toggleReport()">

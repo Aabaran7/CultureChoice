@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import appconfig from '@/config'
 
-import { createDoc, updateDoc, loadDoc } from './firestore-db'
+import { createDoc, updateDoc, loadDoc, fsnow } from './firestore-db'
 
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
@@ -32,6 +32,7 @@ export default defineStore('smilestore', {
       trial_num: 0, // not being updated correctly
       consented: false,
       service: 'prolific', // fake
+      browser_data: [], // empty
       demographic_form: {}, // empty
     },
     config: appconfig,
@@ -39,6 +40,7 @@ export default defineStore('smilestore', {
 
   getters: {
     isKnownUser: (state) => state.local.knownUser,
+    isConsented: (state) => state.data.consented,
     lastRoute: (state) => state.local.lastRoute,
     isDBConnected: (state) => state.global.db_connected,
     hasAutofill: (state) => state.dev.page_provides_autofill,
@@ -50,6 +52,20 @@ export default defineStore('smilestore', {
     },
     setConsented() {
       this.data.consented = true
+    },
+    recordWindowEvent(type, event_data = null) {
+      if (event_data) {
+        this.data.browser_data.push({
+          event_type: type,
+          timestamp: fsnow(),
+          event_data,
+        })
+      } else {
+        this.data.browser_data.push({
+          event_type: type,
+          timestamp: fsnow(),
+        })
+      }
     },
     setPageAutofill(fn) {
       this.dev.page_provides_autofill = fn
