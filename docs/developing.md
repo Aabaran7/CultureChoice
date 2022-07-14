@@ -35,8 +35,9 @@ and `psiturk debug` which created a local webserver for testing.  `npm run dev` 
 
 When you are viewing your website on the development server there is a special bar visible along the top of the page.  This provides some useful links as well as the ability to jump between different stages/routes of your experiment.  This bar will not be rendered when the website is deployed.
 
-A special page (`#/config`) on your project allows you to view configuration settings for the current experiment.
+On pages that have forms that have to be filled out you as the developer can make a new button appear in the developer bar called "Autofill Form" which will automatically fill in the form with some preset values making it easier to advance to the next stage of debugging.
 
+A special page (`#/config`) on your project allows you to view configuration settings for the current experiment and to "reset" the state of the experiment to act as though it is a new user.
 
 
 ## Testing the build process
