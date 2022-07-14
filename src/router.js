@@ -4,9 +4,10 @@ import useSmileStore from '@/stores/smiledata' // get access to the global store
 
 // 1. Import route components
 import Advertisement from '@/components/pages/AdvertisementPage.vue'
-import DemographicSurveyPage from '@/components/pages/DemographicSurveyPage.vue'
-import Captcha from '@/components/pages/CaptchaPage.vue'
 import Consent from '@/components/pages/ConsentPage.vue'
+import DemographicSurvey from '@/components/pages/DemographicSurveyPage.vue'
+import Captcha from '@/components/pages/CaptchaPage.vue'
+import Instructions from '@/components/pages/InstructionsPage.vue'
 import Exp from '@/components/pages/ExpPage.vue'
 import Debrief from '@/components/pages/DebriefPage.vue'
 import Thanks from '@/components/pages/ThanksPage.vue'
@@ -19,7 +20,7 @@ import Config from '@/components/pages/ConfigPage.vue'
 // these routes can be accessed in any order generally
 // but for most experiment they go in sequence from begining
 // to the end of this list
-const totalNonConfigRoutes = 6
+const totalNonConfigRoutes = 7
 let routeIndex = 0
 const routes = [
   {
@@ -44,13 +45,19 @@ const routes = [
   {
     path: '/demograph',
     name: 'demograph',
-    component: DemographicSurveyPage,
+    component: DemographicSurvey,
     meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
   },
   {
     path: '/captcha',
     name: 'captcha',
     component: Captcha,
+    meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
+  },
+  {
+    path: '/instructions',
+    name: 'instructions',
+    component: Instructions,
     meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
   },
   {
