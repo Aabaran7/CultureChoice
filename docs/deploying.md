@@ -27,7 +27,6 @@ For most people this is all you need to do.  But there is more:
 - If you want to go back in your development history and deploy some older version of your code check out [this section](#deploying-a-specific-version-of-your-experiment). 
 - If you just want to understand how this magic works jump to [understanding the deployment steps](#understanding-the-deployment-steps).
 
-
 ## What type of commits trigger an automatic deployment?
 
 By default, any commit on any branch that modifies a file in your project will generate a deployment.  The concept here is "[continuous deployment](https://en.wikipedia.org/wiki/Continuous_deployment)" where things just are always synced with the online website.  The exceptions are: 
@@ -140,8 +139,7 @@ Finally, go to the GitHub repo for your project on the github.com website and cl
 
 ## Understanding the deployment steps
 
-<br>
-<SmileText/> deployment is **continuous and automatic** by design.  The purpose of continuous deployment is so that new changes to the code are always placed into a live server environment (which is then helpful for [integration testing](/testing)).
+Deployment is **continuous and automatic** by design.  The purpose of continuous deployment is so that new changes to the code are always placed into a live server environment (which is then helpful for [integration testing](/testing)).
 The purpose of automating deployment is to make it one less thing you need to think about.  However, if something goes wrong, or you need to customize things, it can be helpful to understand the steps.
 
 Deploying a website involves several steps: triggering the GitHub Actions deployment process, configuring the site, building the site, and uploading the files to a suitable internet-accessible server.
