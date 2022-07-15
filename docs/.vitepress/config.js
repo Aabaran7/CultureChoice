@@ -49,6 +49,7 @@ export default defineConfig({
           },
           { text: '⏱ Routing/timeline', link: '/routing' },
           { text: '🧑‍🎨 Styling and CSS', link: '/style' },
+          { text: '💰 Computing bonuses', link: '/bonuses' },
           { text: '🧐 Analyzing data', link: '/analysis' },
         ],
       },
