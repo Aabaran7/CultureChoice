@@ -38,3 +38,16 @@ In an ideal world 100% of your code is covered by test (meaning that when your t
 npm run coverage
 ```
 
+## Types of E2E tests
+
+### Completion tests
+
+### Mischief agent tests
+
+### Data integrity tests
+
+Data integrity tests verify that the data input by the user is accurately reflected in the Firebase database.
+
+### Checklist tests
+
+Checklist tests run and verify that key elements of your experiment are properly configured and do not still have default values set by the <SmileText /> project template.  This can be helpful to run before you first deploy your project to make sure you didn't miss anything . If this test passes successfully it means that your experiment it not caught by common misconfigurations.
