@@ -22,7 +22,7 @@ export default ({ mode }) => {
       rollupOptions: {
         input: {
           main: path.resolve(__dirname, 'index.html'),
-          test: path.resolve(__dirname, 'test.html'),
+          // test: path.resolve(__dirname, 'test.html'),
         },
       },
     },
@@ -35,7 +35,7 @@ export default ({ mode }) => {
         ? {
             host: process.env.GITPOD_WORKSPACE_URL.replace(
               'https://',
-              `${process.env.VITE_DEV_PORT_NUM  }-`
+              `${process.env.VITE_DEV_PORT_NUM}-`
             ),
             protocol: 'wss',
             clientPort: 443,

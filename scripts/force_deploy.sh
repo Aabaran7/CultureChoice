@@ -1,9 +1,13 @@
+#!/bin/bash
+
 # force a deployment
 
-echo "Forcing a deploy of current branch." 
-echo "Warning this will only work if you have run `npm run upload:config` at least once"
 BRANCH=$(git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
-gh workflow run deploy-hash.yml -f github_sha=$(BRANCH) 
+
+echo "Forcing a deploy of branch: $BRANCH." 
+echo "Warning this will only work if you have run 'npm run config_upload' at least once"
+
+gh workflow run deploy-hash.yml -f github_sha=$BRANCH
 
 # the old way of doing this required a forced commit
 # like the new way better

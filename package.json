@@ -16,7 +16,8 @@
     "docs:serve": "vitepress serve docs",
     "docs:clean": "rm -rf docs/.vitepress/dist",
     "setup_project": "sh scripts/setup_project.sh",
-    "config:upload": "sh scripts/update_config.sh",
+    "force_deploy": "sh scripts/force_deploy.sh",
+    "upload_config": "sh scripts/update_config.sh",
     "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/styles.css",
     "css-watch": "npm run css-build -- --watch"
   },

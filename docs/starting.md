@@ -150,10 +150,10 @@ this should create several `.env.*.local` files in your `env/` directory.
 **Only on first setup:** After all the necessary files are in the `env` folder run:
 
 ```
-npm run config:upload
+npm run upload_config
 ```
 
-to configure your deployment process, remove some files you do not need, and create an initial deployment/commit.  The `config:upload` command only needs to be run once in your project the first time you create it.  If you are collaborating with someone on an existing project you only need to run `git secret reveal`.
+to configure your deployment process, remove some files you do not need, and create an initial deployment/commit.  The `npm run upload_config` command only needs to be run once in your project the first time you create it.  If you are collaborating with someone on an existing project you only need to run `git secret reveal`.
 
 ## 3. Setup the project
 
