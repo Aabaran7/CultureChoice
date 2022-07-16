@@ -60,7 +60,8 @@ Variables that do not begin with `VITE_` are only available for other purposes (
 Configuration files go in the `env` folder.  Here is a typical listing of this folder.
 
 ```
-env
+env/
+├── .env
 ├── .env.local
 ├── .env.git.local
 ├── .env.docs.local
@@ -78,17 +79,39 @@ in GitHub when/if your project repository becomes publically shared.
 
 Let's consider the files one by one. 
 
-#### Experiment Options (`.env.local`)
 
-`.env.local` contains what we will call **experiment** configuration options.  Here is a typical file with fake entries for the values (adjust for your situation):
+#### Experiment Options (`.env`)
+
+`.env` **is** version tracked in git and contains what we will call **experiment** configuration options.  These options are usually critical for replicability of an experiment.  Here is a typical file with fake entries for the values (adjust for your situation):
+
 
 ```
-# configure your experiment here
-VITE_BUG_REPORTS                 = "http://something.com/bugs"
+# this file is tracked by github and contains
+# configuration parameters for the experiment which 
+# are critical for reproducibiliy
+
 VITE_BROWSER_EXCLUDE             = ie
 VITE_ALLOW_REPEATS               = yes
 VITE_SERVICES_ALLOWED            = amt,prolific,sona,web
+VITE_RANDOM_SEED                 = 100012
+```
 
+Notice that the configuration options in this file begin with `VITE_`.  This means they are made 
+available to the web application/experiment.  
+
+- `VITE_BROWSER_EXCLUDE` is a string that configures which 
+types of browsers can take your experiment.  
+- `VITE_ALLOW_REPEATS` attempts to prevent participants
+from taking your task more than once.  
+- `VITE_SERVICES_ALLOWED` configures which recruitment gateways
+you want to enable for your experiment (e.g., amt - Mechanical Turk, prolific - Prolific.ac, etc...).
+- `VITE_RANDOM_SEED` initializes the pseudo-random number generator in <SmileText />
+
+#### Web Services Options (`.env.local`)
+
+`.env.local` contains options for connection to other web services such as Firebase/Firestore for databases or for tracking bugs.  These options are not particularly "secret" (the options begin with `VITE_` which means they are made available to the webapp), but aren't things we necessarily want to be crawlable on github public repositories.
+
+```
 # enter firebase database credentials
 VITE_FIREBASE_APIKEY             = apikey
 VITE_FIREBASE_AUTHDOMAIN         = project.firebaseapp.com
@@ -96,21 +119,16 @@ VITE_FIREBASE_PROJECTID          = project
 VITE_FIREBASE_STORAGEBUCKET      = project.appspot.com
 VITE_FIREBASE_MESSAGINGSENDERID  = msgid
 VITE_FIREBASE_APPID              = appid
+
+# configure your experiment here
+VITE_BUG_REPORTS                 = "http://smile.gureckislab.org/bugs"
 ```
 
-Notice that the configuration options in this file begin with `VITE_`.  This means they are made 
-available to the web application/experiment.  
-
-- `VITE_BUG_REPORTS` is a url you want participants to go to 
+- There several `VITE_FIREBASE_` options for configuring Google's
+Firestore backend (see [data storage](/datastorage) for more info).
+- `VITE_BUG_REPORTS` is a URL you want participants to go to 
 report a problem with your experiment.  
-- `VITE_BROWSER_EXCLUDE` is a string that configures which 
-types of browsers can take your experiment.  
-- `VITE_ALLOW_REPEATS` attempts to prevent participants
-from taking your task more than once.  
-- `VITE_SERVICES_ALLOWED` configures which recruitment gateways
-you want to enable for your experiment (e.g., amt - Mechanical Turk, prolific - Prolific.ac, etc...).
-- This file also includes several `VITE_FIREBASE_` options for configuring Google's
-Firestore backend.
+
 
 
 #### Code Version Options (`.env.github.local`)
