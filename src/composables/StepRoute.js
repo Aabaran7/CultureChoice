@@ -16,14 +16,14 @@ export default function useStepRoute() {
   const next = computed(() => {
     const nextRoute = routes.value[routeIndex.value + 1]
     smilestore.setLastRoute(nextRoute.name)
-    smilestore.data.trial_num += 1
-    smilestore.saveData()
+    smilestore.saveData() // automatically saves data
     return nextRoute && { name: nextRoute.name }
   })
 
   const prev = computed(() => {
     const prevRoute = routes.value[routeIndex.value - 1]
     smilestore.setLastRoute(prevRoute.name)
+    smilestore.saveData() // automatically saves data
     return prevRoute && { name: prevRoute.name }
   })
 
