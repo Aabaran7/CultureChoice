@@ -18,11 +18,29 @@ export default ({ mode }) => {
   // import.meta.env.VITE_PORT available here with: process.env.VITE_PORT
   return defineConfig({
     plugins: [vitePluginHtmlEnv(), vue()],
+    build: {
+      rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+          test: path.resolve(__dirname, 'test.html'),
+        },
+      },
+    },
     envDir: 'env',
     base: process.env.VITE_DEPLOY_BASE_PATH,
     server: {
       port: process.env.VITE_DEV_PORT_NUM,
       strictPort: true,
+      hmr: process.env.GITPOD_WORKSPACE_URL
+        ? {
+            host: process.env.GITPOD_WORKSPACE_URL.replace(
+              'https://',
+              `${process.env.VITE_DEV_PORT_NUM  }-`
+            ),
+            protocol: 'wss',
+            clientPort: 443,
+          }
+        : true,
     },
     test: {
       globals: true,
