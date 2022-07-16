@@ -147,13 +147,13 @@ git secret reveal
 
 this should create several `.env.*.local` files in your `env/` directory.
 
-After all the necessary files are in the `env` folder run:
+**Only on first setup:** After all the necessary files are in the `env` folder run:
 
 ```
 npm run config:upload
 ```
 
-to configure your deployment process.
+to configure your deployment process, remove some files you do not need, and create an initial deployment/commit.  The `config:upload` command only needs to be run once in your project the first time you create it.  If you are collaborating with someone on an existing project you only need to run `git secret reveal`.
 
 ## 3. Setup the project
 
@@ -163,12 +163,20 @@ Next run the `npm run setup_project` command:
 npm run setup_project
 ```
 
-This will remove some files you will not need, create and initial deployment/commit, and install the required node packages for local development and testing.
+This will install the required node packages for local development and testing.
 
 
 ## 4. Verify the deployment
 
-If you have properly configured your application the last command should have created an initial deployment of your project.  If you are in the <GureckisLabText/> join the `#smile-deploy` slack channel.  A robot :robot: there will let you know that your project was deployed and provide you with a web link to live site.  
+If you have properly configured your application then you should be able to create an initial deployment.  Simply run
+
+```
+npm run force_deploy
+```
+
+to create a deployment given the current code in github.  In the future, deployments will happen automatically anytime you make a push to your repo.
+
+If you are in the <GureckisLabText/> join the `#smile-deploy` slack channel.  A robot :robot: there will let you know that your project was deployed and provide you with a web link to live site.  
 
 If that didn't happen/work then continue reading to learn more about [deployments](/deploying) including [debugging tips](/deploying#debugging-deployment-issues).
 
