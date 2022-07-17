@@ -74,7 +74,13 @@ export default defineConfig({
       },
       {
         text: 'Misc',
-        items: [{ text: '📄 Cheat sheet', link: '/cheatsheet' }],
+        items: [
+          { text: '📄 Cheat sheet', link: '/cheatsheet' },
+          {
+            text: '🌤 Gitpod Dev Environment',
+            link: '/gitpod',
+          },
+        ],
       },
       {
         text: 'Notes',
