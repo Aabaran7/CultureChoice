@@ -1,4 +1,4 @@
-# <img src="images/gitpodlogo.png" width="40" align='left' style="padding-right: 5px;"> Pre-configured development environment using Gitpod
+# <img src="/images/gitpodlogo.png" width="40" align='left' style="padding-right: 5px;"> Pre-configured development environment using Gitpod
 
 Installation of the required software for most recent computers should be straight foward.  However, <SmileText /> also has been configured to run on [Gitpod](https://gitpod.io), a development environment that runs in the cloud.  Using Gitpod doesn't require any software to be installed on your local computer and everything is set up for you (in fact you can run and interact with Gitpod with an iPad!).
 
