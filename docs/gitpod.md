@@ -17,10 +17,18 @@ Next, edit the URL of the page in your browser to prefix with `gitpod.io/#` and 
 
 This will require you to login to github and may ask for certain permissions but will spin up a cloud based environment with VSCode already installed and configured.
 
-## Caveats
+## Details
 
-- The first time you clone your repository from the core <SmileText /> repository you will need to decrypt the secret environment files and configure your Github repo by running `npm run upload_config`.
+The gitpod that spins up has a web-based version of VSCode installed.  You can use it in your browser or the desktop client can be configured to access the remote instance. 
+
+The VScode in Gitpod has been pre-configured with many useful packages for developing in <SmileText />.
+
+It comes pre-installed with the necessary command line tools like the github cli and git-secrets pacakge.
+
+You can start terminals inside VScode to run commands on the remote machine.
+
+## Caveats
 
 - To develop locally you need to decrypt the secret environment files (INSTRUCTIONS TBD)
 
-- In order for automatted deployment to work correctly you need to, at least once, run `npm run upload_config` in your project repo.  It doesn't have to be specifically on the Gitpod instance but who ever first configured/cloned the repository should configure the deployment settings.
+- In order for automated deployment to work correctly you need to, at least once on some machine someplace, run `npm run upload_config` in your project repo.  It doesn't have to be specifically on the Gitpod instance but who ever first configured/cloned the repository should configure the deployment settings.
