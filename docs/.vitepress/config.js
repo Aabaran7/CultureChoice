@@ -48,14 +48,18 @@ export default defineConfig({
             link: '/reactive',
           },
           { text: '⏱ Routing/timeline', link: '/routing' },
-          { text: '🧑‍🎨 Styling and CSS', link: '/style' },
+          { text: '🧑‍🎨 Styling, CSS, and icons', link: '/style' },
           { text: '💰 Computing bonuses', link: '/bonuses' },
+          { text: '🆘 Errors and other issues', link: '/problems' },
           { text: '🧐 Analyzing data', link: '/analysis' },
         ],
       },
       {
         text: 'Recruiting participants',
-        items: [{ text: '🙋 Overview', link: '/recruitment' }],
+        items: [
+          { text: '🙋 Overview', link: '/recruitment' },
+          { text: '😇 Ethical considerations', link: '/ethics' },
+        ],
       },
       {
         text: 'Contributing',
