@@ -6,7 +6,7 @@ const smilestore = useSmileStore() // get the global store
 
 
 <template>
-    <nav class="navbar is-fixed-bottom">
+    <nav class="navbar is-fixed-bottom" v-if="(smilestore.local.lastRoute!=='recruit')">
         <div class="container is-fluid pl-6 pr-6">
             <progress class="progress is-success" v-bind:value="smilestore.global.progress" max="100">60%</progress> 
         </div>

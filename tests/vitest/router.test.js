@@ -74,7 +74,7 @@ describe('App tests', () => {
     router.push('/')
     await router.isReady()
     expect(wrapper.html()).toContain('Please help us')
-    expect(smilestore.local.lastRoute).toBe('home')
+    expect(smilestore.local.lastRoute).toBe('welcome')
     await new Promise((r) => setTimeout(r, 10)) // wait for db connection
     await wrapper.find('#finish').trigger('click')
     // await router.isReady()
@@ -87,6 +87,9 @@ describe('App tests', () => {
     const wrapper = setupapp()
     const smilestore = useSmileStore()
     await router.isReady()
+    expect(smilestore.local.lastRoute).toBe('consent')
+    await new Promise((r) => setTimeout(r, 10)) // wait for db connection
+    console.log('what i got', wrapper.html())
     expect(wrapper.html()).toContain(
       'Please take the time to read the consent form'
     )
@@ -101,18 +104,18 @@ describe('App tests', () => {
     expect(smilestore.local.lastRoute).toBe('demograph')
   })
 
-  it('should redirect you to home if you are unknown', async () => {
+  it('should redirect you to welcome if you are unknown', async () => {
     const wrapper = setupapp()
     const smilestore = useSmileStore()
     await router.isReady()
     localStorage.setItem(appconfig.local_storage_key, null)
     smilestore.resetLocal()
     expect(smilestore.isKnownUser).toBe(false)
-    expect(smilestore.lastRoute).toBe('home')
+    expect(smilestore.lastRoute).toBe('welcome')
     router.push('/exp')
     await router.isReady()
     await flushPromises()
-    expect(router.currentRoute.value.name).toBe('home')
+    expect(router.currentRoute.value.name).toBe('welcome')
     expect(wrapper.html()).toContain('Please help us') // verify
   })
 
@@ -123,7 +126,7 @@ describe('App tests', () => {
     const wrapper = setupapp()
     await router.isReady()
     await flushPromises()
-    router.push('/config') // go to home
+    router.push('/config') // go to config
     await router.isReady()
     await flushPromises()
     expect(router.currentRoute.value.name).not.toBe('consent') // not this
@@ -141,7 +144,7 @@ describe('App tests', () => {
     expect(smilestore.isKnownUser).toBe(true)
     expect(smilestore.lastRoute).toBe('consent')
     await router.isReady()
-    router.push('/') // go to home
+    router.push('/') // go to welcome
     await flushPromises()
     expect(router.currentRoute.value.name).not.toBe('config') // not this
     expect(router.currentRoute.value.name).toBe('consent') // yes this

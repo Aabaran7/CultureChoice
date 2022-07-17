@@ -18,6 +18,14 @@ export default ({ mode }) => {
   // import.meta.env.VITE_PORT available here with: process.env.VITE_PORT
   return defineConfig({
     plugins: [vitePluginHtmlEnv(), vue()],
+    build: {
+      rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+          // test: path.resolve(__dirname, 'test.html'),
+        },
+      },
+    },
     envDir: 'env',
     base: process.env.VITE_DEPLOY_BASE_PATH,
     server: {
@@ -38,6 +46,9 @@ export default ({ mode }) => {
         '@': path.resolve(__dirname, './src'),
         vue: 'vue/dist/vue.esm-bundler.js',
       },
+    },
+    define: {
+      'process.env': process.env,
     },
   })
 }

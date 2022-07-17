@@ -39,7 +39,7 @@ export const loadDoc = async (docid) => {
   const docSnap = await getDoc(docRef)
   if (docSnap.exists()) {
     const data = docSnap.data()
-    console.log('Document data:', data)
+    // console.log('Document data:', data)
     return data
   }
   // doc.data() will be undefined in this case

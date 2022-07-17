@@ -82,9 +82,9 @@ function finish(goto) {
 <template>
     <div class="page">
         <div class="formcontent">
-            <h3 class="is-size-3 has-text-weight-bold">Demographic Information</h3>
-            <p class="is-size-5">
-                We kindly request some information about you which we can use to understand
+            <h3 class="is-size-4 has-text-weight-bold">Demographic Information</h3>
+            <p class="is-size-6">
+                We request some information about you which we can use to understand
                 aggregate differences between individuals.  Your privacy will be maintained
                 and the data will not be linked to your online identity (e.g., email).
             </p>
@@ -136,7 +136,8 @@ function finish(goto) {
                                      help="Are you able to speak and understanding English? (required)"
                                      placeholder="Select an option"
                                      validation="required"
-                                     :options="['Yes', 'No']"/>                
+                                     :options="['Yes', 'No']"/>  
+                            <hr>              
                             <div class="columns">
                                 <div class="column">
                                     <div class="has-text-right">
@@ -200,6 +201,7 @@ function finish(goto) {
                                      v-model="forminfo.psychiatric_disorder"
                                      placeholder="Select an option"
                                      :options="['Yes', 'No']"/>
+                            <hr> 
                             <div class="columns">
                                 <div class="column">
                                     <div class="has-text-left">
@@ -261,6 +263,7 @@ function finish(goto) {
                                      v-model="forminfo.household_income"
                                      :options="['Less than $20,000', '$20,000–$39,999', '$40,000–$59,999', '$60,000–$79,999', '$80,000–$99,999', '$100,000–$199,999', '$200,000–$299,999', '$300,000–$399,999', '$400,000–$499,999', '$500,000+', 'I don’t know', 'I prefer not to answer']
                 "/>
+                            <hr> 
                             <div class="columns">
                                 <div class="column">
                                     <div class="has-text-left">

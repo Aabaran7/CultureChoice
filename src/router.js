@@ -1,8 +1,10 @@
 // import { ref } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
+import appconfig from '@/config'
 
 // 1. Import route components
+import RecruitmentChooser from '@/components/pages/RecruitmentChooserPage.vue'
 import Advertisement from '@/components/pages/AdvertisementPage.vue'
 import Consent from '@/components/pages/ConsentPage.vue'
 import DemographicSurvey from '@/components/pages/DemographicSurveyPage.vue'
@@ -24,15 +26,36 @@ const totalNonConfigRoutes = 7
 let routeIndex = 0
 const routes = [
   {
-    path: '/',
-    name: 'home',
+    path: appconfig.mode === 'development' ? '/welcome' : '/',
+    name: 'welcome',
     component: Advertisement,
     meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
     beforeEnter: (to, from) => {
       // before loading this route, identify the user
       const smilestore = useSmileStore()
-      if (!smilestore.isKnownUser) {
-        smilestore.setKnown() // set new user and add document
+      // if (!smilestore.isKnownUser) {
+      //   console.log('not known')
+      //   smilestore.setKnown() // set new user and add document
+      // }
+      // and process the data
+      // console.log('router query', to.query)
+      console.log(window.location.search)
+      smilestore.setSearchParams(window.location.search)
+
+      const urlParams = new URLSearchParams(window.location.search)
+
+      if (urlParams.has('PROLIFIC_PID')) {
+        console.log('prolific mode')
+      } else if (urlParams.has('assignmentId')) {
+        if (urlParams.get('assignmentId') == 'ASSIGNMENT_ID_NOT_AVAILABLE') {
+          console.log('AMT mode, but no assignment (preview mode)')
+        } else {
+          console.log('AMT mode, with assignment')
+        }
+      } else if (urlParams.has('CITIZEN_ID')) {
+        console.log('future citizen mode')
+      } else {
+        console.log('development mode')
       }
     },
   },
@@ -47,6 +70,14 @@ const routes = [
     name: 'demograph',
     component: DemographicSurvey,
     meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
+    // beforeEnter: (to, from) => {
+    //   // before loading this route, identify the user
+    //   const smilestore = useSmileStore()
+    //   if (!smilestore.isKnownUser) {
+    //     console.log('not known')
+    //     smilestore.setKnown() // set new user and add document
+    //   }
+    // },
   },
   {
     path: '/captcha',
@@ -85,6 +116,16 @@ const routes = [
   },
 ]
 
+// const smilestore = useSmileStore()
+// add the recruitment option if in development mode
+if (appconfig.mode === 'development') {
+  routes.unshift({
+    path: '/',
+    name: 'recruit',
+    component: RecruitmentChooser,
+  })
+}
+
 // 3. add navigation guards
 //    currently these check if user is known
 //    and if they are, they redirect to last route
@@ -93,19 +134,26 @@ function addGuards(r) {
     const smilestore = useSmileStore()
 
     if (
+      (to.name === 'recruit' && smilestore.config.mode === 'development') ||
       to.name === 'config' ||
       (smilestore.local.allowJumps && smilestore.config.mode === 'development')
     ) {
       return true // allow the requested route to load
     }
 
-    // if not known and requesting home
+    // if not known and requesting welcome
     if (!smilestore.isKnownUser) {
-      if (to.name === 'home') {
-        // if requesting home, allow it
+      if (to.name === 'welcome' || to.name === 'consent') {
+        // if requesting welcome, allow it
         return true // allow the requested route to load
       }
-      return { name: 'home', replace: true } // redirect to home
+      console.log('screwed up', to.name)
+      console.log('LAAAST route', smilestore.local.lastRoute)
+      if (smilestore.local.lastRoute === 'consent') {
+        return { name: 'consent', replace: true } // redirect to welcome
+      }
+      console.log('go to welcome')
+      return { name: 'welcome', replace: true } // redirect to welcome
     }
 
     // otherwise is known so check if database connected
@@ -127,10 +175,21 @@ function addGuards(r) {
   })
 
   // not used but available
-  // r.afterEach((to) => {
-  //   console.log('after each', to.name)
-  //   }
-  // })
+  r.afterEach((to, from) => {
+    const smilestore = useSmileStore()
+    if (
+      to.name === 'welcome' &&
+      from.name === undefined &&
+      smilestore.config.mode === 'development'
+    ) {
+      console.log('setting last route to ', to.name)
+      smilestore.setLastRoute(to.name)
+    }
+    console.log('after each', to.name, from.name)
+    // if (smilestore.searchParams) {
+    //   to.query = smilestore.searchParams
+    // }
+  })
 }
 
 // 4. Create the router instance and pass the `routes` option

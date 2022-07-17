@@ -21,6 +21,10 @@ if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 
 function finish(goto) { 
+    if (!smilestore.isKnownUser) {
+        console.log('not known')
+        smilestore.setKnown() // set new user and add document
+    }
     smilestore.setConsented()
     smilestore.saveData()
     router.push(goto)
