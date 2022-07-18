@@ -25,9 +25,28 @@ Go to the webpage of your repository (e.g., `https://github.com/gh_user/my_smile
 
 Next, edit the URL of the page in your browser to prefix with `gitpod.io/#` and press Enter (e.g., `gitpod.io/#https://github.com/gh_user/my_smile_project`).  
 
-If this is your first time using Gitpod, it will ask you to login to github and may ask for certain permissions (your github account should have access to the repository if it is private).  However, after a few simple signup steps it will spin up a cloud-based environment with VSCode already installed and configured.
+If this is your first time using Gitpod, it will ask you to log in to Github (click "Contiue with GitHub"):
 
-While the system is building you will then see a page that look like this:
+<img src="/images/gitpod_step1.png" align="center" style="margin: auto; padding-bottom: 30px" width="400">
+
+
+Next it will request permissions to link Gitpod and your Github account:
+
+<img src="/images/gitpod_step2.png" align="center" style="margin: auto; padding-bottom: 30px" width="450">
+
+You then are asked to choose which editor you will use.  It is recommended to choose VSCode (browser) which is the default choice as VSCode has specific extensions that help with <SmileText /> development.
+
+<img src="/images/gitpod_step3.png" align="center" style="margin: auto; padding-bottom: 30px" width="350">
+
+Next, if the repository you are working on is set to 'private' on Github, you may get an error message.  You will need to click "Grant Access" to given Gitpod access to your private repositories:
+
+<img src="/images/gitpod_step4.png" align="center" style="margin: auto; padding-bottom: 30px" width="350">
+
+Finally verify on Github that Gitpod should have access to your private repositories:
+
+<img src="/images/gitpod_step5.png" align="center" style="margin: auto; padding-bottom: 30px" width="350">
+
+Once this is done, the system will start to build your project for the first time.  While the system is building you will then see a page that looks like this:
 
 ![Gitpod loading page](/images/gitpod-loading.png)
 
@@ -37,19 +56,15 @@ After it loads you get a full-featured version of VSCode in your broswer that lo
 
 The system launches with the `npm run dev` command already executed in the terminal at the bottom (see [developing](/developing) for details) so you can see the live website in a VSCode side panel.  Click the small square in the top right corner to break that window off into a new tab.  This view of your project in developer mode should hot reload as you make changes to your code.
 
-You can install additional VSCode packages, run additional `npm run` commands, start terminals, and interact with the project exactly as it would be on your personal computer.  Files that you change and want to share with others should be committed using `git`.  Files you change in the project folder (`/workspace`) but have not committed are saved and will reappear between start/stops of the project.
+You can install additional VSCode packages, run additional `npm run` commands, start terminals, and interact with the project exactly as it would be on your personal computer.  Files that you change and want to share with others should be committed using `git`.  Files you change in the project folder (`/workspace`) but have not committed are saved and will reappear between start/stops of the project.  Workspaces are deleted after 14 days of inactivity.
 
 Click the green "Gitpod" logo in the lower right of the interface to bring up configuration options including starting/stopping the computing node (which you should do when you are done working to save compute time).   The node will automatically time out after 30 minutes of inactivity.
 
 The Gitpod [docs](https://www.gitpod.io/docs) are generally good including some helpful [videos](https://www.gitpod.io/screencasts).  You can customize several aspects of your development environment by changing the `.gitpod.yml` file or `.gitpod.Dockerfile`.
 
-### Step 2: Decrypt the secret environment files
+### Step 2: Obtain a copy of .env.local
 
-In order to really develop and test your application you need to [configure](/configuration) your application.
-If you are in the gureckislab <SmileText /> already includes several configuration files.
-
-[Todd note to self: Arg you need to add yourself to the keychain AND have your private keys somehow projected into the gitpod space.  See this for tips: https://github.com/gitpod-io/gitpod/issues/666#issuecomment-534347856]
-
+In order to develop a <SmileText /> project you need to have an `.env.local` file in the `env/` folder.  The easiest way to get this is to contact either Todd (if you are a core lab member), or your mentor if you are a research assistant in the lab.  This file contains the access options for saving data into the lab database.
 
 ## You are using Gitpod to begin an entirely new project based on <SmileText />
 
@@ -72,13 +87,12 @@ Github will immediately navigate you to your new repository.
 Click the web address in your browser and add the word `gitpod.io/#` to the front of your project URL:
 For example, change `https://github.com/gureckis/smile_test_2` to `gitpod.io/#/https://github.com/gureckis/smile_test_2`.
 
-This will spin up a pre-configured compute instance.
-
-### Step 3: Configure your git
+This will spin up a pre-configured compute instance.  You can follow the instructions [above](#step-1-navigate-to-your-repository-on-github-com) for setting this up then come back.
 
 
-## Caveats
+### Step 3: Configure your git secrets and deployment options
 
-- To develop locally you need to decrypt the secret environment files (INSTRUCTIONS TBD)
+- To develop locally you need to decrypt the secret environment files 
+(INSTRUCTIONS TBD)
 
 - In order for automated deployment to work correctly you need to, at least once on some machine someplace, run `npm run upload_config` in your project repo.  It doesn't have to be specifically on the Gitpod instance but who ever first configured/cloned the repository should configure the deployment settings.
