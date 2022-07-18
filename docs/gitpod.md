@@ -1,31 +1,81 @@
-# <img src="/images/gitpodlogo.png" width="40" align='left' style="padding-right: 5px;"> Pre-configured development environment using Gitpod
+#  <img src="/images/gitpodlogo.png" width="40" align='left' style="padding-right: 5px;"> Pre-configured development environment using Gitpod
 
-Installation of the required software for most recent computers should be straight foward.  However, <SmileText /> also has been configured to run on [Gitpod](https://gitpod.io), a development environment that runs in the cloud.  Using Gitpod doesn't require any software to be installed on your local computer and everything is set up for you (in fact you can run and interact with Gitpod with an iPad!).
+Installation of the [required software](/requirements) for most recent computers should be straight-foward.  However, <SmileText /> also has been configured to run on [Gitpod](https://gitpod.io), a development environment that runs in the cloud.  Using Gitpod doesn't require any software to be installed on your local computer and everything is set up for you (in fact you can run and interact with Gitpod with an iPad!).
+
+<a href="https://gitpod.io"><img src="/images/gitpod-full.svg" align="center" style="margin: auto; padding-bottom: 30px" width="250"></a>
 
 The downside of this approach is that Gitpod costs money if you exceed the 50 hours of run time for any of your development projects.  That is why it usually makes sense to install things locally.
 
-However, it can be really helpful to collaborators/students or when you are away from your main computer to use the cloud based editor which provides almost all the features you need for local development with zero configuration.
+However, it can be really helpful to collaborators/students or when you are away from your main computer to use the cloud-based editor which provides almost all the features you need for local development with zero configuration.
 
-Getting started is exceptionally easy: 
+:::info
+Gitpod and Github provide discounts to students.  For example, at the time of this writing the github student developer pack includes 6 months of free Gitpod access at a slightly higher plan than the free one: https://education.github.com/pack
+:::
 
 
-## 1. Navigate to your <SmileText /> repository on github.com
+Getting started using Gitpod is exceptionally easy, but there are two cases to consider depending on if you are joining to [collaborate on an existing, configured project](#you-are-using-gitpod-to-collaborate-on-an-already-existing-project-repository) or creating a [new project from scratch](#you-are-using-gitpod-to-begin-an-entirely-new-project-based-on):
+
+## You are using Gitpod to collaborate on an already existing project repository
+
+If you are joining an existing project which has already been configured and set up it is easy to get started (there are only two steps!).
+
+### Step 1: Navigate to your <SmileText /> repository on github.com
 
 Go to the webpage of your repository (e.g., `https://github.com/gh_user/my_smile_project`).  
 
 Next, edit the URL of the page in your browser to prefix with `gitpod.io/#` and press Enter (e.g., `gitpod.io/#https://github.com/gh_user/my_smile_project`).  
 
-This will require you to login to github and may ask for certain permissions but will spin up a cloud based environment with VSCode already installed and configured.
+If this is your first time using Gitpod, it will ask you to login to github and may ask for certain permissions (your github account should have access to the repository if it is private).  However, after a few simple signup steps it will spin up a cloud-based environment with VSCode already installed and configured.
 
-## Details
+While the system is building you will then see a page that look like this:
 
-The gitpod that spins up has a web-based version of VSCode installed.  You can use it in your browser or the desktop client can be configured to access the remote instance. 
+![Gitpod loading page](/images/gitpod-loading.png)
 
-The VScode in Gitpod has been pre-configured with many useful packages for developing in <SmileText />.
+After it loads you get a full-featured version of VSCode in your broswer that looks like this:
 
-It comes pre-installed with the necessary command line tools like the github cli and git-secrets pacakge.
+![Gitpod loading page](/images/gitpod-vscode.png)
 
-You can start terminals inside VScode to run commands on the remote machine.
+The system launches with the `npm run dev` command already executed in the terminal at the bottom (see [developing](/developing) for details) so you can see the live website in a VSCode side panel.  Click the small square in the top right corner to break that window off into a new tab.  This view of your project in developer mode should hot reload as you make changes to your code.
+
+You can install additional VSCode packages, run additional `npm run` commands, start terminals, and interact with the project exactly as it would be on your personal computer.  Files that you change and want to share with others should be committed using `git`.  Files you change in the project folder (`/workspace`) but have not committed are saved and will reappear between start/stops of the project.
+
+Click the green "Gitpod" logo in the lower right of the interface to bring up configuration options including starting/stopping the computing node (which you should do when you are done working to save compute time).   The node will automatically time out after 30 minutes of inactivity.
+
+The Gitpod [docs](https://www.gitpod.io/docs) are generally good including some helpful [videos](https://www.gitpod.io/screencasts).  You can customize several aspects of your development environment by changing the `.gitpod.yml` file or `.gitpod.Dockerfile`.
+
+### Step 2: Decrypt the secret environment files
+
+In order to really develop and test your application you need to [configure](/configuration) your application.
+If you are in the gureckislab <SmileText /> already includes several configuration files.
+
+[Todd note to self: Arg you need to add yourself to the keychain AND have your private keys somehow projected into the gitpod space.  See this for tips: https://github.com/gitpod-io/gitpod/issues/666#issuecomment-534347856]
+
+
+## You are using Gitpod to begin an entirely new project based on <SmileText />
+
+If you are starting an entirely new project using Gitpod the instructions are similar.  There are just a few extra steps to clone the base <SmileText /> repository and to configure your [deployment](/deploying).
+
+### Step 1: Clone the <SmileText /> template to a new repository
+
+Navigate to the base <SmileText /> repo (https://github.com/NYUCCL/smile).  You should see a large green button that says "Use this template":
+
+![clone the repo](/images/github-clone.png)
+
+Click it and follow the instructions for setting up a new repo under your personal Github account.  Choose a unique name for the repo, and add a description.  It is up to you if you want to make the repo public or private (this can be changed later).
+
+![clone the repo](/images/github-clone2.png)
+
+Github will immediately navigate you to your new repository.
+
+### Step 2: Open your new repository on Gitpod
+
+Click the web address in your browser and add the word `gitpod.io/#` to the front of your project URL:
+For example, change `https://github.com/gureckis/smile_test_2` to `gitpod.io/#/https://github.com/gureckis/smile_test_2`.
+
+This will spin up a pre-configured compute instance.
+
+### Step 3: Configure your git
+
 
 ## Caveats
 
