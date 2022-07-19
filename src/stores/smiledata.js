@@ -32,7 +32,8 @@ export default defineStore('smilestore', {
       // syncs with firestore
       trial_num: 0, // not being updated correctly
       consented: false,
-      service: 'prolific', // fake
+      service: 'unknown', // fake
+      recruitment_info: {}, // empty
       browser_data: [], // empty
       demographic_form: {}, // empty
     },
@@ -77,6 +78,30 @@ export default defineStore('smilestore', {
     },
     removePageAutofill() {
       this.dev.page_provides_autofill = null
+    },
+    setProlific(prolific_id, study_id, session_id) {
+      this.data.service = 'prolific'
+      this.data.recruitment_info = {
+        prolific_id,
+        study_id,
+        session_id,
+      }
+    },
+    setMechanicalTurk(worker_id, hit_id, assignment_id) {
+      this.data.service = 'mechanicalturk'
+      this.data.recruitment_info = {
+        worker_id,
+        hit_id,
+        assignment_id,
+      }
+    },
+    setCitizen(citizen_id, task_id, assign_id) {
+      this.data.service = 'citizen'
+      this.data.recruitment_info = {
+        citizen_id,
+        task_id,
+        assign_id,
+      }
     },
     autofill() {
       if (this.dev.page_provides_autofill) {

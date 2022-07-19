@@ -4,12 +4,17 @@
 
 From the Prolific dashboard, either click ‘New study’, or duplicate a previous study from within the ‘Completed’ tab on the sidebar (click ‘Action’, then ‘Duplicate’).
 
-- Set the URL for your experiment to the IP address of the server using the format `http://<ip-address>:<port-number>/`. (To find the IP address of the server, see here.) Make sure you include the forward slash, `/`, at the end, and make sure that you do not include the angle brackets.
+- Set the URL for your experiment to the IP address of the server using the format `http://<hostname>:<port-number>/`. (T Make sure you include the forward slash, `/`, at the end, and make sure that you do not include the angle brackets.
 - Under ‘How to record Prolific IDs’, select the option ‘I’ll use URL parameters’.
 - Make sure Prolific will pass the following variables: PROLIFIC_PID, STUDY_ID, and SESSION_ID.
 - At the end of the three steps above, the URL in the box under ‘What is the URL of your study?’ should look something like: 
 
 `http://128.100.100.100:9000/?PROLIFIC_PID=[[%PROLIFIC_PID%]]&STUDY_ID=[[%STUDY_ID%]]&SESSION_ID=[[%SESSION_ID%]]`
+
+
+At the end you redirect the participant to 
+https://app.prolific.co/submissions/complete?cc=HZCQS9MX
+The completion code doesn't have to be anything in particular but there is an 
 
 
 ## Mechanical Turk

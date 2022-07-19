@@ -31,6 +31,7 @@ const routes = [
     component: Advertisement,
     meta: { progress: (100 * routeIndex++) / totalNonConfigRoutes },
     beforeEnter: (to, from) => {
+      console.log("hi, i'm loading the welcome page")
       // before loading this route, identify the user
       const smilestore = useSmileStore()
       // if (!smilestore.isKnownUser) {
@@ -38,22 +39,52 @@ const routes = [
       //   smilestore.setKnown() // set new user and add document
       // }
       // and process the data
-      // console.log('router query', to.query)
-      console.log(window.location.search)
-      smilestore.setSearchParams(window.location.search)
+      const urlParams = to.query
+      console.log('router query', to.query)
+      // console.log(window.location.search)
+      // smilestore.setSearchParams(window.location.search)
 
-      const urlParams = new URLSearchParams(window.location.search)
+      // const urlParams = new URLSearchParams(window.location.search)
 
-      if (urlParams.has('PROLIFIC_PID')) {
+      if (
+        urlParams.PROLIFIC_PID &&
+        urlParams.STUDY_ID &&
+        urlParams.SESSION_ID
+      ) {
+        // this is a prolific experiment
         console.log('prolific mode')
-      } else if (urlParams.has('assignmentId')) {
-        if (urlParams.get('assignmentId') == 'ASSIGNMENT_ID_NOT_AVAILABLE') {
+        smilestore.setProlific(
+          urlParams.PROLIFIC_PID,
+          urlParams.STUDY_ID,
+          urlParams.SESSION_ID
+        )
+      } else if (
+        urlParams.assignmentId &&
+        urlParams.hitId &&
+        urlParams.workerId
+      ) {
+        if (urlParams.assignmentId == 'ASSIGNMENT_ID_NOT_AVAILABLE') {
           console.log('AMT mode, but no assignment (preview mode)')
+          // supposed to show the ad here
         } else {
           console.log('AMT mode, with assignment')
+          smilestore.setMechanicalTurk(
+            urlParams.workerId,
+            urlParams.hitId,
+            urlParams.assignmentId
+          )
         }
-      } else if (urlParams.has('CITIZEN_ID')) {
+      } else if (
+        urlParams.CITIZEN_ID &&
+        urlParams.CITIZEN_TASK_ID &&
+        urlParams.CITIZEN_ASSIGN_ID
+      ) {
         console.log('future citizen mode')
+        smilestore.setCitizen(
+          urlParams.CITIZEN_ID,
+          urlParams.CITIZEN_TASK_ID,
+          urlParams.CITIZEN_ASSIGN_ID
+        )
       } else {
         console.log('development mode')
       }
