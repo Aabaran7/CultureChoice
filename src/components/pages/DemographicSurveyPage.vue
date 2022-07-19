@@ -8,7 +8,10 @@ const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const { next, prev } = useStepRoute()
+const { nextFn, prevFn } = useStepRoute()
+const next = nextFn()
+const prev = prevFn()
+
 
 smilestore.global.page_bg_color = '#fff'
 smilestore.global.page_text_color = '#000'

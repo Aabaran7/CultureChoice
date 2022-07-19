@@ -15,7 +15,9 @@ smilestore.global.page_text_color = '#000'
 smilestore.global.status_bar_bg_color = '#fff'
 smilestore.global.status_bar_text_color = '#000'
 
-const { next, prev } = useStepRoute()
+const { nextFn, prevFn } = useStepRoute()
+const next = nextFn()
+const prev = prevFn()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 

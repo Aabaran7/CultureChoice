@@ -7,7 +7,9 @@ const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const { next, prev } = useStepRoute()
+const { nextFn, prevFn } = useStepRoute()
+const next = nextFn()
+const prev = prevFn()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
