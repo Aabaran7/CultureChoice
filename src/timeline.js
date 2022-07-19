@@ -69,7 +69,6 @@ export class Timeline {
       this.seqtimeline[i].meta.routeIdx = i
       this.seqtimeline[i].meta.progress = (100 * i) / (seqTimelineLength - 1)
     }
-    console.log(this.routes)
   }
 }
 export default Timeline

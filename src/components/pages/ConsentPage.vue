@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import useStepRoute from '@/composables/StepRoute'
+import useStepRoute from '@/composables/steproute'
 import useSmileStore from '@/stores/smiledata'
 
 import InformedConsentText from '@/components/atoms/InformedConsentText.vue';
