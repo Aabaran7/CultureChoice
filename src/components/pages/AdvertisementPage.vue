@@ -1,4 +1,5 @@
 <script setup>
+//import '@/seed'
 import { useRouter, useRoute } from 'vue-router'
 import useStepRoute from '@/composables/StepRoute'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
@@ -29,6 +30,7 @@ function finish(goto) {
         <h1 class="title is-3">Please help us understand the mind!</h1>
         <p>
             Take part in a short experiment where you play a game for money.
+            {{ Math.random() }}
         </p>
         <br>
         <button class="button is-warning" id='finish' @click="finish(next)">I'm ready! &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>

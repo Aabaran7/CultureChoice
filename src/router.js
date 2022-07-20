@@ -1,4 +1,5 @@
 // import { ref } from 'vue'
+import '@/seed.js' // random number seed
 import { createRouter, createWebHashHistory } from 'vue-router'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 
