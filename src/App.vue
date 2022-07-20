@@ -43,11 +43,11 @@ onMounted(() => {
 
 <template>
   <DeveloperNavBar v-if="smilestore.config.mode=='development'"></DeveloperNavBar>
-  <StatusBar v-if="$route.name!=='config'"></StatusBar>
+  <StatusBar v-if="$route.name!=='config' && $route.name!=='recruit'"></StatusBar>
   <div class="router">
     <router-view></router-view> <!-- the router loads here -->
   </div>
-  <ProgressBar v-if="$route.name!=='config'"></ProgressBar>
+  <ProgressBar v-if="$route.name!=='config' && $route.name!=='recruit'"></ProgressBar>
 </template>
 
 <style>

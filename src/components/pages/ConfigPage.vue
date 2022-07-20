@@ -153,7 +153,7 @@ function resetLocalState() {
 .columns {
   padding-left: 30px;
   padding-right: 30px;
-
+  margin-bottom: 30px;
 }
 .code {
   background: rgb(251, 251, 251);
