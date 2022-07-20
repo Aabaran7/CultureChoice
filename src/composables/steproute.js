@@ -11,10 +11,6 @@ export default function useStepRoute() {
     router.options.routes.filter((r) => r.meta.sequential)
   )
 
-  const routeIndex = computed(() =>
-    seqroutes.value.findIndex((r) => r.name === route.name)
-  )
-
   const nextFn = () => {
     if (route.meta.routeIdx + 1 >= seqroutes.value.length) return false
     const nextRoute = seqroutes.value[route.meta.routeIdx + 1]

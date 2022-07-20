@@ -10,18 +10,18 @@ const smilestore = useSmileStore()
             
             <h1 class="title">Welcome to our study!</h1>
             <p class="is-size-5 has-text-left">
-                We are currently running a paid research study looking at how
-                people learn through experience.   In this study you will
+                We are offering a paid research study looking at how
+                people learn and make decisions.   In this study you will
                 look at various shapes <fa-icon icon="shapes" /> and pictures <fa-icon icon="image" />
                 and make decisions similar to a video game.  You may earn
-                points for making good decisions that will convert to money
+                points for making good decisions that will convert to money <fa-icon icon="sack-dollar" />
                 that we will pay you at the end of the study ({{ smilestore.config.payrate }}).  The study
                 should take about {{ smilestore.config.estimated_time }} of your time.  You'll be
                 asked to digitally sign a constent form and (optionally) provide some
                 non-identifiable demographic information during the study.
                 Your data will be kept anonymous.
                 <hr>
-                <b>Note:</b> This study is like a game, is mentally challenging, requires concentration, can only be played once, and requires a desktop browser.
+                <b>Summary:</b> This study is like a game, is mentally challenging, requires concentration, can only be played once, and requires a desktop browser.
             </p>
         </div>
         <div class="column is-two-fifths">
@@ -53,8 +53,9 @@ a {
 }
 
 .welcome {
-    width: 80%;
     margin: auto;
+    margin-left: 80px;
+    margin-right: 80px;
 }
 .note {
     padding: 15px;

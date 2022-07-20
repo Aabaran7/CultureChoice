@@ -14,6 +14,7 @@ const smilestore = useSmileStore()
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 const mturkPreview = ref(true)
+const launched = ref(false)
 
 onMounted(() => {
     const urlParams = route.query
@@ -29,6 +30,9 @@ onMounted(() => {
   }
 })
 
+function clicked() {
+    launched.value = !launched.value
+}
 // function finish(goto) { 
 //     smilestore.saveData()
 //     router.push(goto)
@@ -39,8 +43,14 @@ onMounted(() => {
     <div class="page">
         <StudyPreviewText v-if="mturkPreview"></StudyPreviewText>
         <div v-else>
-            <h1 class="title is-3">Launch the main task</h1>
-            <a href="/#/welcome/?" class="button is-info" id='launch_window'>Begin Task in New Window</a>
+            <h1 class="title is-3">Thanks for accepting our HIT</h1>
+            <div v-if="launched">
+                Enter form here
+            </div>
+            <div v-else>
+                <a href="/#/welcome/?" class="button is-info" id='launch_window' @click="clicked()" target="_new">Begin Task in New Window</a>
+            </div>            
+            
         </div>
 
     </div>

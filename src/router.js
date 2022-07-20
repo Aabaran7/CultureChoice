@@ -95,13 +95,14 @@ timeline.pushSeqRoute({
   component: Debrief,
 })
 
-// thanks page
+// thanks/submit page
 timeline.pushSeqRoute({
   path: '/thanks',
   name: 'thanks',
   component: Thanks,
 })
 
+// this is a the special page that loads in the iframe on mturk.com
 timeline.pushNonSeqRoute({
   path: '/mturk',
   name: 'mturk',
@@ -111,10 +112,11 @@ timeline.pushNonSeqRoute({
   },
 })
 
+// this is a special route with config/debugging information
 timeline.pushNonSeqRoute({
   path: '/config',
   name: 'config',
-  component: Config, // this is a special route with config/debugging information
+  component: Config,
 })
 
 // 3. add navigation guards
