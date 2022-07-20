@@ -3,9 +3,9 @@
 Data recording and storage are critical functions of an experiment that enables [analysis](/analysis).  When a user participates in an experiment we would like a centralized place to organize the data from each participant.  We would like this storage system to be secure, robust, scalable, and fault tolerant.
 
 
-Depending on your experiment design you may need to develop custom data storage code (e.g., real-time multiplayer games).  But in most cases which cover "experimental cognitive science on individuals", <SmileText/> provides a robust solution that requires little to no configuration or code.   Dealing with data is so important, [it isn't something you should even have to think about](/principles#no-code-is-the-best-code)!
+Depending on your experiment design you may need to develop custom data storage code (e.g., real-time multiplayer games).  But in most cases that cover "experimental cognitive science on individuals", <SmileText/> provides a robust solution that requires little to no configuration or code.   Dealing with data is so important, [it isn't something you should even have to think about](/principles#no-code-is-the-best-code)!
 
-This document describes the basics of <SmileText/> data storage including how to configure the system, how use the data storage techniques manually in your code, the overall logic behind how it works, and how to set it up for a new lab.
+This document describes the basics of <SmileText/> data storage including how to configure the system, how to use the data storage techniques manually in your code, the overall logic behind how it works, and how to set it up for a new lab.
 
 
 ## Getting started quickly
@@ -102,6 +102,13 @@ The first line of this function sets the user as "consented."  This is a propert
 
 
 The `smilestore` object is an in-memory representation of the global app state.  This means that if the browser quits or the user closes the window the state is deleted.  If this happened it would delete your participants data.  To prevent this, certain data from the global app state are *persisted* meaning places someplace where they will last longer than the browser window.
+
+
+## Automatically recorded data
+
+In addition to data that you manually record <SmileText /> automatically tracks additional information about the browser state during your experiment.  Specifically, it records window resize events, and changes in focus (blur means when someone clicks on a window other than the current browser and focus is an even when the window is brought back to the front).  These fields can sometimes be used to detect odd behaviors such as using another window to search for answers or dual-tasking.
+The data is tracked in `smilestore.data.browser_data` in a easy to parse JSON structure.
+
 
 
 ## Google Firebase/Firestore
