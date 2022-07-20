@@ -3,7 +3,7 @@
     <div class="informedconsent">
         <div class="columns">
             <div class="column is-1"><img src="@/assets/nyu_small.png" width="60"></div>
-            <div class="column is-12">
+            <div class="column is-11">
                 <h1 class="is-size-5">Official Informed Consent Statement</h1>
                 <hr>
                 <p>
