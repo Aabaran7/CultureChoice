@@ -21,7 +21,8 @@
                 <p class="is-size-6">
                 Mechanical Turk is the wild-west 🤠 of online crowd labor markets.  
                 </p>
-                <a href="/#/mturk/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE" class="button is-warning is-small" id="amt_tester">Random Fake AMT User &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a> <a href="/#/mturk/?assignmentId=ASSIGNMENT_ID_NOT_AVAILABLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE" class="button is-danger is-small" id="amt_tester_preview">AMT Preview Mode &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
+                <a href="/#/mturk/?assignmentId=ASSIGNMENT_ID_NOT_AVAILABLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE" class="button is-danger is-small" id="amt_tester_preview">AMT Preview Mode &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
+                <a href="/#/mturk/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE" class="button is-warning is-small" id="amt_tester">Random Fake AMT User &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a> 
                 <hr>
                 <h3 class="title is-5">Citizen Science</h3>
                 <p class="is-size-6">

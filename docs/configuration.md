@@ -94,6 +94,9 @@ VITE_BROWSER_EXCLUDE             = ie
 VITE_ALLOW_REPEATS               = yes
 VITE_SERVICES_ALLOWED            = amt,prolific,sona,web
 VITE_RANDOM_SEED                 = 100012
+
+VITE_ESTIMATED_TIME              = "30-40 minutes"
+VITE_PAYRATE_HOURLY              = "$15USD/hour + performance related bonus"
 ```
 
 Notice that the configuration options in this file begin with `VITE_`.  This means they are made 
@@ -106,6 +109,9 @@ from taking your task more than once.
 - `VITE_SERVICES_ALLOWED` configures which recruitment gateways
 you want to enable for your experiment (e.g., amt - Mechanical Turk, prolific - Prolific.ac, etc...).
 - `VITE_RANDOM_SEED` initializes the pseudo-random number generator in <SmileText />
+- `VITE_ESTIMATED_TIME` is text you can include in an ad for the study (e.g., mechanical turk) to let people know how long to expect the task to take.  It might need to be references several places so putting it in the config can be helpful.
+- `VITE_PAYRATE_HOURLY` is text about the payrate for the study.  Again, it is a configuration option since it might need to be referenced in several components and templates.
+
 
 #### Web Services Options (`.env.local`)
 

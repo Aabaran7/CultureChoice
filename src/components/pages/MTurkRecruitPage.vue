@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import useStepRoute from '@/composables/steproute'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
+import StudyPreviewText from '@/components/atoms/StudyPreviewText.vue'
 
 // const router = useRouter()
 const route = useRoute()
@@ -36,11 +37,10 @@ onMounted(() => {
 
 <template>
     <div class="page">
-        <div v-if="mturkPreview">
-            <h1 class="title is-3">Murk Preview Page</h1>
-        </div>
+        <StudyPreviewText v-if="mturkPreview"></StudyPreviewText>
         <div v-else>
-            <h1 class="title is-3">Murk Page</h1>
+            <h1 class="title is-3">Launch the main task</h1>
+            <a href="/#/welcome/?" class="button is-info" id='launch_window'>Begin Task in New Window</a>
         </div>
 
     </div>
