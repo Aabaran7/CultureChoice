@@ -37,6 +37,13 @@ function clicked() {
 //     smilestore.saveData()
 //     router.push(goto)
 // }
+
+// if(sandbox) {
+//     const turkSubmitTo = 'https://workersandbox.mturk.com/mturk/externalSubmit'
+// } else {
+//     const turkSubmitTo = 'https://www.mturk.com/mturk/externalSubmit'
+// }
+
 </script>
 
 <template>
@@ -44,8 +51,14 @@ function clicked() {
         <StudyPreviewText v-if="mturkPreview"></StudyPreviewText>
         <div v-else>
             <h1 class="title is-3">Thanks for accepting our HIT</h1>
-            <div v-if="launched">
-                Enter form here
+            <div class='submitform' v-if="launched">
+                <p class="has-text-left">
+                    Please complete the task in the window that was launched.
+                    When you are finished you will be provided with a completion code which
+                    you should copy and enter here.
+                 </p>
+                <b>Enter code</b>: <FormKit type="text" />
+                <button class="button is-success" @click="submit">submit</button>
             </div>
             <div v-else>
                 <a href="/#/welcome/?" class="button is-info" id='launch_window' @click="clicked()" target="_new">Begin Task in New Window</a>
@@ -55,3 +68,10 @@ function clicked() {
 
     </div>
 </template>
+
+<style scoped>
+.submitform {
+    width: 50%;
+    margin: auto;
+}
+</style>
