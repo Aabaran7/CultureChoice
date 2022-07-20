@@ -34,6 +34,7 @@
     "pinia": "^2.0.14",
     "seedrandom": "^3.0.5",
     "vue": "^3.2.25",
+    "vue-gtag": "^2.0.1",
     "vue-router": "^4.0.16"
   },
   "devDependencies": {

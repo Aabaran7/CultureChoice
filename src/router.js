@@ -127,9 +127,12 @@ function addGuards(r) {
     }
   })
 
-  // not used but available
+  // after each route loads
   // r.afterEach((to) => {
-  //   console.log('after each', to.name)
+  //   if (import.meta.env.MODE !== 'development') {
+  //     // manually notify google analytics of page change
+  //     ga('set', 'page', to.name)
+  //     ga('send', 'pageview')
   //   }
   // })
 }
