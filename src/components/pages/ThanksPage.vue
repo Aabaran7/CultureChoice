@@ -1,4 +1,5 @@
 <script setup>
+import Clipboard from 'clipboard';
 import sha256 from 'crypto-js/sha256'
 import Base64url from 'crypto-js/enc-base64'
 import { useRouter, useRoute } from 'vue-router'
@@ -31,6 +32,16 @@ function computeCompletionCode() {
 
 const completionCode = computeCompletionCode()
 smilestore.setCompletionCode(completionCode)
+
+
+// create clipboard system
+const clipboard = new Clipboard('#copy_code');
+clipboard.on('success', (e) => {
+  console.log('code copied to clipboard', e.trigger.id);
+});
+
+
+
 //console.log(computeCompletionCode())
 // function finish(goto) { 
 //     smilestore.saveData()
@@ -63,7 +74,7 @@ smilestore.setCompletionCode(completionCode)
             </p>
             <hr>
             <h1 class="title is-5">Unique completion code:</h1>
-            <span class="completioncode">{{ completionCode }}</span><a href="https://cloudresearch.com" class="button is-info">Copy Code &nbsp;<fa-icon icon="fa-solid fa-clipboard" /></a>
+            <span class="completioncode">{{ completionCode }}</span><button class="button is-info" id="copy_code" data-clipboard-target=".completioncode">Copy Code &nbsp;<fa-icon icon="fa-solid fa-clipboard" /></button>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='mturk'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
@@ -76,7 +87,7 @@ smilestore.setCompletionCode(completionCode)
             </p>
             <hr>
             <h1 class="title is-5">Unique completion code:</h1>
-            <span class="completioncode">{{ completionCode }}</span><a href="https://cloudresearch.com" class="button is-info">Copy Code &nbsp;<fa-icon icon="fa-solid fa-clipboard" /></a>
+            <span class="completioncode">{{ completionCode }}</span><button class="button is-info" id="copy_code" data-clipboard-target=".completioncode">Copy Code &nbsp;<fa-icon icon="fa-solid fa-clipboard" /></button>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='citizensci'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
