@@ -80,37 +80,9 @@ export default defineStore('smilestore', {
     removePageAutofill() {
       this.dev.page_provides_autofill = null
     },
-    setProlific(prolific_id, study_id, session_id) {
-      this.data.recruitment_service = 'prolific'
-      this.data.recruitment_info = {
-        prolific_id,
-        study_id,
-        session_id,
-      }
-    },
-    setCrowdResearch(worker_id, hit_id, assignment_id) {
-      this.data.recruitment_service = 'crowdresearch'
-      this.data.recruitment_info = {
-        worker_id,
-        hit_id,
-        assignment_id,
-      }
-    },
-    setMechanicalTurk(worker_id, hit_id, assignment_id) {
-      this.data.recruitment_service = 'mechanicalturk'
-      this.data.recruitment_info = {
-        worker_id,
-        hit_id,
-        assignment_id,
-      }
-    },
-    setCitizen(citizen_id, task_id, assign_id) {
-      this.data.recruitment_service = 'citizen'
-      this.data.recruitment_info = {
-        citizen_id,
-        task_id,
-        assign_id,
-      }
+    setRecruitmentService(service, info) {
+      this.data.recruitment_service = service
+      this.data.recruitment_info = info
     },
     autofill() {
       if (this.dev.page_provides_autofill) {
