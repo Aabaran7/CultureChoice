@@ -8,9 +8,11 @@ echo "Installing dependencies"
 npm install
 
 echo "Adding symbolic link for local post-commit hook"
-chmod +x scripts/post-commit
-ln -sf ../../scripts/post-commit .git/hooks/post-commit
-bash scripts/post-commit
+chmod +x scripts/generate_git_env.sh
+ln -sf ../../scripts/generate_git_env.sh .git/hooks/post-commit
+# same thing but for when you switch to a new branch
+ln -sf ../../scripts/generate_git_env.sh .git/hooks/post-checkout
+bash scripts/generate_git_env.sh
 
 echo "Buliding Bulma CSS"
 npm run css-build
