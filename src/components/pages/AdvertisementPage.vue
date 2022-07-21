@@ -1,4 +1,5 @@
 <script setup>
+//import '@/seed'
 import { useRouter, useRoute } from 'vue-router'
 import useStepRoute from '@/composables/steproute'
 import useSmileStore from '@/stores/smiledata' // get access to the global store

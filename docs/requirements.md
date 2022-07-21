@@ -1,6 +1,10 @@
 # :space_invader: Required software you will need to install
 
-Before getting started working on a <SmileText/> project you will need to install a few items on your local computer.
+Before getting started working on a <SmileText/> project you will need to install a few items on your local computer.  
+
+:::info Zero-install option
+This guide is the recommended strategy for most people (particularly core lab members like postdocs and phd students).  However, there is also the option of working on the project using a pre-configured cloud-based environment hosted by [Gitpod](https://gitpod.io). Click [here](/gitpod) for more info.
+:::
 
 ## 1. Install the latest Node.js
 
@@ -62,9 +66,6 @@ Optionally install the [Vue Devtools](https://devtools.vuejs.org) in your browse
 ## 6. Install VSCode and Volar (optional)
 
 It is highly recommended that you use [VS Code](https://code.visualstudio.com/) and the [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension as your text editor/development environment.
-
-
-
 
 
 

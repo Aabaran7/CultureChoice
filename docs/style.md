@@ -1,4 +1,4 @@
-# :artist: Styling and CSS
+# :artist: Styling, CSS, and Icons
 
 We use [Bluma](https://bulma.io).
 

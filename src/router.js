@@ -1,4 +1,5 @@
 // import { ref } from 'vue'
+import '@/seed.js' // random number seed
 import { createRouter, createWebHashHistory } from 'vue-router'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/config'
@@ -160,10 +161,26 @@ function addGuards(r) {
   //     return true // allow the requested route to load, prevent infinite redirects
   //   }
 
+<<<<<<< HEAD
   //   // go to where you left off
   //   return {
   //     name: smilestore.lastRoute, // to go where you leave off
   //     replace: true,
+=======
+    // go to where you left off
+    return {
+      name: smilestore.lastRoute, // to go where you leave off
+      replace: true,
+    }
+  })
+
+  // after each route loads
+  // r.afterEach((to) => {
+  //   if (import.meta.env.MODE !== 'development') {
+  //     // manually notify google analytics of page change
+  //     ga('set', 'page', to.name)
+  //     ga('send', 'pageview')
+>>>>>>> main
   //   }
   // })
 

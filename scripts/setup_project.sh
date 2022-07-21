@@ -1,26 +1,18 @@
 #!/bin/bash
 
-echo "Adding symbolic link for local post-commit hook"
-chmod +x scripts/post-commit
-ln -s ../../scripts/post-commit .git/hooks/post-commit
-
-
-PROJECT_NAME=$(basename $(git remote get-url origin) .git)
-OWNER=$(basename $(dirname $(git remote get-url origin)))
-if [ "$OWNER" == "NYUCCL" ] && [ "$PROJECT_NAME" == "smile" ] ; then
-    echo "Forcing an empty commit to trigger an initial deploy"
-    git commit --allow-empty -m "forcing a deploy"
-else
-    echo "Removing deploy script and generating initial deploy"
-    rm .github/workflows/docs-deploy.yml
-    git add .github/workflows/docs-deploy.yml
-    git commit -m "initial setup: removing docs deploy script"
-fi
-
-git push
+####
+# These things need to run from any fresh clone of the repo
+###
 
 echo "Installing dependencies"
 npm install
+
+echo "Adding symbolic link for local post-commit hook"
+chmod +x scripts/generate_git_env.sh
+ln -sf ../../scripts/generate_git_env.sh .git/hooks/post-commit
+# same thing but for when you switch to a new branch
+ln -sf ../../scripts/generate_git_env.sh .git/hooks/post-checkout
+bash scripts/generate_git_env.sh
 
 echo "Buliding Bulma CSS"
 npm run css-build

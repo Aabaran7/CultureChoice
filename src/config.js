@@ -29,8 +29,12 @@ export default {
   random_seed: import.meta.env.VITE_RANDOM_SEED,
   deploy_url: import.meta.env.VITE_DEPLOY_URL, // auto compute this
   services_allowed: import.meta.env.VITE_SERVICES_ALLOWED,
+<<<<<<< HEAD
   estimated_time: import.meta.env.VITE_ESTIMATED_TIME,
   payrate: import.meta.env.VITE_PAYRATE,
+=======
+  google_analytics_id: import.meta.env.VITE_GOOGLE_ANALYTICS,
+>>>>>>> main
   firebaseConfig: {
     apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTHDOMAIN,
