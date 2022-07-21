@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
-import useStepRoute from '@/composables/steproute'
+//import useStepRoute from '@/composables/steproute'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import StudyPreviewText from '@/components/atoms/StudyPreviewText.vue'
 
@@ -15,9 +15,15 @@ if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 const mturkPreview = ref(true)
 const launched = ref(false)
-
+let redirectURL = ref('/#/welcome/?')
 onMounted(() => {
     const urlParams = route.query
+    let queryStr = route.fullPath.split('?')
+    
+    if(queryStr.length==2) {
+        redirectURL.value += queryStr[1]
+    } 
+    console.log(redirectURL)
     if (urlParams.assignmentId && urlParams.hitId && urlParams.workerId) {
         if (urlParams.assignmentId === 'ASSIGNMENT_ID_NOT_AVAILABLE') {
             console.log('AMT mode, but no assignment (preview mode)')
@@ -32,6 +38,8 @@ onMounted(() => {
 
 function clicked() {
     launched.value = !launched.value
+    // open new window
+    window.open(redirectURL.value, '_blank')
 }
 // function finish(goto) { 
 //     smilestore.saveData()
@@ -61,7 +69,7 @@ function clicked() {
                 <button class="button is-success" @click="submit">submit</button>
             </div>
             <div v-else>
-                <a href="/#/welcome/?" class="button is-info" id='launch_window' @click="clicked()" target="_new">Begin Task in New Window</a>
+                <a class="button is-info" id='launch_window' @click="clicked()" target="_new">Begin Task in New Window</a>
             </div>            
             
         </div>

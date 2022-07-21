@@ -28,7 +28,7 @@
                 <p class="is-size-6">
                 <a href="https://www.cloudresearch.com" target="_new">CloudResearch</a> is a platform that recruits from several sources, including Mechanical Turk but includes some screening for bots and server farms.
                 </p>
-                <a href="/#/welcome/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE" class="button is-pink is-small" id='prolific_tester'>Random Fake CloudResearch User &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
+                <a href="/#/welcome/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE&crowdResearch=true" class="button is-pink is-small" id='prolific_tester'>Random Fake CloudResearch User &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
                 <hr>
                 <h3 class="title is-5">Mechanical Turk</h3>
                 <p class="is-size-6">

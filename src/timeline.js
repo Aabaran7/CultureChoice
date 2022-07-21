@@ -8,11 +8,23 @@ export function processQuery(query) {
 
   if (urlParams.PROLIFIC_PID && urlParams.STUDY_ID && urlParams.SESSION_ID) {
     // this is a prolific experiment
-    console.log('prolific mode')
+    console.log('Prolific mode')
     smilestore.setProlific(
       urlParams.PROLIFIC_PID,
       urlParams.STUDY_ID,
       urlParams.SESSION_ID
+    )
+  } else if (
+    urlParams.assignmentId &&
+    urlParams.hitId &&
+    urlParams.workerId &&
+    urlParams.crowdResearch // change this for crowdresearch
+  ) {
+    console.log('CrowdResearch mode')
+    smilestore.setCrowdResearch(
+      urlParams.workerId,
+      urlParams.hitId,
+      urlParams.assignmentId
     )
   } else if (urlParams.assignmentId && urlParams.hitId && urlParams.workerId) {
     if (urlParams.assignmentId == 'ASSIGNMENT_ID_NOT_AVAILABLE') {
@@ -31,14 +43,14 @@ export function processQuery(query) {
     urlParams.CITIZEN_TASK_ID &&
     urlParams.CITIZEN_ASSIGN_ID
   ) {
-    console.log('future citizen mode')
+    console.log('Future citizen mode')
     smilestore.setCitizen(
       urlParams.CITIZEN_ID,
       urlParams.CITIZEN_TASK_ID,
       urlParams.CITIZEN_ASSIGN_ID
     )
   } else {
-    console.log('development mode')
+    console.log('free/web/dev mode')
   }
 }
 
