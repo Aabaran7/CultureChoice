@@ -18,7 +18,6 @@ export default ({ mode }) => {
   // import.meta.env.VITE_PORT available here with: process.env.VITE_PORT
   return defineConfig({
     plugins: [vitePluginHtmlEnv(), vue()],
-<<<<<<< HEAD
     // if you need an additional page you have to list them here
     // see https://vitejs.dev/guide/build.html#multi-page-app
     // build: {
@@ -29,16 +28,6 @@ export default ({ mode }) => {
     //     },
     //   },
     // },
-=======
-    build: {
-      rollupOptions: {
-        input: {
-          main: path.resolve(__dirname, 'index.html'),
-          // test: path.resolve(__dirname, 'test.html'),
-        },
-      },
-    },
->>>>>>> main
     envDir: 'env',
     base: process.env.VITE_DEPLOY_BASE_PATH,
     server: {

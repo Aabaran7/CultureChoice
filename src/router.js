@@ -126,7 +126,6 @@ timeline.pushNonSeqRoute({
 function addGuards(r) {
   // r.beforeEach((to) => {
   //   const smilestore = useSmileStore()
-
   //   if (
   //     (to.name === 'recruit' && smilestore.config.mode === 'development') ||
   //     to.name === 'config' ||
@@ -134,7 +133,6 @@ function addGuards(r) {
   //   ) {
   //     return true // allow the requested route to load
   //   }
-
   //   // if not known and requesting welcome
   //   if (!smilestore.isKnownUser) {
   //     if (to.name === 'welcome' || to.name === 'consent') {
@@ -149,57 +147,37 @@ function addGuards(r) {
   //     console.log('go to welcome')
   //     return { name: 'welcome', replace: true } // redirect to welcome
   //   }
-
   //   // otherwise is known so check if database connected
   //   // if not connect and load existing data
   //   // if yes just continue
   //   if (smilestore.isKnownUser && !smilestore.isDBConnected) {
   //     smilestore.loadData()
   //   }
-
   //   if (smilestore.local.lastRoute === to.name) {
   //     return true // allow the requested route to load, prevent infinite redirects
   //   }
-
-<<<<<<< HEAD
   //   // go to where you left off
   //   return {
   //     name: smilestore.lastRoute, // to go where you leave off
   //     replace: true,
-=======
-    // go to where you left off
-    return {
-      name: smilestore.lastRoute, // to go where you leave off
-      replace: true,
-    }
-  })
-
-  // after each route loads
-  // r.afterEach((to) => {
-  //   if (import.meta.env.MODE !== 'development') {
-  //     // manually notify google analytics of page change
-  //     ga('set', 'page', to.name)
-  //     ga('send', 'pageview')
->>>>>>> main
   //   }
   // })
-
   // not used but available
-  r.afterEach((to, from) => {
-    // const smilestore = useSmileStore()
-    // if (
-    //   to.name === 'welcome' &&
-    //   from.name === undefined &&
-    //   smilestore.config.mode === 'development'
-    // ) {
-    //   console.log('setting last route to ', to.name)
-    //   smilestore.setLastRoute(to.name)
-    // }
-    // console.log('after each', to.name, from.name)
-    // if (smilestore.searchParams) {
-    //   to.query = smilestore.searchParams
-    // }
-  })
+  // r.afterEach((to, from) => {
+  //   const smilestore = useSmileStore()
+  //   if (
+  //     to.name === 'welcome' &&
+  //     from.name === undefined &&
+  //     smilestore.config.mode === 'development'
+  //   ) {
+  //     console.log('setting last route to ', to.name)
+  //     smilestore.setLastRoute(to.name)
+  //   }
+  //   console.log('after each', to.name, from.name)
+  //   if (smilestore.searchParams) {
+  //     to.query = smilestore.searchParams
+  //   }
+  // })
 }
 timeline.buildProgress()
 const { routes } = timeline
