@@ -33,6 +33,7 @@ export default defineStore('smilestore', {
       // syncs with firestore
       trial_num: 0, // not being updated correctly
       consented: false,
+      done: false,
       recruitment_service: 'web', // fake
       recruitment_info: {}, // empty
       browser_data: [], // empty
@@ -44,6 +45,7 @@ export default defineStore('smilestore', {
   getters: {
     isKnownUser: (state) => state.local.knownUser,
     isConsented: (state) => state.data.consented,
+    isDone: (state) => state.data.done,
     lastRoute: (state) => state.local.lastRoute,
     isDBConnected: (state) => state.global.db_connected,
     hasAutofill: (state) => state.dev.page_provides_autofill,
@@ -60,6 +62,9 @@ export default defineStore('smilestore', {
     },
     setConsented() {
       this.data.consented = true
+    },
+    setDone() {
+      this.data.done = true
     },
     setCompletionCode(code) {
       this.local.completionCode = code
