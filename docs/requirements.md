@@ -15,7 +15,7 @@ you as a member of the [NYUCCL organization](https://github.com/nyuccl).
 Next make sure you have the GitHub Command Line Interface (cli) tool installed:
 [download it here](https://cli.github.com) using the installer or homebrew.  
 
-Next, allow the cli access to your GitHub account by typing:
+Next, allow the CLI access to your GitHub account by typing:
 
 ```
 gh auth login --web
@@ -29,8 +29,7 @@ into your terminal program.  This will open your default browser and ask you to 
 Later you will want to customize the configuration of your application, but if you are in the <GureckisLabText/> you will want to simply decrypt the pre-configured files provided in the repository.
 
 ::: info Great news!
-You only need to do this the first time you try out <SmileText/>!  Then you will forever be part of the 
-familia.
+You only need to do this the first time you try out <SmileText/>!  Then you will forever be part of the family.
 :::
 
 
@@ -54,7 +53,7 @@ Wait for him to reply and to make a push to the main <SmileText/> repo giving ac
 
 ## 4. Install a web browser (or two or three)
 
-Install Safari, Chrome and/or Firefox.  It can make sense to install multiple browsers and test your code against each of them. However for developing/testing your code Chrome is particularly recommended because of range extensions.
+Install Safari, Chrome and/or Firefox.  It can make sense to install multiple browsers and test your code against each of them. However, for developing/testing your code Chrome is particularly recommended because of the wide range of available extensions.
 
 ## 5. Install Vue Devtools (optional)
 
