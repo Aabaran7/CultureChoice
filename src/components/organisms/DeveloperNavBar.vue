@@ -25,6 +25,12 @@ onMounted(() => {
 
   })
 })
+
+function resetLocalState() { // this is repeated on config and maybe should be a utility function
+  localStorage.removeItem(smilestore.config.local_storage_key) // delete the local store
+  smilestore.$reset()  // reset all the data even
+  router.push('/')
+}
 </script>
 
 <template>
@@ -33,7 +39,13 @@ onMounted(() => {
 
         <div class="devmode-title">DEVELOPER MODE</div>
         <div class="devmode">
-          -- &nbsp; Config: 
+          -- &nbsp; Reset: 
+          <a alt="Reset all state and return to / route" @click="resetLocalState()">
+            <fa-icon icon="fa-solid fa-arrow-rotate-left" />
+          </a>
+        </div>
+        <div class="devmode">
+          | &nbsp; Config: 
           <a href="/#/config" alt="View config">
             <fa-icon icon="fa-solid fa-gear" />
           </a>
