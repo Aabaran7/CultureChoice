@@ -15,7 +15,7 @@ if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 const mturkPreview = ref(true)
 const launched = ref(false)
-let redirectURL = ref('/#/welcome/?')
+let redirectURL = ref('/#/welcome/mturk/?')
 onMounted(() => {
     const urlParams = route.query
     let queryStr = route.fullPath.split('?')

@@ -37,11 +37,11 @@ if (appconfig.mode === 'development') {
 
 // welcome screen
 timeline.pushSeqRoute({
-  path: appconfig.mode === 'development' ? '/welcome' : '/',
+  path: appconfig.mode === 'development' ? '/welcome/:service' : '/:service',
   name: 'welcome',
   component: Advertisement,
   beforeEnter: (to) => {
-    processQuery(to.query)
+    processQuery(to.query, to.params.service)
   },
 })
 
@@ -108,7 +108,7 @@ timeline.pushNonSeqRoute({
   name: 'mturk',
   component: MTurk,
   beforeEnter: (to) => {
-    processQuery(to.query)
+    processQuery(to.query, 'mturk')
   },
 })
 
@@ -169,16 +169,16 @@ function addGuards(r) {
 
   // not used but available
   r.afterEach((to, from) => {
-    const smilestore = useSmileStore()
-    if (
-      to.name === 'welcome' &&
-      from.name === undefined &&
-      smilestore.config.mode === 'development'
-    ) {
-      console.log('setting last route to ', to.name)
-      smilestore.setLastRoute(to.name)
-    }
-    console.log('after each', to.name, from.name)
+    // const smilestore = useSmileStore()
+    // if (
+    //   to.name === 'welcome' &&
+    //   from.name === undefined &&
+    //   smilestore.config.mode === 'development'
+    // ) {
+    //   console.log('setting last route to ', to.name)
+    //   smilestore.setLastRoute(to.name)
+    // }
+    // console.log('after each', to.name, from.name)
     // if (smilestore.searchParams) {
     //   to.query = smilestore.searchParams
     // }
