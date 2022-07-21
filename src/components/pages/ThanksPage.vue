@@ -62,7 +62,7 @@ clipboard.on('success', (e) => {
                 related bonuses will be assigned at that time.  We really appreciate your time.
             </p>
             <hr>
-            <a href="https://app.prolific.co/submissions/complete?cc=I2PWSFRG" class="button is-info">Submit my work to Prolific &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
+            <a :href="`https://app.prolific.co/submissions/complete?cc=${completionCode}`" class="button is-info">Submit my work to Prolific &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='cloudresearch'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
