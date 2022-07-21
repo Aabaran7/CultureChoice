@@ -13,6 +13,7 @@ export default defineStore('smilestore', {
       lastRoute: appconfig.mode === 'development' ? 'recruit' : 'welcome',
       allowJumps: false,
       docRef: null,
+      completionCode: '',
     }),
     global: {
       // ephemeral state, resets on browser refresh
@@ -59,6 +60,9 @@ export default defineStore('smilestore', {
     },
     setConsented() {
       this.data.consented = true
+    },
+    setCompletionCode(code) {
+      this.local.completionCode = code
     },
     recordWindowEvent(type, event_data = null) {
       if (event_data) {

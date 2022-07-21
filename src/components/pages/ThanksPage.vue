@@ -1,4 +1,6 @@
 <script setup>
+import sha256 from 'crypto-js/sha256'
+import Base64url from 'crypto-js/enc-base64'
 import { useRouter, useRoute } from 'vue-router'
 import useStepRoute from '@/composables/steproute'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
@@ -14,11 +16,27 @@ const prev = prevFn()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
+smilestore.saveData() // force a data save
 
-function finish(goto) { 
-    smilestore.saveData()
-    router.push(goto)
+//// https://app.prolific.co/submissions/complete?cc=16K4HJM1
+// prolific offers another code for non-completion
+
+// compute completion code
+function computeCompletionCode() {
+    // stringify the data
+    const data = JSON.stringify(smilestore.data)
+    const hashDigest = Base64url.stringify(sha256(data))
+    return hashDigest.slice(0,20) // only use first 20 characters, may need to update to shortest possible code
 }
+
+const completionCode = computeCompletionCode()
+smilestore.setCompletionCode(completionCode)
+//console.log(computeCompletionCode())
+// function finish(goto) { 
+//     smilestore.saveData()
+//     router.push(goto)
+// }
+
 </script>
 
 <template>
@@ -27,39 +45,46 @@ function finish(goto) {
         
         <div class="payment" v-if="smilestore.recruitmentService=='prolific'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
-            <p>
-            Please click the button below to being the process of payment.  This will notify Prolific you 
-            successfully completed the task.  Your work will be approved with hours and any performance
-            related bonuses will be assigned.<br><br>
+            <p class="has-text-left">
+                Please click the button below to begin the process of payment.  This will notify Prolific you 
+                successfully completed the task.  Your work will be approved within several hours and any performance
+                related bonuses will be assigned at that time.  We really appreciate your time.
+            </p>
+            <hr>
             <a href="https://app.prolific.co/submissions/complete?cc=I2PWSFRG" class="button is-info">Submit my work to Prolific &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
-            </p>
         </div>
-        <div class="payment" v-if="smilestore.recruitmentService=='crowdresearch'">
+        <div class="payment" v-if="smilestore.recruitmentService=='cloudresearch'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
-            <p>
-                Please click the button below to being the process of payment.  This will notify CrowdResearch you
-                successfully completed the task.  Your work will be approved with hours and any performance
-                related bonuses will be assigned.<br><br>
-                <a href="https://crowdresearch.com" class="button is-info">Submit my work to CrowdResearch &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
+            <p class="has-text-left">
+                Please copy the code displayed below (or click the button) and paste it into the Mechanical Turk window 
+                to begin the process of payment.  
+                Your work will be approved within several hours and any performance
+                related bonuses will be assigned at that time.  We really appreciate your time.
             </p>
+            <hr>
+            <h1 class="title is-5">Unique completion code:</h1>
+            <span class="completioncode">{{ completionCode }}</span><a href="https://cloudresearch.com" class="button is-info">Copy Code &nbsp;<fa-icon icon="fa-solid fa-clipboard" /></a>
         </div>
-        <div class="payment" v-if="smilestore.recruitmentService=='mechanicalturk'">
-            <p>
-                <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
-                Please click the button below to being the process of payment.  This will notify Mechanical Turk you
-                successfully completed the task.  Your work will be approved with hours and any performance
-                related bonuses will be assigned.<br><br>
-                <a href="https://murk.com" class="button is-info">Submit my work to Mechanical Turk &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
+        <div class="payment" v-if="smilestore.recruitmentService=='mturk'">
+            <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
+            <p class="has-text-left">
+                Please verify the code displayed below is visible in the form on the Mechanical Turk website.
+                If it is not click the button to copy it to your clipboard and paste it into the Mechanical Turk window 
+                to begin the process of payment.  
+                Your work will be approved within several hours and any performance
+                related bonuses will be assigned at that time.  We really appreciate your time.
             </p>
+            <hr>
+            <h1 class="title is-5">Unique completion code:</h1>
+            <span class="completioncode">{{ completionCode }}</span><a href="https://cloudresearch.com" class="button is-info">Copy Code &nbsp;<fa-icon icon="fa-solid fa-clipboard" /></a>
         </div>
-        <div class="payment" v-if="smilestore.recruitmentService=='citizen'">
-            <p>
-                <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
-                Please click the button below to being the process of payment.  This will notify [Citizen Science?] you
-                successfully completed the task.  Your work will be approved with hours and any performance
-                related bonuses will be assigned.<br><br>
-                <a href="http://gureckislab.org" class="button is-info">Submit my work &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
+        <div class="payment" v-if="smilestore.recruitmentService=='citizensci'">
+            <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
+            <p class="has-text-left">
+                This still needs to be implemented
             </p>
+            <hr>
+            <a href="http://gureckislab.org" class="button is-info">Submit my work &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='web'">
             <p>
@@ -74,5 +99,12 @@ function finish(goto) {
 .payment {
     width: 60%;
     margin: auto;
+}
+.completioncode {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-right: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
 }
 </style>

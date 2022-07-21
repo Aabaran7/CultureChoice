@@ -65,7 +65,7 @@ function clicked() {
                     When you are finished you will be provided with a completion code which
                     you should copy and enter here.
                  </p>
-                <b>Enter code</b>: <FormKit type="text" />
+                <b>Enter code</b>: <FormKit type="text" v-model='smilestore.local.completionCode'/>
                 <button class="button is-success" @click="submit">submit</button>
             </div>
             <div v-else>
