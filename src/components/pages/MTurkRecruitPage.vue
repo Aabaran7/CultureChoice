@@ -23,7 +23,7 @@ onMounted(() => {
     if(queryStr.length==2) {
         redirectURL.value += queryStr[1]
     } 
-    console.log(redirectURL)
+    console.log(redirectURL.value)
     if (urlParams.assignmentId && urlParams.hitId && urlParams.workerId) {
         if (urlParams.assignmentId === 'ASSIGNMENT_ID_NOT_AVAILABLE') {
             console.log('AMT mode, but no assignment (preview mode)')
@@ -46,12 +46,16 @@ function clicked() {
 //     router.push(goto)
 // }
 
+// TODO: Figure out if you are in sandbox mode or not automatically
 // if(sandbox) {
 //     const turkSubmitTo = 'https://workersandbox.mturk.com/mturk/externalSubmit'
 // } else {
 //     const turkSubmitTo = 'https://www.mturk.com/mturk/externalSubmit'
 // }
-
+const turkSubmitTo = 'https://www.mturk.com/mturk/externalSubmit'
+function submit() {
+    console.log("submitting to AMT")
+}
 </script>
 
 <template>
@@ -65,8 +69,18 @@ function clicked() {
                     When you are finished you will be provided with a completion code which
                     you should copy and enter here.
                  </p>
-                <b>Enter code</b>: <FormKit type="text" v-model='smilestore.local.completionCode'/>
-                <button class="button is-success" @click="submit">submit</button>
+                 <hr>
+                <FormKit type="form"
+                         submit-label="Submit to Mechanical Turk"
+                         :action="turkSubmitTo"
+                         method="post">
+                    <FormKit type="text" 
+                        name="completioncode"
+                        label="Completion Code"
+                        v-model='smilestore.local.completionCode'
+                        placeholder='Paste your completion code here'
+                        validation="required" />
+                </FormKit>
             </div>
             <div v-else>
                 <a class="button is-info" id='launch_window' @click="clicked()" target="_new">Begin Task in New Window</a>
