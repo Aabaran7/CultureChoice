@@ -38,7 +38,7 @@ if (appconfig.mode === 'development') {
 
 // welcome screen
 timeline.pushSeqRoute({
-  path: appconfig.mode === 'development' ? '/welcome/:service' : '/:service',
+  path: '/welcome/:service',
   name: 'welcome',
   component: Advertisement,
   beforeEnter: (to) => {
