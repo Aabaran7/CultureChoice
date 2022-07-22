@@ -6,25 +6,24 @@
 // with being in a prolifict experiment referral then check that when they exit that
 // task they will be redicted to the prolific website correctly.
 describe('test that the project will run successfully on prolific', () => {
-  it('should provide a properly formatted prolific end point is provided when it starts in prolific mode', () => {
+  it('should provide a properly formatted prolific end point when it starts in prolific mode', () => {
     cy.viewport(1000, 1200) // cy.viewport('iphone-11)
 
     // visit the page
     cy.visit(
       `${Cypress.env(
-        'VITE_DEPLOY_BASE_PATH'
-      )}#/welcome/prolific/?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}`
+        'VITE_DEPLOY_URL'
+      )}#/welcome/prolific/?PROLIFIC_PID=xxxxx&STUDY_ID=xxxxxx&SESSION_ID=xxxxx`
     )
-    // this should be #/prolific/?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}
-    // if running against a live deployment
-    cy.visit(`${Cypress.env('VITE_DEPLOY_BASE_PATH')}#/debrief/`) // dev mode allows jumping paths like this
+    cy.visit(`${Cypress.env('VITE_DEPLOY_URL')}#/debrief/`) // dev mode allows jumping paths like this
     cy.contains('next').click()
     cy.get('.payment').get('.has-text-left').contains('Prolific') // assert this is the right endpoint text
+
     cy.get('.payment')
       .find('a')
       .should('have.attr', 'href')
       .and('include', 'https://app.prolific.co/submissions/complete?cc=') // assert this is the right endpoint url
 
-    // sees ok then
+    // seems ok then
   })
 })
