@@ -5,7 +5,7 @@
 // what we test here simply is that if a user comes into the task in a way consistent
 // with being in a cloudresearch experiment referral then check that when they exit that
 // task they will be asked to copy paste the code into the mechanical turk website.
-describe('test that the project will run successfully on cloudresearch.com', () => {
+describe('test that the project will run successfully on cloudresearch', () => {
   it('should provide a properly formatted cloudresearch end point when it starts in cloudresearch mode', () => {
     cy.viewport(1000, 1200) // cy.viewport('iphone-11)
 
