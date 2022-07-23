@@ -88,9 +88,9 @@ export default db
 // if not create one with the name of the experiment
 // add code name to the document as well
 
-// setDoc - write if no exist, or replace if there is one at that name
-// updateDoc - only overwrite fields you specify by error if doesn't exist
-// setDoc(,,{merge: true}) - create if doesn't exist, or update if it does
+// setDoc - write if document doesn’t exist, or replace if there is one at that name
+// updateDoc - only overwrite fields you specify but error if doesn’t exist
+// setDoc(,,{merge: true}) - create document if doesn’t exist, or update if it does
 // each as async away or .then()
 // addDoc gives you a random reference
 // getDoc to read in with document snamshop
