@@ -40,13 +40,13 @@ function toggleReport() {
                 <div class="navbar-item" >
                     <div class="buttons">
                         <button class="button is-info is-small is-light" v-if="smilestore.isConsented" @click="toggleConsent()">
-                            <fa-icon icon="magnifying-glass" />&nbsp;&nbsp;View consent
+                            <FAIcon icon="magnifying-glass" />&nbsp;&nbsp;View consent
                         </button>
                         <button class="button is-danger is-small is-light" v-if="smilestore.isConsented && !smilestore.isDone" @click="toggleWithdraw()">
-                            <fa-icon icon="circle-xmark" />&nbsp;&nbsp;Withdraw
+                            <FAIcon icon="circle-xmark" />&nbsp;&nbsp;Withdraw
                         </button>
                         <button class="button is-warning is-small is-light" @click="toggleReport()">
-                            <fa-icon icon="hand" />&nbsp;&nbsp;Report issue
+                            <FAIcon icon="hand" />&nbsp;&nbsp;Report issue
                         </button>
                     </div>
                 </div>

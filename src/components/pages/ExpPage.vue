@@ -23,6 +23,6 @@ function finish(goto) {
 <template>
     <div class="page">
         <h1 class="title is-3">Experiment</h1>
-        <button class="button is-success is-light" id='finish' @click="finish(next)">next &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
+        <button class="button is-success is-light" id='finish' @click="finish(next)">next &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>

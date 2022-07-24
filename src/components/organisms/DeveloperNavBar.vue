@@ -41,20 +41,20 @@ function resetLocalState() { // this is repeated on config and maybe should be a
         <div class="devmode">
           -- &nbsp; Reset: 
           <a alt="Reset all state and return to / route" @click="resetLocalState()">
-            <fa-icon icon="fa-solid fa-arrow-rotate-left" />
+            <FAIcon icon="fa-solid fa-arrow-rotate-left" />
           </a>
         </div>
         <div class="devmode">
           | &nbsp; Config: 
           <a href="/#/config" alt="View config">
-            <fa-icon icon="fa-solid fa-gear" />
+            <FAIcon icon="fa-solid fa-gear" />
           </a>
         </div>
 
         <div class="devmode">
           | &nbsp; Docs: 
           <a href="https://smile.gureckislab.org" alt="View docs" target="_new">
-            <fa-icon icon="fa-solid fa-book" />
+            <FAIcon icon="fa-solid fa-book" />
           </a>
         </div>
 
@@ -64,7 +64,7 @@ function resetLocalState() { // this is repeated on config and maybe should be a
               | &nbsp; Jump
               
               <a alt="Skip sections">
-                <fa-icon icon="fa-solid fa-rainbow" />
+                <FAIcon icon="fa-solid fa-rainbow" />
               </a>
             </div>
             <div class="dropdown-menu" id="dropdown-menu" role="menu" >
@@ -86,34 +86,34 @@ function resetLocalState() { // this is repeated on config and maybe should be a
             <div class="dropdown-trigger">
               | &nbsp; Useful: 
               <a alt="Skip sections">
-                <fa-icon icon="fa-solid fa-face-laugh-beam" />
+                <FAIcon icon="fa-solid fa-face-laugh-beam" />
               </a>
             </div>
             <div class="dropdown-menu" id="dropdown-menu" role="menu">
               <div class="dropdown-content">
                 <a href="https://github.com/NYUCCL/smile" class="dropdown-item" target="_new">
-                  <fa-icon icon="fa-solid fa-globe" /> Smile GitHub
+                  <FAIcon icon="fa-solid fa-globe" /> Smile GitHub
                 </a>
                 <a href="https://vuejs.org" class="dropdown-item" target="_new">
-                  <fa-icon icon="fa-solid fa-globe" /> Vuejs
+                  <FAIcon icon="fa-solid fa-globe" /> Vuejs
                 </a>
                 <a href="https://sfc.vuejs.org" class="dropdown-item" target="_new">
-                  <fa-icon icon="fa-solid fa-globe" /> Vuejs SFC Playground
+                  <FAIcon icon="fa-solid fa-globe" /> Vuejs SFC Playground
                 </a>
                 <a href="https://devtools.vuejs.org/" class="dropdown-item" target="_new">
-                  <fa-icon icon="fa-solid fa-globe" /> Vue Dev Tools (Chrome)
+                  <FAIcon icon="fa-solid fa-globe" /> Vue Dev Tools (Chrome)
                 </a>
                 <a href="https://bulma.io" class="dropdown-item" target="_new">
-                  <fa-icon icon="fa-solid fa-globe" /> Bulma
+                  <FAIcon icon="fa-solid fa-globe" /> Bulma
                 </a>
                 <a href="https://fontawesome.com" class="dropdown-item" target="_new">
-                  <fa-icon icon="fa-solid fa-globe" /> FontAwesome
+                  <FAIcon icon="fa-solid fa-globe" /> FontAwesome
                 </a>
                 <a href="https://www.internetingishard.com" class="dropdown-item" target="_new">
-                  <fa-icon icon="fa-solid fa-globe" /> Interneting is hard
+                  <FAIcon icon="fa-solid fa-globe" /> Interneting is hard
                 </a>
                 <a href="https://javascript.info" class="dropdown-item" target="_new">
-                  <fa-icon icon="fa-solid fa-globe" /> The Modern Javascript Tutorial
+                  <FAIcon icon="fa-solid fa-globe" /> The Modern Javascript Tutorial
                 </a>
               </div>
             </div>
@@ -123,7 +123,7 @@ function resetLocalState() { // this is repeated on config and maybe should be a
         <div class="devmode" v-if="smilestore.hasAutofill">
           | &nbsp; Autofill Form: 
           <a @click="smilestore.autofill()" alt="View docs" >
-            <fa-icon icon="fa-solid fa-pen-to-square" />
+            <FAIcon icon="fa-solid fa-pen-to-square" />
           </a>
         </div>
 

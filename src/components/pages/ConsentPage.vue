@@ -70,7 +70,7 @@ const name = ref('enter your name')
                             <br>
             
                             <button class="button is-success is-fullwidth" id='finish' v-if='agree' @click="finish(next)">
-                                Let's start &nbsp;<fa-icon icon="fa-solid fa-arrow-right" />
+                                Let's start &nbsp;<FAIcon icon="fa-solid fa-arrow-right" />
                             </button>
                         </div>
                     </div>

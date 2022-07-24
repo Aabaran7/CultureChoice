@@ -41,7 +41,7 @@ function finish(goto) {
                 and your compensation will be denied.
             </p>
             <hr>
-            <button class="button is-success" id='finish' @click="finish(next)">I'm ready &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
+            <button class="button is-success" id='finish' @click="finish(next)">I'm ready &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
         </div>
     </div>
 </template>

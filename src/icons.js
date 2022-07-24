@@ -30,10 +30,22 @@ import { faImage } from '@fortawesome/free-solid-svg-icons'
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
-library.add(faUserSecret, faGear, faBook, faArrowsTurnToDots, faArrowRotateLeft)
-library.add(faExplosion, faArrowLeft, faArrowRight, faSquareCheck, faDatabase)
-library.add(faFaceLaughBeam, faGlobe, faHand, faMagnifyingGlass, faCircleXmark)
 library.add(
+  faUserSecret,
+  faGear,
+  faBook,
+  faArrowsTurnToDots,
+  faArrowRotateLeft,
+  faExplosion,
+  faArrowLeft,
+  faArrowRight,
+  faSquareCheck,
+  faDatabase,
+  faFaceLaughBeam,
+  faGlobe,
+  faHand,
+  faMagnifyingGlass,
+  faCircleXmark,
   faClipboard,
   faBahai,
   faFaceGrinWide,

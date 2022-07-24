@@ -29,7 +29,7 @@ app.use(
 )
 
 // load any global components (these will be available in all other components)
-app.component('fa-icon', FontAwesomeIcon)
+app.component('FAIcon', FontAwesomeIcon)
 
 // you "mount the app starting at the #app element"
 app.mount('#app') // start the app!

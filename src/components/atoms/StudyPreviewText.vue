@@ -12,9 +12,9 @@ const smilestore = useSmileStore()
             <p class="is-size-5 has-text-left">
                 We are offering a paid research study looking at how
                 people learn and make decisions.   In this study you will
-                look at various shapes <fa-icon icon="shapes" /> and pictures <fa-icon icon="image" />
+                look at various shapes <FAIcon icon="shapes" /> and pictures <FAIcon icon="image" />
                 and make decisions similar to a video game.  You may earn
-                points for making good decisions that will convert to money <fa-icon icon="sack-dollar" />
+                points for making good decisions that will convert to money <FAIcon icon="sack-dollar" />
                 that we will pay you at the end of the study ({{ smilestore.config.payrate }}).  The study
                 should take about {{ smilestore.config.estimated_time }} of your time.  You'll be
                 asked to digitally sign a constent form and (optionally) provide some
@@ -28,7 +28,7 @@ const smilestore = useSmileStore()
             <img src="@/assets/brain.svg" width="220"><br><br>
             <article class="message">
             <div class="message-header is-size-7">
-                <p><fa-icon icon="bahai" />&nbsp;&nbsp;Who are we?</p>
+                <p><FAIcon icon="bahai" />&nbsp;&nbsp;Who are we?</p>
             </div>
             <div class="message-body is-size-7 has-text-left">
                 We are the <a href="http://gureckislab.org" target="_blank">Computation

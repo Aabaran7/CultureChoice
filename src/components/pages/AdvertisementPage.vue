@@ -35,7 +35,7 @@ function finish(goto) {
             Take part in a short experiment where you play a game for money.
         </p>
         <br>
-        <button class="button is-warning" id='finish' @click="finish(next)">I'm ready! &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
+        <button class="button is-warning" id='finish' @click="finish(next)">I'm ready! &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>
 

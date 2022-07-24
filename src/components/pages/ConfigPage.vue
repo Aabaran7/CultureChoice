@@ -60,7 +60,7 @@ function resetLocalState() {
         </div>
         <div class="divider">Local State</div>
         
-        <button class="button is-warning is-small" @click="resetLocalState"><fa-icon icon="fa-solid fa-arrow-rotate-left" /> &nbsp; reset</button>
+        <button class="button is-warning is-small" @click="resetLocalState"><FAIcon icon="fa-solid fa-arrow-rotate-left" /> &nbsp; reset</button>
         <div class="code">
           <ul>
             <li class="config" v-for="option, key in smilestore.local" :key="key">
@@ -81,7 +81,7 @@ function resetLocalState() {
         <br>
         <br>
         <div class="divider">Vue.js Reactivity Example</div>
-        <button   class="button is-success is-small is-light" type="button" @click="count++"><fa-icon icon="fa-solid fa-explosion" />&nbsp;Click me</button><br><br>
+        <button   class="button is-success is-small is-light" type="button" @click="count++"><FAIcon icon="fa-solid fa-explosion" />&nbsp;Click me</button><br><br>
         
         <p>
         You've clicked the button {{ count }} times.

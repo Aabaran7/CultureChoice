@@ -24,7 +24,7 @@ describe('Advertisement tests', () => {
     const wrapper = mount(Advertisement, {
       global: {
         plugins: [router, pinia],
-        stubs: ['fa-icon'],
+        stubs: ['FAIcon'],
       },
     })
     await new Promise((r) => setTimeout(r, 200)) // wait for db connection

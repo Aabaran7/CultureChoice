@@ -144,7 +144,7 @@ function finish(goto) {
                             <div class="columns">
                                 <div class="column">
                                     <div class="has-text-right">
-                                    <button class="button is-warning" id='finish' v-if='page_one_complete' @click="page++">Continue &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
+                                    <button class="button is-warning" id='finish' v-if='page_one_complete' @click="page++">Continue &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
                                     </div> 
                                 </div>
                             </div>
@@ -208,12 +208,12 @@ function finish(goto) {
                             <div class="columns">
                                 <div class="column">
                                     <div class="has-text-left">
-                                    <button class="button is-warning" id='finish' @click="page--"><fa-icon icon="fa-solid fa-arrow-left" />&nbsp; Previous</button>
+                                    <button class="button is-warning" id='finish' @click="page--"><FAIcon icon="fa-solid fa-arrow-left" />&nbsp; Previous</button>
                                     </div> 
                                 </div>
                                 <div class="column">
                                     <div class="has-text-right">
-                                    <button class="button is-warning" id='finish' v-if='page_two_complete' @click="page++">Continue &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></button>
+                                    <button class="button is-warning" id='finish' v-if='page_two_complete' @click="page++">Continue &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
                                     </div> 
                                 </div>
                             </div>
@@ -270,7 +270,7 @@ function finish(goto) {
                             <div class="columns">
                                 <div class="column">
                                     <div class="has-text-left">
-                                    <button class="button is-warning" id='finish' @click="page--"><fa-icon icon="fa-solid fa-arrow-left" />&nbsp; Previous</button>
+                                    <button class="button is-warning" id='finish' @click="page--"><FAIcon icon="fa-solid fa-arrow-left" />&nbsp; Previous</button>
                                     </div> 
                                 </div>
                                 <div class="column">

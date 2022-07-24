@@ -52,7 +52,7 @@ clipboard.on('success', (e) => {
 
 <template>
     <div class="page">
-        <h1 class="title is-3"><fa-icon icon="fa-solid fa-square-check" /></h1>
+        <h1 class="title is-3"><FAIcon icon="fa-solid fa-square-check" /></h1>
         
         <div class="payment" v-if="smilestore.recruitmentService=='prolific'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
@@ -62,7 +62,7 @@ clipboard.on('success', (e) => {
                 related bonuses will be assigned at that time.  We really appreciate your time.
             </p>
             <hr>
-            <a :href="`https://app.prolific.co/submissions/complete?cc=${completionCode}`" class="button is-info">Submit my work to Prolific &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
+            <a :href="`https://app.prolific.co/submissions/complete?cc=${completionCode}`" class="button is-info">Submit my work to Prolific &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='cloudresearch'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
@@ -74,7 +74,7 @@ clipboard.on('success', (e) => {
             </p>
             <hr>
             <h1 class="title is-5">Unique completion code:</h1>
-            <span class="completioncode">{{ completionCode }}</span><button class="button is-info" id="copy_code" data-clipboard-target=".completioncode">Copy Code &nbsp;<fa-icon icon="fa-solid fa-clipboard" /></button>
+            <span class="completioncode">{{ completionCode }}</span><button class="button is-info" id="copy_code" data-clipboard-target=".completioncode">Copy Code &nbsp;<FAIcon icon="fa-solid fa-clipboard" /></button>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='mturk'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
@@ -87,7 +87,7 @@ clipboard.on('success', (e) => {
             </p>
             <hr>
             <h1 class="title is-5">Unique completion code:</h1>
-            <span class="completioncode">{{ completionCode }}</span><button class="button is-info" id="copy_code" data-clipboard-target=".completioncode">Copy Code &nbsp;<fa-icon icon="fa-solid fa-clipboard" /></button>
+            <span class="completioncode">{{ completionCode }}</span><button class="button is-info" id="copy_code" data-clipboard-target=".completioncode">Copy Code &nbsp;<FAIcon icon="fa-solid fa-clipboard" /></button>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='citizensci'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
@@ -95,7 +95,7 @@ clipboard.on('success', (e) => {
                 This still needs to be implemented
             </p>
             <hr>
-            <a href="http://gureckislab.org" class="button is-info">Submit my work &nbsp;<fa-icon icon="fa-solid fa-arrow-right" /></a>
+            <a href="http://gureckislab.org" class="button is-info">Submit my work &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='web'">
             <p>

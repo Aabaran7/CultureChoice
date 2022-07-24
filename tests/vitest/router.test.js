@@ -24,7 +24,7 @@ describe('App tests', () => {
     const wrapper = mount(App, {
       global: {
         plugins: [router, pinia, [plugin, defaultConfig]],
-        stubs: ['fa-icon'],
+        stubs: ['FAIcon'],
       },
     })
     return wrapper
