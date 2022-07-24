@@ -93,7 +93,7 @@ export default defineConfig({
     ],
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2020-present Todd Gureckis',
+      copyright: 'Copyright © 2022-present Todd Gureckis',
     },
   },
 })
