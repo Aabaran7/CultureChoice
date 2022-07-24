@@ -216,4 +216,13 @@ timeline.pushSeqRoute({
 
 The `beforeEnter` method will run before the route is loaded.  This can be helpful for doing computation prior to the route loading.  For example, after the user consents to the study it might make sense to create a database record for them.  So we might add a special method to the route _after_ the consent form to handle that.
 
-TODO: document other parts of the router lifecycle that can have hooks
+It is also possible to register route guards too all routes using the `.beforeEach()` method.  In `src/router.js` there is a method `addGuards()` which has examples of registering global guards.
+
+Note that Vue Router provides a variety of lifecycle hooks that you can customize for all or individual routes.  See the documentation [here](https://router.vuejs.org/guide/advanced/navigation-guards.html#the-full-navigation-resolution-flow) for a full accounting of the order in which things occur.
+
+## Testing the Timeline
+
+The timeline has a full coverage test in `tests/vitest/timeline.test.js`.  You can run that test in isolation with
+```
+npx vitest timeline
+```
