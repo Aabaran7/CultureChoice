@@ -14,7 +14,7 @@ If you start your project using the <SmileText /> github template, and are in th
 
 As a result, you can jump immediately to either:
 - [Accessing your data](#accessing-the-data-from-your-experiments) 
-- [How to save data from new, custom components]()
+- [How to save data in your experiment](#recording-data)
 
 In addition to these sections, the rest of the document includes an in-depth guide to understanding how data is managed in <SmileText />, how to customize aspects of the data processing system, and how to set up a new system for a new lab.
 
@@ -63,7 +63,7 @@ Each participant in your study is automatically assigned a random id which is th
 
 You can use this web interface to delete data, and also watch as it fills in real-time.  This can be helpful to check that things are working and also that the data has the structure you expected.
 
-## Recording data from new, custom components
+## Recording data
 
 The default project template of <SmileText /> automatically records and saves many relevant data fields including logging if participants agreed to provide informed consent, the current version of the code that the participant is interacting with, etc...  However, invariably you will want to record and save the data from your actual experiment design including aspects of the instructions and task or trials that might be custom to your task.  It is extremely simple to do this but it is helpful to understand the concepts involved first.
 
@@ -72,19 +72,19 @@ The default project template of <SmileText /> automatically records and saves ma
 State refers to one or more variables organized into a collection that captures the moment-by-moment details
 of your application.  The state of your application changes over time as users interact with it (e.g., clicking on buttons), as well as based on network requests that load data and information from other APIs or databases.
 
-As an everyday example the state of a light switch in your home could be either on or off.  When you take actions (click a button or flick a switch) the state changes.  In an electrical circuit this state is implemented as a physical switch that either allows or blocks the flow of current.  However, in a web application state is much more complex and might include things like "user is logged in", "user has connected to the data base" or "user clicked the consent button."  Each of these states also change based on actions the user takes.
+As an everyday example, the state of a light switch in your home can be either `light=on` or `light=off`.  When you take actions (click a button or flick a switch) the state changes.  In an electrical circuit this state is implemented as a physical switch that either allows or blocks the flow of current.  However, in a web application state is much more complex and might include things like "user is logged in" (`logged_in=true` or `logged_in=false`), or even things with values like username (`username=linustorvalds` or `username=thurstonmoore`).  Each of these states also change based on actions the user of the software takes.
 
-The central question in developing web experiments is managing this state, using the state to display the correct information to the user (e.g., we should show the person a login page if they haven't yet logged in, or otherwise their account information).  Although <SmileText /> is not necessarily a complex web application, it is sufficiently complex that the code for managing the overall application state is distributed into different modules which have different properties.
+The central question in developing web experiments is managing this state and using the state to display the correct information to the user (e.g., we should show the person a login page if they haven't yet logged in, or otherwise their account information for their username).  Although <SmileText /> is not necessarily a complex web application with login forms, etc... it is sufficiently complex that the code for managing the overall application state is distributed into different modules which generally have different properties.
 
 ![overview ](/images/storage-statediagram.png)
 
 ### Local states, global state, and persistance
 
-A <SmileText /> experiment is made up of various [components](/components) which are controlled programmatically.  Each component has what is known as **state** which is data reflecting the current component.  Ideally, state is local to each component allowing for modularity (users of a component don't have to know the internal working of the state).  Example of state might be "is the participant on page 1, 2, or 3 of the instructions?" Or "what are the values of various form fields?" or "What is the x,y position of the mouse currently?"
+A <SmileText /> experiment is made up of various [components](/components) which are controlled programmatically.  Each component has what is known as **state** which is data reflecting the current component.  Ideally, state is local to each component allowing for modularity (users of a component don't have to know the internal workings).  Example of local state might be "is the participant on page 1, 2, or 3 of the instructions?" Or "what are the values of various form fields?" or "What is the x,y position of the mouse currently?"  In most cases these types of values do not need to be globally available all components.
 
-Although state could be mostly a function internal to components, it also makes sense for there to be a **global state** which is shared by all components.  This is where you place information that is common to all components and is a natural place to put data from human participants in your study (because data might be generated from several different components over the entire experiment). In <SmileText /> this global state is known as a **store** and is managed by the [Pinia](https://pinia.vuejs.org) plugin.  Stores maintain a app state but also provide methods for manipulating that state as well as additional debugging tools.
+However, there are times where it makes sense for there to be a **global state** which is shared by all components.  You can think of this as a global "whiteboard" that any component can access.  This is where you place information that is common to all components and is a natural place to put data from human participants in your study (because data might be generated from several different components over the entire experiment). In <SmileText /> this global state is known as a **store** and is managed by the [Pinia](https://pinia.vuejs.org) plugin.  Stores are slightly more general than state because while they maintain a global state, they provide methods for manipulating that state as well as additional debugging tools (see Pinia).
 
-A final issue concerns the **persistance of state**.  Some state information (e.g., information local to a component) is "in memory" in the sense that it only exists insides the temporary memory storage of the browser while it is viewing your experiment.  If you close the browser window, or it unexpectedly crashes, the state is lost.  In contrast we can make some types of state **persistant** by synchronizing it with various tools.  In <SmileText />, we set up a system that persists the global application state in several ways but the most important one is storing data from our participant's behavior in Google Firestore (which is a NoSQL database solution hosted on the Google Cloud).  We also make use of state persistance features of the browser such as [local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) which is similar to cookies.  State that is not persisted is often called **ephemeral** and is deleted/lost each time the browser windows reloads (e.g., when clicking the reload button in the browers or navigating away from the page then pressing back in the same tab).
+A final issue concerns the **persistance of state**.  Some state information (e.g., information local to a component) is "in memory" in the sense that it only exists inside the temporary memory storage of the browser while it is viewing your experiment.  If you close the browser window, press reload, navigate to a new page then press back, or the browser unexpectedly crashes, the state is lost.  Another name for this type of state information is **ephemeral**. In contrast we can make some types of state **persistant** by synchronizing it with various tools for data storage.  In <SmileText />, we set up a system that persists the global application state in several ways but the most important one is storing data from our participant's behavior in Google Firestore (which is a NoSQL database solution hosted on the Google Cloud).  We also make use of state persistance features of the browser such as [local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) which is similar to cookies.  
 
 A graphical overview of this is provided above.  Individual components usually have ephemeral states which capture information that doesn't need to be shared or recorded/persisted.  Components in <SmileText /> can, when necessary, write information into the global store.  Other components are able to read this information.  In addition, <SmileText/>'s global storage state provides methods for easily persisting values of the state by writing them either to Google Firebase/Firestore or the LocalStorage in the browser.
 
@@ -103,7 +103,7 @@ const smilestore = useSmileStore()
 <script>
 ```
 
-To see an example of how you use the store, consider the consent form page (`src/components/pages/ConsentPage.vue`).  This page displays informed consent and then provides a button that when clicked advances to the next part of the experiment (a method called `finish(goto)`).  
+Typically this would happen in the `<script setup>` section of your component (assuming you are using the Vue 3 Composition API).  To see an example of how you use the store, consider the consent form page (`src/components/pages/ConsentPage.vue`).  This page displays informed consent and then provides a button that when clicked advances to the next part of the experiment (a method called `finish(goto)`).  
 
 ```js
 function finish(goto) { 
@@ -113,7 +113,7 @@ function finish(goto) {
 }
 ```
 
-The first line of this function sets the user as "consented."  This is a property of the global state/store that is accessible to other components which might want to check if the user has consented yet.  In addition it called the `smilestore.saveData()` method which makes a copy of the current application state in the Firebase database.
+The first line of this function sets the user as "consented."  This is a property of the global state/store that is accessible to other components which might want to check if the user has consented yet.  In addition, it called the `smilestore.saveData()` method which makes a copy of the current application state in the Firebase database.
 
 
 
