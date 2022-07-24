@@ -72,6 +72,10 @@ fast thanks to Vite.
 When you are finished making changes to the docs just use git commands to stage the files, commit them and (when you are ready) push
 them to the github repo.  There are several useful tutorials available online for using git and GitHub.
 
+## Technical Figures
+
+We strongly encourage the use of [Figma](https://www.figma.com)/FigJam for technical figures and illustrations.  A good starting place is the [Diagram basics in FigJam](https://www.figma.com/file/0CutmCGEhR20glush9sKze/Untitled?node-id=0%3A1).
+
 ## What happens next?
 Currently, the docs are live at [http://smile.gureckislab.org](http://smile.gureckislab.org).  When you commit changes to the `docs/` folder in the `main` GitHub branch, a Github Actions script runs which automatically builds the static website using VitePress and then syncs the files to the server.  **Thus, simply pushing your changes to the master branch will update the website, there's nothing else to think about.**  This is a core design principle of **🫠 Smile**: [don't sweat the dumb stuff](/principles.html#don-t-sweat-the-dumb-stuff).
 
