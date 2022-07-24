@@ -106,6 +106,9 @@ Teaching the internals of Vue.js is beyond this particular guide.  However, luck
 
 One very useful tool for learning about components is the [Vue Single File Component Playground](https://sfc.vuejs.org/).  On this page, you can write simple components see how they will render in real-time, and even build slightly larger components that include sub-components.  It can be useful for learning setting up <SmileText/> on your computer and even can help engage students in the research process.
 
+## Reactivity and Declarative Rendering
+
+
 
 ## Component organization in Smile
 

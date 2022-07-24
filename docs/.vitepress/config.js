@@ -43,11 +43,7 @@ export default defineConfig({
         items: [
           { text: '👩‍🎨 Overview', link: '/experimentdesign' },
           { text: '🧩 Components', link: '/components' },
-          {
-            text: '🏄‍♂️ Reactivity and Declarative Rendering',
-            link: '/reactive',
-          },
-          { text: '⏱ Routing/timeline', link: '/routing' },
+          { text: '⏱ Timeline', link: '/timeline' },
           { text: '🧑‍🎨 Styling, CSS, and icons', link: '/style' },
           { text: '💰 Computing bonuses', link: '/bonuses' },
           { text: '🆘 Errors and other issues', link: '/problems' },
