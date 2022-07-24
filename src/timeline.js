@@ -71,19 +71,64 @@ export class Timeline {
     this.seqtimeline = []
   }
 
+  pushToRoutes(route) {
+    // check that an existing route doesn't exist with same
+    // path and/or name
+    for (let i = 0; i < this.routes.length; i += 1) {
+      if (this.routes[i].path === route.path) {
+        throw new Error('DuplicatePathError')
+      }
+      if (this.routes[i].name === route.name) {
+        throw new Error('DuplicateNameError')
+      }
+    }
+    this.routes.push(route)
+  }
+
+  pushToTimeline(route) {
+    // check that an existing route doesn't exist with same
+    // path and/or name
+    for (let i = 0; i < this.seqtimeline.length; i += 1) {
+      if (this.seqtimeline[i].path === route.path) {
+        throw new Error('DuplicatePathError')
+      }
+      if (this.seqtimeline[i].name === route.name) {
+        throw new Error('DuplicateNameError')
+      }
+    }
+    this.seqtimeline.push(route)
+  }
+
   pushSeqRoute(routeConfig) {
     const newroute = routeConfig
     newroute.meta = {}
     newroute.meta.sequential = true
-    this.routes.push(newroute)
-    this.seqtimeline.push(newroute)
+
+    try {
+      this.pushToRoutes(newroute)
+    } catch (err) {
+      console.error('Smile FATAL ERROR: ', err)
+      throw err
+    }
+
+    try {
+      this.pushToTimeline(newroute)
+    } catch (err) {
+      console.error('Smile FATAL ERROR: ', err)
+      throw err
+    }
   }
 
   pushNonSeqRoute(routeConfig) {
     const newroute = routeConfig
     newroute.meta = {}
     newroute.meta.sequential = false
-    this.routes.push(newroute)
+    try {
+      this.pushToRoutes(newroute)
+    } catch (err) {
+      console.error('Smile FATAL ERROR: ', err)
+      throw err
+    }
   }
 
   buildProgress() {

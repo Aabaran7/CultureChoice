@@ -1,5 +1,69 @@
-import { mount } from '@vue/test-utils'
+/* eslint-disable no-undef */
+import { createTestingPinia } from '@pinia/testing'
 import { Timeline, processQuery } from '@/timeline'
+import useSmileStore from '@/stores/smiledata' // get access to the global store
+
+describe('processQuery tests', () => {
+  beforeEach(() => {
+    const pinia = createTestingPinia({ stubActions: false })
+  })
+
+  it('is detects when referred from prolific', () => {
+    const smilestore = useSmileStore()
+    const query = {
+      PROLIFIC_PID: '123',
+      STUDY_ID: '456',
+      SESSION_ID: '789',
+    }
+    const service = 'prolific'
+    processQuery(query, service)
+    expect(smilestore.data.recruitment_service).toBe(service)
+    expect(smilestore.recruitmentService).toBe(service)
+    expect(smilestore.data.recruitment_info).toBe(query)
+  })
+
+  it('is detects when referred from cloudresearch', () => {
+    const smilestore = useSmileStore()
+    const query = {
+      assignmentId: '123',
+      hitId: '456',
+      workerId: '789',
+    }
+    const service = 'cloudresearch'
+    processQuery(query, service)
+    expect(smilestore.data.recruitment_service).toBe(service)
+    expect(smilestore.recruitmentService).toBe(service)
+    expect(smilestore.data.recruitment_info).toBe(query)
+  })
+
+  it('is detects when referred from mechanical turk', () => {
+    const smilestore = useSmileStore()
+    const query = {
+      assignmentId: '123',
+      hitId: '456',
+      workerId: '789',
+    }
+    const service = 'mturk'
+    processQuery(query, service)
+    expect(smilestore.data.recruitment_service).toBe(service)
+    expect(smilestore.recruitmentService).toBe(service)
+    expect(smilestore.data.recruitment_info).toBe(query)
+  })
+
+  it('is detects when referred from citizen science portal', () => {
+    const smilestore = useSmileStore()
+    const query = {
+      CITIZEN_ID: '123',
+      CITIZEN_TASK_ID: '456',
+      CITIZEN_ASSIGN_ID: '789',
+    }
+    const service = 'citizensci'
+    processQuery(query, service)
+    expect(smilestore.data.recruitment_service).toBe(service)
+    expect(smilestore.recruitmentService).toBe(service)
+    expect(smilestore.data.recruitment_info).toBe(query)
+  })
+})
 
 describe('Timeline tests', () => {
   it('should be able to create a timeline', () => {
@@ -8,85 +72,129 @@ describe('Timeline tests', () => {
   })
 
   it('should add a sequential route', () => {
-    const Advertisement = { template: '<div>Advertisement</div>' }
+    const MockComponent = { template: '<div>Mock Component</div>' }
     const timeline = new Timeline()
     timeline.pushSeqRoute({
       path: '/',
-      name: 'welcome',
-      component: Advertisement,
+      name: 'index',
+      component: MockComponent,
     })
     expect(timeline.routes.length).toBe(1)
     expect(timeline.seqtimeline.length).toBe(1)
   })
 
   it('should add a nonsequential route', () => {
-    const Advertisement = { template: '<div>Advertisement</div>' }
+    const MockComponent = { template: '<div>Mock Component</div>' }
     const timeline = new Timeline()
     timeline.pushNonSeqRoute({
       path: '/',
-      name: 'welcome',
-      component: Advertisement,
+      name: 'index',
+      component: MockComponent,
     })
     expect(timeline.routes.length).toBe(1)
     expect(timeline.seqtimeline.length).toBe(0)
   })
 
   it('should add a nonsequential and sequential route', () => {
-    const Advertisement = { template: '<div>Advertisement</div>' }
-    const Thanks = { template: '<div>Thanks</div>' }
+    const MockComponentOne = { template: '<div>Mock Component One</div>' }
+    const MockComponentTwo = { template: '<div>Mock Component Two</div>' }
     const timeline = new Timeline()
     timeline.pushSeqRoute({
-      path: '/',
-      name: 'welcome',
-      component: Advertisement,
+      path: '/one',
+      name: 'one',
+      component: MockComponentOne,
     })
     timeline.pushNonSeqRoute({
-      path: '/thanks',
-      name: 'thanks',
-      component: Thanks,
+      path: '/two',
+      name: 'two',
+      component: MockComponentTwo,
     })
     expect(timeline.routes.length).toBe(2)
     expect(timeline.seqtimeline.length).toBe(1)
   })
 
-  it('should not allow the same route to be registered twice', () => {
-    const Advertisement = { template: '<div>Advertisement</div>' }
-    const Thanks = { template: '<div>Thanks</div>' }
+  it('should not allow the same sequential route to be registered twice', () => {
+    const MockComponent = { template: '<div>Mock Component</div>' }
     const timeline = new Timeline()
     timeline.pushSeqRoute({
       path: '/thanks',
       name: 'thank',
-      component: Advertisement,
+      component: MockComponent,
     })
+
+    const errorTrigger = () => {
+      timeline.pushSeqRoute({
+        path: '/thanks',
+        name: 'thanks',
+        component: MockComponent,
+      })
+    }
+    expect(errorTrigger).toThrowError()
+    expect(timeline.routes.length).toBe(1)
+    expect(timeline.seqtimeline.length).toBe(1) // only first one should work
+  })
+
+  it('should not allow the same non-sequential route to be registered twice', () => {
+    const MockComponent = { template: '<div>Mock Component</div>' }
+    const timeline = new Timeline()
     timeline.pushNonSeqRoute({
       path: '/thanks',
-      name: 'thanks',
-      component: Thanks,
+      name: 'thank',
+      component: MockComponent,
     })
+    const errorTrigger = () => {
+      timeline.pushNonSeqRoute({
+        path: '/thanks',
+        name: 'thanks',
+        component: MockComponent,
+      })
+    }
+    expect(errorTrigger).toThrowError()
+    expect(timeline.routes.length).toBe(1)
+    expect(timeline.seqtimeline.length).toBe(0)
+  })
+
+  it('should not allow the same route to be registered twice', () => {
+    const MockComponent = { template: '<div>Mock Component</div>' }
+    const timeline = new Timeline()
+    timeline.pushSeqRoute({
+      path: '/thanks',
+      name: 'thank',
+      component: MockComponent,
+    })
+    const errorTrigger = () => {
+      timeline.pushNonSeqRoute({
+        path: '/thanks',
+        name: 'thanks',
+        component: MockComponent,
+      })
+    }
+    expect(errorTrigger).toThrowError()
     expect(timeline.routes.length).toBe(1)
     expect(timeline.seqtimeline.length).toBe(1) // only first one should work
   })
 
   it('should compte the progress correctly', () => {
-    const Advertisement = { template: '<div>Advertisement</div>' }
-    const Consent = { template: '<div>Consent</div>' }
-    const Thanks = { template: '<div>Thanks</div>' }
+    const MockComponentOne = { template: '<div>Mock Component One</div>' }
+    const MockComponentTwo = { template: '<div>Mock Component Two</div>' }
+    const MockComponentThree = { template: '<div>Mock Component Three</div>' }
+    const MockComponentFour = { template: '<div>Mock Component Four</div>' }
 
     const timeline = new Timeline()
     timeline.pushSeqRoute({
-      path: '/welcome',
-      name: 'welcome',
-      component: Advertisement,
+      path: '/one',
+      name: 'one',
+      component: MockComponentOne,
     })
     timeline.pushSeqRoute({
-      path: '/consent',
-      name: 'consent',
-      component: Consent,
+      path: '/two',
+      name: 'two',
+      component: MockComponentTwo,
     })
     timeline.pushSeqRoute({
-      path: '/thanks',
-      name: 'thanks',
-      component: Thanks,
+      path: '/three',
+      name: 'three',
+      component: MockComponentThree,
     })
     timeline.buildProgress()
     expect(timeline.seqtimeline[0].meta.progress).toBe((100 * 0) / (3 - 1)) // zero progress
@@ -94,9 +202,9 @@ describe('Timeline tests', () => {
     expect(timeline.seqtimeline[2].meta.progress).toBe((100 * 2) / (3 - 1))
 
     timeline.pushSeqRoute({
-      path: '/thanks',
-      name: 'thanks',
-      component: Thanks,
+      path: '/four',
+      name: 'four',
+      component: MockComponentFour,
     })
 
     timeline.buildProgress() // rebuild timeline
