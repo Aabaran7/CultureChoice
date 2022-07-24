@@ -113,11 +113,31 @@ function finish(goto) {
 }
 ```
 
-The first line of this function sets the user as "consented."  This is a property of the global state/store that is accessible to other components which might want to check if the user has consented yet.  In addition, it called the `smilestore.saveData()` method which makes a copy of the current application state in the Firebase database.
+The first line of this function sets the user as "consented."  Consenting is a property of the global state/store that is accessible to other components which might want to check if the user has consented yet.  In addition, it persistent via the `smilestore.saveData()` method which makes a copy of the current application state in the Firebase database.
 
+## Writing Data to the Global Store
 
+Writing to the global store is as simple as updating a Javascript object in memory.  In any Vue component simple write
 
-The `smilestore` object is an in-memory representation of the global app state.  This means that if the browser quits or the user closes the window the state is deleted.  If this happened it would delete your participants data.  To prevent this, certain data from the global app state are *persisted* meaning places someplace where they will last longer than the browser window.
+``` vue
+<script setup>
+import { useSmileStore } from '@/stores/smiledata'
+const smilestore = useSmileStore()
+
+// sets a new variable called 'something' to 'true' in the global store
+smilestore.data.something = true
+<script>
+```
+
+A more preferred way is to modify `src/stores/smiledata.js` to add new setter and getter methods for your data type.  Setters are function defined under the `actions` property that can be called via `smilestore.action()` (if the method was named `action`).  You can use these to modify the state.
+
+Similarly under `getters` you can define new properties that 'get' the value of the state.  For example, consider one getter:
+
+```js
+isConsented: (state) => state.data.consented
+```
+
+returns the value of `state.data.consented`.  In your component code then you call `smilestore.isConsented()` to check if the use has agreed to the consent form yet.
 
 
 ## Automatically recorded data
@@ -164,7 +184,10 @@ other features
 
 <img src="/images/firebaselogo.svg" width="70px">
 
-## Data saving outside of Vue Apps
+## Data saving outside of Vue Components
+
+Sometimes your page might have additional content that is defined outside of the Vue SPA.  For these you need to import a library to access the data store.
+
 
 ## Local storage
 
