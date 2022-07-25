@@ -1,7 +1,7 @@
 // import { ref } from 'vue'
 import '@/seed.js' // random number seed
 import { createRouter, createWebHashHistory } from 'vue-router'
-import useSmileStore from '@/stores/smiledata' // get access to the global store
+// import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/config'
 import { Timeline, processQuery } from '@/timeline'
 
@@ -17,7 +17,7 @@ import Exp from '@/components/pages/ExpPage.vue'
 import Debrief from '@/components/pages/DebriefPage.vue'
 import Thanks from '@/components/pages/ThanksPage.vue'
 import Config from '@/components/pages/ConfigPage.vue'
-// add new routes here.  generall these will be components/pages/
+// add new routes here.  generally these will be things in components/pages/[something].vue
 
 // 2. Define some routes to the timeline
 // Each route should map to a component.
@@ -34,13 +34,29 @@ if (appconfig.mode === 'development') {
     name: 'recruit',
     component: RecruitmentChooser,
   })
+} else {
+  // auto refer to the anonymous welcome page
+  timeline.pushNonSeqRoute({
+    path: '/',
+    name: 'landing',
+    redirect: { name: 'welcome_anonymous' },
+  })
 }
 
-// welcome screen
+// welcome screen for non-referral
+timeline.pushSeqRoute({
+  path: '/welcome',
+  name: 'welcome_anonymous',
+  component: Advertisement,
+  meta: { next: 'consent' }, // override what is next
+})
+
+// welcome screen for referral
 timeline.pushSeqRoute({
   path: '/welcome/:service',
-  name: 'welcome',
+  name: 'welcome_referred',
   component: Advertisement,
+  meta: { next: 'consent' }, // override what is next
   beforeEnter: (to) => {
     processQuery(to.query, to.params.service)
   },

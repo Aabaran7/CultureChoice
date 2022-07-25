@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/config'
 
@@ -76,10 +77,10 @@ export class Timeline {
     // path and/or name
     for (let i = 0; i < this.routes.length; i += 1) {
       if (this.routes[i].path === route.path) {
-        throw new Error('DuplicatePathError')
+        throw new Error(`DuplicatePathError:${route.path}`)
       }
       if (this.routes[i].name === route.name) {
-        throw new Error('DuplicateNameError')
+        throw new Error(`DuplicateNameError:${route.name}`)
       }
     }
     this.routes.push(route)
@@ -90,18 +91,18 @@ export class Timeline {
     // path and/or name
     for (let i = 0; i < this.seqtimeline.length; i += 1) {
       if (this.seqtimeline[i].path === route.path) {
-        throw new Error('DuplicatePathError')
+        throw new Error(`DuplicatePathError${route.path}`)
       }
       if (this.seqtimeline[i].name === route.name) {
-        throw new Error('DuplicateNameError')
+        throw new Error(`DuplicateNameError${route.name}`)
       }
     }
     this.seqtimeline.push(route)
   }
 
   pushSeqRoute(routeConfig) {
-    const newroute = routeConfig
-    newroute.meta = {}
+    const newroute = _.cloneDeep(routeConfig)
+    if (!newroute.meta) newroute.meta = {}
     newroute.meta.sequential = true
 
     try {
@@ -120,8 +121,8 @@ export class Timeline {
   }
 
   pushNonSeqRoute(routeConfig) {
-    const newroute = routeConfig
-    newroute.meta = {}
+    const newroute = _.cloneDeep(routeConfig)
+    if (!newroute.meta) newroute.meta = {}
     newroute.meta.sequential = false
     try {
       this.pushToRoutes(newroute)

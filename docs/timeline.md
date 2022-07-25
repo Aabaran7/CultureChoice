@@ -137,9 +137,51 @@ During development you can, of course, comment out certain routes to help isolat
 
 Hopefully you are thinking this sounds super easy to set up, but how do you step from one component/route to the next?  To do that we need to introduce the concept of a stepper.
 
+## Complex flows
+
+
+Sometimes you need timeline structures a little more complex than a simple sequence.  For example there might be multiple initial landing pages depending on if you come in from a particular [recruitment](/recruitment) services:
+
+<img src="/images/timeline-flows.png" width="500" alt="timeline example" style="margin: auto;">
+
+To configure this we need multiple routes (1a and 1b in the figure) to all point to the same successor.  We can do this using [Vue router meta fields](https://router.vuejs.org/guide/advanced/meta.html).  In particular when we create a sequential route we can configure a specific successor:
+
+```js
+// first route
+timeline.pushSeqRoute({
+    path: '/first',
+    name: 'first',
+    meta: { next: 'second' }, // this should jump to a specific route
+    component: FirstComponent
+})
+
+// alternative first route
+timeline.pushSeqRoute({
+    path: '/first_alternate',
+    name: 'first_alternate',
+    meta: { next: 'second'}, // this should jump to a specific route
+    component: AlternativeFirstCompomnet
+})
+
+// second route
+timeline.pushSeqRoute({
+    path: '/second',
+    name: 'second', 
+    component: SecondComponent
+})
+
+// third route
+timeline.pushSeqRoute({
+    path: '/third',
+    name: 'third',
+    component: ThirdComponent
+})
+
+```
+
 ## Steppers
 
-In each component in our router we need to call a method when that component is "finished" and allow the timeline/router to pass control to the next route in the sequence.  To do this we use the [composables](https://vuejs.org/guide/reusability/composables.html) feature of Vue.  Composables are function that let you re-use logic across multiple components.  To step to the next route in the sequence we import the stepper composable into our component and call the appropriate method when we are done.
+In each component in our router we need to call a method when that component is "finished" and allow the timeline/router to pass control to the next route in the sequence (or to that specified by `meta: { next: xxx }` using [complex flows](#complex-flows)).  To do this we use the [composables](https://vuejs.org/guide/reusability/composables.html) feature of Vue.  Composables are function that let you re-use logic across multiple components.  To step to the next route in the sequence we import the stepper composable into our component and call the appropriate method when we are done.
 
 The way to import the stepper composable is:
 

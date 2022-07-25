@@ -12,6 +12,7 @@ export default function useStepRoute() {
   )
 
   const nextFn = () => {
+    if (route.meta.next) return { name: route.meta.next }
     if (route.meta.routeIdx + 1 >= seqroutes.value.length) return false
     const nextRoute = seqroutes.value[route.meta.routeIdx + 1]
     // smilestore.setLastRoute(nextRoute.name)
@@ -20,6 +21,7 @@ export default function useStepRoute() {
   }
 
   const prevFn = () => {
+    if (route.meta.prev) return { name: prev }
     if (route.meta.routeIdx - 1 <= 0) return false
     const prevRoute = seqroutes.value[route.meta.routeIdx - 1]
     // smilestore.setLastRoute(prevRoute.name)
