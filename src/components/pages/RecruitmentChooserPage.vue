@@ -41,7 +41,7 @@
                 <p class="is-size-6">
                 Citizen Science is a stand-in for a posssible future platform run by the lab.
                 </p>
-                <a href="/#/welcome/citizensci/?CITIZEN_ID=XXXXX&CITIZEN_TASK_ID=123RVWYBAZW00EXAMPLE&CITIZEN_ASSIGN_ID=AZ3456EXAMPLE" class="button is-success is-small" id="citizen_tester">Random Fake Citizen Science User &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
+                <a href="/#/welcome/citizensci/?CITIZEN_ID=XXXXX&CITIZEN_STUDY_ID=123RVWYBAZW00EXAMPLE&CITIZEN_SESSION_ID=AZ3456EXAMPLE" class="button is-success is-small" id="citizen_tester">Random Fake Citizen Science User &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
             </p>            
         </div>
 

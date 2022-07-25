@@ -15,11 +15,16 @@ describe('processQuery tests', () => {
       STUDY_ID: '456',
       SESSION_ID: '789',
     }
+    const finalform = {
+      prolific_id: query.PROLIFIC_PID,
+      study_id: query.STUDY_ID,
+      session_id: query.SESSION_ID,
+    }
     const service = 'prolific'
     processQuery(query, service)
     expect(smilestore.data.recruitment_service).toBe(service)
     expect(smilestore.recruitmentService).toBe(service)
-    expect(smilestore.data.recruitment_info).toBe(query)
+    expect(smilestore.data.recruitment_info).toStrictEqual(finalform) // this is "deep" equality
   })
 
   it('is detects when referred from cloudresearch', () => {
@@ -29,11 +34,16 @@ describe('processQuery tests', () => {
       hitId: '456',
       workerId: '789',
     }
+    const finalform = {
+      assignment_id: query.assignmentId,
+      hit_id: query.hitId,
+      worker_id: query.workerId,
+    }
     const service = 'cloudresearch'
     processQuery(query, service)
     expect(smilestore.data.recruitment_service).toBe(service)
     expect(smilestore.recruitmentService).toBe(service)
-    expect(smilestore.data.recruitment_info).toBe(query)
+    expect(smilestore.data.recruitment_info).toStrictEqual(finalform)
   })
 
   it('is detects when referred from mechanical turk', () => {
@@ -43,25 +53,35 @@ describe('processQuery tests', () => {
       hitId: '456',
       workerId: '789',
     }
+    const finalform = {
+      assignment_id: query.assignmentId,
+      hit_id: query.hitId,
+      worker_id: query.workerId,
+    }
     const service = 'mturk'
     processQuery(query, service)
     expect(smilestore.data.recruitment_service).toBe(service)
     expect(smilestore.recruitmentService).toBe(service)
-    expect(smilestore.data.recruitment_info).toBe(query)
+    expect(smilestore.data.recruitment_info).toStrictEqual(finalform)
   })
 
   it('is detects when referred from citizen science portal', () => {
     const smilestore = useSmileStore()
     const query = {
       CITIZEN_ID: '123',
-      CITIZEN_TASK_ID: '456',
-      CITIZEN_ASSIGN_ID: '789',
+      CITIZEN_STUDY_ID: '456',
+      CITIZEN_SESSION_ID: '789',
+    }
+    const finalform = {
+      session_id: query.CITIZEN_SESSION_ID,
+      study_id: query.CITIZEN_STUDY_ID,
+      citizen_id: query.CITIZEN_ID,
     }
     const service = 'citizensci'
     processQuery(query, service)
     expect(smilestore.data.recruitment_service).toBe(service)
     expect(smilestore.recruitmentService).toBe(service)
-    expect(smilestore.data.recruitment_info).toBe(query)
+    expect(smilestore.data.recruitment_info).toStrictEqual(finalform)
   })
 })
 

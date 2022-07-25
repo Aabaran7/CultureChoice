@@ -51,14 +51,14 @@ export function processQuery(query, service) {
   } else if (
     service === 'citizensci' &&
     urlParams.CITIZEN_ID &&
-    urlParams.CITIZEN_TASK_ID &&
-    urlParams.CITIZEN_ASSIGN_ID
+    urlParams.CITIZEN_STUDY_ID &&
+    urlParams.CITIZEN_SESSION_ID
   ) {
     console.log('Future citizen mode')
     smilestore.setRecruitmentService(service, {
       citizen_id: urlParams.CITIZEN_ID,
-      task_id: urlParams.CITIZEN_TASK_ID,
-      assign_id: urlParams.CITIZEN_ASSIGN_ID,
+      study_id: urlParams.CITIZEN_STUDY_ID,
+      session_id: urlParams.CITIZEN_SESSION_ID,
     })
   } else {
     console.log('free/web/dev mode')
