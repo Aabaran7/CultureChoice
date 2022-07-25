@@ -1,4 +1,4 @@
-# :stopwatch: Timeline
+# :twisted_rightwards_arrows: Timeline
 
 We can think of experiments being composed of several general phases.  For example, first, we might show a welcome page :arrow_right: informed consent :arrow_right: instructions :arrow_right: main experiment :arrow_right: debrief :arrow_right: thank you/payment page.
 <SmileText /> provides a central "sequencing" or timeline feature which makes it easy to configure, customize, and move through different stages of an experiment sequentially.
@@ -135,7 +135,8 @@ timeline.buildProgress()
 
 During development you can, of course, comment out certain routes to help isolate and test particular aspects of your experiment.
 
-Hopefully you are thinking this sounds super easy to set up, but how do you step from one component/route to the next?  To do that we need to introduce the concept of a stepper.
+Hopefully you are thinking this sounds super easy to set up, but how do you step from one component/route to the next?  To do that we need to introduce the concept of a [stepper](#steppers).  But first, let's quickly consider more complex sequential flows.
+
 
 ## Complex flows
 
@@ -151,15 +152,15 @@ To configure this we need multiple routes (1a and 1b in the figure) to all point
 timeline.pushSeqRoute({
     path: '/first',
     name: 'first',
-    meta: { next: 'second' }, // this should jump to a specific route
+    meta: { next: 'second' }, // this should jump to a specific route (by name)
     component: FirstComponent
 })
 
 // alternative first route
 timeline.pushSeqRoute({
-    path: '/first_alternate',
+    path: '/first_alt',
     name: 'first_alternate',
-    meta: { next: 'second'}, // this should jump to a specific route
+    meta: { next: 'second' }, // this should jump to a specific route (by name)
     component: AlternativeFirstCompomnet
 })
 
