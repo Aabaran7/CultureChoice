@@ -7,13 +7,10 @@ import useStepRoute from '@/composables/steproute'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import { onMounted } from 'vue';
 
-const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const { nextFn, prevFn } = useStepRoute()
-const next = nextFn()
-const prev = prevFn()
+const { next, prev } = useStepRoute()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 

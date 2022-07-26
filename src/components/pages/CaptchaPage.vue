@@ -7,15 +7,13 @@ const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const { nextFn, prevFn } = useStepRoute()
-const next = nextFn()
-const prev = prevFn()
+const { next, prev } = useStepRoute()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 function finish(goto) { 
-    smilestore.saveData()
-    router.push(goto)
+    //smilestore.saveData()
+    if(goto) router.push(goto)
 }
 </script>
 
@@ -41,7 +39,7 @@ function finish(goto) {
                 and your compensation will be denied.
             </p>
             <hr>
-            <button class="button is-success" id='finish' @click="finish(next)">I'm ready &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
+            <button class="button is-success" id='finish' @click="finish(next())">I'm ready &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
         </div>
     </div>
 </template>

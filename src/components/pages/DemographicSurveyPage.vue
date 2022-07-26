@@ -8,9 +8,7 @@ const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const { nextFn, prevFn } = useStepRoute()
-const next = nextFn()
-const prev = prevFn()
+const { next, prev } = useStepRoute()
 
 
 smilestore.global.page_bg_color = '#fff'
@@ -77,7 +75,7 @@ function finish(goto) {
     smilestore.saveDemographicForm(forminfo);
     smilestore.saveData()
     if(smilestore.config.mode=='development') smilestore.removePageAutofill()
-    router.push(goto)
+    if(goto) router.push(goto)
 }
 </script>
 
@@ -275,7 +273,7 @@ function finish(goto) {
                                 </div>
                                 <div class="column">
                                     <div class="has-text-right">
-                                    <button class="button is-success" id='finish' v-if='page_three_complete' @click="finish(next)">That was easy!</button>
+                                    <button class="button is-success" id='finish' v-if='page_three_complete' @click="finish(next())">That was easy!</button>
                                     </div> 
                                 </div>
                             </div>

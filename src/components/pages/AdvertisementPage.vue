@@ -8,10 +8,7 @@ const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const { nextFn, prevFn } = useStepRoute()
-const next = nextFn()
-const prev = prevFn()
-
+const { next, prev } = useStepRoute()
 
 smilestore.global.page_bg_color = '#fff'
 smilestore.global.page_text_color = '#000'
@@ -21,8 +18,8 @@ smilestore.global.status_bar_text_color = '#000'
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 function finish(goto) { 
-    smilestore.saveData()
-    router.push(goto)
+    //smilestore.saveData()
+    if(goto) router.push(goto)
 }
 </script>
 
@@ -35,7 +32,7 @@ function finish(goto) {
             Take part in a short experiment where you play a game for money.
         </p>
         <br>
-        <button class="button is-warning" id='finish' @click="finish(next)">I'm ready! &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
+        <button class="button is-warning" id='finish' @click="finish(next())">I'm ready! &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>
 

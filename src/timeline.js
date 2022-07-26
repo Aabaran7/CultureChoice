@@ -36,7 +36,19 @@ export class Timeline {
 
   pushSeqRoute(routeConfig) {
     const newroute = _.cloneDeep(routeConfig)
-    if (!newroute.meta) newroute.meta = {}
+    if (!newroute.meta) {
+      newroute.meta = { next: undefined, prev: undefined } // need to configure it
+    } else {
+      if (!newroute.meta.next) {
+        // need to configure next
+        newroute.meta.next = undefined
+      }
+
+      if (!newroute.meta.prev) {
+        // need to configure prev
+        newroute.meta.prev = undefined
+      }
+    }
     newroute.meta.sequential = true
 
     try {
@@ -47,7 +59,7 @@ export class Timeline {
     }
 
     try {
-      this.pushToTimeline(newroute)
+      this.pushToTimeline(newroute) // by reference so should update together
     } catch (err) {
       console.error('Smile FATAL ERROR: ', err)
       throw err
@@ -56,7 +68,14 @@ export class Timeline {
 
   pushNonSeqRoute(routeConfig) {
     const newroute = _.cloneDeep(routeConfig)
-    if (!newroute.meta) newroute.meta = {}
+    // should NOT allow meta next/prev to exist
+    if (!newroute.meta) {
+      newroute.meta = { prev: null, next: null }
+    } else if (newroute.meta.prev || newroute.meta.next) {
+      throw new Error(
+        `NonSequentialRouteError: Can't have meta.next or meta.prev defined for non-sequential route`
+      )
+    }
     newroute.meta.sequential = false
     try {
       this.pushToRoutes(newroute)
@@ -66,6 +85,38 @@ export class Timeline {
     }
   }
 
+  build() {
+    this.buildGraph()
+    this.buildProgress()
+  }
+
+  // buildGraph builds
+  buildGraph() {
+    for (let i = 0; i < this.seqtimeline.length; i += 1) {
+      if (this.seqtimeline[i].meta.next === undefined) {
+        // pass
+        if (i === 0) {
+          this.seqtimeline[i].meta.next = this.seqtimeline[i + 1].name
+        } else if (i === this.seqtimeline.length - 1) {
+          this.seqtimeline[i].meta.next = null
+        } else {
+          this.seqtimeline[i].meta.next = this.seqtimeline[i + 1].name
+        }
+      }
+      if (this.seqtimeline[i].meta.prev === undefined) {
+        // pass
+        if (i === 0) {
+          this.seqtimeline[i].meta.prev = null
+        } else if (i === this.seqtimeline.length - 1) {
+          this.seqtimeline[i].meta.prev = this.seqtimeline[i - 1].name
+        } else {
+          this.seqtimeline[i].meta.prev = this.seqtimeline[i - 1].name
+        }
+      }
+    }
+  }
+
+  // buildProgress assigns progrees meeter values to each route
   buildProgress() {
     const seqTimelineLength = this.seqtimeline.length
     for (let i = 0; i < seqTimelineLength; i++) {

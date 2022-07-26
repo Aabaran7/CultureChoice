@@ -196,6 +196,7 @@ function addGuards(r) {
   //   }
   // })
 }
+timeline.buildGraph()
 timeline.buildProgress()
 const { routes } = timeline
 // 4. Create the router instance and pass the `routes` option

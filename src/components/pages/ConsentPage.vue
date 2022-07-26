@@ -15,9 +15,7 @@ smilestore.global.page_text_color = '#000'
 smilestore.global.status_bar_bg_color = '#fff'
 smilestore.global.status_bar_text_color = '#000'
 
-const { nextFn, prevFn } = useStepRoute()
-const next = nextFn()
-const prev = prevFn()
+const { next, prev } = useStepRoute()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
@@ -29,7 +27,7 @@ function finish(goto) {
     }
     smilestore.setConsented()
     smilestore.saveData()
-    router.push(goto)
+    if(goto) router.push(goto)
 }
 const agree = ref(false)
 const name = ref('enter your name')
@@ -69,7 +67,7 @@ const name = ref('enter your name')
                             </p>
                             <br>
             
-                            <button class="button is-success is-fullwidth" id='finish' v-if='agree' @click="finish(next)">
+                            <button class="button is-success is-fullwidth" id='finish' v-if='agree' @click="finish(next())">
                                 Let's start &nbsp;<FAIcon icon="fa-solid fa-arrow-right" />
                             </button>
                         </div>

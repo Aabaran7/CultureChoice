@@ -90,10 +90,13 @@ The first call to this function will make the configured route the first route i
 This pushes a new route (specified in `route_obj`) into a nonsequential timeline.
 This route will exist in the Vue router but will not be in the timeline sequence.  This is useful for configuration and debugging routes as well as routes you want to define and even link to but 
 
+### `buildGraph()`
+
+This should be called to construct the sequence.  It takes the configured timeline and figures out which route is the successor or predecessor of each (allowing for manual overrides using the `meta` field).
+
 ### `buildProgress()`
 
 This should be called as the final step.  It takes the configured timeline and configures the progress tracking (for an optional progress bar you can make visible to participants).  The progress tracking counts the total number of routes, and for the sequential routes converts the order into a percentage complete (e.g., if there were three routes each would add 33% to the total as you step through).
-
 
 Here is an example configuring three sequential routes and one non-sequential route:
 
@@ -129,19 +132,20 @@ timeline.pushNonSeqRoute({
     component: ConfigComponent
 })
 
+timeline.buildGraph()
 timeline.buildProgress()
 
 ```
 
 During development you can, of course, comment out certain routes to help isolate and test particular aspects of your experiment.
 
-Hopefully you are thinking this sounds super easy to set up, but how do you step from one component/route to the next?  To do that we need to introduce the concept of a [stepper](#steppers).  But first, let's quickly consider more complex sequential flows.
+Hopefully, you are thinking this sounds super easy to set up, but how do you step from one component/route to the next?  To do that we need to introduce the concept of a [stepper](#steppers).  But first, let's quickly consider more complex sequential flows.
 
 
 ## Complex flows
 
 
-Sometimes you need timeline structures a little more complex than a simple sequence.  For example there might be multiple initial landing pages depending on if you come in from a particular [recruitment](/recruitment) services:
+Sometimes you need timeline structures a little more complex than a simple sequence.  For example, there might be multiple initial landing pages depending on if you come in from a particular [recruitment](/recruitment) service:
 
 <img src="/images/timeline-flows.png" width="500" alt="timeline example" style="margin: auto;">
 
@@ -182,23 +186,21 @@ timeline.pushSeqRoute({
 
 ## Steppers
 
-In each component in our router we need to call a method when that component is "finished" and allow the timeline/router to pass control to the next route in the sequence (or to that specified by `meta: { next: xxx }` using [complex flows](#complex-flows)).  To do this we use the [composables](https://vuejs.org/guide/reusability/composables.html) feature of Vue.  Composables are function that let you re-use logic across multiple components.  To step to the next route in the sequence we import the stepper composable into our component and call the appropriate method when we are done.
+In each component in our router we need to call a method when that component is "finished" and allow the timeline/router to pass control to the next route in the sequence (or to that specified by `meta: { next: xxx, prev: xxx}` using [complex flows](#complex-flows)).  To do this we use the [composables](https://vuejs.org/guide/reusability/composables.html) feature of Vue.  Composables are function that let you re-use logic across multiple components.  To step to the next route in the sequence we import the stepper composable into our component and call the appropriate method when we are done.
 
 The way to import the stepper composable is:
 
 ```js
 import useStepRoute from '@/composables/steproute'
-const { nextFn, prevFn } = useStepRoute()
-const next = nextFn()
-const prev = prevFn()
+const { next, prev } = useStepRoute()
 ```
 
-This imports the composable, then creates a `nextFn` and `prevFn` which are functions that when they are called provides the `name` of the next route.  To navigate to the next route just use the `push()` method of the router:
+This imports the composable, then creates a `next()` and `prev()` which are functions that when they are called provides the `name` of the next route (or `null` if there is no "next" either because you are at the end of the sequence or because it is a non-sequential route).  To navigate to the next route just use the `push()` method of the router:
 
 ```js
-router.push(next) // go to the next
+if(next) router.push(next) // go to the next
 // or instead
-// router.push(prev) // go to the prev
+// if(prev) router.push(prev) // go to the prev
 ```
 
 
@@ -207,29 +209,26 @@ Here is a complete, simple SFC component that imports the stepper and uses it to
 
 ```vue
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import useStepRoute from '@/composables/steproute'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 
-const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const { nextFn, prevFn } = useStepRoute()
-const next = nextFn()
-const prev = prevFn()
+const { next, prev } = useStepRoute()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 function finish(goto) { 
-    router.push(goto)
+    if(goto) router.push(goto)
 }
 </script>
 
 <template>
     <div class="page">
         <h1 class="title is-3">Experiment</h1>
-        <button class="button is-success is-light" id='finish' @click="finish(next)">next &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
+        <button class="button is-success is-light" id='finish' @click="finish(next())">next &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>
 ```
