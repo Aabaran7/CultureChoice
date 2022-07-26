@@ -3,7 +3,8 @@ import '@/seed.js' // random number seed
 import { createRouter, createWebHashHistory } from 'vue-router'
 // import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/config'
-import { Timeline, processQuery } from '@/timeline'
+import { processQuery } from '@/utils'
+import Timeline from '@/timeline'
 
 // 1. Import route components
 import RecruitmentChooser from '@/components/pages/RecruitmentChooserPage.vue'
@@ -197,7 +198,6 @@ function addGuards(r) {
 }
 timeline.buildProgress()
 const { routes } = timeline
-
 // 4. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
 // keep it simple for now.
