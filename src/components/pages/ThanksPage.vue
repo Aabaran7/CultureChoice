@@ -3,14 +3,14 @@ import Clipboard from 'clipboard';
 import sha256 from 'crypto-js/sha256'
 import Base64url from 'crypto-js/enc-base64'
 import { useRouter, useRoute } from 'vue-router'
-import useStepRoute from '@/composables/steproute'
+import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import { onMounted } from 'vue';
 
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const { next, prev } = useStepRoute()
+const { next, prev } = useTimelineStepper()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 

@@ -1,8 +1,7 @@
-import { useRouter, useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
 
-export default function useStepRoute() {
+export default function useTimelineStepper() {
   const smilestore = useSmileStore()
   const route = useRoute()
 

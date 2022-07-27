@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import useStepRoute from '@/composables/steproute'
+import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata'
 import DebriefText from '@/components/atoms/DebriefText.vue'; // get access to the global store
 
@@ -8,7 +8,7 @@ const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const { next, prev } = useStepRoute()
+const { next, prev } = useTimelineStepper()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import useStepRoute from '@/composables/steproute'
+import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata'
 
 import InformedConsentText from '@/components/atoms/InformedConsentText.vue';
@@ -15,7 +15,7 @@ smilestore.global.page_text_color = '#000'
 smilestore.global.status_bar_bg_color = '#fff'
 smilestore.global.status_bar_text_color = '#000'
 
-const { next, prev } = useStepRoute()
+const { next, prev } = useTimelineStepper()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 

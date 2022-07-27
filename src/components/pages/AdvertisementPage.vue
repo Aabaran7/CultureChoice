@@ -1,14 +1,14 @@
 <script setup>
 //import '@/seed'
 import { useRouter, useRoute } from 'vue-router'
-import useStepRoute from '@/composables/steproute'
+import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 
 const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const { next, prev } = useStepRoute()
+const { next, prev } = useTimelineStepper()
 
 smilestore.global.page_bg_color = '#fff'
 smilestore.global.page_text_color = '#000'

@@ -30,14 +30,14 @@ const timeline = new Timeline()
 
 // add the recruitment chooser if in development mode
 if (appconfig.mode === 'development') {
-  timeline.pushNonSeqRoute({
+  timeline.pushRoute({
     path: '/',
     name: 'recruit',
     component: RecruitmentChooser,
   })
 } else {
   // auto refer to the anonymous welcome page
-  timeline.pushNonSeqRoute({
+  timeline.pushRoute({
     path: '/',
     name: 'landing',
     redirect: { name: 'welcome_anonymous' },
@@ -121,7 +121,7 @@ timeline.pushSeqRoute({
 })
 
 // this is a the special page that loads in the iframe on mturk.com
-timeline.pushNonSeqRoute({
+timeline.pushRoute({
   path: '/mturk',
   name: 'mturk',
   component: MTurk,
@@ -131,7 +131,7 @@ timeline.pushNonSeqRoute({
 })
 
 // this is a special route with config/debugging information
-timeline.pushNonSeqRoute({
+timeline.pushRoute({
   path: '/config',
   name: 'config',
   component: Config,
@@ -196,8 +196,8 @@ function addGuards(r) {
   //   }
   // })
 }
-timeline.buildGraph()
-timeline.buildProgress()
+timeline.build()
+
 const { routes } = timeline
 // 4. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's

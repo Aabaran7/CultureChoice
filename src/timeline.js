@@ -1,9 +1,9 @@
 import _ from 'lodash'
 
-export class Timeline {
+class Timeline {
   constructor() {
-    this.routes = []
-    this.seqtimeline = []
+    this.routes = [] // the actual routes given to VueRouter
+    this.seqtimeline = [] // copies of routes that are sequential
   }
 
   pushToRoutes(route) {
@@ -66,7 +66,7 @@ export class Timeline {
     }
   }
 
-  pushNonSeqRoute(routeConfig) {
+  pushRoute(routeConfig) {
     const newroute = _.cloneDeep(routeConfig)
     // should NOT allow meta next/prev to exist
     if (!newroute.meta) {
@@ -87,7 +87,7 @@ export class Timeline {
 
   build() {
     this.buildGraph()
-    this.buildProgress()
+    // this.buildProgress()
   }
 
   // buildGraph builds
@@ -116,13 +116,14 @@ export class Timeline {
     }
   }
 
+  // this won't work with new system
   // buildProgress assigns progrees meeter values to each route
-  buildProgress() {
-    const seqTimelineLength = this.seqtimeline.length
-    for (let i = 0; i < seqTimelineLength; i++) {
-      this.seqtimeline[i].meta.routeIdx = i
-      this.seqtimeline[i].meta.progress = (100 * i) / (seqTimelineLength - 1)
-    }
-  }
+  // buildProgress() {
+  //   const seqTimelineLength = this.seqtimeline.length
+  //   for (let i = 0; i < seqTimelineLength; i++) {
+  //     this.seqtimeline[i].meta.routeIdx = i
+  //     this.seqtimeline[i].meta.progress = (100 * i) / (seqTimelineLength - 1)
+  //   }
+  // }
 }
 export default Timeline

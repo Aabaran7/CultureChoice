@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
-//import useStepRoute from '@/composables/steproute'
+//import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import StudyPreviewText from '@/components/atoms/StudyPreviewText.vue'
 
@@ -9,7 +9,7 @@ import StudyPreviewText from '@/components/atoms/StudyPreviewText.vue'
 const route = useRoute()
 const smilestore = useSmileStore()
 
-// const { next, prev } = useStepRoute()
+// const { next, prev } = useTimelineStepper()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
