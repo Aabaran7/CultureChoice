@@ -6,7 +6,9 @@ export default function useTimelineStepper() {
   const route = useRoute()
 
   const next = () => {
-    smilestore.saveData() // automatically saves data
+    if (smilestore.config.auto_save) {
+      smilestore.saveData() // automatically saves data
+    }
     if (route.meta.next) {
       return { name: route.meta.next }
     }
@@ -14,7 +16,9 @@ export default function useTimelineStepper() {
   }
 
   const prev = () => {
-    smilestore.saveData() // automatically saves data
+    if (smilestore.config.auto_save) {
+      smilestore.saveData() // automatically saves data
+    }
     if (route.meta.prev) {
       return { name: route.meta.prev }
     }

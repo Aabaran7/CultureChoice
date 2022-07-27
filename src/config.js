@@ -25,6 +25,7 @@ export default {
   },
   browser_exclude: import.meta.env.VITE_BROWSER_EXCLUDE,
   allow_repeats: import.meta.env.VITE_ALLOW_REPEATS,
+  auto_save: import.meta.env.VITE_AUTO_SAVE_DATA,
   bug_reports: import.meta.env.VITE_BUG_REPORTS,
   random_seed: import.meta.env.VITE_RANDOM_SEED,
   deploy_url: import.meta.env.VITE_DEPLOY_URL, // auto compute this

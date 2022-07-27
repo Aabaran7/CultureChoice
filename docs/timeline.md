@@ -176,7 +176,14 @@ timeline.pushSeqRoute({
     component: ThirdComponent
 })
 
+timeline.build()
+
 ```
+
+Using this approach you can configure fairly complex flows through pages.
+Importantly if you want to create alternative paths (e.g., going down one sequence if some condition is set otherwise following another) you need to configure this manually using the `meta` fields.  
+
+The `timeline.build()` method steps through all nodes pushed using `pushSeqRoute()` and mades the `next` point to the successor and `prev` point to the previous route.  If this is not what you want (because your routes need more complex flows) you can simply omnit the `build` step.
 
 ## TimelineStepper
 
@@ -228,7 +235,7 @@ function finish(goto) {
 Details about the implementation of the `useTimelineStepper` are quite simple and in `src/composables/timelinestepper.js`.
 
 :::warning IMPORTANT (and helpful!)
-One important feature of the stepper is that it calls `saveData()` on the global store prior to route changes.  So as a result you can trust that your data will be saved/synchronized with the persistant store (Firestore) whenever you navigated between sequential routes.  See the data storage does on [automatic saving](http://localhost:3000/datastorage.html#automatic-saving).
+One important feature of the stepper is that it calls `saveData()` on the global store prior to route changes.  So as a result you can trust that your data will be saved/synchronized with the persistant store (Firestore) whenever you navigated between sequential routes.  See the data storage does on [automatic saving](http://localhost:3000/datastorage.html#automatic-saving).  This only works if you use the TimelineStepper to advance between pages/routes.  If you call this manually you need to save manually as well using the `saveData()` method.
 :::
 
 
