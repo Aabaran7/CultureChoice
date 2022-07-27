@@ -59,8 +59,8 @@ export default defineConfig({
       },
       {
         text: 'Contributing',
-        collapsible: false,
-        collapsed: false,
+        collapsible: true,
+        collapsed: true,
         items: [
           { text: '🙋Getting started contributing', link: '/gettingstarted' },
           { text: '✍️ Contributing to the docs', link: '/contributing' },
@@ -70,6 +70,8 @@ export default defineConfig({
       },
       {
         text: 'Misc',
+        collapsible: true,
+        collapsed: true,
         items: [
           { text: '📄 Cheat sheet', link: '/cheatsheet' },
           {
