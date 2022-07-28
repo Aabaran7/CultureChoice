@@ -51,3 +51,12 @@ Data integrity tests verify that the data input by the user is accurately reflec
 ### Checklist tests
 
 Checklist tests run and verify that key elements of your experiment are properly configured and do not still have default values set by the <SmileText /> project template.  This can be helpful to run before you first deploy your project to make sure you didn't miss anything . If this test passes successfully it means that your experiment it not caught by common misconfigurations.
+
+
+Testing individual files (this will only run tests that contain `timeline` in their paths):
+
+```
+npx vitest timeline
+```
+
+For more information about the vitest command line options [see these documents](https://vitest.dev/guide/cli.html).
