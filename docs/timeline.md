@@ -34,7 +34,7 @@ const router = VueRouter.createRouter({
 })
 ```
 
-First, we define two simple Vue [components](/components), then we create a list called `routes` which configures each route.  Each route is, in effect, a mapping between a particular URL and a component.  For example, in this code snippet, `/` on the server is mapped to the `Welcome` component and `/consent` to the `Consent` component).  
+First, we define two simple Vue [components](/components), then we create a list called `routes` which configures each route.  Each route is, in effect, a mapping between a particular URL and a component.  For example, in this code snippet, `/` on the server is mapped to the `Welcome` component and `/consent` to the `Consent` component.  
 
 You can read this as literally saying "when the user request the `/` URL on this application display the `Welcome` component".  Specifically, it renders the template of your component in your app in place of where the `<router-view>` tag appears.  In smile that tag appears in `src/App.vue` which is the starting component for the application.
 
@@ -235,7 +235,7 @@ function finish(goto) {
 Details about the implementation of the `useTimelineStepper` are quite simple and in `src/composables/timelinestepper.js`.
 
 :::warning IMPORTANT (and helpful!)
-One important feature of the stepper is that it calls `saveData()` on the global store prior to route changes.  So as a result you can trust that your data will be saved/synchronized with the persistant store (Firestore) whenever you navigated between sequential routes.  See the data storage does on [automatic saving](http://localhost:3000/datastorage.html#automatic-saving).  This only works if you use the TimelineStepper to advance between pages/routes.  If you call this manually you need to save manually as well using the `saveData()` method.
+One important feature of the stepper is that it calls `saveData()` on the global store prior to route changes.  So as a result you can trust that your data will be saved/synchronized with the persistant store (Firestore) whenever you navigated between sequential routes.  See the data storage does on [automatic saving](/datastorage.html#automatic-saving).  This only works if you use the TimelineStepper to advance between pages/routes.  If you call this manually you need to save manually as well using the `saveData()` method.
 :::
 
 
