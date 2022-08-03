@@ -9,17 +9,19 @@
 
 Styling the look and feel of your experiment elements is often a time-consuming process.  However, it is worthwhile because participants are likely to view your task as more professional, user-friendly, and engaging if there is an appealing design.
 
-The <SmileText/> project doesn't force you to make any particular choice design choices but includes some helpful open-source frameworks.  This guide provides an overview of using those tools in your components.
+In modern web design, the look and feel of an application is determined jointly by three types of files: HTML (for the basic structure/content), CSS (for the style/colors/shapes/spacing), and Javascript (for the dynamic interaction, clicking, dragging, etc...).[^vue]
 
-In modern web design, the look and feel of an application is determined jointly by three types of files: HTML (for the basic structure/content), CSS (for the style/colors/shapes/spacing), and Javascript (for the dynamic interaction, clicking, dragging, etc...).  Interestingly these are roughly the same as the three sections of a [Single-file Component in Vue](/components). In this document we will focus mostly on the CSS side of things: how you make things look nice, choose colors, spacing, and typography for your experiments.  If you are entirely unfamiliar with the term CSS or Cascading Style-Sheets it might help to read this nice chapter from [Interneting is Hard](https://www.internetingishard.com/html-and-css/hello-css/) before continuing.
+[^vue]: Interestingly these are roughly the same as the three sections of a [Single-file Component in Vue](/components). 
+
+In this document, we will focus mostly on the CSS side of things: how you make things look nice by choosing colors, layouts, spacing, and typography for your experiments.  If you are entirely unfamiliar with the term CSS or Cascading Style-Sheets it might help to read this nice chapter from [Interneting is Hard](https://www.internetingishard.com/html-and-css/hello-css/) before continuing.
 
 ## Global design framework: Bulma
 
 The components in <SmileText/> by default use the [Bluma](https://bulma.io) CSS framework.  Bulma is a free, open-source framework that provides simple components that help you build [responsive](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design) web interfaces.
 
-It is already included in the main application framework so there is nothing you need to do to use it in your components.
+It is already included in the main <SmileText/> application framework so there is nothing you need to do to use it in your components.
 
-At its core, Bulma provides a set of CSS classes that you can apply to your elements to help quickly style your display.  It is similar to [Bootstrap](https://getbootstrap.com) and [Tailwind](https://tailwindcss.com).
+At its core, Bulma provides a set of CSS classes that you can apply to your elements to help quickly style your display.  (It is similar to [Bootstrap](https://getbootstrap.com) and [Tailwind](https://tailwindcss.com) if you have used these before.)
 
 For example, if you are building a form and using a default button tag element:
 
@@ -27,12 +29,12 @@ For example, if you are building a form and using a default button tag element:
 <button>Click me</button>
 ```
 
-it renders as: 
+it renders as this when no styles are applied at all: 
 
 <button style="all: revert">Click me</button>
 
-This looks kinda plain and boring compared to users expectations about sites like Facebook or Google.
-You can add the Bulma style by adding the class "button":
+This looks kinda plain and boring compared to user's expectations about Facebook or Google, or e-commerce sites.
+You can easily convert this default button to add Bulma's button styling by adding the class "button":
 
 ```html
 <button class="button">Click me</button>
@@ -40,7 +42,7 @@ You can add the Bulma style by adding the class "button":
 
 <button class="button">Click me</button>
 
-which makes the button larger, easier to click, etc...
+which makes the button larger, easier to click, adds a hover state, etc...
 
 Bulma styles are semi-compositional in that you can apply various styles incrementally to elements.  For example, we can make the same type of button blue by adding the `is-primary` class to the list:
 
@@ -74,11 +76,78 @@ or big and green:
 
 <button class="button is-success is-large">Click me</button>
 
-You can read the full Bulma documentation on button elements [here](https://bulma.io/documentation/elements/button/).
+You can read the full Bulma documentation on button elements [here](https://bulma.io/documentation/elements/button/)
+which demonstrates many of the options.
 
-One of the key purposes of Bulma is to help limit your design choices, while making those choices easy.  When you make a button using raw CSS often you have to decide a color and size, etc...  Getting consistency and also making choices users anticipate can be hard.  However, Bulma gives you nice-looking defaults for many semantic purposes easily (`is-primary`, `is-success`, `is-warning`, etc...).  Semantic classes refer to the idea that a "success" button should probably be some shade of green since it conveys to the user "go"/"good" and that a warning/danger buttons should be red.  In Bulma instead of styling an element `backgroudn-color: red` you style it with the add-on class `is-danger` which has been pre-defined by the theme to make things redish.
+These examples show how classes mix together to determine the final design.
+This is a key to using Bulma effectively.  Instead of writing CSS, you can often
+get by mixing together pre-existing classes to determine the look and feel that you
+want.
 
-There are many other helper classes:
+### Limiting choices
+One of the key purposes of Bulma is to help limit your design choices while making those choices easy.  When you make a button using raw CSS often you have to decide the color, size, etc... of elements.  Getting consistency (i.e., making a overall "theme" for your page) and also making choices users anticipate 
+can be hard.  Instead, Bulma gives you nice-looking defaults for many semantic purposes easily 
+(`is-primary`, `is-success`, `is-warning`, etc...) each assigning colors to elements in line with common functions. 
+
+The same applies to things like text blocks.  For example, the preferred way to format a set of text (e.g., in some instructions) is to wrap it in a `<p>` (paragraph) tag.  However you can control many aspects of that text easily in Bulma.  For example, this will set up a plain paragraph of text:
+
+```html
+<p>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo odio nam itaque accusantium amet iste, ipsum, corrupti laudantium vero tempora velit possimus dolorum libero eaque perspiciatis harum quibusdam fugiat? Nemo.
+</p>
+```
+
+<p style="all: revert">
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo odio nam itaque accusantium amet iste, ipsum, corrupti laudantium vero tempora velit possimus dolorum libero eaque perspiciatis harum quibusdam fugiat? Nemo.
+</p>
+
+But using modifiers you can change the alignment to be centered:
+
+```html
+<p class="has-text-centered">
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo odio nam itaque accusantium amet iste, ipsum, corrupti laudantium vero tempora velit possimus dolorum libero eaque perspiciatis harum quibusdam fugiat? Nemo.
+</p>
+```
+
+<p class="has-text-centered">
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo odio nam itaque accusantium amet iste, ipsum, corrupti laudantium vero tempora velit possimus dolorum libero eaque perspiciatis harum quibusdam fugiat? Nemo.
+</p>
+
+Making it larger:
+
+```html
+<p class="has-text-centered is-size-5">
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo odio nam itaque accusantium amet iste, ipsum, corrupti laudantium vero tempora velit possimus dolorum libero eaque perspiciatis harum quibusdam fugiat? Nemo.
+</p>
+```
+
+<p class="has-text-centered is-size-5">
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo odio nam itaque accusantium amet iste, ipsum, corrupti laudantium vero tempora velit possimus dolorum libero eaque perspiciatis harum quibusdam fugiat? Nemo.
+</p>
+
+
+Add a large margin on the left to indent and on the top to add space:
+
+```html
+<p class="has-text-centered is-size-5 ml-6 mt-6">
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo odio nam itaque accusantium amet iste, ipsum, corrupti laudantium vero tempora velit possimus dolorum libero eaque perspiciatis harum quibusdam fugiat? Nemo.
+</p>
+```
+
+<p class="has-text-centered is-size-5 ml-6 mt-6">
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo odio nam itaque accusantium amet iste, ipsum, corrupti laudantium vero tempora velit possimus dolorum libero eaque perspiciatis harum quibusdam fugiat? Nemo.
+</p>
+
+
+:::info Semantic Classes in CSS
+Semantic classes in CSS refer to the idea that a "success" button should probably be some shade of green since it 
+conveys to the user "go"/"good" and that a warning/danger button should be red.  In Bulma, instead of 
+styling an element using raw CSS (e.g., `background-color: red;`) you style it with the add-on class 
+`is-danger` which has been pre-defined by the theme to make things an appealing red-ish color.  This captures the 
+visual semantics that most people anticipate.
+:::
+
+There are many other classes provided by Bulma covering spacing, color, and more:
 - [Colors](https://bulma.io/documentation/helpers/color-helpers/) - e.g., `has-background-grey`, `has-background-light-grey` etc...
 - [Typography](https://bulma.io/documentation/helpers/typography-helpers/) - e.g., `is-size-1`, `is-size-7`, `has-text-centered`, `has-text-left`, etc...
 - [Spacing](https://bulma.io/documentation/helpers/spacing-helpers/) - e.g., lets you quickly add padding and margins to the elements (e.g., `mb-4` adds 4 pixels of margin to the button, `pt-6` adds 6 pixels of padding to the top, etc...)
@@ -146,11 +215,21 @@ This will generate a new output file `css/styles.css` (which is not version trac
 
 This command **is** run as part of the [deployment process](/deploying) so you can be sure that changes here will be reflected on your live site even though `css/styles.css` is not version tracked.
 
+A related command is `css-watch`
+
+```
+npm run css-watch
+```
+
+which continually rebuilds the CSS from SASS as changes are made (so you can see them in your development browser quickly).
+
 ## Customizing CSS
 
 In addition to customizing Bulma (e.g., overriding defaults in bulma or adding new options), you can also add global css classes to `css/main.css`.  This file includes the Bulma-generated `css/styles.css` and then appends additional options.  Adding things here apply to _all_ your components and/or pages, so it is a global option similar to modifying the default Bulma theme.  
 
-Whether you override a Bulma setting (or add a new setting in the `sass/mystyles.scss`) or directly in the global CSS file (using `css/styles.css`) is up to you.  Some people are more familiar with CSS than the SCSS language used by Bulma.
+:::info  Where is the best place to make global style changes?
+Whether you override a Bulma setting (or add a new setting in the `sass/mystyles.scss`) or directly in the global CSS file (using `css/main.css`) is up to you.  Some people are more familiar with CSS than the SCSS language used by Bulma.  Also modifying `css/main.css` doesn't require the build step.  Generally it makes sense to use CSS to add styles and the SCSS to override or modify the Bulma theme.
+:::
 
 ## Component specific stylesheet
 
@@ -178,6 +257,12 @@ However, you can modify the global styles as well if you leave out the `scoped` 
 
 In this second case, `mydivstyle` applies to **all components** in the application (similar to if it was added to `css/styles.css` or `scss/mystyles.scss`).
 
+## Custom Fonts
+
+Fonts are an important part of design.  Although the defaul Bulma theme includes some nice, professional looking font choices you may want to use custom fonts in your experiment to highlight certain elements or convey a sense of fun, style, etc...
+
+Perhaps the easiest way to add fonts is to search to Google Fonts [website](https://fonts.google.com).  This includes a huge number of web-compatible fonts that are free.
+
 ## Icons and Emoji
 
 It is often helpful to use icons and emoji in your designs.  These help given symbolic reference to things and add to the feeling that the website was "designed".  There are a couple of approaches here.  The first is to use traditional emoji that are similar to the ones you see in text messaging programs and are built into the operating system 👋.  To do this just use your emoji keyboard (on Mac choose Edit->Emoji & Symbols).  These are embedded as unicode symbols and are interpreted by most modern Macs and PCs.  However, [recently new emojis have been added that are not available on all operating systems or devices](https://www.engadget.com/apple-ios-37-emojis-melting-face-troll-130554838.html) so it is not the preferred approach.
@@ -196,10 +281,51 @@ Here `fa-solid` is the library type and `fa-book` displays the book icon.
 ### Adding new icons
 
 To save space, FontAwesome loads only the icons you need for your project.
-This is configured in `src/icons.js`.  Search for icons [here](https://fontawesome.com/search?m=free&s=solid).
+This is configured in `src/icons.js`.  Search for icons on the FontAwesome site [here](https://fontawesome.com/search?m=free&s=solid).
+Make sure you have the "free" toggle checked so you don't search for icons that cost money on their
+plan:
 
 ![](/images/font-awesome-search.png)
+
+When you find an icon you like click on it and FontAwesome will show you the name of it.
+For instance this address book icon:
 ![](/images/font-awesome.png)
 
+has the name `fa-solid fa-address-book`.  The `fa-solid` part refers to the fact that the icon belongs to the 
+"solid" FontAwesome library.
 
+Next to use the icon in your experiment you simply refer to it in your Vue template:
+
+```html
+<FAIcon icon="fa-solid fa-address-book" />
+```
+
+Finally you need to import that specific icon into the project.  Open `src/icons.js`.  Add a line like
+this to important the address book:
+
+```js
+import { faAddressBook } from '@fortawesome/free-solid-svg-icons'
+```
+
+Notice how the FontAwesome website listed the name as `fa-address-book` (known as kabob case) but to import it in Javascript you use the Camel case version (`faAddressBook`). Sorry, computers suck (this is a [thing](https://vuejs.org/guide/essentials/component-basics.html#case-insensitivity) in Vue).
+Finally, at the bottom of the the `src/icons.js` there is a command to register the imported icon with the library:
+
+```js
+library.add(
+  faAddressBook,
+  ...
+)
+```
+
+Make sure you add the newly important icon here to use it in your project.  Also, it is a good idea to check this icon hasn't already been 
+imported by searching the file.
+
+The full docs for the FontAwesome Vue library is [here](https://fontawesome.com/docs/web/use-with/vue/).
+
+
+## Custom UI components
+
+Sometimes you need slightly more complex UI elements than the default HTML set of buttons, checkboxes, tables, etc...  <SmileText/> includes the [Bulma extensions](https://bulma.io/extensions/) package which adds some additional UI elements like sliders, steppers (show how many steps there are to a form), etc...
+
+And of course you can create custom components yourself (simple UI elements often are considered Atoms in the design organization).
 
