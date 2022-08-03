@@ -1,9 +1,6 @@
-
 <style lang="css">
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 </style>
-
-
 
 # :artist: Styling, CSS, and Icons
 
@@ -280,7 +277,11 @@ Fonts are an important part of web design.  Although the defaul Bulma theme incl
 
 Perhaps the easiest way to add fonts is to search to Google Fonts [website](https://fonts.google.com).  This includes a huge number of web-compatible fonts that are free.  The following screen video shows how to search and find the correct URL for including a google font in your project:
 
-![how to use google fonts](/videos/googlefonts.mov)
+<video autoplay loop controls="controls" width="600" name="using google fonts">
+  <source src="/videos/googlefonts.mp4">
+  This browser does not display the video tag.
+</video>
+
 
 The final copied import command is something like this: 
 
