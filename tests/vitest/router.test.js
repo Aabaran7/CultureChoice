@@ -197,7 +197,7 @@ describe('App tests', () => {
     expect(router.currentRoute.value.name).toBe('config') // yes this
   })
 
-  it.only('it should redirect you to the last route if you are known ', async () => {
+  it('it should redirect you to the last route if you are known ', async () => {
     const smilestore = useSmileStore()
     smilestore.setKnown()
     smilestore.setLastRoute('exp') // pretend we stopped on consent
@@ -206,17 +206,16 @@ describe('App tests', () => {
     expect(getLocalStorage().lastRoute).toBe('exp')
 
     const wrapper = setupapp()
+    router.push('/') // go to welcome
     await router.isReady()
     await flushPromises()
-    expect(smilestore.local).toBe('1234')
     expect(smilestore.isKnownUser).toBe(true)
-    expect(smilestore.lastRoute).toBe('consent')
+    expect(smilestore.lastRoute).toBe('exp')
     await router.isReady()
-    router.push('/') // go to welcome
     await flushPromises()
     expect(router.currentRoute.value.name).not.toBe('config') // not this
-    expect(router.currentRoute.value.name).toBe('consent') // yes this
-    expect(wrapper.html()).toContain('Consent') // verify
+    expect(router.currentRoute.value.name).toBe('exp') // yes this
+    expect(wrapper.html()).toContain('Experiment') // verify
   })
 
   it('should send you to the last route if you are known and you try to access a different route', async () => {

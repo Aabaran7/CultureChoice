@@ -10,7 +10,7 @@ export default defineStore('smilestore', {
     local: useStorage(appconfig.local_storage_key, {
       // syncs with local storage
       knownUser: false,
-      lastRoute: appconfig.mode === 'development' ? 'recruit' : 'welcome',
+      lastRoute: appconfig.mode === 'development' ? 'recruit' : 'landing',
       allowJumps: appconfig.mode === 'development',
       docRef: null,
       completionCode: '',

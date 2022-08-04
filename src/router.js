@@ -34,15 +34,13 @@ if (appconfig.mode === 'development') {
     path: '/',
     name: 'recruit',
     component: RecruitmentChooser,
-    meta: { allowDirectEntry: true },
   })
 } else {
   // auto refer to the anonymous welcome page
   timeline.pushRoute({
     path: '/',
     name: 'landing',
-    redirect: { name: 'welcome_anonymous' },
-    meta: { allowDirectEntry: true },
+    // redirect: { name: 'welcome_anonymous' },
   })
 }
 
@@ -51,7 +49,7 @@ timeline.pushSeqRoute({
   path: '/welcome',
   name: 'welcome_anonymous',
   component: Advertisement,
-  meta: { next: 'consent', allowDirectEntry: true }, // override what is next
+  meta: { next: 'consent' }, // override what is next
 })
 
 // welcome screen for referral
@@ -59,7 +57,7 @@ timeline.pushSeqRoute({
   path: '/welcome/:service',
   name: 'welcome_referred',
   component: Advertisement,
-  meta: { next: 'consent', allowDirectEntry: true }, // override what is next
+  meta: { next: 'consent' }, // override what is next
   beforeEnter: (to) => {
     processQuery(to.query, to.params.service)
   },
@@ -145,6 +143,7 @@ timeline.pushRoute({
 //    and if they are, they redirect to last route
 function addGuards(r) {
   r.beforeEach((to, from) => {
+    console.log(to.name)
     const smilestore = useSmileStore()
     // if the database isn't connected and they're a known user, reload their data
     if (smilestore.isKnownUser && !smilestore.isDBConnected) {
@@ -171,8 +170,15 @@ function addGuards(r) {
     if (smilestore.isKnownUser) {
       return { name: smilestore.lastRoute, replace: true }
     }
-    // otherwise (for an unknown user who's not trying to go to next/same route), just send to welcome screen
-    return { name: 'welcome_anonymous', replace: true }
+    if (!smilestore.isKnownUser && to.name === 'landing'){
+      return { name: 'welcome_anonymous', replace: true }
+    }
+    if(to.name !== "welcome_anonymous"){
+      // otherwise (for an unknown user who's not trying to go to next/same route), just send to welcome anonymous screen
+      return { name: 'welcome_anonymous', replace: true }
+    }
+    return true
+
   })
 }
 timeline.build()
