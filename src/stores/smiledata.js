@@ -11,7 +11,7 @@ export default defineStore('smilestore', {
       // syncs with local storage
       knownUser: false,
       lastRoute: appconfig.mode === 'development' ? 'recruit' : 'welcome',
-      allowJumps: appconfig.mode === 'development' ? true : false,
+      allowJumps: appconfig.mode === 'development',
       docRef: null,
       completionCode: '',
     }),

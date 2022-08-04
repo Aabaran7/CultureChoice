@@ -34,7 +34,7 @@ if (appconfig.mode === 'development') {
     path: '/',
     name: 'recruit',
     component: RecruitmentChooser,
-    meta: { allowDirectEntry: true }, 
+    meta: { allowDirectEntry: true },
   })
 } else {
   // auto refer to the anonymous welcome page
@@ -42,7 +42,7 @@ if (appconfig.mode === 'development') {
     path: '/',
     name: 'landing',
     redirect: { name: 'welcome_anonymous' },
-    meta: { allowDirectEntry: true }, 
+    meta: { allowDirectEntry: true },
   })
 }
 
@@ -52,7 +52,6 @@ timeline.pushSeqRoute({
   name: 'welcome_anonymous',
   component: Advertisement,
   meta: { next: 'consent', allowDirectEntry: true }, // override what is next
-  
 })
 
 // welcome screen for referral
@@ -138,7 +137,7 @@ timeline.pushRoute({
   path: '/config',
   name: 'config',
   component: Config,
-  meta: { allowDirectEntry: true }, 
+  meta: { allowDirectEntry: true },
 })
 
 // 3. add navigation guards
@@ -147,30 +146,33 @@ timeline.pushRoute({
 function addGuards(r) {
   r.beforeEach((to, from) => {
     const smilestore = useSmileStore()
-    //if the database isn't connected and they're a known user, reload their data
-    if(smilestore.isKnownUser && !smilestore.isDBConnected){
-      smilestore.loadData() 
+    // if the database isn't connected and they're a known user, reload their data
+    if (smilestore.isKnownUser && !smilestore.isDBConnected) {
+      smilestore.loadData()
     }
-    //if you're going to an always-allowed route or if you're in jumping mode, allow the new route
-    if(to.meta.allowDirectEntry || (smilestore.config.mode == 'development' && smilestore.local.allowJumps)){
+    // if you're going to an always-allowed route or if you're in jumping mode, allow the new route
+    if (
+      to.meta.allowDirectEntry ||
+      (smilestore.config.mode === 'development' && smilestore.local.allowJumps)
+    ) {
       smilestore.setLastRoute(to.name)
-      return true 
+      return true
     }
-    //if you're trying to go to the next route, allow it
-    if(from.meta.next === to.name){ 
+    // if you're trying to go to the next route, allow it
+    if (from.meta.next === to.name) {
       smilestore.setLastRoute(to.name)
-      return true 
+      return true
     }
-    //if you're trying to go to the same route you're already on, allow it
-    if(smilestore.lastRoute === to.name){ 
-      return true 
+    // if you're trying to go to the same route you're already on, allow it
+    if (smilestore.lastRoute === to.name) {
+      return true
     }
-    //if you're a known user (and not trying to go to the next or same route), send back to most recent route
-    if(smilestore.isKnownUser){ 
-      return { name: smilestore.lastRoute, replace: true } 
+    // if you're a known user (and not trying to go to the next or same route), send back to most recent route
+    if (smilestore.isKnownUser) {
+      return { name: smilestore.lastRoute, replace: true }
     }
-  //otherwise (for an unknown user who's not trying to go to next/same route), just send to welcome screen
-    return { name: 'welcome_anonymous', replace: true } 
+    // otherwise (for an unknown user who's not trying to go to next/same route), just send to welcome screen
+    return { name: 'welcome_anonymous', replace: true }
   })
 }
 timeline.build()
