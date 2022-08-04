@@ -1,7 +1,7 @@
 // import { ref } from 'vue'
 import '@/seed.js' // random number seed
 import { createRouter, createWebHashHistory } from 'vue-router'
-// import useSmileStore from '@/stores/smiledata' // get access to the global store
+import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/config'
 import { processQuery } from '@/utils'
 import Timeline from '@/timeline'
@@ -34,6 +34,7 @@ if (appconfig.mode === 'development') {
     path: '/',
     name: 'recruit',
     component: RecruitmentChooser,
+    meta: { allowDirectEntry: true }, 
   })
 } else {
   // auto refer to the anonymous welcome page
@@ -41,6 +42,7 @@ if (appconfig.mode === 'development') {
     path: '/',
     name: 'landing',
     redirect: { name: 'welcome_anonymous' },
+    meta: { allowDirectEntry: true }, 
   })
 }
 
@@ -49,7 +51,8 @@ timeline.pushSeqRoute({
   path: '/welcome',
   name: 'welcome_anonymous',
   component: Advertisement,
-  meta: { next: 'consent' }, // override what is next
+  meta: { next: 'consent', allowDirectEntry: true }, // override what is next
+  
 })
 
 // welcome screen for referral
@@ -57,7 +60,7 @@ timeline.pushSeqRoute({
   path: '/welcome/:service',
   name: 'welcome_referred',
   component: Advertisement,
-  meta: { next: 'consent' }, // override what is next
+  meta: { next: 'consent', allowDirectEntry: true }, // override what is next
   beforeEnter: (to) => {
     processQuery(to.query, to.params.service)
   },
@@ -135,66 +138,40 @@ timeline.pushRoute({
   path: '/config',
   name: 'config',
   component: Config,
+  meta: { allowDirectEntry: true }, 
 })
 
 // 3. add navigation guards
 //    currently these check if user is known
 //    and if they are, they redirect to last route
 function addGuards(r) {
-  // r.beforeEach((to) => {
-  //   const smilestore = useSmileStore()
-  //   if (
-  //     (to.name === 'recruit' && smilestore.config.mode === 'development') ||
-  //     to.name === 'config' ||
-  //     (smilestore.local.allowJumps && smilestore.config.mode === 'development')
-  //   ) {
-  //     return true // allow the requested route to load
-  //   }
-  //   // if not known and requesting welcome
-  //   if (!smilestore.isKnownUser) {
-  //     if (to.name === 'welcome' || to.name === 'consent') {
-  //       // if requesting welcome, allow it
-  //       return true // allow the requested route to load
-  //     }
-  //     console.log('screwed up', to.name)
-  //     console.log('LAAAST route', smilestore.local.lastRoute)
-  //     if (smilestore.local.lastRoute === 'consent') {
-  //       return { name: 'consent', replace: true } // redirect to welcome
-  //     }
-  //     console.log('go to welcome')
-  //     return { name: 'welcome', replace: true } // redirect to welcome
-  //   }
-  //   // otherwise is known so check if database connected
-  //   // if not connect and load existing data
-  //   // if yes just continue
-  //   if (smilestore.isKnownUser && !smilestore.isDBConnected) {
-  //     smilestore.loadData()
-  //   }
-  //   if (smilestore.local.lastRoute === to.name) {
-  //     return true // allow the requested route to load, prevent infinite redirects
-  //   }
-  //   // go to where you left off
-  //   return {
-  //     name: smilestore.lastRoute, // to go where you leave off
-  //     replace: true,
-  //   }
-  // })
-  // not used but available
-  // r.afterEach((to, from) => {
-  //   const smilestore = useSmileStore()
-  //   if (
-  //     to.name === 'welcome' &&
-  //     from.name === undefined &&
-  //     smilestore.config.mode === 'development'
-  //   ) {
-  //     console.log('setting last route to ', to.name)
-  //     smilestore.setLastRoute(to.name)
-  //   }
-  //   console.log('after each', to.name, from.name)
-  //   if (smilestore.searchParams) {
-  //     to.query = smilestore.searchParams
-  //   }
-  // })
+  r.beforeEach((to, from) => {
+    const smilestore = useSmileStore()
+    //if the database isn't connected and they're a known user, reload their data
+    if(smilestore.isKnownUser && !smilestore.isDBConnected){
+      smilestore.loadData() 
+    }
+    //if you're going to an always-allowed route or if you're in jumping mode, allow the new route
+    if(to.meta.allowDirectEntry || (smilestore.config.mode == 'development' && smilestore.local.allowJumps)){
+      smilestore.setLastRoute(to.name)
+      return true 
+    }
+    //if you're trying to go to the next route, allow it
+    if(from.meta.next === to.name){ 
+      smilestore.setLastRoute(to.name)
+      return true 
+    }
+    //if you're trying to go to the same route you're already on, allow it
+    if(smilestore.lastRoute === to.name){ 
+      return true 
+    }
+    //if you're a known user (and not trying to go to the next or same route), send back to most recent route
+    if(smilestore.isKnownUser){ 
+      return { name: smilestore.lastRoute, replace: true } 
+    }
+  //otherwise (for an unknown user who's not trying to go to next/same route), just send to welcome screen
+    return { name: 'welcome_anonymous', replace: true } 
+  })
 }
 timeline.build()
 
