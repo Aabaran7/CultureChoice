@@ -3,25 +3,25 @@
 Web experiments are often composed of several parts presented in sequence.  For example, first, we might show a welcome page &rarr; informed consent &rarr;instructions &rarr; etc...
 <SmileText /> provides a central "sequencing" or timeline feature which makes it easy to configure, customize, and move through different stages of an experiment.
 
-This page show how to configure and control <SmileText />'s Timeline implementation, and how to customize it with more complex behaviors.   Most of the configuration happens in `src/router.js` which is short, self-explanatory, and well commented so you jump there if you feel confident.
+This page shows how to configure and control <SmileText />'s Timeline implementation, and how to customize it with more complex behaviors.   Most of the configuration happens in `src/router.js` which is short, self-explanatory, and well commented so you jump there if you feel confident.
 
 ## Single-page Applications and Routing
 
-Modern apps such as <SmileText/> are known as **Single-page Applications (SPAs)**.  These apps load a single HTML page and then use a Javascript framework to control the dynamic interactions of the page including showing and hiding different elements, handling events clicks, or loading data to or from a server, etc...  However, it is often useful to be able to directly access different content in an app using URLs.  For example, users might want to bookmark the login or settings page of an app and so they need a distinct URL that will pull each of these views up.
+Modern apps such as <SmileText/> are known as **Single-page Applications (SPAs)**.  These apps load a single HTML page and then use a Javascript framework to control the dynamic interactions of the page including showing and hiding different elements, handling events like clicks, loading data to or from a server, etc...  However, it is often useful to be able to directly access different content in an app using URLs.  For example, users might want to bookmark the login or settings page of an app and so they need a distinct URL that will pull each of these views up.
 
-Because SPAs load the entire app from a single URL, the solution to this for SPAs is known as a **router**.  A router is a piece of software running in the browser which interprets URL requests and programmatically changes the visible content on the webpage, mimicing normal browser requests for new specific pages.  In <SmileText />, routing is handled by the [Vue Router](https://router.vuejs.org) which is a powerful open-source project built for routing in [Vue](https://vuejs.org) applications.
+Because SPAs load the entire app from a single URL, the solution to this for SPAs is known as a **router**.  A router is a piece of software running in the browser which interprets URL requests and programmatically changes the visible content on the webpage, mimicking normal browser requests for specific pages.  In <SmileText />, routing is handled by the [Vue Router](https://router.vuejs.org) which is a powerful open-source project built for routing in [Vue](https://vuejs.org) applications.
 
 A simple example of using the Vue router is visible here (adapted from the Vue Router [documentation](https://router.vuejs.org/guide/#javascript)):
 
 
 ``` js
-// 1. Define route Vue components.
+// 1. Define route Vue components
 // These can be imported from other files
 const Welcome = { template: '<div>Welcome</div>' }
 const Consent = { template: '<div>Consent</div>' }
 
 // 2. Define some routes
-// Each route should map to a component.
+// Each route should map to a component
 const routes = [
   { path: '/', component: Welcome },  // maps '/' to 'Welcome'
   { path: '/consent', component: Consent }, // maps '/about' to 'Consent'
@@ -34,9 +34,9 @@ const router = VueRouter.createRouter({
 })
 ```
 
-First, we define two simple Vue [components](/components), then we create a list called `routes` which configures each route.  Each route is, in effect, a mapping between a particular URL and a component.  For example, in this code snippet, `/` on the server is mapped to the `Welcome` component and `/consent` to the `Consent` component.  
+First, we define two simple Vue [components](/components), then we create an array called `routes` which configures each route.  Each route is, in effect, a mapping between a particular URL and a component.  For example, in this code snippet, `/` on the server is mapped to the `Welcome` component and `/consent` to the `Consent` component.  
 
-You can read this as literally saying "when the user request the `/` URL on this application display the `Welcome` component".  Specifically, it renders the template of your component in your app in place of where the `<router-view>` tag appears.  In smile that tag appears in `src/App.vue` which is the starting component for the application.
+You can read this as literally saying "when the user requests the `/` URL on this application, display the `Welcome` component".  Specifically, it renders the template of your component in your app in place of where the `<router-view>` tag appears.  In smile, that tag appears in `src/App.vue` which is the starting component for the application.
 
 
 ## URLs and Routes
