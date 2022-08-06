@@ -1,6 +1,45 @@
 # :artist: Designing Good Web Experiments
 
 
+```
+.
+├── LICENSE
+├── README.md
+├── css
+│   ├── main.css
+│   └── styles.css
+├── data
+├── docs
+├── env
+├── index.html            <-- main html page
+├── package-lock.json
+├── package.json
+├── public
+│   └── favicon.ico
+├── sass
+│   └── mystyles.scss
+├── scripts
+├── src
+│   ├── App.vue
+│   ├── assets
+│   ├── components/
+│   ├── composables/
+│   ├── config.js        <-- configuration object
+│   ├── icons.js
+│   ├── main.js          <-- javascript execution starts here
+│   ├── router.js        <-- configure timeline here
+│   ├── seed.js
+│   ├── stores
+│   ├── timeline.js
+│   └── utils.js
+├── tests
+│   ├── cypress
+│   ├── cypress.config.js
+│   └── vitest
+└── vite.config.js
+```
+
+
 ## Captcha
 
 Very fast tasks, requiring human common sense, that are diverse, unpredictable, and have a large number of incorrect responses.

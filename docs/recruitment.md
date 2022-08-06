@@ -16,6 +16,24 @@ At the end you redirect the participant to
 https://app.prolific.co/submissions/complete?cc=HZCQS9MX
 The completion code doesn't have to be anything in particular but there is an 
 
+## Cloud Research
+
+[Cloud Research](https://www.cloudresearch.com) previously known as TurkPrime is a service that runs on top of Amazon Mechanical Turk that offers some additional screening and demographic information about workers.  The most relevant service for psychologists is probably the [MTurk Toolkit](https://www.cloudresearch.com/products/turkprime-mturk-toolkit/).  Essentially, CloudResearch pre-screens workers on Mechanical Turk to flag possible bots as well as reliably inattentive participants.  The idea is that using their technology you can get higher quality data than using the low-level MTurk API.  
+
+Cloud Research takes several steps to improve the general data quality for surveys including presenting workers questions at various points which they check for consistency (did the subject las week answer this question the same as today?).  The also can perform some demographic sampling/filters if you need samples from particular population groups.
+
+They also provide GUI tools for posting HITs on Mechanical Turk that simplify recruitment.
+
+To get started you first need to create an account on [CloudResearch.com](https://account.cloudresearch.com/Account/Login)
+
+Next, you have to connect your Mechanical Turk account to Cloud Research effectively granting them access to post and approve HITs on your behalf.  Cloud Research provides instructions on doing this [here](https://cloudresearch-com.s3.amazonaws.com/files/Instructions+for+linking+MTurk+and+CloudResearch+Accounts.pdf).  If you are in the gureckislab you will need to ask Todd to add you to our lab MTurk account.
+
+To create studies you use the intuitive study builder.  There are many custom fields that you can use to configure your study including payment, demographic restrictions, privacy-enhancing features, etc... However, the most important is to post the correct link to the study.  Here is an example.  But basically it is
+
+
+At the end of CloudResearch studies you display to the worker a completion code that they paste into the study window.  
+
+
 
 ## Mechanical Turk
 

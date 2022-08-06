@@ -37,13 +37,15 @@ if (appconfig.mode === 'development') {
     path: '/',
     name: 'recruit',
     component: RecruitmentChooser,
+    meta: { allowDirectEntry: true },
   })
 } else {
   // auto refer to the anonymous welcome page
   timeline.pushRoute({
     path: '/',
     name: 'landing',
-    // redirect: { name: 'welcome_anonymous' },
+    redirect: { name: 'welcome_anonymous' },
+    meta: { allowDirectEntry: true },
   })
 }
 
@@ -177,15 +179,14 @@ function addGuards(r) {
     if (smilestore.isKnownUser) {
       return { name: smilestore.lastRoute, replace: true }
     }
-    if (!smilestore.isKnownUser && to.name === 'landing'){
+    if (!smilestore.isKnownUser && to.name === 'landing') {
       return { name: 'welcome_anonymous', replace: true }
     }
-    if(to.name !== "welcome_anonymous"){
+    if (to.name !== 'welcome_anonymous') {
       // otherwise (for an unknown user who's not trying to go to next/same route), just send to welcome anonymous screen
       return { name: 'welcome_anonymous', replace: true }
     }
     return true
-
   })
 }
 timeline.build()
