@@ -7,6 +7,7 @@ import {
   setDoc,
   getDoc,
   Timestamp,
+  runTransaction
 } from 'firebase/firestore'
 import appconfig from '@/config'
 
@@ -22,7 +23,7 @@ if (appconfig.mode === 'development') {
 export const fsnow = () => Timestamp.now()
 
 // create a collection
-export const updateDoc = (data, docid) => {
+export const updateSubjectDataRecord = (data, docid) => {
   // is it weird to have a aync method that doesn't return anything?
   try {
     const docRef = doc(db, `${mode}/${appconfig.project_ref}/data/`, docid)
@@ -76,6 +77,27 @@ export const createDoc = async (data) => {
     console.error('Error adding document: ', e)
     return null
   }
+}
+
+export const updateExperimentCounter = async (counter) => {
+  const docRef = doc(db, `${mode}/${appconfig.project_ref}/counters/`, counter)
+
+  let newCounter = null;
+    try {
+      await runTransaction(db, async (transaction) => {
+        const docSnap = await transaction.get(docRef);
+        if (!docSnap.exists()) {
+          newCounter = 0
+        } else{
+          newCounter = docSnap.data().n + 1;
+        }
+        transaction.set(docRef, { n: newCounter }, {merge: true});
+      });
+      console.log("New participant number is: ", newCounter);
+      return newCounter
+    } catch (e) {
+      console.log("Transaction failed: ", e);
+    }
 }
 
 // export default createDoc

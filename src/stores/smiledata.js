@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import appconfig from '@/config'
 
-import { createDoc, updateDoc, loadDoc, fsnow } from './firestore-db'
+import { createDoc, updateSubjectDataRecord, updateExperimentCounter, loadDoc, fsnow } from './firestore-db'
+import assignConds from '../composables/assignconditions'
 
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
@@ -13,6 +14,7 @@ export default defineStore('smilestore', {
       lastRoute: appconfig.mode === 'development' ? 'recruit' : 'landing',
       allowJumps: appconfig.mode === 'development',
       docRef: null,
+      partNum: null,
       completionCode: '',
     }),
     global: {
@@ -38,6 +40,7 @@ export default defineStore('smilestore', {
       recruitment_info: {}, // empty
       browser_data: [], // empty
       demographic_form: {}, // empty
+      conditions_between: {},
     },
     config: appconfig,
   }),
@@ -104,6 +107,11 @@ export default defineStore('smilestore', {
     async setKnown() {
       this.local.knownUser = true
       this.local.docRef = await createDoc(this.data)
+      this.local.partNum = await updateExperimentCounter('participants')
+
+      // add condition assignment here
+      this.data.conditions_between = assignConds(this.local.partNum)
+
       if (this.local.docRef) {
         this.setDBConnected()
       }
@@ -126,7 +134,7 @@ export default defineStore('smilestore', {
     },
     async saveData() {
       if (this.isDBConnected) {
-        updateDoc(this.data, this.local.docRef)
+        updateSubjectDataRecord(this.data, this.local.docRef)
       }
     },
     resetLocal() {
