@@ -83,7 +83,7 @@ function resetLocalState() { // this is repeated on config and maybe should be a
                 <hr class="dropdown-divider">
                 <template v-for="r in routes">
                   <!-- make a special link for web_referred, which has params -->
-                  <router-link class="dropdown-item routelink" v-if="r.name != 'welcome_referred'" :to="{ name: r.name, params: { service: 'web' }, query: currentQuery }" :key="r.path">
+                  <router-link class="dropdown-item routelink" v-if="r.name === 'welcome_referred'" :to="{ name: r.name, params: { service: 'web' }, query: currentQuery }" :key="r.path">
                     /{{ r.name }}
                   </router-link>
                   <!-- make a link for everything else -->
