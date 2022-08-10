@@ -1,5 +1,5 @@
 <script setup>
-//import '@/seed'
+// import '@/seed'
 import { useRouter, useRoute } from 'vue-router'
 import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
@@ -18,7 +18,7 @@ smilestore.global.status_bar_text_color = '#000'
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 function finish(goto) { 
-    //smilestore.saveData()
+    // smilestore.saveData()
     if(goto) router.push(goto)
 }
 </script>
