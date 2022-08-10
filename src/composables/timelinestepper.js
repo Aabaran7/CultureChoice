@@ -10,7 +10,7 @@ export default function useTimelineStepper() {
       smilestore.saveData() // automatically saves data
     }
     if (route.meta.next) {
-      return { name: route.meta.next }
+      return { name: route.meta.next, query: route.query }
     }
     return null
   }
@@ -20,7 +20,7 @@ export default function useTimelineStepper() {
       smilestore.saveData() // automatically saves data
     }
     if (route.meta.prev) {
-      return { name: route.meta.prev }
+      return { name: route.meta.prev, query: route.query }
     }
     return null
   }

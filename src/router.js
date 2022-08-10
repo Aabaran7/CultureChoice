@@ -20,6 +20,9 @@ import Thanks from '@/components/pages/ThanksPage.vue'
 import Config from '@/components/pages/ConfigPage.vue'
 // add new routes here.  generally these will be things in components/pages/[something].vue
 
+// import function to assign conditions
+import assignConds from './composables/assignconditions'
+
 // 2. Define some routes to the timeline
 // Each route should map to a component.
 // Each needs a name
@@ -143,7 +146,11 @@ timeline.pushRoute({
 //    and if they are, they redirect to last route
 function addGuards(r) {
   r.beforeEach((to, from) => {
-    console.log(to.name)
+
+    // Set queries to be combination of from queries and to queries (TO overwrites FROM if there is one with the same key)
+    const newQueries = { ...from.query, ...to.query}
+    to.query = newQueries
+
     const smilestore = useSmileStore()
     // if the database isn't connected and they're a known user, reload their data
     if (smilestore.isKnownUser && !smilestore.isDBConnected) {

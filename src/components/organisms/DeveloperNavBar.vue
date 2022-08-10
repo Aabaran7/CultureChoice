@@ -1,7 +1,7 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, watch, ref } from 'vue';
 import { useMouse } from '@vueuse/core'
-import { useRouter  } from 'vue-router'
+import { useRouter, useRoute  } from 'vue-router'
 
 import useSmileStore from '@/stores/smiledata'
 import { routes } from '@/router' 
@@ -9,6 +9,14 @@ import { routes } from '@/router'
 const smilestore = useSmileStore() // load the global store
 const { x, y } = useMouse({ touch: false }) // tracks mouse reactively
 const router = useRouter()  // this is needed in composition API because this.$router not availabel
+const route = useRoute()
+
+// watch route -- if route changes, update value of current query. This will get carried forward when you jump routes
+const currentQuery = ref(route.query)
+watch(route, async (newRoute, oldRoute) => {
+  currentQuery.value = newRoute.query
+})
+
 
 // easter egg to jump to config page (press 2 with mouse in top right of screen)
 onMounted(() => {
@@ -73,9 +81,17 @@ function resetLocalState() { // this is repeated on config and maybe should be a
                 <input type="checkbox" v-model='smilestore.local.allowJumps'/> <b>Force</b>
                 <br><br>
                 <hr class="dropdown-divider">
-                <a class="dropdown-item routelink" v-for="r in routes" :href="'#'+r.path" :key="r.name">
-                  /{{ r.name }}
-                </a>
+                <template v-for="r in routes">
+                  <!-- make a special link for web_referred, which has params -->
+                  <router-link class="dropdown-item routelink" v-if="r.name != 'welcome_referred'" :to="{ name: r.name, params: { service: 'web' }, query: currentQuery }" :key="r.path">
+                    /{{ r.name }}
+                  </router-link>
+                  <!-- make a link for everything else -->
+                  <router-link class="dropdown-item routelink" v-else :to="{ name: r.name, query: currentQuery }" :key="r.name">
+                    /{{ r.name }}
+                  </router-link>
+                </template>
+
               </div>
             </div>
           </div>
