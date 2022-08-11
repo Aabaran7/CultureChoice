@@ -15,30 +15,45 @@ import appconfig from '@/config'
 let router
 let pinia
 
-// const app = createApp(App)
-describe('App tests', () => {
-  // before each test we need to set up
-  // pinia (because the router depends on it)
+/* general purpose helper functions */
+// sets up app and the mock dom
+function setupapp() {
+  const wrapper = mount(App, {
+    global: {
+      plugins: [router, pinia, [plugin, defaultConfig]],
+      stubs: ['FAIcon'],
+    },
+  })
+  return wrapper
+}
 
-  function setupapp() {
-    const wrapper = mount(App, {
-      global: {
-        plugins: [router, pinia, [plugin, defaultConfig]],
-        stubs: ['FAIcon'],
-      },
-    })
-    return wrapper
-  }
+// resets the local storage.  simulates deleting it in the browser
+function resetLocalStorage() {
+  localStorage.setItem(appconfig.local_storage_key, null)
+}
 
-  function resetLocalStorage() {
-    localStorage.setItem(appconfig.local_storage_key, null)
-  }
+// sets a json version of data in local storage
+function setLocalStorage(data) {
+  localStorage.setItem(appconfig.local_storage_key, JSON.stringify(data))
+}
 
-  function getLocalStorage() {
-    return JSON.parse(localStorage.getItem(appconfig.local_storage_key))
-  }
+// returns the local storage as a javascript object
+function getLocalStorage() {
+  return JSON.parse(localStorage.getItem(appconfig.local_storage_key))
+}
 
+/* generic router tests */
+
+//  these tests verify that the router works correctly and
+//  writes is state to the localstorage
+//  the important thing about these test is that due to
+//  the beforEach you can think of it as the browser loads
+//  BEFORE the test runs.
+describe('Generic router tests', () => {
   beforeEach(() => {
+    // before each test we need to set up:
+    // - pinia (because the router depends on it)
+    // - router
     pinia = createTestingPinia({ stubActions: false })
     router = createRouter({
       history: createWebHashHistory(),
@@ -53,27 +68,39 @@ describe('App tests', () => {
     expect(localStorage.getItem('test')).toBe('test')
   })
 
+  // it isn't ideal that state maintains between tests, but
+  // it does unless you reset the storage each time in beforeEach()
+  // this just test if the key test survived from the previous test
   it('localstorage survives between tests', () => {
     expect(localStorage.getItem('test')).toBe('test')
   })
 
   /* now test the app */
+  // the getLocalStorage() returns null if there is not
+  // local storage set yet.
   it('there should be no smilestore before the app created', () => {
     expect(getLocalStorage()).toBe(null)
   })
 
-  it('there should be smilestore after the app started', async () => {
+  // when you create the app it will create the store
+  // and therefore it will exist!
+  it('there should be smilestore state after the app started', async () => {
     const wrapper = setupapp()
     await router.isReady()
     // local storage created here by the import of the useSmileStore in the app
     expect(getLocalStorage()).not.toBe(null)
   })
 
-  it('there should be no localstorage if it is reset', () => {
+  // when you create the app it will create the store
+  // but reseting the local storage will clear it
+  it('there should be no localstorage if it is reset', async () => {
+    const wrapper = setupapp()
+    await router.isReady()
     resetLocalStorage()
     expect(getLocalStorage()).toBe(null)
   })
 
+  // if you try to load / it will load the 'welcome_anonymous' page
   it('should render welcome_anonymous when accessing /', async () => {
     const wrapper = setupapp()
     const smilestore = useSmileStore()
@@ -82,8 +109,11 @@ describe('App tests', () => {
     await router.isReady()
     expect(wrapper.html()).toContain('Please help us')
     expect(smilestore.local.lastRoute).toBe('welcome_anonymous')
+    expect(router.currentRoute.value.name).toBe('welcome_anonymous') // have to use .value.name here to unpack reactivity mechanism
   })
 
+  // the next few test check for different referral routes
+  // test prolific
   it('should render welcome_referred when accessing a prolific route', async () => {
     const wrapper = setupapp()
     const smilestore = useSmileStore()
@@ -92,8 +122,10 @@ describe('App tests', () => {
     await router.isReady()
     expect(wrapper.html()).toContain('Please help us')
     expect(smilestore.local.lastRoute).toBe('welcome_referred')
+    expect(router.currentRoute.value.name).toBe('welcome_referred') // have to use .value.name here to unpack reactivity mechanism
   })
 
+  // test cloudresearch
   it('should render welcome_referred when accessing a cloudresearch route', async () => {
     const wrapper = setupapp()
     const smilestore = useSmileStore()
@@ -102,8 +134,10 @@ describe('App tests', () => {
     await router.isReady()
     expect(wrapper.html()).toContain('Please help us')
     expect(smilestore.local.lastRoute).toBe('welcome_referred')
+    expect(router.currentRoute.value.name).toBe('welcome_referred') // have to use .value.name here to unpack reactivity mechanism
   })
 
+  // test mechanical turk
   it('should render welcome_referred when accessing an amt route', async () => {
     const wrapper = setupapp()
     const smilestore = useSmileStore()
@@ -114,6 +148,7 @@ describe('App tests', () => {
     expect(smilestore.local.lastRoute).toBe('welcome_referred')
   })
 
+  // test citizen science site
   it('should render welcome_referred when accessing a citizenscience route', async () => {
     const wrapper = setupapp()
     const smilestore = useSmileStore()
@@ -122,10 +157,11 @@ describe('App tests', () => {
     await router.isReady()
     expect(wrapper.html()).toContain('Please help us')
     expect(smilestore.local.lastRoute).toBe('welcome_referred')
+    expect(router.currentRoute.value.name).toBe('welcome_referred') // have to use .value.name here to unpack reactivity mechanism
   })
 
   // should first render the welcome
-  it('should render welcome_anonymous when accessing / then the informed consent', async () => {
+  it('should render welcome_anonymous when accessing / then the informed consent after a click', async () => {
     const wrapper = setupapp()
     const smilestore = useSmileStore()
     resetLocalStorage()
@@ -133,55 +169,11 @@ describe('App tests', () => {
     await router.isReady()
     expect(wrapper.html()).toContain('Please help us')
     expect(smilestore.local.lastRoute).toBe('welcome_anonymous')
-    await new Promise((r) => setTimeout(r, 10)) // wait for db connection
     await wrapper.find('#finish').trigger('click')
-    // await router.isReady()
-    await new Promise((r) => setTimeout(r, 10)) // wait for db connection
+    await new Promise((r) => setTimeout(r, 10)) // wait a bit for the page to update and render after the click
     expect(wrapper.html()).toContain('Please take the time to read')
     expect(smilestore.local.lastRoute).toBe('consent') // check that smilestore was updated
   })
-
-  // it.skip('should render the consent, then the demographic survey, and the localstore though reflect last route is demograph', async () => {
-  //   const wrapper = setupapp()
-  //   const smilestore = useSmileStore()
-  //   await router.isReady()
-  //   expect(smilestore.local.lastRoute).toBe('consent')
-  //   await new Promise((r) => setTimeout(r, 10)) // wait for db connection
-  //   console.log('what i got', wrapper.html())
-  //   expect(wrapper.html()).toContain(
-  //     'Please take the time to read the consent form'
-  //   )
-  //   expect(smilestore.local.lastRoute).toBe('consent')
-  //   const checkbox = wrapper.find('#input_1')
-  //   checkbox.element.checked = true // ugh what a nightmare
-  //   checkbox.trigger('input')
-  //   await new Promise((r) => setTimeout(r, 200)) // wait for db connection
-  //   await wrapper.find('#finish').trigger('click')
-  //   await new Promise((r) => setTimeout(r, 50)) // wait for db connection
-  //   expect(wrapper.html()).toContain('Demographic Information')
-  //   expect(smilestore.local.lastRoute).toBe('demograph')
-  // })
-
-  it('should redirect you to welcome_anonymous if you are unknown and accessed from an anonymous welcome', async () => {
-    const wrapper = setupapp()
-    const smilestore = useSmileStore()
-    await router.isReady()
-    resetLocalStorage()
-    smilestore.resetLocal()
-    expect(smilestore.isKnownUser).toBe(false)
-    expect(smilestore.lastRoute).toBe('welcome')
-    router.push('/exp')
-    await router.isReady()
-    await flushPromises()
-    expect(router.currentRoute.value.name).toBe('welcome_anonymous')
-    expect(wrapper.html()).toContain('Please help us') // verify
-  })
-
-  it(
-    'should redirect you to welcome_referred if you are unknown and accessed from a prolific welcome and try accessing /exp'
-  )
-
-  it('should keep you on the consent page if you reload it')
 
   it('should let you access config even if known and last route set', async () => {
     const smilestore = useSmileStore()
@@ -196,43 +188,69 @@ describe('App tests', () => {
     expect(router.currentRoute.value.name).not.toBe('consent') // not this
     expect(router.currentRoute.value.name).toBe('config') // yes this
   })
+})
 
-  it('it should redirect you to the last route if you are known ', async () => {
-    const smilestore = useSmileStore()
-    smilestore.setKnown()
-    smilestore.setLastRoute('exp') // pretend we stopped on consent
-    await new Promise((r) => setTimeout(r, 200)) // wait a bit
-    expect(smilestore.lastRoute).toBe('exp')
+describe('Testing page reloads', () => {
+  it('should redirect you to the last route if you are known', async () => {
+    // pretend that user has localstorage set to known and /exp
+    setLocalStorage({ knownUser: true, lastRoute: 'exp' })
+
+    // double check that worked
     expect(getLocalStorage().lastRoute).toBe('exp')
+    expect(getLocalStorage().knownUser).toBe(true)
 
-    const wrapper = setupapp()
-    router.push('/') // go to welcome
-    await router.isReady()
-    await flushPromises()
-    expect(smilestore.isKnownUser).toBe(true)
-    expect(smilestore.lastRoute).toBe('exp')
-    await router.isReady()
-    await flushPromises()
-    expect(router.currentRoute.value.name).not.toBe('config') // not this
+    // great app (close to opening browser)
+    pinia = createTestingPinia({ stubActions: false })
+    router = createRouter({
+      history: createWebHashHistory(),
+      routes,
+    })
+    addGuards(router)
+    const wrapper = setupapp() // create the app
+    router.push('/')
+    // still the same?
+    expect(getLocalStorage().lastRoute).toBe('exp')
+    expect(getLocalStorage().knownUser).toBe(true)
+
+    // did the smilestore load that?
+    const smilestore = useSmileStore()
+    expect(smilestore.lastRoute).toBe('exp') // should be exp
+    expect(smilestore.isKnownUser).toBe(true) // should be true
+
+    await new Promise((r) => setTimeout(r, 10)) // wait a bit for the page to update and render after the click
     expect(router.currentRoute.value.name).toBe('exp') // yes this
-    expect(wrapper.html()).toContain('Experiment') // verify
   })
 
-  it('should send you to the last route if you are known and you try to access a different route', async () => {
-    const smilestore = useSmileStore()
-    smilestore.setKnown()
-    smilestore.setLastRoute('consent') // pretend we stopped on consent
+  // there's not way to redirect to welcome_anonymous if you are unknown and known to not be a referral currently
+  // it('should redirect you to welcome_anonymous if you are unknown and accessed from an anonymous welcome', async () => {})
 
-    const wrapper = setupapp()
-    await router.isReady()
-    await flushPromises()
-    expect(smilestore.isKnownUser).toBe(true)
-    expect(smilestore.lastRoute).toBe('consent')
-    await router.isReady()
-    router.push('/exp') // go to something different
-    await flushPromises()
-    expect(router.currentRoute.value.name).not.toBe('exp') // not this
-    expect(router.currentRoute.value.name).toBe('consent') // yes this
-    expect(wrapper.html()).toContain('Consent') // verify
+  it('should send you to the last route if you are known and you try to access a different route', async () => {
+    // pretend that user has localstorage set to known and /exp
+    setLocalStorage({ knownUser: true, lastRoute: 'exp' })
+
+    // double check that worked
+    expect(getLocalStorage().lastRoute).toBe('exp')
+    expect(getLocalStorage().knownUser).toBe(true)
+
+    // great app (close to opening browser)
+    pinia = createTestingPinia({ stubActions: false })
+    router = createRouter({
+      history: createWebHashHistory(),
+      routes,
+    })
+    addGuards(router)
+    const wrapper = setupapp() // create the app
+    router.push('/debrief') // try to access debrief instead
+    // still the same?
+    expect(getLocalStorage().lastRoute).toBe('exp')
+    expect(getLocalStorage().knownUser).toBe(true)
+
+    // did the smilestore load that?
+    const smilestore = useSmileStore()
+    expect(smilestore.lastRoute).toBe('exp') // should be exp
+    expect(smilestore.isKnownUser).toBe(true) // should be true
+
+    await new Promise((r) => setTimeout(r, 10)) // wait a bit for the page to update and render after the click
+    expect(router.currentRoute.value.name).toBe('exp') // yes this
   })
 })

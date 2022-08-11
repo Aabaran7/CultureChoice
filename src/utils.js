@@ -60,7 +60,7 @@ export function processQuery(query, service) {
       session_id: urlParams.CITIZEN_SESSION_ID,
     })
   } else {
-    console.log('free/web/dev mode')
+    // console.log('const { next, prev } = useTimelineStepper() mode')
   }
 }
 

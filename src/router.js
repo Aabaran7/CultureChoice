@@ -62,7 +62,7 @@ timeline.pushSeqRoute({
   path: '/welcome/:service',
   name: 'welcome_referred',
   component: Advertisement,
-  meta: { next: 'consent' }, // override what is next
+  meta: { next: 'consent', allowDirectEntry: true }, // override what is next
   beforeEnter: (to) => {
     processQuery(to.query, to.params.service)
   },
@@ -148,20 +148,28 @@ timeline.pushRoute({
 //    and if they are, they redirect to last route
 function addGuards(r) {
   r.beforeEach((to, from) => {
-
     // Set queries to be combination of from queries and to queries (TO overwrites FROM if there is one with the same key)
-    const newQueries = { ...from.query, ...to.query}
+    const newQueries = { ...from.query, ...to.query }
     to.query = newQueries
+
+    // console.log('loading', to.name)
+    // console.log('from', from.name)
+    // console.log('allowDirectEntry', to.meta.allowDirectEntry)
 
     const smilestore = useSmileStore()
     // if the database isn't connected and they're a known user, reload their data
     if (smilestore.isKnownUser && !smilestore.isDBConnected) {
       smilestore.loadData()
     }
+
     // if you're going to an always-allowed route or if you're in jumping mode, allow the new route
     if (
       to.meta.allowDirectEntry ||
-      (smilestore.config.mode === 'development' && smilestore.local.allowJumps)
+      (smilestore.config.mode === 'development' &&
+        smilestore.local.allowJumps) ||
+      (to.name === 'welcome_anonymous' &&
+        from.name === undefined &&
+        !smilestore.isKnownUser)
     ) {
       smilestore.setLastRoute(to.name)
       return true
@@ -192,6 +200,7 @@ function addGuards(r) {
 timeline.build()
 
 const { routes } = timeline
+
 // 4. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
 // keep it simple for now.
@@ -202,8 +211,8 @@ const router = createRouter({
     return { top: 0 }
   },
 })
-
 addGuards(router) // add the guards defined above
+
 // they are defined in a function like this for the testing harness
 export { routes, addGuards }
 
