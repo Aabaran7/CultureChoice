@@ -1,9 +1,6 @@
 @import './styles.css';
 @import "../node_modules/@creativebulma/bulma-divider";
 
-
-
-
 /* fixes a bug in Bulma */
 .navbar-menu {
     background-color: inherit;
@@ -18,7 +15,4 @@
     height: 100vh;
 }
 
-.honeyname {
-    visibility: hidden;
-    display: none;
-}
+

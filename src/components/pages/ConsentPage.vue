@@ -61,7 +61,7 @@ const name = ref('enter your name')
                                     validation-visibility="dirty"
                                     label-class="has-text-left"
                                     />
-                                <div class="honeyname">
+                                <div class="hname">
                                     Required!  Please enter your name: <input type="text" name="your_name" label="enter your name" v-model='name' />
                                 </div>
                             </p>
@@ -100,5 +100,9 @@ const name = ref('enter your name')
     padding-top: 0px;
 }
 
+.hname {
+    visibility: hidden;
+    display: none;
+}
 
 </style>
