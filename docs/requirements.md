@@ -67,6 +67,13 @@ Optionally install the [Vue Devtools](https://devtools.vuejs.org) in your browse
 
 It is highly recommended that you use [VS Code](https://code.visualstudio.com/) and the [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) extension as your text editor/development environment.
 
+## 7. Install the Google Cloud Command Line Tool (optional)
+
+If you need to write custom software that runs on the server-side (e.g., to [compute bonuses](/bonuses) for your experiment securely), then install the Google Command Line tools:
+
+```
+brew install --cask google-cloud-sdk
+```
 
 
 
