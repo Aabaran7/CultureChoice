@@ -23,6 +23,7 @@ export default defineStore('smilestore', {
       partNum: null,
       completionCode: '',
       totalWrites: 0,
+      lastWrite: null,
     }),
     global: {
       // ephemeral state, resets on browser refresh
@@ -143,13 +144,24 @@ export default defineStore('smilestore', {
       if (this.isDBConnected) {
         if (this.local.totalWrites >= appconfig.max_writes) {
           console.error(
-            'SMILESTORE: max writes reached to firebase.  Call saveData() less frequently to avoid problems/cost issues.'
+            'SMILESTORE: max writes reached to firebase.  Data NOT saved.  Call saveData() less numerously to avoid problems/cost issues.'
+          )
+          return
+        }
+
+        if (
+          this.local.lastWrite &&
+          fsnow() - this.local.lastWrite < appconfig.min_write_interval
+        ) {
+          console.error(
+            'SMILESTORE: write interval too short for firebase.  Data NOT saved. Call saveData() less frequently to avoid problems/cost issues.'
           )
           return
         }
 
         updateSubjectDataRecord(this.data, this.local.docRef)
         this.local.totalWrites += 1
+        this.local.lastWrite = fsnow()
       }
     },
     resetLocal() {

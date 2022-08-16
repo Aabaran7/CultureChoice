@@ -238,7 +238,9 @@ This describes this method
 
 - **Details**
 
-Somethign about it
+Firebase has several limits on document writing.  Documents can't be larger than 1MB.
+In addition, you can't write to the same document faster than once per second.  Since billing is based on writes it also is a bad idea to allow unlimited writes since code can live running in a user's browser for a long time if they do not close the window.  As a result, this function has an upper limit on the number of writes allowed.  This is [configured](configuration.html#experiment-options-env) using `VITE_MAX_WRITES`.  By default, it is 1000 but can be adjusted if you need more writes for your experiment.  In addition, the code doesn't allow this method to be called faster than once every two seconds.  This is [configured](configuration.html#experiment-options-env) using `VITE_MIN_WRITE_INTERVAL`.
+
 
 ```
 service cloud.firestore {

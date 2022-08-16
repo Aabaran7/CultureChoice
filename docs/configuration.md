@@ -95,6 +95,8 @@ VITE_ALLOW_REPEATS               = true
 VITE_SERVICES_ALLOWED            = amt,prolific,sona,web
 VITE_RANDOM_SEED                 = 100012
 VITE_AUTO_SAVE_DATA              = true
+VITE_MAX_WRITES                  = 1000
+VITE_MIN_WRITE_INTERVAL          = 2000
 
 VITE_ESTIMATED_TIME              = "30-40 minutes"
 VITE_PAYRATE_HOURLY              = "$15USD/hour + performance related bonus"
@@ -111,6 +113,7 @@ from taking your task more than once.
 you want to enable for your experiment (e.g., amt - Mechanical Turk, prolific - Prolific.ac, etc...).
 - `VITE_AUTO_SAVE_DATA` configures if smile attempts to automatically save data when pages in the [TimelineStepper](timeline.html#timelinestepper) are advanced.
 - `VITE_MAX_WRITES` configures the maximum total number of writes that each experiment can perform to the Firestore database.  Each write to the database document costs money so this can prevent runaway costs.  It can be adjusted if needed though for you specific experiment.
+- `VITE_MIN_WRITE_INTERVAL` configured the minimum time in milliseconds that should pass between writes to the Firestore.  This respects Firestore's limit of 1 write per document per second.  It defaults to 2000ms.
 - `VITE_RANDOM_SEED` initializes the pseudo-random number generator in <SmileText />
 - `VITE_ESTIMATED_TIME` is text you can include in an ad for the study (e.g., mechanical turk) to let people know how long to expect the task to take.  It might need to be references several places so putting it in the config can be helpful.
 - `VITE_PAYRATE` is text about the payrate for the study.  Again, it is a configuration option since it might need to be referenced in several components and templates.
