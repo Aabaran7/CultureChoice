@@ -2,7 +2,13 @@ import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import appconfig from '@/config'
 
-import { createDoc, updateSubjectDataRecord, updateExperimentCounter, loadDoc, fsnow } from './firestore-db'
+import {
+  createDoc,
+  updateSubjectDataRecord,
+  updateExperimentCounter,
+  loadDoc,
+  fsnow,
+} from './firestore-db'
 import assignConds from '../composables/assignconditions'
 
 export default defineStore('smilestore', {
@@ -16,6 +22,7 @@ export default defineStore('smilestore', {
       docRef: null,
       partNum: null,
       completionCode: '',
+      totalWrites: 0,
     }),
     global: {
       // ephemeral state, resets on browser refresh
@@ -134,7 +141,15 @@ export default defineStore('smilestore', {
     },
     async saveData() {
       if (this.isDBConnected) {
+        if (this.local.totalWrites >= appconfig.max_writes) {
+          console.error(
+            'SMILESTORE: max writes reached to firebase.  Call saveData() less frequently to avoid problems/cost issues.'
+          )
+          return
+        }
+
         updateSubjectDataRecord(this.data, this.local.docRef)
+        this.local.totalWrites += 1
       }
     },
     resetLocal() {
