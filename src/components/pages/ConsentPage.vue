@@ -26,7 +26,6 @@ function finish(goto) {
         smilestore.setKnown() // set new user and add document
     }
     smilestore.setConsented()
-    smilestore.saveData()
     if(goto) router.push(goto)
 }
 const agree = ref(false)

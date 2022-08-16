@@ -15,7 +15,6 @@ if(route.meta.progress) smilestore.global.progress = route.meta.progress
 smilestore.setDone()
 
 function finish(goto) { 
-    //smilestore.saveData()
     if(goto) router.push(goto)
 }
 </script>

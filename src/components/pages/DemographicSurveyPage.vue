@@ -39,17 +39,11 @@ const forminfo = reactive({
 
 const page = ref(1)
 
-const page_one_complete = computed(() => {
-    return forminfo.dob!==''&&forminfo.gender!==''&&forminfo.race!==''&&forminfo.hispanic!==''&&forminfo.fluent_english!==''
-})
+const page_one_complete = computed(() => forminfo.dob!==''&&forminfo.gender!==''&&forminfo.race!==''&&forminfo.hispanic!==''&&forminfo.fluent_english!=='')
 
-const page_two_complete = computed(() => {
-    return forminfo.color_blind!==''&&forminfo.learning_disability!==''&&forminfo.neurodevelopmental_disorder!==''&&forminfo.psychiatric_disorder!==''
-})
+const page_two_complete = computed(() => forminfo.color_blind!==''&&forminfo.learning_disability!==''&&forminfo.neurodevelopmental_disorder!==''&&forminfo.psychiatric_disorder!=='')
 
-const page_three_complete = computed(() => {
-    return forminfo.country!==''&&forminfo.education_level!==''&&forminfo.household_income!==''
-})
+const page_three_complete = computed(() => forminfo.country!==''&&forminfo.education_level!==''&&forminfo.household_income!=='')
 
 
 function autofill () {
@@ -73,7 +67,6 @@ if(smilestore.config.mode==='development') smilestore.setPageAutofill(autofill)
 
 function finish(goto) { 
     smilestore.saveDemographicForm(forminfo);
-    smilestore.saveData()
     if(smilestore.config.mode=='development') smilestore.removePageAutofill()
     if(goto) router.push(goto)
 }
