@@ -41,8 +41,54 @@ You need to have the <SmileText /> Firestore project added to your Google Fireba
 
 ## Write/Edit a Cloud Function
 
+Cloud Functions for your project are written in `functions/index.js`.
+The full documentation for writing these methods is [here](https://firebase.google.com/docs/functions?authuser=0) but there are several examples provided for you showing the types of events you can use as triggers and how to access Firestore data.
+
+The most common type of triggers used with <SmileText /> are https events (when something accesses a particular web url) or when certain firestore documents are modified.
+
+### https triggers
+
+```js
+exports.helloWorld = functions.https.onRequest((request, response) => {
+  functions.logger.info("Hello logs!", {structuredData: true});
+  response.send("Hello from Firebase!");
+});
+```
+
+### Firestore triggers
+
+```js
+// Listens for new messages added to /messages/:documentId/original and creates an
+// uppercase version of the message to /messages/:documentId/uppercase
+exports.makeUppercase = functions.firestore.document('/messages/{documentId}')
+    .onCreate((snap, context) => {
+      // Grab the current value of what was written to Firestore.
+      const original = snap.data().original;
+
+      // Access the parameter `{documentId}` with `context.params`
+      functions.logger.log('Uppercasing', context.params.documentId, original);
+      
+      const uppercase = original.toUpperCase();
+      
+      // You must return a Promise when performing asynchronous tasks inside a Functions such as
+      // writing to Firestore.
+      // Setting an 'uppercase' field in Firestore document returns a Promise.
+      return snap.ref.set({uppercase}, {merge: true});
+    });
+```
+
 ## Test the Cloud Function
+
+Firebase includes a emulator system that lets you test your functions locally before deploying.  To run the emulator type
+
+```
+firebase emulators:start
+```
 
 ## Deploy the Cloud Function
 
-## 
+To deploy to Cloud functions
+
+```
+firebase deploy --only functions
+```
