@@ -3,7 +3,8 @@ import { ref } from 'vue'
 import useSmileStore from '@/stores/smiledata'
 
 // load sub-components used in this compomnents
-import InformedConsentText from '@/components/atoms/InformedConsentText.vue'
+import WithdrawFormModal from '@/components/molecules/WithdrawFormModal.vue'
+import InformedConsentModal from '@/components/molecules/InformedConsentModal.vue'
 
 const smilestore = useSmileStore() // get the global store
 
@@ -59,7 +60,7 @@ function toggleReport() {
     <div class="modal-background" @click="toggleConsent()"></div>
     <div class="modal-content">
         <div class="modaltext">
-        <InformedConsentText /> <!-- load text of consent form -->
+            <InformedConsentModal />
         </div>
     </div>
     <button class="modal-close is-large" aria-label="close" @click="toggleConsent()"></button>
@@ -70,7 +71,7 @@ function toggleReport() {
     <div class="modal-background" @click="toggleWithdraw()"></div>
     <div class="modal-content">
         <div class="modaltext">
-        Add a withdraw form here
+            <WithdrawFormModal />
         </div>
     </div>
     <button class="modal-close is-large" aria-label="close" @click="toggleWithdraw()"></button>

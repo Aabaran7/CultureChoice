@@ -1,5 +1,4 @@
 <template>
-
     <div class="informedconsent">
         <div class="columns">
             <div class="column is-1"><img src="@/assets/nyu_small.png" width="60"></div>
@@ -34,13 +33,10 @@
                 </p>
             </div>
         </div>
-        
     </div>    
-
-
 </template>
 
-<style>
+<style scoped>
 .informedconsent {
     padding: 10px;
     padding-top: 30px;
