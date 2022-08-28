@@ -53,44 +53,82 @@ clipboard.on('success', (e) => {
         
         <div class="payment" v-if="smilestore.recruitmentService=='prolific'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
-            <p class="has-text-left">
+            <p class="has-text-left pb-5">
                 Please click the button below to begin the process of payment.  This will notify Prolific you 
                 successfully completed the task.  Your work will be approved within several hours and any performance
                 related bonuses will be assigned at that time.  We really appreciate your time.
             </p>
+
+            <article class="message is-danger" v-if="smilestore.data.withdraw">
+                <div class="message-header">
+                    <p>Notice about withdraw</p>
+                </div>
+                <div class="message-body has-text-left">
+                    You have indicated that you withdrew from the study.  You can submit this task here but we will be in touch with your reguarding the
+                    final payment.
+                </div>
+            </article>
+
             <hr>
             <a :href="`https://app.prolific.co/submissions/complete?cc=${completionCode}`" class="button is-info">Submit my work to Prolific &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='cloudresearch'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
-            <p class="has-text-left">
+            <p class="has-text-left pb-5">
                 Please copy the code displayed below (or click the button) and paste it into the Mechanical Turk window 
                 to begin the process of payment.  
                 Your work will be approved within several hours and any performance
                 related bonuses will be assigned at that time.  We really appreciate your time.
             </p>
+            <article class="message is-danger" v-if="smilestore.data.withdraw">
+                <div class="message-header">
+                    <p>Notice about withdraw</p>
+                </div>
+                <div class="message-body has-text-left">
+                    You have indicated that you withdrew from the study.  You can submit this task here but we will be in touch with your reguarding the
+                    final payment.
+                </div>
+            </article>
             <hr>
             <h1 class="title is-5">Unique completion code:</h1>
             <span class="completioncode">{{ completionCode }}</span><button class="button is-info" id="copy_code" data-clipboard-target=".completioncode">Copy Code &nbsp;<FAIcon icon="fa-solid fa-clipboard" /></button>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='mturk'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
-            <p class="has-text-left">
+            <p class="has-text-left pb-5">
                 Please verify the code displayed below is visible in the form on the Mechanical Turk website.
                 If it is not click the button to copy it to your clipboard and paste it into the Mechanical Turk window 
                 to begin the process of payment.  
                 Your work will be approved within several hours and any performance
                 related bonuses will be assigned at that time.  We really appreciate your time.
             </p>
+            <article class="message is-danger" v-if="smilestore.data.withdraw">
+                <div class="message-header">
+                    <p>Notice about withdraw</p>
+                </div>
+                <div class="message-body has-text-left">
+                    You have indicated that you withdrew from the study.  You can submit this task here but we will be in touch with your reguarding the
+                    final payment.
+                </div>
+            </article>
             <hr>
             <h1 class="title is-5">Unique completion code:</h1>
             <span class="completioncode">{{ completionCode }}</span><button class="button is-info" id="copy_code" data-clipboard-target=".completioncode">Copy Code &nbsp;<FAIcon icon="fa-solid fa-clipboard" /></button>
         </div>
         <div class="payment" v-if="smilestore.recruitmentService=='citizensci'">
             <h1 class="title is-3">Thanks, let's begin the payment process!</h1>
-            <p class="has-text-left">
+            <p class="has-text-left pb-5">
                 This still needs to be implemented
             </p>
+            <article class="message is-danger" v-if="smilestore.data.withdraw">
+                <div class="message-header">
+                    <p>Notice about withdraw</p>
+                </div>
+                <div class="message-body has-text-left">
+                    You have indicated that you withdrew from the study.  You can submit this task here but we will be in touch with your reguarding the
+                    final payment.
+                </div>
+            </article>
             <hr>
             <a href="http://gureckislab.org" class="button is-info">Submit my work &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
         </div>

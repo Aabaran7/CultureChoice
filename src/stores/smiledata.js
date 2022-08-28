@@ -49,6 +49,8 @@ export default defineStore('smilestore', {
       browser_data: [], // empty
       demographic_form: {}, // empty
       conditions_between: {},
+      withdraw: false, // false
+      withdraw_data: {}, // empty
     },
     config: appconfig,
   }),

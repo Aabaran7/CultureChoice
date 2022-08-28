@@ -1,11 +1,14 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter, useRoute  } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
 
 // load sub-components used in this compomnents
 import WithdrawFormModal from '@/components/molecules/WithdrawFormModal.vue'
 import InformedConsentModal from '@/components/molecules/InformedConsentModal.vue'
+import ReportIssueModal from '@/components/molecules/ReportIssueModal.vue'
 
+const router = useRouter()
 const smilestore = useSmileStore() // get the global store
 
 /* these just toggle interface elements so are state local to the component */
@@ -24,6 +27,11 @@ function toggleReport() {
     showreportissuemodal.value=!showreportissuemodal.value // have to use .value in <script> when using ref()
 }
 
+function submitWithdraw() {
+    // submit the withdraw form and jump to the thanks
+    toggleWithdraw()
+    router.push('thanks') // should use 
+}
 
 </script>
 <template>
@@ -60,7 +68,7 @@ function toggleReport() {
     <div class="modal-background" @click="toggleConsent()"></div>
     <div class="modal-content">
         <div class="modaltext">
-            <InformedConsentModal />
+            <InformedConsentModal @toggle-consent="toggleConsent()"/>
         </div>
     </div>
     <button class="modal-close is-large" aria-label="close" @click="toggleConsent()"></button>
@@ -71,7 +79,7 @@ function toggleReport() {
     <div class="modal-background" @click="toggleWithdraw()"></div>
     <div class="modal-content">
         <div class="modaltext">
-            <WithdrawFormModal />
+            <WithdrawFormModal @toggle-withdraw="toggleWithdraw()" @submit-withdraw="submitWithdraw()"/>
         </div>
     </div>
     <button class="modal-close is-large" aria-label="close" @click="toggleWithdraw()"></button>
@@ -82,7 +90,7 @@ function toggleReport() {
     <div class="modal-background" @click="toggleReport()"></div>
     <div class="modal-content">
         <div class="modaltext">
-            Add a report issues form here
+            <ReportIssueModal @toggle-report="toggleReport()"/>
         </div>
     </div>
     <button class="modal-close is-large" aria-label="close" @click="toggleReport()"></button>
