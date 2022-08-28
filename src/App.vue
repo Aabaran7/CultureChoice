@@ -1,12 +1,11 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
-
 // load sub-components used in this compomnents
 import DeveloperNavBar from '@/components/organisms/DeveloperNavBar.vue';
 import StatusBar from '@/components/organisms/StatusBar.vue';
-import ProgressBar from './components/molecules/ProgressBar.vue';
 import { onMounted } from 'vue';
+import ProgressBar from './components/molecules/ProgressBar.vue';
 
 // imports the global config object
 const router = useRouter()
@@ -47,7 +46,7 @@ onMounted(() => {
   <div class="router">
     <router-view></router-view> <!-- the router loads here -->
   </div>
-  <ProgressBar v-if="$route.name!=='config' && $route.name!=='recruit'"></ProgressBar>
+  <ProgressBar v-if="$route.name!=='config' && $route.name!=='recruit' && smilestore.config.show_progress_bar=='true'"></ProgressBar>
 </template>
 
 <style>

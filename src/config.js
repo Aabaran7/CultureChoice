@@ -28,6 +28,7 @@ export default {
   auto_save: import.meta.env.VITE_AUTO_SAVE_DATA,
   max_writes: import.meta.env.VITE_MAX_WRITES,
   min_write_interval: import.meta.env.VITE_MIN_WRITE_INTERVAL,
+  show_progress_bar: import.meta.env.VITE_SHOW_PROGRESS_BAR,
   bug_reports: import.meta.env.VITE_BUG_REPORTS,
   random_seed: import.meta.env.VITE_RANDOM_SEED,
   deploy_url: import.meta.env.VITE_DEPLOY_URL, // auto compute this
