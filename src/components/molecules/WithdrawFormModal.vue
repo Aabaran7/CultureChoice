@@ -1,5 +1,5 @@
 <script setup>
-import { reactive,  defineEmits} from 'vue'
+import { reactive,  defineEmits, onMounted} from 'vue'
 import useSmileStore from '@/stores/smiledata'
  // get access to the global store
 const emit = defineEmits(['submitWithdraw'])
@@ -26,20 +26,17 @@ function withdraw() {
         <p>Withdraw from study</p>
     </div>
     <div class="message-body has-text-left">
-        <p class="has-text-left pb-3">
-            According to the consent form, you are free to withdraw from this study at any time.
-            Withdrawing from the study may affect the total amount of your compensation.
-            Depending how far you are in the study you may be eligible for partial compensation.
-            
-        </p>
         <p class="has-text-left">
-            <b>Please complete the following form to complete your withdraw.  We will follow up with you
+            <b>
+                You are free to withdraw from this study at any time.
+                Withdrawing from the study may affect the total amount of your compensation.
+                Please complete the following form to complete your withdraw.  We will follow up with you
                 about partial compensation.  You do not have to answer any particular question but we 
-                appreciate understanding the reasons for your withdraw.</b>
+                appreciate understanding the reasons for your withdraw.
+            </b>
         </p>
         <br>
         <p>
-
             <FormKit
                 v-model="forminfo.reason_select"
                 type="checkbox"
@@ -49,7 +46,7 @@ function withdraw() {
                 help="Select all that apply."
                 validation="required|min:3"
                 />
-                <FormKit
+            <FormKit
                 v-model="forminfo.reason_comments"
                 type="textarea"
                 label="Additional comments. (Optional)"
@@ -57,7 +54,7 @@ function withdraw() {
                 placeholder="Enter your comments here."
                 help="Please let us know any additional information you would like to share."
                 />
-                <FormKit
+            <FormKit
                 v-model="forminfo.email"
                 type="email"
                 label="Contact email. (Optional)"

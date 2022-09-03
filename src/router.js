@@ -18,6 +18,7 @@ import Exp from '@/components/pages/ExpPage.vue'
 import Debrief from '@/components/pages/DebriefPage.vue'
 import Thanks from '@/components/pages/ThanksPage.vue'
 import Config from '@/components/pages/ConfigPage.vue'
+import Withdraw from '@/components/pages/WithdrawPage.vue'
 // add new routes here.  generally these will be things in components/pages/[something].vue
 
 // 2. Define some routes to the timeline
@@ -120,6 +121,13 @@ timeline.pushSeqRoute({
   path: '/thanks',
   name: 'thanks',
   component: Thanks,
+})
+
+// this is a special page that is for a withdraw
+timeline.pushRoute({
+  path: '/withdraw',
+  name: 'withdraw',
+  component: Withdraw,
 })
 
 // this is a the special page that loads in the iframe on mturk.com

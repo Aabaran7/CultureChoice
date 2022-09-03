@@ -30,7 +30,7 @@ function toggleReport() {
 function submitWithdraw() {
     // submit the withdraw form and jump to the thanks
     toggleWithdraw()
-    router.push('thanks') // should use 
+    router.push('withdraw') // should use 
 }
 
 </script>
@@ -47,7 +47,7 @@ function submitWithdraw() {
         <div id="navbarBasicExample" class="navbar-menu is-active">
             <div class="navbar-end">
                 <div class="navbar-item" >
-                    <div class="buttons">
+                    <div class="buttons" v-if="smilestore.data.withdraw !== true">
                         <button class="button is-info is-small is-light" v-if="smilestore.isConsented" @click="toggleConsent()">
                             <FAIcon icon="magnifying-glass" />&nbsp;&nbsp;View consent
                         </button>
