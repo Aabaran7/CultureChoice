@@ -20,9 +20,6 @@ import Thanks from '@/components/pages/ThanksPage.vue'
 import Config from '@/components/pages/ConfigPage.vue'
 // add new routes here.  generally these will be things in components/pages/[something].vue
 
-// import function to assign conditions
-import assignConds from './composables/assignconditions'
-
 // 2. Define some routes to the timeline
 // Each route should map to a component.
 // Each needs a name

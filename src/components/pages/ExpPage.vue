@@ -11,7 +11,7 @@ const { next, prev } = useTimelineStepper()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
-const conditionsBetween = smilestore.data.conditions_between
+const {conditions} = smilestore.data
 
 function finish(goto) { 
     // smilestore.saveData()
@@ -22,8 +22,8 @@ function finish(goto) {
 <template>
     <div class="page">
         <h1 class="title is-3">Experiment</h1>
-        <p>Between subjects conditions are:</p>
-        <p v-for="condbt in conditionsBetween">{{ condbt }}</p>
+        <p>Conditions are:</p>
+        <p v-for="cond in conditions">{{ cond }}</p>
         <button class="button is-success is-light" id='finish' @click="finish(next())">next &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>
