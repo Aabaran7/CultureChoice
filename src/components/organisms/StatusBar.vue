@@ -54,7 +54,7 @@ function submitWithdraw() {
                         <button class="button is-danger is-small is-light" v-if="smilestore.isConsented && !smilestore.isDone" @click="toggleWithdraw()">
                             <FAIcon icon="circle-xmark" />&nbsp;&nbsp;Withdraw
                         </button>
-                        <button class="button is-warning is-small is-light" @click="toggleReport()">
+                        <button class="button is-warning is-small is-light" @click="toggleReport()" v-if="false">
                             <FAIcon icon="hand" />&nbsp;&nbsp;Report issue
                         </button>
                     </div>
