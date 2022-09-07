@@ -8,6 +8,8 @@ The URL for your study is the second one (`https://exps.gureckislab.org/e/note-u
 
 ## Prolific
 
+### Posting your study 
+
 From the Prolific dashboard, either click ‘New study’, or duplicate a previous study from within the ‘Completed’ tab on the sidebar (click ‘Action’, then ‘Duplicate’).
 
 Describe your study in the first section:
@@ -47,6 +49,13 @@ You can now preview your study -- it's good practice to test that Prolific direc
 
 Finally, you can save your study as a draft or publish your study. You can also schedule a later time/date for your study to be published.
 
+### Paying participants
+
+When your study is complete, it will be listed as "AWAITING REVIEW" on the active studies tab:
+
+![Prolific finish](/images/prolific-step6.png)
+
+Click on the name of your study, then click "Approve all" to pay all participants who finished the entire study. If you don't want to approve all participants, you can approve individually by clicking the check mark next to each submission. You can also click "More," then "Approve in bulk" to provide a list of Prolific IDs to approve.
 
 
 <!-- - Set the URL for your experiment to the IP address of the server using the format `http://<hostname>:<port-number>/`. (T Make sure you include the forward slash, `/`, at the end, and make sure that you do not include the angle brackets.
