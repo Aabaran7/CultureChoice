@@ -71,4 +71,51 @@ A second key feature of Vite is that it acts as a bundler.  When you use complex
 (There are several other features of Vite including a process called [Tree-Shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) which removes functions from the bundle which are not used in the current app to reduce the file size and [Code Splitting](https://developer.mozilla.org/en-US/docs/Glossary/Code_splitting) which organizes files into "chunks" the reflect common dependencies across different pages of a site.)
 
 
+## Merging changes to the template into your existing project
 
+Because Smile is still being developed, there may be changes to the Smile template after you begin setting up your own project. If you want to merge those changes into your own project, follow these steps: 
+
+The first time you want to get changes from the Smile template, you need to add the smile repo as a new remote:
+
+```
+git remote add smile https://github.com/NYUCCL/smile.git
+```
+
+You only need to do this once -- next time, the Smile template will already be added as a remote.
+
+Next, fetch the current template from the Smile repo:
+
+```
+git fetch smile
+```
+
+If this is your first time merging changes from the template, create a branch called smile-template in your project, and switch to that branch
+
+```
+git checkout -b smile_template
+```
+
+If you've done this before, the branch already exists, so just switch to the branch:
+
+```
+git checkout smile_template
+```
+
+Then, merge the main branch of the current smile template into the smile_template branch, and push the changes in smile_template to origin
+
+```
+git merge smile/main
+git push
+```
+
+Make a new branch called update, based off the current branch your study is being developed on
+
+(add code here)
+
+Merge the smile_template branch into update, and resolve conflicts:
+
+(add code here)
+
+Merge update into your experiment's branch:
+
+(add code here)
