@@ -1,6 +1,6 @@
 <script setup>
 
-import { reactive,  defineEmits, defineProps, onMounted} from 'vue'
+import { reactive,  onMounted} from 'vue'
 import useSmileStore from '@/stores/smiledata'
  // get access to the global store
 const emit = defineEmits(['submitWithdraw'])
