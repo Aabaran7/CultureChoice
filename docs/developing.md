@@ -104,18 +104,27 @@ git checkout smile_template
 Then, merge the main branch of the current smile template into the smile_template branch, and push the changes in smile_template to origin
 
 ```
-git merge smile/main
+git merge smile/main --allow-unrelated-histories -X theirs
 git push
 ```
 
 Make a new branch called update, based off the current branch your study is being developed on
 
-(add code here)
+```
+git checkout -b update
+```
 
 Merge the smile_template branch into update, and resolve conflicts:
 
-(add code here)
+```
+git merge smile_template
+```
 
-Merge update into your experiment's branch:
+Merge update into your experiment's branch, for example called main:
 
-(add code here)
+```
+git checkout main
+git merge update
+```
+
+Voila! The extra step (creating another additional update branch) prevented the entire commit history of the NYUCCL/smile repository from being added to your project, which helps keeps things nice and clean. 
