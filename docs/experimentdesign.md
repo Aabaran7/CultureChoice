@@ -61,4 +61,14 @@ an interesting image -- click on the with masks that are appropriate
 
 - watch a crazy video and type the words it says
 
-- 
+## Informed Consent
+
+The text of the informed consent should be updated for each study and placed in `src/components/atoms/InformedConsentText.vue`.  After participants accept the informed consent (usually the first few steps of study) they will see a button that will always be available allowing them to re-review the consent form in case they have questions.
+
+## Withdraw
+
+As part of most IRB approved protocols participants should be eligible to withdraw from a study at any time for any reason.  Online this is as simple as closing the browser windows and moving onto something else.  However, <SmileText/> provides a simple way to withdraw at any time from a study.
+
+![Slack URL](/images/withdraw.png)
+
+When participants click this button (only appears after accepting the informed consent), then they are presented with a form with several optional questions about why they are withdrawing and also providing information about partial compensation.  If a participant is eligible for partial compensation depends on several things specific to each study.  When they submit this form they will be taken to a final page asking them to return the task/hit.  It is the responsibility of the experimenter to monitor withdraws and to try to contact the participant.
