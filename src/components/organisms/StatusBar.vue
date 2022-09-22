@@ -1,4 +1,5 @@
 <script setup>
+
 import { ref } from 'vue'
 import { useRouter, useRoute  } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
@@ -10,6 +11,20 @@ import ReportIssueModal from '@/components/molecules/ReportIssueModal.vue'
 
 const router = useRouter()
 const smilestore = useSmileStore() // get the global store
+const withdrawform = ref(null) // this uses the ref="withdrawform" in the template
+const email = ref('')
+
+// IF OTHER SERVICES PROVIDE EASY EMAIL ADDRESSES, ADD THEM HERE
+function prefill_email() {
+    let emailval = ''
+    if(smilestore.data.recruitment_service==='prolific') {
+        emailval = `${ smilestore.data.recruitment_info.prolific_id  }@email.prolific.co`
+        
+    }
+    return emailval
+}
+email.value = prefill_email()
+
 
 /* these just toggle interface elements so are state local to the component */
 const showconsentmodal = ref(false) // reactive
@@ -20,6 +35,7 @@ function toggleConsent() {
 const showwithdrawmodal = ref(false) // reactive
 function toggleWithdraw() {
     showwithdrawmodal.value=!showwithdrawmodal.value // have to use .value in <script> when using ref()
+    email.value = prefill_email() // update the value
 }
 
 const showreportissuemodal = ref(false) // reactive
@@ -34,6 +50,7 @@ function submitWithdraw() {
 }
 
 </script>
+
 <template>
     <div class="navbar" role="navigation" aria-label="main navigation" >
         <div class="navbar-brand">
@@ -79,7 +96,7 @@ function submitWithdraw() {
     <div class="modal-background" @click="toggleWithdraw()"></div>
     <div class="modal-content">
         <div class="modaltext">
-            <WithdrawFormModal @toggle-withdraw="toggleWithdraw()" @submit-withdraw="submitWithdraw()"/>
+            <WithdrawFormModal :prefill-email='email' ref="withdrawform" @toggle-withdraw="toggleWithdraw()" @submit-withdraw="submitWithdraw()"/>
         </div>
     </div>
     <button class="modal-close is-large" aria-label="close" @click="toggleWithdraw()"></button>

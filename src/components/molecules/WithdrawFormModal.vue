@@ -1,8 +1,10 @@
 <script setup>
-import { reactive,  defineEmits, onMounted} from 'vue'
+
+import { reactive,  defineEmits, defineProps, onMounted} from 'vue'
 import useSmileStore from '@/stores/smiledata'
  // get access to the global store
 const emit = defineEmits(['submitWithdraw'])
+const props = defineProps(['prefillEmail'])
 
 const smilestore = useSmileStore()
 
@@ -12,11 +14,22 @@ const forminfo = reactive({
     email: ''
 })
 
+
+// function testme() {
+//     console.log('testme')
+// }
+
 function withdraw() {
     smilestore.data.withdraw=true
     smilestore.data.withdraw_data = forminfo
-    emit('submitWithdraw')
+    emit('submit-withdraw')
 }
+
+// function prefill_form() {
+//     console.log('caught prefill')
+//     forminfo.email = prefill_email()
+//     console.log(forminfo.email)
+// }
 
 </script>
 
@@ -55,7 +68,8 @@ function withdraw() {
                 help="Please let us know any additional information you would like to share."
                 />
             <FormKit
-                v-model="forminfo.email"
+               
+                v-model="props.prefillEmail"
                 type="email"
                 label="Contact email. (Optional)"
                 help="Please enter your email address so we can follow up with you.  This is optional and we otherwise will try to figure out how to reach you.  However, this can help avoid any potential problems.  Feel free to use an anonymized email like your Prolific contact email, Hide my email (Apple), or create a free alias on SimpleLogin.  We will not associate this email with your data nor use it for any purpose other than contacting you to resolve the issue."

@@ -13,8 +13,8 @@ smilestore.saveData(true) // force a data save
 <template>
     <div class="page">
 
-        <div class="payment mt-5 pt-5" v-if="smilestore.recruitmentService=='prolific'">
-            <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study</h1>
+        <div class="withdraw" v-if="smilestore.recruitmentService=='prolific'">
+            <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study.</h1>
             <article class="message is-danger" v-if="smilestore.data.withdraw">
                 <div class="message-header">
                     <p>Notice about withdraw</p>
@@ -28,7 +28,7 @@ smilestore.saveData(true) // force a data save
 
 
         <div class="withdraw" v-if="smilestore.recruitmentService=='cloudresearch'">
-            <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study</h1>
+            <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study.</h1>
             <article class="message is-danger" v-if="smilestore.data.withdraw">
                 <div class="message-header">
                     <p>Notice about withdraw</p>
@@ -42,7 +42,7 @@ smilestore.saveData(true) // force a data save
 
 
         <div class="withdraw" v-if="smilestore.recruitmentService=='mturk'">
-            <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study</h1>
+            <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study.</h1>
             <article class="message is-danger" v-if="smilestore.data.withdraw">
                 <div class="message-header">
                     <p>Notice about withdraw</p>
@@ -56,7 +56,7 @@ smilestore.saveData(true) // force a data save
 
 
         <div class="withdraw" v-if="smilestore.recruitmentService=='citizensci'">
-            <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study</h1>
+            <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study.</h1>
             <article class="message is-danger" v-if="smilestore.data.withdraw">
                 <div class="message-header">
                     <p>Notice about withdraw</p>
@@ -69,7 +69,7 @@ smilestore.saveData(true) // force a data save
         </div>
 
         <div class="withdraw" v-if="smilestore.recruitmentService=='web'">
-            <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study</h1>
+            <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study.</h1>
         </div>
         
     </div>
