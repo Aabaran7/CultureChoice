@@ -13,6 +13,9 @@ import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { faExplosion } from '@fortawesome/free-solid-svg-icons'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { faArrowsUpDownLeftRight } from '@fortawesome/free-solid-svg-icons'
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons'
 import { faSquareCheck } from '@fortawesome/free-solid-svg-icons'
 import { faDatabase } from '@fortawesome/free-solid-svg-icons'
 import { faRainbow } from '@fortawesome/free-solid-svg-icons'
@@ -39,6 +42,9 @@ library.add(
   faExplosion,
   faArrowLeft,
   faArrowRight,
+  faArrowUp,
+  faArrowDown,
+  faArrowsUpDownLeftRight,
   faSquareCheck,
   faDatabase,
   faFaceLaughBeam,

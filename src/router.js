@@ -19,6 +19,7 @@ import Debrief from '@/components/pages/DebriefPage.vue'
 import Thanks from '@/components/pages/ThanksPage.vue'
 import Config from '@/components/pages/ConfigPage.vue'
 import Withdraw from '@/components/pages/WithdrawPage.vue'
+import WindowSizer from '@/components/pages/WindowSizerPage.vue'
 // add new routes here.  generally these will be things in components/pages/[something].vue
 
 // 2. Define some routes to the timeline
@@ -86,6 +87,13 @@ timeline.pushSeqRoute({
   //     smilestore.setKnown() // set new user and add document
   //   }
   // },
+})
+
+// windowsizer
+timeline.pushSeqRoute({
+  path: '/windowsizer',
+  name: 'windowsizer',
+  component: WindowSizer,
 })
 
 // captcha

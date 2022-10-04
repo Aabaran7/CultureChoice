@@ -3,6 +3,12 @@
 // global configuration options for the smile app
 // fields import.meta.env.XXXX are string replaced by vite
 
+function parse_w_h(value) {
+  // receives configuration option as WIDTHxHEIGHT
+  // split based on 'x' and assign to objects
+  const w_h = value.split('x')
+  return { width: `${w_h[0]}px`, height: `${w_h[1]}px` }
+}
 export default {
   mode: import.meta.env.MODE,
   project_name: import.meta.env.VITE_PROJECT_NAME, // autocompute this on intitialization
@@ -36,6 +42,7 @@ export default {
   estimated_time: import.meta.env.VITE_ESTIMATED_TIME,
   payrate: import.meta.env.VITE_PAYRATE,
   google_analytics_id: import.meta.env.VITE_GOOGLE_ANALYTICS,
+  windowsizer_request: parse_w_h(import.meta.env.VITE_WINDOWSIZER_REQUEST),
   firebaseConfig: {
     apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTHDOMAIN,

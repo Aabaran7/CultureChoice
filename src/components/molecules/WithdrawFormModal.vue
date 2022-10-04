@@ -3,7 +3,7 @@
 import { reactive,  onMounted} from 'vue'
 import useSmileStore from '@/stores/smiledata'
  // get access to the global store
-const emit = defineEmits(['submitWithdraw'])
+const emit = defineEmits(['toggleWithdraw','submitWithdraw'])
 const props = defineProps(['prefillEmail'])
 
 const smilestore = useSmileStore()
@@ -54,7 +54,7 @@ function withdraw() {
                 v-model="forminfo.reason_select"
                 type="checkbox"
                 label="Why are you withdrawing from the study? (Optional)"
-                :options="['This task is too hard.', 'This task is too time consuming.', 'This task is boring.', 'I do not understand what I am supposed to do.', 'I am uncomfortable answering the questions.', 'The content of the task is upsetting to me.', 'I am having technical issues.' ]"
+                :options="['I couldn\'t adjust the size of my browser to make everything visible','This task is too hard.', 'This task is too time consuming.', 'This task is boring.', 'I do not understand what I am supposed to do.', 'I am uncomfortable answering the questions.', 'The content of the task is upsetting to me.', 'I am having technical issues.' ]"
                 decorator-icon="happy"
                 help="Select all that apply."
                 validation="required|min:3"
