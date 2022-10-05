@@ -72,21 +72,40 @@ The completion code doesn't have to be anything in particular but there is an  -
 
 ## Cloud Research
 
-[Cloud Research](https://www.cloudresearch.com) previously known as TurkPrime is a service that runs on top of Amazon Mechanical Turk that offers some additional screening and demographic information about workers.  The most relevant service for psychologists is probably the [MTurk Toolkit](https://www.cloudresearch.com/products/turkprime-mturk-toolkit/).  Essentially, CloudResearch pre-screens workers on Mechanical Turk to flag possible bots as well as reliably inattentive participants.  The idea is that using their technology you can get higher quality data than using the low-level MTurk API.  
+### Description
 
-Cloud Research takes several steps to improve the general data quality for surveys including presenting workers questions at various points which they check for consistency (did the subject las week answer this question the same as today?).  The also can perform some demographic sampling/filters if you need samples from particular population groups.
+[CloudResearch](https://www.cloudresearch.com)—previously known as TurkPrime—is a service that runs on top of Amazon Mechanical Turk that offers some additional screening and demographic information about workers. The most relevant service for psychologists is probably the [MTurk Toolkit](https://www.cloudresearch.com/products/turkprime-mturk-toolkit/). Essentially, CloudResearch pre-screens workers on Mechanical Turk to flag possible bots as well as reliably inattentive participants. The idea is that by using their technology you can get higher quality data than using the low-level MTurk API.  
+
+Cloud Research takes several steps to improve the general data quality for surveys including presenting workers questions which they check for consistency (did the subject give the same answer last week as they did today?). They can also perform some demographic sampling/filters if you need samples from particular population groups.
 
 They also provide GUI tools for posting HITs on Mechanical Turk that simplify recruitment.
 
 To get started you first need to create an account on [CloudResearch.com](https://account.cloudresearch.com/Account/Login)
 
-Next, you have to connect your Mechanical Turk account to Cloud Research effectively granting them access to post and approve HITs on your behalf.  Cloud Research provides instructions on doing this [here](https://cloudresearch-com.s3.amazonaws.com/files/Instructions+for+linking+MTurk+and+CloudResearch+Accounts.pdf).  If you are in the gureckislab you will need to ask Todd to add you to our lab MTurk account.
+Next, you have to connect your Mechanical Turk account to Cloud Research, effectively granting them access to post and approve HITs on your behalf.  CloudResearch provides instructions on doing this [here](https://cloudresearch-com.s3.amazonaws.com/files/Instructions+for+linking+MTurk+and+CloudResearch+Accounts.pdf). If you are in the gureckislab you will need to ask Todd to add you to our lab MTurk account.
 
-To create studies you use the intuitive study builder.  There are many custom fields that you can use to configure your study including payment, demographic restrictions, privacy-enhancing features, etc... However, the most important is to post the correct link to the study.  Here is an example.  But basically it is
+<!-- To create studies you use the intuitive study builder.  There are many custom fields that you can use to configure your study including payment, demographic restrictions, privacy-enhancing features, etc... However, the most important is to post the correct link to the study.  Here is an example.  But basically it is
 
 
-At the end of CloudResearch studies you display to the worker a completion code that they paste into the study window.  
+At the end of CloudResearch studies you display to the worker a completion code that they paste into the study window.   -->
 
+### Posting your study 
+
+Once you have connected your MTurk account (see previous section), go to the CloudResearch dashboard and click "Create Study". You can choose to recruit participants from the Mechanical Turk pool or CloudResearch's own platform, Prime Panels. The steps below assume you have chosen MTurk, but the overall process is similar for both. 
+
+In the first section, give your study an internal name and, optionally, list an email address at which to be notified when the study starts and finishes. Check the "Yes" radio button to auto-capture worker information so that you can later extract it from the query string. 
+
+![CloudResearch basic information](/images/cloudresearch-step1.png)
+
+On the "Setup & Payment" page, indicate the amount you'd like to pay each participant. This will depend on the estimated time to complete the study, but should be above minimum wage. In the Gureckis Lab, the target is $15/hour.
+
+On the "Deomographics" page, you can target specific participant populations to recruit from, for an added fee.
+
+On the "Worker Approval" page, select how your participants will have their work approved. By default, Smile generates a custom completion code for each participant based on a hash of their data, which can serve as an added confirmation that the data did in fact come from that individual CloudResearch participant. To enable this behavior, select the option to approve workers "Manually" and to use a "Custom Completion Code". You could also use a single fixed completion code for all participants (at the risk that this could be shared on a worker forum or similar)—make sure to edit `ThanksPage.vue` if you choose to do so.
+
+![CloudResearch worker approval](/images/cloudresearch-step2.png)
+
+When you're done setting up your study, click "Save" and return to the dashboard. From there, select "Launch Options" to either launch your study right away, or schedule a time for it to launch later.
 
 
 ## Mechanical Turk
