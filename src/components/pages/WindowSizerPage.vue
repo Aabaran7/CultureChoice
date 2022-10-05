@@ -3,7 +3,7 @@
     import { useRouter, useRoute } from 'vue-router'
     import useTimelineStepper from '@/composables/timelinestepper'
     import useSmileStore from '@/stores/smiledata'
- // get access to the global store
+    // get access to the global store
     
     const router = useRouter()
     const route = useRoute()
@@ -30,7 +30,7 @@
                 <div class="info">
                     <span class="is-size-2"><FAIcon icon="fa-solid fa-arrows-up-down-left-right "></FAIcon></span>
                     <h1 class="is-size-4">Please adjust the size of your browser until the edges 
-                        of this box are all visible.</h1>
+                        of this box are visible.</h1>
                     <hr>
                     <div class="is-8 is-size-7 has-text-left note">
                         <b>Warning</b>: If you can't resize your window and see the entire box please click the red
@@ -39,7 +39,7 @@
                     </div>
                     <hr>
                     <br><br>
-                    <button class="button is-success" id='finish' @click="finish(next())">It is visible now, I'm ready &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
+                    <button class="button is-info" id='finish' @click="finish(next())">It is visible now, I'm ready &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
                 </div>
             </div>
         </div>
