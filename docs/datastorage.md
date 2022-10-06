@@ -113,7 +113,7 @@ function finish(goto) {
 }
 ```
 
-The first line of this function sets the user as "consented."  Consenting is a property of the global state/store that is accessible to other components which might want to check if the user has consented yet.  In addition, it persistent via the `smilestore.saveData()` method which makes a copy of the current application state in the Firebase database.
+The first line of this function sets the user as "consented."  Consenting is a property of the global state/store that is accessible to other components which might want to check if the user has consented yet.  In addition, it is made persistent via the `smilestore.saveData()` method which makes a copy of the current application state in the Firebase database.
 
 ## Writing Data to the Global Store
 
@@ -145,68 +145,63 @@ returns the value of `state.data.consented`.  In your component code then you ca
 In addition to data that you manually record <SmileText /> automatically tracks additional information about the browser state during your experiment.  Specifically, it records window resize events, and changes in focus (blur means when someone clicks on a window other than the current browser and focus is an even when the window is brought back to the front).  These fields can sometimes be used to detect odd behaviors such as using another window to search for answers or dual-tasking.
 The data is tracked in `smilestore.data.browser_data` in a easy to parse JSON structure.
 
-
-
-## Google Firebase/Firestore
-
-- Video introduction to [Google Cloud Firestore](https://www.youtube.com/watch?v=QcsAb2RR52c&list=PLl-K7zZEsYLmOF_07IayrTntevxtbUxDL)
-
-The [Cloud Firestore Console](https://console.firebase.google.com/u/0/)
-
-
-
-- caveat: maybe the ad/ page for AMT shouldn't create the data record
-
-- when land on first page (/)
-    - check if the user has been here before
-    - if not
-        - log in to firebase anonymously
-        - create a new document
-        - save some data there
-        - update local to know user is "known"
-    - if yes
-        - is this like a new session and the database has gone away?
-        - if yes
-            - need to reconnect to database
-        - if no
-            - nothing needs to happen really
-
-- what about if the user requests a different route?
-
-- if the user hasn't been here before send them immediately to /
-- otherwise if this is the expected route continue as usual
-
-other features
-- offer a method to save the state (verifying that the docid is known and writeable)
-- run this on a timer in the background
-
-## Automatic saving
+## Automatic saving/persistance
 
 You can configure automatic saving whenever a page change happens
 using the TimelineStepper using `env/.env` using option `VITE_AUTO_SAVE_DATA`.
+
 
 :::warning 
 This only works if you use the `TimelineStepper` to move between pages.  If you
 advance to new pages on your own you need to call `smilestore.saveData()` manually.
 :::
 
+## Google Firebase/Firestore
 
-<img src="/images/firebaselogo.svg" width="70px">
+Fully explaining Google Firebase/Firestore is beyond the scope of this document but there
+are many helpful videos and documentation websites:
+
+- Video introduction to [Google Cloud Firestore](https://www.youtube.com/watch?v=QcsAb2RR52c&list=PLl-K7zZEsYLmOF_07IayrTntevxtbUxDL)
+- The [Cloud Firestore Console](https://console.firebase.google.com/u/0/)
+
+
+## Limitations
+
+One thing to be aware of is that Firebase has some limits on writing to documents.  In particular,
+documents cannot be larger than 1MB.  In addition, each write costs some money.
+Finally, you can only write to a document once per second.  To prevent problems with this,
+the smilestore object has a few configuration options (configured in `env/.env`). 
+
+These include `VITE_MAX_WRITES` which configures the maximum number of writes allowed
+for any run of your experiment (meaning a single load of your experiment by a participant).
+By default, this is set to 1000 and is meant to prevent an accident where your code runs in
+a loop writing data endlessly.  After 1000 writes, subsequent writes will be ignored.
+Second, there is `VITE_MIN_WRITE_INTERVAL` which configures how many milliseconds need to
+pass between writes.  By default this is set to 2000 which is roughly double the rate limiting
+of the Firebase.  This works pretty well though with the Automatic Saving described earlier
+since each step on the timeline typically will take a while (e.g., filling out a form or reading
+some instructions).  However, during testing if you click through things quickly several of your
+writes might be skipped by this throttling.
+
 
 ## Data saving outside of Vue Components
 
-Sometimes your page might have additional content that is defined outside of the Vue SPA.  For these you need to import a library to access the data store.
-
+Sometimes your page might have additional content that is defined outside of the Vue SPA.  For these you need to import a library to access the data store.  [TO BE WRITTEN]
 
 ## Local storage
 
+In addition to the persistence of data from the application state in Firebase, <SmileText/> makes use of persisted data in the browser as well using a feature known as Local Storage which is similar to "browser cookies".  Basically, local storage is a way for a website to write small amounts of data to the users computer and access it at a later time.  In <SmileText/> this is used to track things across page reloads.
+For example, if a subject reloads the page in the middle of an experiment, we'd like them to pick up where they left off.  In addition, that subject needs to "reconnect" to the Firebase database document that they were currently working from.  To persist data like this, which is specific to the user, across page reloads or restarts of the browser we sync a few key values with the browser's local storage.
+The data which is synced to local storage is in `smilestore.local` (see `smiledata.js`).
+
+
 ## Setting up Google Firestore
 
+[TO BE WRITTEN -- HOW TO CREATE A NEW FIREBASE INSTANCE]
 - Create a new project
 - Create a web app
 - Enable anonymous login
 - Change the privacy settings
-
 
 ## SmileStore API
 
