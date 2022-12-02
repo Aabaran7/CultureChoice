@@ -10,7 +10,7 @@ The URL for your study is the second one (`https://exps.gureckislab.org/e/note-u
 
 ### Posting your study 
 
-From the Prolific dashboard, either click ‘New study’, or duplicate a previous study from within the ‘Completed’ tab on the sidebar (click ‘Action’, then ‘Duplicate’).
+From the Prolific dashboard, either click 'New study’, or duplicate a previous study from within the 'Completed’ tab on the sidebar (click 'Action’, then 'Duplicate’).
 
 Describe your study in the first section:
 
@@ -20,11 +20,14 @@ In the second section, you provide the study link for your participants. When Pr
 
 First, we need to direct participants to the Prolific welcome page, so we add `#/welcome/prolific/` to the end of the URL.
 
-Then, we need to record the variables from Prolific, so we add: ?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}} to the end of the URL.
+Then, we need to record the variables from Prolific, so we add: `?PROLIFIC_PID={{ "{{%PROLIFIC_PID%" }}}}&STUDY_ID={{ "{{%PROLIFIC_PID%" }}}}&SESSION_ID={{ "{{%PROLIFIC_PID%" }}}}` to the end of the URL.
 
 So the final URL you give Prolific should look like this:
 
-https://exps.gureckislab.org/e/note-useless-uncle/#/welcome/prolific/?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}
+
+`https://exps.gureckislab.org/e/note-useless-uncle/#/welcome/prolific/?PROLIFIC_PID={{ "{{%PROLIFIC_PID%" }}}}&STUDY_ID={{ "{{%PROLIFIC_PID%" }}}}&SESSION_ID={{ "{{%PROLIFIC_PID%" }}}}`
+
+
 
 Here's how you enter that in Prolific:
 
@@ -59,11 +62,11 @@ Click on the name of your study, then click "Approve all" to pay all participant
 
 
 <!-- - Set the URL for your experiment to the IP address of the server using the format `http://<hostname>:<port-number>/`. (T Make sure you include the forward slash, `/`, at the end, and make sure that you do not include the angle brackets.
-- Under ‘How to record Prolific IDs’, select the option ‘I’ll use URL parameters’.
+- Under 'How to record Prolific IDs’, select the option 'I’ll use URL parameters’.
 - Make sure Prolific will pass the following variables: PROLIFIC_PID, STUDY_ID, and SESSION_ID.
-- At the end of the three steps above, the URL in the box under ‘What is the URL of your study?’ should look something like: 
+- At the end of the three steps above, the URL in the box under 'What is the URL of your study?’ should look something like: 
 
-http://128.100.100.100:9000/?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}
+http://128.100.100.100:9000/?PROLIFIC_PID=[[%PROLIFIC_PID%]]&STUDY_ID=[[%STUDY_ID%]]&SESSION_ID=[[%SESSION_ID%]]
 
 
 At the end you redirect the participant to 
