@@ -1,10 +1,10 @@
 # :raising_hand: Recruiting Participants
 
-The first step in recruiting participants is to get the URL for your study. If you're in the Gureckis Lab, the easiest way to do this is through the `#smile-deploy` slack channel. Find the message for your most recent commit, which will look like this:
+The first step in recruiting participants is to get the public URL for your study. If you're in the Gureckis Lab, the easiest way to do this is through the `#smile-deploy` slack channel. Find the message for your most recent commit, which will look like this:
 
 ![Slack URL](/images/getURL-slack.png)
 
-The URL for your study is the second one (`https://exps.gureckislab.org/e/note-useless-uncle` in the example above).
+The public URL for your study is the second one (`https://exps.gureckislab.org/e/note-useless-uncle` in the example above).
 
 ## Prolific
 
@@ -46,7 +46,7 @@ Next, you need to specify your sample. It can sometimes be helpful to screen out
 ![Prolific participants 1](/images/prolific-step4.png)
 ![Prolific participants 2](/images/prolific-step5.png)
 
-Finally, you should enter how long your study takes, and how much you want to pay participants. In the Gureckis Lab, you should aim to pay participants $15/hour. Prolific requires a minimum of $8/hour.
+Finally, you should enter how long your study takes, and how much you want to pay participants. In the <GureckisLabText />, you should aim to pay participants $15/hour. Prolific requires a minimum of $8/hour.
 
 You can now preview your study -- it's good practice to test that Prolific directs you to the correct URL for your study, that Smile saves the Prolific URL parameters with the data, and that you get redirected back to Prolific when the study is completed.
 
@@ -85,7 +85,7 @@ They also provide GUI tools for posting HITs on Mechanical Turk that simplify re
 
 To get started you first need to create an account on [CloudResearch.com](https://account.cloudresearch.com/Account/Login)
 
-Next, you have to connect your Mechanical Turk account to Cloud Research, effectively granting them access to post and approve HITs on your behalf.  CloudResearch provides instructions on doing this [here](https://cloudresearch-com.s3.amazonaws.com/files/Instructions+for+linking+MTurk+and+CloudResearch+Accounts.pdf). If you are in the gureckislab you will need to ask Todd to add you to our lab MTurk account.
+Next, you have to connect your Mechanical Turk account to Cloud Research, effectively granting them access to post and approve HITs on your behalf.  CloudResearch provides instructions on doing this [here](https://cloudresearch-com.s3.amazonaws.com/files/Instructions+for+linking+MTurk+and+CloudResearch+Accounts.pdf). If you are in the <GureckisLabText /> you will need to ask Todd to add you to our lab MTurk account.
 
 <!-- To create studies you use the intuitive study builder.  There are many custom fields that you can use to configure your study including payment, demographic restrictions, privacy-enhancing features, etc... However, the most important is to post the correct link to the study.  Here is an example.  But basically it is
 
@@ -96,15 +96,23 @@ At the end of CloudResearch studies you display to the worker a completion code 
 
 Once you have connected your MTurk account (see previous section), go to the CloudResearch dashboard and click "Create Study". You can choose to recruit participants from the Mechanical Turk pool or CloudResearch's own platform, Prime Panels. The steps below assume you have chosen MTurk, but the overall process is similar for both. 
 
-In the first section, give your study an internal name and, optionally, list an email address at which to be notified when the study starts and finishes. Check the "Yes" radio button to auto-capture worker information so that you can later extract it from the query string. 
+In the first section, give your study an internal name and, optionally, list an email address at which to be notified when the study starts and finishes. 
+
+In the "survey hyperlink" section, you provide the study link for your participants (see the top of this page).  This should be the anonymized version (e.g., `https://exps.gureckislab.org/e/note-useless-uncle`).  Additionally, we need to direct participants to the Cloud research welcome page, so we add `#/welcome/cloudresearch/` to the end of the URL.  So an example would look like this:
+
+```
+https://exps.gureckislab.org/e/note-useless-uncle#/welcome/cloudresearch/
+```
+
+Check the "Yes" radio button to auto-capture worker information so that you can later extract it from the query string. 
 
 ![CloudResearch basic information](/images/cloudresearch-step1.png)
 
-On the "Setup & Payment" page, indicate the amount you'd like to pay each participant. This will depend on the estimated time to complete the study, but should be above minimum wage. In the Gureckis Lab, the target is $15/hour.
+On the "Setup & Payment" page, indicate the amount you'd like to pay each participant. This will depend on the estimated time to complete the study, but should be above minimum wage. In the <GureckisLabText />, the target is $15/hour.
 
-On the "Deomographics" page, you can target specific participant populations to recruit from, for an added fee.
+On the "Demographics" page, you can target specific participant populations to recruit from, for an added fee.
 
-On the "Worker Approval" page, select how your participants will have their work approved. By default, Smile generates a custom completion code for each participant based on a hash of their data, which can serve as an added confirmation that the data did in fact come from that individual CloudResearch participant. To enable this behavior, select the option to approve workers "Manually" and to use a "Custom Completion Code". You could also use a single fixed completion code for all participants (at the risk that this could be shared on a worker forum or similar)—make sure to edit `ThanksPage.vue` if you choose to do so.
+On the "Worker Approval" page, select how your participants will have their work approved. By default, Smile generates a custom completion code for each participant based on a hash of their data, which can serve as an added confirmation that the data came from that individual CloudResearch participant. To enable this behavior, select the option to approve workers "Manually" and to use a "Custom Completion Code". You could also use a single fixed completion code for all participants (at the risk that this could be shared on a worker forum or similar)—make sure to edit `ThanksPage.vue` if you choose to do so.
 
 ![CloudResearch worker approval](/images/cloudresearch-step2.png)
 
@@ -113,19 +121,31 @@ When you're done setting up your study, click "Save" and return to the dashboard
 
 ## Mechanical Turk
 
+You can also use <SmileText /> with "raw" Mechanical Turk.  It is generally difficult to work with external surveys on Mechanical Turk so it is recommended to use the Amazon Web Services API to create and manage HITs.  This usually requires some extra software such as [psiTurk](https://psiturk.org).  However, for simply posting a link to your <SmileText /> experiment it is easy to use [Supersubmiterator](https://github.com/sebschu/Submiterator) which is a simple python tool for interfacing with the API.
+
+The instructions for installing and using Supersubmiterator are on that project's github page.  The main thing is to replace the `experimentURL` field of the config file with the appropriate landing page.  In this case it would be (as an example):
+
+```
+"experimentURL": "https://exps.gureckislab.org/e/note-useless-uncle#/welcome/mturk/"
+```
+
+where `note-useless-uncle` would be replaced with the unique URL for your project.
+
+
+To test your "raw" Mturk hit you can look at two different landuing urls.  When the subjet is browsing for tasks on the Mturk website they see your page in "preview mode" which corresponds to this URL:
+
+```
+https://exps.gureckislab.org/e/note-useless-uncle#/welcome/mturk/?assignmentId=ASSIGNMENT_ID_NOT_AVAILABLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE
+```
+
+
 Mturk adds these parameters to your URL when a participant accepts the hit.
 
-`http://128.100.100.100:9000/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE`
+```
+htt?ps://exps.gureckislab.org/e/note-useless-uncle#/welcome/mturk/assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE
+```
 
-
-- Preview mode:
-
-`http://128.100.100.100:9000?assignmentId=ASSIGNMENT_ID_NOT_AVAILABLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE`
-
-This should just show a "advertisement" for the study.
-In psiturk the advertisement checks to see if user has already completed the task and if so tells them they can't do it.
-Could do this using local storage (cheap, easily bypassed) or by checking the database (expensive)
-
+which loads slightly different content.  You can customize aspects of this via the `pages/MTurkRecruitPage.vue` component.
 
 
 ## Crowd-sourcing
@@ -133,3 +153,5 @@ Could do this using local storage (cheap, easily bypassed) or by checking the da
 In the future the lab might make a citizen science recruitment portal.  To support this we provides a similar API to prolific/AMT with the more generic CITIZEN_ID type identity variables:
 
 `/?CITIZEN_ID=XXXXX&CITIZEN_TASK_ID=123RVWYBAZW00EXAMPLE&CITIZEN_ASSIGN_ID=AZ3456EXAMPLE`
+
+However this is not completely implemented.
