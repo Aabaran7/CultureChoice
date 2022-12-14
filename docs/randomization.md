@@ -82,6 +82,8 @@ Finally, it is possible to randomize the order of routes in the timeline. See [T
 
 As mentioned, <SmileText /> automatically generates a seed ID, which is used to set all local seeds throughout the experiment. When in dev mode (see [Developing](/developing)), you can also override the seed ID. By doing so, you can recreate exactly what a participant saw when they completed the experiment (or what you yourself saw in a previous run of the experiment). To do so, on the developer mode landing page, replace the contents of the textbox with the seed ID you'd like to use. Then click the green refresh button to the right of the textbox. Finally, proceed with choosing a platform. The following run of the experiment will use random numbers determined by the seed ID you entered.
 
+**Note**: You must choose a platform for the seed to work. Make sure you choose the same platform when trying to re-run the same seed, or else you might get different random numbers.
+
 ![Seed override](/images/seedoverride.png)
 
 ## "Unseeded" Random Number Generation
