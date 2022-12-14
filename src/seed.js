@@ -15,6 +15,8 @@ function getParameterByName(name, url = window.location.href) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
+  console.log(appconfig.local_storage_key)
+
   const localStore = JSON.parse(window.localStorage.getItem(appconfig.local_storage_key))
 
   // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
