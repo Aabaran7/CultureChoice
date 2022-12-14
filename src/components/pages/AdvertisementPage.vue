@@ -2,7 +2,6 @@
 import { useRouter, useRoute } from 'vue-router'
 import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
-import * as random from '@/randomization'
 
 const router = useRouter()
 const route = useRoute()
@@ -21,11 +20,6 @@ function finish(goto) {
     // smilestore.saveData()
     if(goto) router.push(goto)
 }
-
-console.log(random.randomInt(1,5))
-console.log(random.shuffle([1, 2, 3]))
-console.log(random.sampleWithoutReplacement([1, 2, 3], 2))
-console.log(random.sampleWithReplacement([1, 2, 3], 5))
 
 </script>
 

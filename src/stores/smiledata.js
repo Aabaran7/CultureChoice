@@ -51,6 +51,7 @@ export default defineStore('smilestore', {
       withdraw: false, // false
       withdraw_data: {}, // empty
       route_order: [],
+      conditions: {}
     },
     config: appconfig,
   }),
@@ -113,6 +114,9 @@ export default defineStore('smilestore', {
     },
     saveDemographicForm(data) {
       this.data.demographic_form = data
+    },
+    setCondition(name, cond) {
+      this.data.conditions[name] = cond
     },
     async setKnown() {
       this.local.knownUser = true

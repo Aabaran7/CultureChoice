@@ -256,7 +256,8 @@ addGuards(router) // add the guards defined above
 // add additional guard to set global seed before
 router.beforeResolve(to => {
   const seedID = window.localStorage.getItem(`${appconfig.local_storage_key }-seed_id`)
-  seedrandom(`${seedID}-${to.name}`, { global: true });
+  const seed = `${seedID}-${to.name}`
+  seedrandom(seed, { global: true });
 })
 
 // they are defined in a function like this for the testing harness
