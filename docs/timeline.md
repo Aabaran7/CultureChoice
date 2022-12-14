@@ -83,6 +83,14 @@ There are three key methods available on the timeline instance:
 Pushes a new route (specified in `route_obj`) into the sequential timeline.
 The first call to this function will make the configured route the first route in the sequence.  The second call will make it the second route in the sequence and so forth.  The format of `route_obj` is what [VueRouter](https://router.vuejs.org/) allows.
 
+### `timeline.pushRandRoute(route_obj)`
+
+Pushes a new route (specified in `route_obj`) to a list of routes that should be presented in a random order. The `meta` field must define a string named "rand" shared by all routes within the set to be randomized.
+
+### `timeline.resolveRandRoutes(key)`
+
+Randomizes the order of all routes with the specified key (string) and pushes them into the sequential timeline. **NOTE**: This must be called in sequence. For example, if you want two tasks to be presented in a random order after the `instructions` route, you must call `timeline.pushRandRoute(task1_obj)`, `timeline.pushRandRoute(task2_obj)`, and `timeline.resolveRandRoutes("key")` after you push the instructions but before adding any other sequential routes.
+
 ### `timeline.pushRoute(route_obj)`
 
 This pushes a new route (specified in `route_obj`) into a nonsequential timeline.  This route will exist in the Vue router but will not be in the timeline sequence.  This is useful for configuration and debugging routes as well as routes you want to define and even link to but 
@@ -95,7 +103,7 @@ This should be called to construct the sequence.  It takes the configured timeli
 
 This should be called as the final step.  It takes the configured timeline and configures the progress tracking (for an optional progress bar you can make visible to participants).  The progress tracking counts the total number of routes, and for the sequential routes converts the order into a percentage complete (e.g., if there were three routes each would add 33% to the total as you step through). -->
 
-Here is an example configuring three sequential routes and one non-sequential route:
+Here is an example configuring three sequential routes, two random routes, and one non-sequential route:
 
 ```js
 import { Timeline } from '@/timeline'  // @ resolves to /src in Smile
@@ -114,6 +122,25 @@ timeline.pushSeqRoute({
     name: 'instructions',
     component: InstructionsComponent
 })
+
+// first route to be presented in a random order
+timeline.pushRandRoute({
+    path: '/task1',
+    name: 'task1',
+    component: Task1Component,
+    meta: { rand: "taskgroup" }
+})
+
+// second route to be presented in a random order
+timeline.pushRandRoute({
+    path: '/task2',
+    name: 'task2',
+    component: Task2Component,
+    meta: { rand: "taskgroup" }
+})
+
+// randomize and add to the sequential timeline
+timeline.resolveRandRoutes('taskgroup')
 
 // third route
 timeline.pushSeqRoute({
