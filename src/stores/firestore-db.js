@@ -48,7 +48,7 @@ export const loadDoc = async (docid) => {
   return undefined
 }
 
-export const createDoc = async (data) => {
+export const createDoc = async (data, seedid, partnum) => {
   try {
     const expRef = doc(db, mode, appconfig.project_ref)
     await setDoc(
@@ -67,12 +67,27 @@ export const createDoc = async (data) => {
     )
 
     // Add a new document with a generated id.
-    const docRef = await addDoc(
-      collection(db, `${mode}/${appconfig.project_ref}/data`),
-      data
-    )
-    console.log('Document written with ID: ', docRef.id)
-    return docRef.id
+    // const docRef = await addDoc(
+    //   collection(db, `${mode}/${appconfig.project_ref}/data`),
+    //   data
+    // )
+
+    // Append the participnt number to the end of the docID -- this should ALWAYS make a unique record
+    const fulldocid = `${seedid}-p${partnum}`
+    const docRef = doc(db, `${mode}/${appconfig.project_ref}/data`, fulldocid)
+    const docSnap = await getDoc(docRef);
+
+    // however, we'll still check to make sure the record doesn't already exist. If it does, we append override, but any additional overrides with same id and participant will overwrite the data
+    if (docSnap.exists()) {
+      await setDoc(doc(db, `${mode}/${appconfig.project_ref}/data`, `${fulldocid  }-override`), data);
+      console.log('Document written with ID: ', `${fulldocid  }-override`)
+      return `${fulldocid  }-override`
+    }
+    // otherwise, we create a document with the specified docID 
+      await setDoc(doc(db, `${mode}/${appconfig.project_ref}/data`, fulldocid), data);
+      console.log('Document written with ID: ', fulldocid)
+      return fulldocid
+    
   } catch (e) {
     console.error('Error adding document: ', e)
     return null

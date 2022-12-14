@@ -21,18 +21,18 @@ function createLink(option) {
 
   if(typeof(option)==='string') {
     if(option.slice(0,4)==='http') {
-      return "<a href='"+option+"' target='_new'>"+option+"</a>"
-    } else {
+      return `<a href='${option}' target='_new'>${option}</a>`
+    } 
       return option
-    }
-  } else {
+    
+  } 
     return option
-  }
+  
 }
 function resetLocalState() {
   localStorage.removeItem(smilestore.config.local_storage_key) // delete the local store
   smilestore.$reset()  // reset all the data even
-  router.push('/')
+  window.location = '/#/'
 }
 </script>
 

@@ -1,9 +1,13 @@
 import _ from 'lodash'
+import appconfig from '@/config'
+import * as random from '@/randomization'
+import seedrandom from 'seedrandom'
 
 class Timeline {
   constructor() {
     this.routes = [] // the actual routes given to VueRouter
     this.seqtimeline = [] // copies of routes that are sequential
+    this.randroutes = [] // temporary holder used for route randomization
   }
 
   pushToRoutes(route) {
@@ -18,6 +22,20 @@ class Timeline {
       }
     }
     this.routes.push(route)
+  }
+
+  pushToRandRoutes(route) {
+    // check that an existing route doesn't exist with same
+    // path and/or name
+    for (let i = 0; i < this.randroutes.length; i += 1) {
+      if (this.randroutes[i].path === route.path) {
+        throw new Error(`DuplicatePathError:${route.path}`)
+      }
+      if (this.randroutes[i].name === route.name) {
+        throw new Error(`DuplicateNameError:${route.name}`)
+      }
+    }
+    this.randroutes.push(route)
   }
 
   pushToTimeline(route) {
@@ -64,6 +82,61 @@ class Timeline {
       console.error('Smile FATAL ERROR: ', err)
       throw err
     }
+  }
+
+  pushRandRoute(routeConfig) {
+    const newroute = _.cloneDeep(routeConfig)
+    if (!newroute.meta) {
+      newroute.meta = { next: undefined, prev: undefined } // need to configure it
+    } else {
+      if (!newroute.meta.next) {
+        // need to configure next
+        newroute.meta.next = undefined
+      }
+
+      if (!newroute.meta.prev) {
+        // need to configure prev
+        newroute.meta.prev = undefined
+      }
+    }
+    newroute.meta.sequential = true
+
+    try {
+      this.pushToRandRoutes(newroute) // by reference so should update together
+    } catch (err) {
+      console.error('Smile FATAL ERROR: ', err)
+      throw err
+    }
+  }
+
+  resolveRandRoutes(key) {
+    // set local seed manually here because smilestore doesn't exist yet -- however, the seed_id does exist in local storage
+    const seedID = JSON.parse(window.localStorage.getItem(appconfig.local_storage_key)).seed_id
+    const RNG = seedrandom(`${seedID}-${key}`)
+    
+    // randomly shuffle the routes in randroutes
+    this.randroutes = random.seededShuffle(this.randroutes, RNG);
+
+    Object.values(this.randroutes).forEach(route => {
+      if(route.meta.rand !== key){ // check if route matches key
+        console.error(`random route ${  route.name  } doesn't have meta field matching resolution key -- possible error`)
+      }
+      try {
+        this.pushToRoutes(route) // add to routes list
+      } catch (err) {
+        console.error('Smile FATAL ERROR: ', err)
+        throw err
+      }
+      try {
+        this.pushToTimeline(route) // add to timeline
+      } catch (err) {
+        console.error('Smile FATAL ERROR: ', err)
+        throw err
+      }
+    });
+
+    // remove random routes so that you can reuse this later
+    this.randroutes = []
   }
 
   pushRoute(routeConfig) {

@@ -1,5 +1,5 @@
 // import { ref } from 'vue'
-import '@/seed.js' // random number seed
+import '@/seed'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/config'
@@ -15,6 +15,8 @@ import DemographicSurvey from '@/components/pages/DemographicSurveyPage.vue'
 import Captcha from '@/components/pages/CaptchaPage.vue'
 import Instructions from '@/components/pages/InstructionsPage.vue'
 import Exp from '@/components/pages/ExpPage.vue'
+import Task1 from '@/components/pages/Task1Page.vue'
+import Task2 from '@/components/pages/Task2Page.vue'
 import Debrief from '@/components/pages/DebriefPage.vue'
 import Thanks from '@/components/pages/ThanksPage.vue'
 import Config from '@/components/pages/ConfigPage.vue'
@@ -29,6 +31,10 @@ import WindowSizer from '@/components/pages/WindowSizerPage.vue'
 // but for most experiment they go in sequence from begining
 // to the end of this list
 const timeline = new Timeline()
+
+// define preliminary participant ID number
+// const participantID = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+
 
 // add the recruitment chooser if in development mode
 if (appconfig.mode === 'development') {
@@ -117,6 +123,24 @@ timeline.pushSeqRoute({
   component: Exp,
 })
 
+// randomized block of tasks
+timeline.pushRandRoute({
+  path: '/task1',
+  name: 'task1',
+  component: Task1,
+  meta: { rand: 'group1' }
+})
+
+timeline.pushRandRoute({
+  path: '/task2',
+  name: 'task2',
+  component: Task2,
+  meta: { rand: 'group1' }
+})
+// extra step: must resolve the random routes before going back to sequential routes
+timeline.resolveRandRoutes('group1')
+
+
 // debriefing form
 timeline.pushSeqRoute({
   path: '/debrief',
@@ -185,11 +209,13 @@ function addGuards(r) {
         !smilestore.isKnownUser)
     ) {
       smilestore.setLastRoute(to.name)
+      smilestore.recordRoute(to.name)
       return true
     }
     // if you're trying to go to the next route, allow it
     if (from.meta.next === to.name) {
       smilestore.setLastRoute(to.name)
+      smilestore.recordRoute(to.name)
       return true
     }
     // if you're trying to go to the same route you're already on, allow it
@@ -207,7 +233,7 @@ function addGuards(r) {
       // otherwise (for an unknown user who's not trying to go to next/same route), just send to welcome anonymous screen
       return { name: 'welcome_anonymous', replace: true }
     }
-    return true
+    return true // is this right? why is the default to allow the navigation?
   })
 }
 timeline.build()

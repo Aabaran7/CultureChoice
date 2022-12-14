@@ -37,7 +37,7 @@ onMounted(() => {
 function resetLocalState() { // this is repeated on config and maybe should be a utility function
   localStorage.removeItem(smilestore.config.local_storage_key) // delete the local store
   smilestore.$reset()  // reset all the data even
-  router.push('/')
+  window.location = '/#/'
 }
 </script>
 

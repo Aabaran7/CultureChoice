@@ -1,12 +1,13 @@
 <script setup>
-// import '@/seed'
 import { useRouter, useRoute } from 'vue-router'
 import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
+import * as rand from '@/randomization'
 
 const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
+const RNG = rand.setLocalSeed(route.name)
 
 const { next, prev } = useTimelineStepper()
 

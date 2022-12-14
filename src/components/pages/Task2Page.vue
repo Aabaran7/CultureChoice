@@ -11,7 +11,6 @@ const { next, prev } = useTimelineStepper()
 
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
-const {conditions} = smilestore.data
 
 function finish(goto) { 
     // smilestore.saveData()
@@ -21,7 +20,8 @@ function finish(goto) {
 
 <template>
     <div class="page">
-        <h1 class="title is-3">Experiment</h1>
+        <h1 class="title is-3">Task 2</h1>
+
         <button class="button is-success is-light" id='finish' @click="finish(next())">next &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
     </div>
 </template>
