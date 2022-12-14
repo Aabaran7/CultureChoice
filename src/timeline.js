@@ -1,7 +1,7 @@
 import _ from 'lodash'
+import seedrandom from 'seedrandom'
 import appconfig from '@/config'
 import * as random from '@/randomization'
-import seedrandom from 'seedrandom'
 
 class Timeline {
   constructor() {
