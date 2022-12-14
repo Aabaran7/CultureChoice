@@ -44,6 +44,7 @@ export default defineConfig({
           { text: '👩‍🎨 Overview', link: '/experimentdesign' },
           { text: '🧩 Components', link: '/components' },
           { text: '🔀 Timeline', link: '/timeline' },
+          { text: '🎲 Randomization', link: '/randomization' },
           { text: '🧑‍🎨 Styling, CSS, and icons', link: '/style' },
           { text: '💰 Computing bonuses', link: '/bonuses' },
           { text: '🆘 Errors and other issues', link: '/problems' },
