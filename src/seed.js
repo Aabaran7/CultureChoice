@@ -17,7 +17,18 @@ function getParameterByName(name, url = window.location.href) {
 
 
   const localStore = JSON.parse(window.localStorage.getItem(appconfig.local_storage_key))
-  console.log(localStore)
+  const newStore = {
+    knownUser: false,
+    lastRoute: appconfig.mode === 'development' ? 'recruit' : 'landing',
+    allowJumps: appconfig.mode === 'development',
+    docRef: null,
+    partNum: null,
+    completionCode: '',
+    totalWrites: 0,
+    lastWrite: null,
+    seed_id: null,
+    seed_set: false,
+  }
 
   // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
   const seed = getParameterByName('SEED')
@@ -26,12 +37,14 @@ function getParameterByName(name, url = window.location.href) {
   if(!localStore){
     if(seed){
         console.log(`force seed id to ${  seed}`)
-        const newStore = {'seed_id': seed, 'seed_set': true}
+        newStore.seed_id = seed
+        newStore.seed_set = true
         window.localStorage.setItem(appconfig.local_storage_key, JSON.stringify(newStore))
       } else { // otherwise, generate a random ID
         const participantID = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
         console.log(`set seed id to ${  participantID}`)
-        const newStore = {'seed_id': participantID, 'seed_set': true}
+        newStore.seed_id = participantID
+        newStore.seed_set = true
         window.localStorage.setItem(appconfig.local_storage_key, JSON.stringify(newStore))
       }
   } else if(!localStore.seed_set){ 
