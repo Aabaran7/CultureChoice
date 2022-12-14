@@ -1,5 +1,6 @@
 // import { ref } from 'vue'
 import '@/seed'
+import seedrandom from 'seedrandom'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/config'
@@ -251,6 +252,12 @@ const router = createRouter({
   },
 })
 addGuards(router) // add the guards defined above
+
+// add additional guard to set global seed before
+router.beforeResolve(to => {
+  const seedID = window.localStorage.getItem(`${appconfig.local_storage_key }-seed_id`)
+  seedrandom(`${seedID}-${to.name}`, { global: true });
+})
 
 // they are defined in a function like this for the testing harness
 export { routes, addGuards }

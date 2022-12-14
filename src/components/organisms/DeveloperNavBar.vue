@@ -5,6 +5,7 @@ import { useRouter, useRoute  } from 'vue-router'
 
 import useSmileStore from '@/stores/smiledata'
 import { routes } from '@/router' 
+import appconfig from '@/config'
 
 const smilestore = useSmileStore() // load the global store
 const { x, y } = useMouse({ touch: false }) // tracks mouse reactively
@@ -36,8 +37,11 @@ onMounted(() => {
 
 function resetLocalState() { // this is repeated on config and maybe should be a utility function
   localStorage.removeItem(smilestore.config.local_storage_key) // delete the local store
+  localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
+  localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
   smilestore.$reset()  // reset all the data even
-  window.location = '/#/'
+  window.location = '/'
+  // router.push('/')
 }
 </script>
 

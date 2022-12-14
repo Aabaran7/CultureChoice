@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
+import appconfig from '@/config'
 
 const smilestore = useSmileStore()
 const router = useRouter()
@@ -31,8 +32,10 @@ function createLink(option) {
 }
 function resetLocalState() {
   localStorage.removeItem(smilestore.config.local_storage_key) // delete the local store
+  localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
+  localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
   smilestore.$reset()  // reset all the data even
-  window.location = '/#/'
+  router.push('/')
 }
 </script>
 

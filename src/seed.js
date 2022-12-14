@@ -3,8 +3,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import appconfig from '@/config'
 
-// NOTE: this DOES NOT set the seed. To set the seed, see setLocalSeed function in '@/randomization.js'
-// this script simply defines an ID number that is used to set local seeds throughout the experiment
+// NOTE: this DOES NOT set the seed. Seed is set in beforeResolve in router.js (before each component)
+// this script simply defines an ID number that is used to set seeds throughout the experiment
 
 function getParameterByName(name, url = window.location.href) {
     const nameClean = name.replace(/[\[\]]/g, '\\$&');
@@ -16,38 +16,23 @@ function getParameterByName(name, url = window.location.href) {
   }
 
 
-//   const localStore = JSON.parse(window.localStorage.getItem(appconfig.local_storage_key))
+// has the seed already been set?
+  const seedSet = window.localStorage.getItem(`${appconfig.local_storage_key}-seed_set`)
 
+  // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+  const seed = getParameterByName('SEED')
 
-//   // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-//   const seed = getParameterByName('SEED')
-
-// //   if the seed hasn't already been set or if localStore is undefined
-//   if(!localStore){
-//     if(seed){
-//         console.log(`force seed id to ${  seed}`)
-//         newStore.seed_id = seed
-//         newStore.seed_set = true
-//         window.localStorage.setItem(appconfig.local_storage_key, JSON.stringify(newStore))
-//       } else { // otherwise, generate a random ID
-//         const participantID = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
-//         console.log(`set seed id to ${  participantID}`)
-//         newStore.seed_id = participantID
-//         newStore.seed_set = true
-//         window.localStorage.setItem(appconfig.local_storage_key, JSON.stringify(newStore))
-//       }
-//   } else if(!localStore.seed_set){ 
-//         // either pull the seed from the URL
-//         if(seed){
-//           console.log(`force seed id to ${  seed}`)
-//           localStore.seed_id = seed
-//           localStore.seed_set = true
-//           window.localStorage.setItem(appconfig.local_storage_key, JSON.stringify(localStore))
-//         } else { // otherwise, generate a random ID
-//           const participantID = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
-//           console.log(`set seed id to ${  participantID}`)
-//           localStore.seed_id = participantID
-//           localStore.seed_set = true
-//           window.localStorage.setItem(appconfig.local_storage_key, JSON.stringify(localStore))
-//         }
-//     }
+//   if the seed hasn't already been set
+if(seedSet !== "true"){ 
+    // either pull the seed from the URL
+    if(seed){
+        console.log(`force seed id to ${  seed}`)
+        window.localStorage.setItem(`${appconfig.local_storage_key}-seed_id`, seed)
+        window.localStorage.setItem(`${appconfig.local_storage_key}-seed_set`, true)
+    } else { // otherwise, generate a random ID
+        const participantID = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+        console.log(`set seed id to ${  participantID}`)
+        window.localStorage.setItem(`${appconfig.local_storage_key}-seed_id`, participantID)
+        window.localStorage.setItem(`${appconfig.local_storage_key}-seed_set`, true)
+    }
+}

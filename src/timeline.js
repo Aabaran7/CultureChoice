@@ -110,12 +110,12 @@ class Timeline {
   }
 
   resolveRandRoutes(key) {
-    // set local seed manually here because smilestore doesn't exist yet -- however, the seed_id does exist in local storage
-    const seedID = JSON.parse(window.localStorage.getItem(appconfig.local_storage_key)).seed_id
-    const RNG = seedrandom(`${seedID}-${key}`)
-    
+    // set seed from seed_id, which is in local storage
+    const seedID = window.localStorage.getItem(`${appconfig.local_storage_key  }-seed_id`)
+    seedrandom(`${seedID}-${key}`, { global: true });
+
     // randomly shuffle the routes in randroutes
-    this.randroutes = random.seededShuffle(this.randroutes, RNG);
+    this.randroutes = random.shuffle(this.randroutes);
 
     Object.values(this.randroutes).forEach(route => {
       if(route.meta.rand !== key){ // check if route matches key

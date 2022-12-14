@@ -24,8 +24,6 @@ export default defineStore('smilestore', {
       completionCode: '',
       totalWrites: 0,
       lastWrite: null,
-      seed_id: null,
-      seed_set: false,
     }),
     global: {
       // ephemeral state, resets on browser refresh
@@ -66,7 +64,6 @@ export default defineStore('smilestore', {
     hasAutofill: (state) => state.dev.page_provides_autofill,
     searchParams: (state) => state.global.search_params,
     recruitmentService: (state) => state.data.recruitment_service,
-    getSeedID: (state) => state.local.seed_id,
   },
 
   actions: {
@@ -120,7 +117,7 @@ export default defineStore('smilestore', {
     async setKnown() {
       this.local.knownUser = true
       this.local.partNum = await updateExperimentCounter('participants')
-      this.local.docRef = await createDoc(this.data, this.local.seed_id, this.local.partNum)
+      this.local.docRef = await createDoc(this.data, window.localStorage.getItem(`${appconfig.local_storage_key  }-seed_id`), this.local.partNum)
 
       // assign conditions, with id number for randomization
       // this.assignConds(this.local.partNum)
