@@ -121,14 +121,18 @@ class Timeline {
       if(route.meta.rand !== key){ // check if route matches key
         console.error(`random route ${  route.name  } doesn't have meta field matching resolution key -- possible error`)
       }
+      const newroute = _.cloneDeep(route)
+
+      newroute.meta.sequential = true
+
       try {
-        this.pushToRoutes(route) // add to routes list
+        this.pushToRoutes(newroute) // add to routes list
       } catch (err) {
         console.error('Smile FATAL ERROR: ', err)
         throw err
       }
       try {
-        this.pushToTimeline(route) // add to timeline
+        this.pushToTimeline(newroute) // add to timeline
       } catch (err) {
         console.error('Smile FATAL ERROR: ', err)
         throw err
