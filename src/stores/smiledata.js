@@ -24,6 +24,7 @@ export default defineStore('smilestore', {
       completionCode: '',
       totalWrites: 0,
       lastWrite: null,
+      seedActive: true,
     }),
     global: {
       // ephemeral state, resets on browser refresh

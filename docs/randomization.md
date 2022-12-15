@@ -86,6 +86,8 @@ As mentioned, <SmileText /> automatically generates a seed ID, which is used to 
 
 ![Seed override](/images/seedoverride.png)
 
+You can also override the seed within a component (e.g., if you'd like to re-randomize the condition assignment without starting over the entire experiment). To do so, uncheck the box labeled "Seed" in the developer mode navigation bar. Now, every time you refresh the page, a new random seed will be set. To re-enable the initial seed, check the box and refresh the page.
+
 ## "Unseeded" Random Number Generation
 
 In rare cases, it may be desirable to generate "true" or "unseeded" random numbers (by default `Math.random()` actually does set a seed, but it's set automatically using other random stuff). To do so, you can make a local instance of a random number generator using the `seedrandom` library:

@@ -6,6 +6,8 @@ import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/config'
 import { processQuery } from '@/utils'
 import Timeline from '@/timeline'
+import { v4 as uuidv4 } from 'uuid';
+
 
 // 1. Import route components
 import RecruitmentChooser from '@/components/pages/RecruitmentChooserPage.vue'
@@ -255,9 +257,15 @@ addGuards(router) // add the guards defined above
 
 // add additional guard to set global seed before
 router.beforeResolve(to => {
-  const seedID = window.localStorage.getItem(`${appconfig.local_storage_key }-seed_id`)
-  const seed = `${seedID}-${to.name}`
-  seedrandom(seed, { global: true });
+  const smilestore = useSmileStore()
+  if(smilestore.local.seedActive){
+    const seedID = window.localStorage.getItem(`${appconfig.local_storage_key }-seed_id`)
+    const seed = `${seedID}-${to.name}`
+    seedrandom(seed, { global: true });
+  } else{ // if inactive, generate a random string then re-seed
+    const newseed = uuidv4();
+    seedrandom(newseed, { global: true });
+  }
 })
 
 // they are defined in a function like this for the testing harness

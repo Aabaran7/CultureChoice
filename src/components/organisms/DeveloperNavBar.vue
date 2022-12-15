@@ -44,6 +44,7 @@ function resetLocalState() { // this is repeated on config and maybe should be a
   // router.push('/')
 }
 
+
 </script>
 
 <template>
@@ -149,6 +150,11 @@ function resetLocalState() { // this is repeated on config and maybe should be a
         </div>
 
     </div>
+
+    <div class="devmode">
+          | &nbsp; Seed: 
+          <input type="checkbox" v-model='smilestore.local.seedActive'/> 
+        </div>
         
   </nav>
 </template>
