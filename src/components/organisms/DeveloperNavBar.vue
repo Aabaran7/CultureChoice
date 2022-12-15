@@ -40,9 +40,10 @@ function resetLocalState() { // this is repeated on config and maybe should be a
   localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
   localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
   smilestore.$reset()  // reset all the data even
-  window.location = '/'
+  window.location = '/' // this will refresh the page rather than just load the route
   // router.push('/')
 }
+
 </script>
 
 <template>

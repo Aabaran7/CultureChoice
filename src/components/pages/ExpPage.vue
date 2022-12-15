@@ -13,11 +13,11 @@ const { next, prev } = useTimelineStepper()
 if(route.meta.progress) smilestore.global.progress = route.meta.progress
 
 const conditions1 = ["A", "B", "C"]
-const cond1 = conditions1[random.randomInt(0, conditions1.length-1)]
+const cond1 = random.sampleWithoutReplacement(conditions1, 1)[0]
 smilestore.setCondition("condition1", cond1)
 
 const conditions2 = ["X", "Y"]
-const cond2 = conditions2[random.randomInt(0, conditions2.length-1)]
+const cond2 = random.sampleWithoutReplacement(conditions2, 1)[0]
 smilestore.setCondition("condition2", cond2)
 
 
