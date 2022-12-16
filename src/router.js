@@ -1,8 +1,7 @@
 // import { ref } from 'vue'
-import '@/seed'
+import useSmileStore from '@/stores/smiledata' // get access to the global store
 import seedrandom from 'seedrandom'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/config'
 import { processQuery } from '@/utils'
 import Timeline from '@/timeline'
@@ -34,9 +33,6 @@ import WindowSizer from '@/components/pages/WindowSizerPage.vue'
 // but for most experiment they go in sequence from begining
 // to the end of this list
 const timeline = new Timeline()
-
-// define preliminary participant ID number
-// const participantID = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 
 
 // add the recruitment chooser if in development mode
@@ -246,7 +242,7 @@ const { routes } = timeline
 // 4. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
 // keep it simple for now.
-const router = createRouter({
+export const router = createRouter({
   history: createWebHashHistory(), // We are using the hash history for now/simplicity
   routes,
   scrollBehavior(to, from, savedPosition) {
@@ -259,7 +255,7 @@ addGuards(router) // add the guards defined above
 router.beforeResolve(to => {
   const smilestore = useSmileStore()
   if(smilestore.local.seedActive){
-    const seedID = window.localStorage.getItem(`${appconfig.local_storage_key }-seed_id`)
+    const seedID = smilestore.getSeedID
     const seed = `${seedID}-${to.name}`
     seedrandom(seed, { global: true });
   } else{ // if inactive, generate a random string then re-seed

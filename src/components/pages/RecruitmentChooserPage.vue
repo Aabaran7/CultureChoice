@@ -8,7 +8,7 @@ const router = useRouter()
 const route = useRoute()
 const smilestore = useSmileStore()
 
-const seed = ref(window.localStorage.getItem(`${appconfig.local_storage_key  }-seed_id`))
+const seed = ref(smilestore.getSeedID)
 
 const urls = {prolific: "/#/welcome/prolific/?PROLIFIC_PID=XXXX&STUDY_ID=XXXX&SESSION_ID=XXXXX",
 cloudResearch: "/#/welcome/cloudresearch/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE",
@@ -20,8 +20,8 @@ anon: "/#/welcome"
 // if we refresh with a new seed, we'll also reset the local state
 function resetLocalState() {
   localStorage.removeItem(smilestore.config.local_storage_key) // delete the local store
-  localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
-  localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
+  // localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
+  // localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
   smilestore.$reset()  // reset all the data even
 }
 

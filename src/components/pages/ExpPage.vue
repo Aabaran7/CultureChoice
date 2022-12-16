@@ -3,6 +3,9 @@ import { useRouter, useRoute } from 'vue-router'
 import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import * as random from '@/randomization'
+import { v4 as uuidv4 } from 'uuid';
+import appconfig from '@/config'
+import seedrandom from 'seedrandom'
 
 const router = useRouter()
 const route = useRoute()

@@ -1,7 +1,10 @@
 import _ from 'lodash'
 import seedrandom from 'seedrandom'
-import appconfig from '@/config'
 import * as random from '@/randomization'
+import { pinia } from '@/createpinia'
+import '@/seed'
+import useSmileStore from '@/stores/smiledata' // get access to the global store
+
 
 class Timeline {
   constructor() {
@@ -110,8 +113,10 @@ class Timeline {
   }
 
   resolveRandRoutes(key) {
+    const smilestore = useSmileStore(pinia)
+
     // set seed from seed_id, which is in local storage
-    const seedID = window.localStorage.getItem(`${appconfig.local_storage_key  }-seed_id`)
+    const seedID = smilestore.getSeedID
     seedrandom(`${seedID}-${key}`, { global: true });
 
     // randomly shuffle the routes in randroutes

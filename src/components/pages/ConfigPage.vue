@@ -32,8 +32,8 @@ function createLink(option) {
 }
 function resetLocalState() {
   localStorage.removeItem(smilestore.config.local_storage_key) // delete the local store
-  localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
-  localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
+  // localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
+  // localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
   smilestore.$reset()  // reset all the data even
   router.push('/')
 }
