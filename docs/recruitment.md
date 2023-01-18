@@ -20,12 +20,12 @@ In the second section, you provide the study link for your participants. When Pr
 
 First, we need to direct participants to the Prolific welcome page, so we add `#/welcome/prolific/` to the end of the URL.
 
-Then, we need to record the variables from Prolific, so we add: `?PROLIFIC_PID={{ "{{%PROLIFIC_PID%" }}}}&STUDY_ID={{ "{{%PROLIFIC_PID%" }}}}&SESSION_ID={{ "{{%PROLIFIC_PID%" }}}}` to the end of the URL.
+Then, we need to record the variables from Prolific, so we add: `?PROLIFIC_PID={{ "{{%PROLIFIC_PID%" }}}}&STUDY_ID={{ "{{%STUDY_ID%" }}}}&SESSION_ID={{ "{{%SESSION_ID%" }}}}` to the end of the URL.
 
 So the final URL you give Prolific should look like this:
 
 
-`https://exps.gureckislab.org/e/note-useless-uncle/#/welcome/prolific/?PROLIFIC_PID={{ "{{%PROLIFIC_PID%" }}}}&STUDY_ID={{ "{{%PROLIFIC_PID%" }}}}&SESSION_ID={{ "{{%PROLIFIC_PID%" }}}}`
+`https://exps.gureckislab.org/e/note-useless-uncle/#/welcome/prolific/?PROLIFIC_PID={{ "{{%PROLIFIC_PID%" }}}}&STUDY_ID={{ "{{%STUDY_ID%" }}}}&SESSION_ID={{ "{{%SESSION_ID%" }}}}`
 
 
 
