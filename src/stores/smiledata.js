@@ -51,11 +51,13 @@ export default defineStore('smilestore', {
       done: false,
       recruitment_service: 'web', // fake
       recruitment_info: {}, // empty
+      browser_fingerprint: [], // empty
       browser_data: [], // empty
       demographic_form: {}, // empty
       conditions: {},
       withdraw: false, // false
       withdraw_data: {}, // empty
+      smile_config: appconfig, //  adding config info to firebase document
     },
     config: appconfig,
   }),
