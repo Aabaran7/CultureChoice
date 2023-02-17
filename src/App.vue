@@ -26,6 +26,8 @@ onMounted(() => {
   window.addEventListener('blur', (event) => {
     smilestore.recordWindowEvent('blur')
   })
+
+  smilestore.getBrowserFingerprint();
 })
 
 // this is tied to the router-view component, allowing us to re-render it according to the watchers below

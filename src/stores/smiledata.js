@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
+import axios from 'axios'
 import appconfig from '@/config'
 
 import {
@@ -51,7 +52,7 @@ export default defineStore('smilestore', {
       done: false,
       recruitment_service: 'web', // fake
       recruitment_info: {}, // empty
-      browser_fingerprint: [], // empty
+      browser_fingerprint: {}, // empty
       browser_data: [], // empty
       demographic_form: {}, // empty
       conditions: {},
@@ -164,6 +165,43 @@ export default defineStore('smilestore', {
           timestamp: fsnow(),
         })
       }
+    },
+    getBrowserFingerprint() {
+      // this is not "real" browser fingerprinting, but it's close enough for our purposes
+      // it just finds things like browser version, OS, and IP address of user
+      // which can be helpful for debugging purposes
+      let ip = 'unknown'
+      // Make a request for a user with a given ID
+      axios
+        .get('https://api.ipify.org/?format=json')
+        .then((response) => {
+          // handle success
+          console.log('ip address', response.data)
+          // check if ip field exists
+          if (response.data.ip) {
+            ip = response.data.ip
+          }
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error)
+        })
+        .finally(() => {
+          // always executed
+          const { language } = window.navigator
+          const { webdriver } = window.navigator
+          const { userAgent } = window.navigator
+          this.setFingerPrint(ip, userAgent, language, webdriver)
+        })
+    },
+    setFingerPrint(ip, userAgent, language, webdriver) {
+      this.data.browser_fingerprint = {
+        ip,
+        userAgent,
+        language,
+        webdriver,
+      }
+      console.log(this.data.browser_fingerprint)
     },
     setPageAutofill(fn) {
       this.dev.page_provides_autofill = fn
