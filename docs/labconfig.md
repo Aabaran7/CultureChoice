@@ -1,13 +1,19 @@
 # Configuring for a new lab
 
-The main <SmileText/> repo was set up for internal use by the [<GureckisLabText/>](https://gureckislab.org). 
-If you would like to use it in a new lab you need to setup a variety of services and create a new "root" repo from which to branch your lab's projects from.  The tradeoff in using <SmileText/> is that the one-time lab setup can be a little more involved/technical but then things work relatively seamlessly for members of your lab.
+If you would like to use <SmileText/> in a different lab you need to create a fork of the main repository for your lab.  This new "root" repo will be where members go to start their own projects.  This ensures that projects in your lab obtain the correct configuration options for your lab.  If your lab's "root" repo will stil be connected to the base <SmileText/> repo so you can pull down and distribute changes to the code as well as push contributions back to the main project.
+
+![Inheriting between Github repos](/images/labconfig-github-inherit.png)
+
+In the figure above, each node is a github repository. Each lab (Hartley Lab, Lake Lab) forks from the base smile repo and then student projects for that lab fork from the lab's base thus distributing the lab-specific configuration files.
+
+
+In addition, if you would like to use it in a different lab you need to setup a variety of services for your group (e.g., Google Firebase, Slack, Github, etc...). One tradeoff in using <SmileText/> is that the one-time lab setup can be a little more involved/technical but then things work relatively seamlessly for members of your lab.
+
 
 The key services are
-- Firebase (required)
-- Slack messaging (optional)
-- Webserver (required, but several options)
-- Configure repo secrets (required)
+- **Firebase (required)**: required for storing/saving data from your experiments
+- **Slack messaging (required)**: required to be notified when your experiment is posted online for subjects to view
+- **SSL signed webserver (required, but several options)**: a service to host your static web files for distribution to subjects
 
 
 
