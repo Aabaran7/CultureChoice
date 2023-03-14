@@ -27,6 +27,7 @@ export default defineStore('smilestore', {
       seedActive: true,
       seedID: '',
       seedSet: false,
+      pageTracker: 0,
     }, localStorage, { mergeDefaults: true }),
     global: {
       // ephemeral state, resets on browser refresh
@@ -69,7 +70,8 @@ export default defineStore('smilestore', {
     searchParams: (state) => state.global.search_params,
     recruitmentService: (state) => state.data.recruitment_service,
     isSeedSet: (state) => state.local.seedSet,
-    getSeedID: (state) => state.local.seedID
+    getSeedID: (state) => state.local.seedID,
+    getPage: (state) => state.local.pageTracker,
   },
 
   actions: {
@@ -91,6 +93,13 @@ export default defineStore('smilestore', {
     setSeedID(seed) {
       this.local.seedID = seed
       this.local.seedSet = true
+    },
+    incrementPageTracker(){
+      this.local.pageTracker += 1
+      return this.local.pageTracker
+    },
+    resetPageTracker(){
+      this.local.pageTracker = 0
     },
     recordWindowEvent(type, event_data = null) {
       if (event_data) {

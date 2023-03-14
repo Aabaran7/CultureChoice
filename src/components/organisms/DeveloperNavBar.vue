@@ -44,6 +44,13 @@ function resetLocalState() { // this is repeated on config and maybe should be a
   // router.push('/')
 }
 
+function resetPages(routeName){
+  smilestore.resetPageTracker() // reset all the page counts
+  if (route.name === routeName){
+    router.go(0)
+  }
+}
+
 
 </script>
 
@@ -90,11 +97,11 @@ function resetLocalState() { // this is repeated on config and maybe should be a
                 <template v-for="r in routes">
                   <!-- make a special link for web_referred, which has params -->
                   <router-link class="dropdown-item routelink" v-if="r.name === 'welcome_referred'" :to="{ name: r.name, params: { service: 'web' }, query: currentQuery }" :key="r.path">
-                    /{{ r.name }}
+                    <span v-on:click="resetPages(r.name)">/{{ r.name }}</span>
                   </router-link>
                   <!-- make a link for everything else -->
                   <router-link class="dropdown-item routelink" v-else :to="{ name: r.name, query: currentQuery }" :key="r.name">
-                    /{{ r.name }}
+                    <span v-on:click="resetPages(r.name)">/{{ r.name }}</span>
                   </router-link>
                 </template>
 
