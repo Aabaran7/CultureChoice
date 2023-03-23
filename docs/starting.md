@@ -120,7 +120,7 @@ For example, on Mac this might be your desktop
 cd ~/Desktop
 ```
 
-Following the steps below, copy the <SmileText/> GitHub repo into a new project name and clone it locally.
+Following the steps below, copy the Smile GitHub repo into a new project name and clone it locally.
 
 
 In this example command, the new project will be named `{{config.projectname}}` and a copy of the starting project template will be placed in a new folder with that name:
