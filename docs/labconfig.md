@@ -63,8 +63,7 @@ This will create a new repository that will look like this (assuming your organi
 ![Github overview](/images/labconfig-github-overview.png)
 
 
-
-Next you should clone a local copy of this repo to your computer using the `http` method:
+Next you should clone a local copy of this repo to your computer:
 
 ![Cloned repo](/images/labconfig-github-clone.png)
 
@@ -73,10 +72,6 @@ Next you should clone a local copy of this repo to your computer using the `http
 ![Github commandline](/images/labconfig-github-clone-commandline.png)
 
 The results is you will have a fresh copy of the Smile project files in a folder on your computer 
-
-::: warning Use the HTTP method
-It is important that you use the `http` method currently because a few scripts in Smile assumes that to be the case.
-:::
 
 ## Setup Firebase
 
