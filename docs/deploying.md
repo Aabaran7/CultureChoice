@@ -183,3 +183,17 @@ In addition, the `index.html` of your project should include the `noindex` meta 
 ```
 
 Google offers a [robots.text testing tool](https://www.google.com/webmasters/tools/robots-testing-tool) which can verify that your settings will be respected by at least Google.
+
+## Deploying in development mode
+
+In some cases it might be helpful to deploy a live version of your project in [developer mode](/developing).  This will allow you to share a version of your experiment with other people with the [developer bar](/developing.html#smile-developer-bar) enabled.  To do this create a new branch for public sharing.  Then edit `src/config.js` so that the line the by default reads 
+
+```  
+    mode: import.meta.env.MODE,
+```
+
+says instead 
+
+```
+    mode: "development",
+```
