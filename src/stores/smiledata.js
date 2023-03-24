@@ -50,6 +50,8 @@ export default defineStore('smilestore', {
       trial_num: 0, // not being updated correctly
       consented: false,
       done: false,
+      starttime: null, // time consented
+      endtime: null, // time finished or withdrew
       recruitment_service: 'web', // fake
       recruitment_info: {}, // empty
       browser_fingerprint: {}, // empty
@@ -145,9 +147,16 @@ export default defineStore('smilestore', {
     },
     setConsented() {
       this.data.consented = true
+      this.data.starttime = fsnow()
+    },
+    setWithdraw(forminfo) {
+      this.data.withdraw = true
+      this.data.withdraw_data = forminfo
+      this.data.endtime = fsnow()
     },
     setDone() {
       this.data.done = true
+      this.data.endtime = fsnow()
     },
     setCompletionCode(code) {
       this.local.completionCode = code
