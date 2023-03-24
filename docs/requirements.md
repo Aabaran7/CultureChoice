@@ -1,6 +1,6 @@
 # :space_invader: Required software you will need to install
 
-Before getting started working on a <SmileText/> project you will need to install a few items on your local computer.  
+Before getting started working on a <SmileText/> project you will need to install a few items on your local computer (see [^gitpod] for other options).  
 
 
 :::warning First time setting Smile up for a new lab?
@@ -78,6 +78,4 @@ brew install --cask google-cloud-sdk
 
 
 
-:::info Zero-install option
-This guide is the recommended strategy for most people (particularly core lab members like postdocs and phd students).  However, there is also the option of working on the project using a pre-configured cloud-based environment hosted by [Gitpod](https://gitpod.io) which might be nice for undergrads with less experience installing software using the command line. Click [here](/gitpod) for more info.
-:::
+[^gitpod]: This guide is the recommended strategy for most people (particularly core lab members like postdocs and phd students).  However, there is also the option of working on the project using a pre-configured cloud-based environment hosted by [Gitpod](https://gitpod.io) which might be nice for undergrads with less experience installing software using the command line. Click [here](/gitpod) for more info.
