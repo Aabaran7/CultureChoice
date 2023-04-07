@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, watch, ref } from 'vue';
+import { onMounted, watch, ref, reactive } from 'vue';
 import { useMouse } from '@vueuse/core'
 import { useRouter, useRoute  } from 'vue-router'
 
@@ -49,6 +49,22 @@ function resetPages(routeName){
   if (route.name === routeName){
     router.go(0)
   }
+}
+
+// display in the toolbar the selected conditions
+const conditions = reactive(smilestore.getConditions)
+
+// when condition is set in the store, update the toolbar conditions
+watch(() => smilestore.data.conditions, async (newConds) => {
+  // for each key in newConds, update that entry in conditions
+  Object.keys(newConds).forEach((key) => {
+    conditions[key] = newConds[key]
+  })
+})
+
+// when a condition is changed in the toolbar, update the store
+function changeCond(key, cond) {
+  smilestore.setCondition(key, cond)
 }
 
 
@@ -161,8 +177,37 @@ function resetPages(routeName){
     <div class="devmode">
           | &nbsp; Seed: 
           <input type="checkbox" v-model='smilestore.local.seedActive'/> 
+    </div>
+    
+    <template v-for="(value, key) in smilestore.getPossibleConditions" :key="key">
+      <div class="devmode">
+          <div class="dropdown is-hoverable">
+            <div class="dropdown-trigger">
+              | &nbsp; {{key}}:
+              
+              <a alt="Condition assignments">
+                <FAIcon icon="fa-solid fa-flask" />
+              </a>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu" >
+              <div class="dropdown-content">
+                <template v-for="cond in value" :key="cond">
+                  <!-- make checkboxes for each condition -->
+                  <br>
+                  <div class="control">
+                      <input type="radio" :name="key" :id="cond" :value="cond" v-model="conditions[key]" @change="changeCond(key, cond)">
+                      <label :for="cond">{{cond}}</label>
+                  </div>
+                  <!-- <input type="checkbox" :value="isCond(key, cond)"/> <b>{{cond}}</b> -->
+                  <br>
+                </template>
+              </div>
+            </div>
+          </div>
         </div>
-        
+    </template>
+    
+
   </nav>
 </template>
 
@@ -220,5 +265,9 @@ a:hover {
   padding-top: 8px;
   font-weight: 400;
   padding-left: 10px;
+}
+
+.dropdown-menu{
+  min-width:80px
 }
 </style>

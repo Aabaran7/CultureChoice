@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app'
 import {
   getFirestore,
   collection,
+  getDocs,
   doc,
   addDoc,
   setDoc,
@@ -109,10 +110,67 @@ export const updateExperimentCounter = async (counter) => {
         transaction.set(docRef, { n: newCounter }, {merge: true});
       });
       console.log("New participant number is: ", newCounter);
-      return newCounter
     } catch (e) {
       console.log("Transaction failed: ", e);
     }
+    return newCounter
+}
+
+export const balancedAssignConditions = async (conditionDict) => {
+  // get keys from conditionDict
+  const keys = Object.keys(conditionDict)
+  
+  // make a list of docRefs for each key in keys
+  const docRefs = keys.map((keyCond) => doc(db, `${mode}/${appconfig.project_ref}/counters/`, keyCond))
+
+  try {
+    const selectedConditions = await runTransaction(db, async (transaction) => {
+
+      // for each docRef, get the data
+      const docSnaps = await Promise.all(docRefs.map((docRef) => transaction.get(docRef)))
+
+      // for each docSnap, see if it exists. 
+      // If it doesn't, choose a random condition from the list of conditions for that key
+      const output = docSnaps.map((docSnap) => {
+        const newCondCounter = {}
+        if (!docSnap.exists()) {
+          const conditions = conditionDict[docSnap.id]
+          const randomIndex = Math.floor(Math.random() * conditions.length)
+          const minCondition = conditions[randomIndex]
+          // make incremented counter
+          conditions.forEach((condition) => {
+            newCondCounter[condition] = 0
+          })
+          newCondCounter[minCondition] += 1
+          // return selected condition and new incremented counter
+          return {condName: docSnap.id, selectedCond: minCondition, newCounter: newCondCounter}
+        } 
+        //  otherwise, choose the condition with the lowest count
+          const conditions = conditionDict[docSnap.id]
+          const oldCondCounter = docSnap.data()
+          const counts = conditions.map((cond) => oldCondCounter[cond])
+          const min = Math.min(...Object.values(counts))
+          const matchMinConds = Object.keys(oldCondCounter).filter((key) => oldCondCounter[key] === min)
+          // (if there are more than one, pick one at random)
+          const minCondition = matchMinConds[Math.floor(Math.random() * matchMinConds.length)]
+          oldCondCounter[minCondition] += 1
+          return {condName: docSnap.id, selectedCond: minCondition, newCounter: oldCondCounter}
+      })
+      // for each entry in output, update firestore with the newCounter and add selected cond to output dict
+      const transactionOut = {}
+      output.forEach((entry) => {
+        transaction.set(doc(db, `${mode}/${appconfig.project_ref}/counters/`, entry.condName), entry.newCounter, {merge: true});
+        transactionOut[entry.condName] = entry.selectedCond
+      })
+      // transaction.update(sfDocRef, { population: newPop });
+      return transactionOut;
+    });
+    console.log("Conditions set to ", selectedConditions);
+    return selectedConditions
+  } catch (e) {
+    console.error(e);
+  }
+  return null;
 }
 
 // export default createDoc

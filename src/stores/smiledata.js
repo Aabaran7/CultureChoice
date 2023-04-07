@@ -6,6 +6,7 @@ import {
   createDoc,
   updateSubjectDataRecord,
   updateExperimentCounter,
+  balancedAssignConditions,
   loadDoc,
   fsnow,
 } from './firestore-db'
@@ -28,6 +29,7 @@ export default defineStore('smilestore', {
       seedID: '',
       seedSet: false,
       pageTracker: 0,
+      possibleConditions: {'cond3': ["A", "B", "C"], 'cond2': ["X", "Y"]},
     }, localStorage, { mergeDefaults: true }),
     global: {
       // ephemeral state, resets on browser refresh
@@ -72,6 +74,8 @@ export default defineStore('smilestore', {
     isSeedSet: (state) => state.local.seedSet,
     getSeedID: (state) => state.local.seedID,
     getPage: (state) => state.local.pageTracker,
+    getPossibleConditions: (state) => state.local.possibleConditions,
+    getConditions: (state) => state.data.conditions,
   },
 
   actions: {
@@ -140,10 +144,7 @@ export default defineStore('smilestore', {
       this.local.knownUser = true
       this.local.partNum = await updateExperimentCounter('participants')
       this.local.docRef = await createDoc(this.data, this.local.seedID, this.local.partNum)
-
-      // assign conditions, with id number for randomization
-      // this.assignConds(this.local.partNum)
-
+      this.data.conditions = await balancedAssignConditions(this.local.possibleConditions)
       if (this.local.docRef) {
         this.setDBConnected()
       }
