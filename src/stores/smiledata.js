@@ -144,7 +144,7 @@ export default defineStore('smilestore', {
       this.local.knownUser = true
       this.local.partNum = await updateExperimentCounter('participants')
       this.local.docRef = await createDoc(this.data, this.local.seedID, this.local.partNum)
-      this.data.conditions = await balancedAssignConditions(this.local.possibleConditions)
+      this.data.conditions = await balancedAssignConditions(this.local.possibleConditions, this.data.conditions)
       if (this.local.docRef) {
         this.setDBConnected()
       }

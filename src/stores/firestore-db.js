@@ -116,7 +116,14 @@ export const updateExperimentCounter = async (counter) => {
     return newCounter
 }
 
-export const balancedAssignConditions = async (conditionDict) => {
+export const balancedAssignConditions = async (conditionDict, currentConditions) => {
+
+  if(currentConditions !== {}){
+    // if there are current conditions, we won't assign new ones
+    console.log("conditions already set")
+    return currentConditions
+  }
+
   // get keys from conditionDict
   const keys = Object.keys(conditionDict)
   
