@@ -11,6 +11,7 @@ import {
   runTransaction
 } from 'firebase/firestore'
 import appconfig from '@/config'
+import { split } from 'lodash'
 
 // initialize firebase connection
 // since this is a module these will run once at the start
@@ -118,62 +119,85 @@ export const updateExperimentCounter = async (counter) => {
 
 export const balancedAssignConditions = async (conditionDict, currentConditions) => {
 
-  if(currentConditions !== {}){
+  if(currentConditions.length === 0){
     // if there are current conditions, we won't assign new ones
     console.log("conditions already set")
     return currentConditions
   }
 
-  // get keys from conditionDict
-  const keys = Object.keys(conditionDict)
+  // function for all possible combinations of N arrays (from https://stackoverflow.com/questions/8936610/how-can-i-create-every-combination-possible-for-the-contents-of-two-arrays)
+  const combine = ([head, ...[headTail, ...tailTail]]) => {
+    if (!headTail) return head
+    const combined = headTail.reduce((acc, x) => acc.concat(head.map(h => `${h}-${x}`)), [])
+    return combine([combined, ...tailTail])
+  }
+
+  // Append between-subjects conditions
+  const conditionCombos = combine(Object.values(conditionDict))
+
   
+  // get a docRef for the conditions counter
+  const docRef =  doc(db, `${mode}/${appconfig.project_ref}/counters/conditions`)
+
   // make a list of docRefs for each key in keys
-  const docRefs = keys.map((keyCond) => doc(db, `${mode}/${appconfig.project_ref}/counters/`, keyCond))
+  // const docRefs = keys.map((keyCond) => doc(db, `${mode}/${appconfig.project_ref}/counters/`, keyCond))
 
   try {
     const selectedConditions = await runTransaction(db, async (transaction) => {
 
-      // for each docRef, get the data
-      const docSnaps = await Promise.all(docRefs.map((docRef) => transaction.get(docRef)))
+      // for docRef, get the data
+      const docSnap = await transaction.get(docRef)
+      // const docSnaps = await Promise.all(docRefs.map((docRef) => transaction.get(docRef)))
 
-      // for each docSnap, see if it exists. 
+      // see if it exists. 
       // If it doesn't, choose a random condition from the list of conditions for that key
-      const output = docSnaps.map((docSnap) => {
+      let output
+      
+      if (!docSnap.exists()) {
         const newCondCounter = {}
-        if (!docSnap.exists()) {
-          const conditions = conditionDict[docSnap.id]
-          const randomIndex = Math.floor(Math.random() * conditions.length)
-          const minCondition = conditions[randomIndex]
-          // make incremented counter
-          conditions.forEach((condition) => {
-            newCondCounter[condition] = 0
-          })
-          newCondCounter[minCondition] += 1
-          // return selected condition and new incremented counter
-          return {condName: docSnap.id, selectedCond: minCondition, newCounter: newCondCounter}
-        } 
+        const conditions = conditionCombos
+        const randomIndex = Math.floor(Math.random() * conditions.length)
+        const minCondition = conditions[randomIndex]
+        // make incremented counter
+        conditions.forEach((condition) => {
+          newCondCounter[condition] = 0
+        })
+        newCondCounter[minCondition] += 1
+        // return selected condition and new incremented counter
+        output = {condName: docSnap.id, selectedCond: minCondition, newCounter: newCondCounter}
+      } else {
         //  otherwise, choose the condition with the lowest count
-          const conditions = conditionDict[docSnap.id]
-          const oldCondCounter = docSnap.data()
-          const counts = conditions.map((cond) => oldCondCounter[cond])
-          const min = Math.min(...Object.values(counts))
-          const matchMinConds = Object.keys(oldCondCounter).filter((key) => oldCondCounter[key] === min)
-          // (if there are more than one, pick one at random)
-          const minCondition = matchMinConds[Math.floor(Math.random() * matchMinConds.length)]
-          oldCondCounter[minCondition] += 1
-          return {condName: docSnap.id, selectedCond: minCondition, newCounter: oldCondCounter}
-      })
+        const conditions = conditionCombos
+        const oldCondCounter = docSnap.data()
+        const counts = conditions.map((cond) => oldCondCounter[cond])
+        const min = Math.min(...Object.values(counts))
+        const matchMinConds = Object.keys(oldCondCounter).filter((key) => oldCondCounter[key] === min)
+        // (if there are more than one, pick one at random)
+        const minCondition = matchMinConds[Math.floor(Math.random() * matchMinConds.length)]
+        oldCondCounter[minCondition] += 1
+        output = {condName: docSnap.id, selectedCond: minCondition, newCounter: oldCondCounter}
+      }
+
+
+
       // for each entry in output, update firestore with the newCounter and add selected cond to output dict
       const transactionOut = {}
-      output.forEach((entry) => {
-        transaction.set(doc(db, `${mode}/${appconfig.project_ref}/counters/`, entry.condName), entry.newCounter, {merge: true});
-        transactionOut[entry.condName] = entry.selectedCond
-      })
-      // transaction.update(sfDocRef, { population: newPop });
+      transaction.set(doc(db, `${mode}/${appconfig.project_ref}/counters/`, output.condName), output.newCounter, {merge: true});
+      transactionOut[output.condName] = output.selectedCond
+
       return transactionOut;
     });
-    console.log("Conditions set to ", selectedConditions);
-    return selectedConditions
+    // Split back up into dictionary
+    // get keys from conditionDict
+    const keys = Object.keys(conditionDict)
+    // split condition string based on dash
+    const splitConditions = selectedConditions.conditions.split('-')
+    // zip keys and splitConditions
+    const selectedConditionsDict = Object.fromEntries(keys.map((key, i) => [key, splitConditions[i]]))
+
+    console.log("Conditions set to ", selectedConditionsDict);
+
+    return selectedConditionsDict
   } catch (e) {
     console.error(e);
   }
