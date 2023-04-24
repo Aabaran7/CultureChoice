@@ -2,15 +2,15 @@
 
 Most experiments make use of randomization: tasks are presented to participants in a random order, stimuli are randomly selected from a large pool of possible stimuli, participants are randomly assigned to conditions, etc.
 
-This page shows how to generate random numbers in <SmileText />, and how to use random numbers to accomplish each of the above tasks.
+This page shows how to generate random numbers in <SmileText />, and how to use random numbers to accomplish each of the above tasks. This page also shows how to assign participants to conditions in a <i>balanced</i> way, so you end up with roughly the same number of participants in each condition.
+
+## Seeded random number generation
 
 <SmileText /> uses <b>seeded</b> random number generation. Setting a seed makes random number generation reproducible. That is, two random number generators set with the same seed will produce the same sequence of random numbers. 
 
 In the context of an experiment, if we know the seed used to assign a particular participant to conditions, stimuli, trial orders, etc., we can completely recreate those conditions, stimuli, trial orders, etc. after the fact. As a result, we can see our experiment *exactly* as any given participant saw it. This makes it easier to find bugs, understand each participant's repsonses, etc.
 
 Seeding is also useful for testing: we can easily reconstruct the exact same trials/stimuli/conditions over and over again.
-
-## Automatic seeding of Math.random()
 
 In <SmileText />, seeding happens automatically upon entry into a **route** (see [Timeline](/timeline) for more on routes). Seeds have two components. The first component is a random character string we'll call the "seed ID," generated for each participant. The second is the name of the route that is currently being displayed. Each time a given route is entered (or re-entered), the random number generator will be seeded with the route-specific, participant-specific seed.
 
@@ -76,19 +76,19 @@ const stimuli_selected = random.sampleWithReplacement(stimuli, 3)
 
 ### Random timeline routes
 
-Finally, it is possible to randomize the order of routes in the timeline. See [Timeline](/timeline) for further details.
+It is possible to randomize the order of routes in the timeline. See [Timeline](/timeline) for further details.
 
 ## Override seed id for debugging
 
 As mentioned, <SmileText /> automatically generates a seed ID, which is used to set all local seeds throughout the experiment. When in dev mode (see [Developing](/developing)), you can also override the seed ID. By doing so, you can recreate exactly what a participant saw when they completed the experiment (or what you yourself saw in a previous run of the experiment). To do so, on the developer mode landing page, replace the contents of the textbox with the seed ID you'd like to use. Then click the green refresh button to the right of the textbox. Finally, proceed with choosing a platform. The following run of the experiment will use random numbers determined by the seed ID you entered.
 
-**Note**: You must choose a platform for the seed to work. Make sure you choose the same platform when trying to re-run the same seed, or else you might get different random numbers.
+**Note**: You must choose a platform for the seed to work properly. Make sure you choose the same platform when trying to re-run the same seed.
 
 ![Seed override](/images/seedoverride.png)
 
-You can also override the seed within a component (e.g., if you'd like to re-randomize the condition assignment without starting over the entire experiment). To do so, uncheck the box labeled "Seed" in the developer mode navigation bar. Now, every time you refresh the page, a new random seed will be set. To re-enable the initial seed, check the box and refresh the page.
+You can also override the seed within a component (e.g., if you'd like to re-randomize the condition assignment without starting over the entire experiment). To do so, uncheck the box labeled "Seed" in the developer mode navigation bar. Now, every time you refresh the page, a new random seed will be set (at random---you cannot choose which seed is set). To re-enable the initial seed, check the box and refresh the page.
 
-## "Unseeded" Random Number Generation
+## "Unseeded" random number generation
 
 In rare cases, it may be desirable to generate "true" or "unseeded" random numbers (by default `Math.random()` actually does set a seed, but it's set automatically using other random stuff). To do so, you can make a local instance of a random number generator using the `seedrandom` library:
 
@@ -101,6 +101,63 @@ const rng = seedrandom();
 rng()
 
 ```
+
+## Balanced condition assignment
+
+Sometimes, it is desirable to <i>balance</i> condition assignment, so that roughly even numbers of participants are assigned to each condition. Note that balanced condition assignment is <b>NOT</b> (completely) random. In addition, it doesn't take into account whether participants leave the experiment early&mdash;so each condition will have an equal number of participants who <i>start</i> the experiment, but not necessarily who <i>finish</i> the experiment.
+
+### Assigning conditions
+
+To balance condition assignment, all you need to do is add a field called `possibleConditions` to the local state (in `src/smiledata.js`):
+
+```js
+export default defineStore('smilestore', {
+state: () => ({
+    local: useStorage(appconfig.local_storage_key, {
+      // other fields here,
+      possibleConditions: {cond2: ["X", "Y"]},
+    }
+```
+
+`possibleConditions` should include any named conditions that you want to balance. For example, the above experiment will balance condition assignment between two conditions: `X` and `Y`. This distinction between `X` and `Y` is named `cond2`.
+
+You can also balance assignment between multiple conditions. For example, let's say you want to assign two conditions: the order in which some tasks are presented, and which instructions are presented. You can set `possibleConditions` as follows:
+
+```js
+export default defineStore('smilestore', {
+state: () => ({
+    local: useStorage(appconfig.local_storage_key, {
+      // other fields here,
+      possibleConditions: {taskOrder: ["AFirst", "BFirst"], instructions: ["version1", "version2", "version3"]},
+    }
+```
+
+When you have multiple condition variables, assignment will be balanced across all combinations of all variables. In the above example, that means equal numbers of participants will be assigned to AFirst-version1, AFirst-version2, AFirst-version3, BFirst-version1, BFirst-version2, and BFirst-verstion3.
+
+Random condition assignment occurs when the global data store is first connected to the Firestore database. By default, this occurs after the participant signs the consent form, in `src/ConsentPage.vue`, using the `smilestore.setKnown()` function. If you need access to the assigned condition before the consent page (or immediately after, since condition assignment happens asynchronously), you may need to adjust when this function is called.
+
+### Accessing the assigned conditions
+
+By default, the assigned conditions will be saved to the global store, in a field called `conditions`. They can be accessed within a component using a getter called `getConditions`.
+
+```js
+import useSmileStore from '@/stores/smiledata' // get access to the global store
+
+const smilestore = useSmileStore()
+
+const conds = smilestore.getConditions
+console.log(conds.taskOrder)
+```
+
+### How does it work?
+
+In the Firestore database, <SmileText /> maintains a collection called `counters` for each experiment. One of the counters is a document called `conditions`, which stores the number of participants assigned to each condition (or combination of conditions).
+
+![ConditionCounter](/images/conditioncounter.png)
+
+Every time a new participant connects to the Firestore database, <SmileText /> looks at these condition counts and finds which condition(s) have the lowest count. If there is only one condition/combination with the lowest count, the participant is assigned to that condition/combination. If there are multiple conditions/combinations with the lowest count, the participant is assigned at random to one of those conditions/combinations.
+
+**WARNING**: If the local store `possibleConditions` is changed (e.g., if you add a condition, rename one of the conditions, or even switch the order of multiple named condition groups), the condition counter in Firestore will completely reset when the next participant begins the study. All existing counts will be set to zero, and any conditions that are no longer in `possibleConditions` will be erased from the counter.
 
 
 
