@@ -137,7 +137,11 @@ timeline.pushRandRoute({
   meta: { rand: 'group1' }
 })
 // extra step: must resolve the random routes before going back to sequential routes
-timeline.resolveRandRoutes('group1')
+// if you need to connect to smilestore, we need to wait for this to resolve so that the routes show up properly
+// await timeline.resolveRandRoutes('group1', 'cond2', {X: ["task1", "task2"], Y: ["task2", "task1"]})
+
+// if you just want regular randomization, we can get rid of await and don't provide cond information
+await timeline.resolveRandRoutes('group1')
 
 
 // debriefing form

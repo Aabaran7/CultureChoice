@@ -112,22 +112,59 @@ class Timeline {
     }
   }
 
-  resolveRandRoutes(key) {
+  async resolveRandRoutes(key, condLabel, condOrders) {
     const smilestore = useSmileStore(pinia)
 
     // set seed from seed_id, which is in local storage
     const seedID = smilestore.getSeedID
     seedrandom(`${seedID}-${key}`, { global: true });
 
-    // randomly shuffle the routes in randroutes
-    this.randroutes = random.shuffle(this.randroutes);
+    // if condLabel and condOrders are supplied
+    if(condLabel && condOrders){
+      console.log("setting random route order based on supplied condition label and orders")
 
+      let conds
+      // if not known, connect to database and set conditions
+      if (!smilestore.isKnownUser) {
+        conds = await smilestore.setKnown()
+      } else {
+        if (!smilestore.isDBConnected) {
+          await smilestore.loadData()
+        }
+        conds = smilestore.getConditions
+      }
+
+      // get the condition corresponding to condLabel
+      const assignedCond = conds[condLabel]
+
+      // get the order for the assigned condition
+      const routeOrder = condOrders[assignedCond]
+
+      // put the routes in this.randroutes in the order specified by routeOrder
+      const reorderedRoutes = []
+      routeOrder.forEach(routeName => {
+        const route = this.randroutes.find(route => route.name === routeName)
+        if(route){
+          reorderedRoutes.push(route)
+        }
+      })
+      this.randroutes = reorderedRoutes;
+
+    } else {
+      console.log("setting random route order based on random seed, condition label and orders not supplied")
+      // randomly shuffle the routes in randroutes
+      this.randroutes = random.shuffle(this.randroutes);
+    }
+
+    // add routes to routes and timeline
     Object.values(this.randroutes).forEach(route => {
       if(route.meta.rand !== key){ // check if route matches key
-        console.error(`random route ${  route.name  } doesn't have meta field matching resolution key -- possible error`)
+        console.error(`WARNING: random route ${  route.name  } doesn't have meta rand field matching resolution key -- check for possible error`)
       }
+      // make a copy of the route
       const newroute = _.cloneDeep(route)
 
+      // set as a sequential route
       newroute.meta.sequential = true
 
       try {

@@ -147,7 +147,10 @@ export default defineStore('smilestore', {
       this.data.conditions = await balancedAssignConditions(this.local.possibleConditions, this.data.conditions)
       if (this.local.docRef) {
         this.setDBConnected()
+        // force a data save so conditions get added to the data right away
+        this.saveData(true)
       }
+      return this.data.conditions
     },
     async loadData() {
       let data
