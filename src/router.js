@@ -141,7 +141,7 @@ timeline.pushRandRoute({
 // await timeline.resolveRandRoutes('group1', 'cond2', {X: ["task1", "task2"], Y: ["task2", "task1"]})
 
 // if you just want regular randomization, we can get rid of await and don't provide cond information
-await timeline.resolveRandRoutes('group1')
+timeline.resolveRandRoutes('group1')
 
 
 // debriefing form
