@@ -125,10 +125,16 @@ export const balancedAssignConditions = async (conditionDict, currentConditions)
     return currentConditions
   }
 
+  // if the conditionDict is empty, we'll just return an empty list
+  if(Object.keys(conditionDict).length === 0){
+    console.log("no conditions to assign")
+    return {}
+  }
+
   // function for all possible combinations of N arrays (from https://stackoverflow.com/questions/8936610/how-can-i-create-every-combination-possible-for-the-contents-of-two-arrays)
   const combine = ([head, ...[headTail, ...tailTail]]) => {
     if (!headTail) return head
-    const combined = headTail.reduce((acc, x) => acc.concat(head.map(h => `${h}-${x}`)), [])
+    const combined = headTail.reduce((acc, x) => acc.concat(head.map(h => `${h}~${x}`)), [])
     return combine([combined, ...tailTail])
   }
 
@@ -169,20 +175,40 @@ export const balancedAssignConditions = async (conditionDict, currentConditions)
         //  otherwise, choose the condition with the lowest count
         const conditions = conditionCombos
         const oldCondCounter = docSnap.data()
-        const counts = conditions.map((cond) => oldCondCounter[cond])
-        const min = Math.min(...Object.values(counts))
-        const matchMinConds = Object.keys(oldCondCounter).filter((key) => oldCondCounter[key] === min)
-        // (if there are more than one, pick one at random)
-        const minCondition = matchMinConds[Math.floor(Math.random() * matchMinConds.length)]
-        oldCondCounter[minCondition] += 1
-        output = {condName: docSnap.id, selectedCond: minCondition, newCounter: oldCondCounter}
-      }
+        
+        // check if the current counter data has all the conditions
+        // if there are any missing, we're going to start over everything at zero and choose at random
+        const missingConditions = conditions.filter((cond) => !Object.keys(oldCondCounter).includes(cond))
+        if(missingConditions.length > 0){
+          const newCondCounter = {}
+          const randomIndex = Math.floor(Math.random() * conditions.length)
+          const minCondition = conditions[randomIndex]
+          // make incremented counter
+          conditions.forEach((condition) => {
+            newCondCounter[condition] = 0
+          })
+          newCondCounter[minCondition] += 1
+          // return selected condition and new incremented counter
+          output = {condName: docSnap.id, selectedCond: minCondition, newCounter: newCondCounter}
+        }
 
+        // otherwise, we'll just choose the condition with the lowest count
+        else {
+          const counts = conditions.map((cond) => oldCondCounter[cond])
+          const min = Math.min(...Object.values(counts))
+          const matchMinConds = Object.keys(oldCondCounter).filter((key) => oldCondCounter[key] === min)
+          // (if there are more than one, pick one at random)
+          const minCondition = matchMinConds[Math.floor(Math.random() * matchMinConds.length)]
+          oldCondCounter[minCondition] += 1
+          output = {condName: docSnap.id, selectedCond: minCondition, newCounter: oldCondCounter}
+        }
+      }
 
 
       // for each entry in output, update firestore with the newCounter and add selected cond to output dict
       const transactionOut = {}
-      transaction.set(doc(db, `${mode}/${appconfig.project_ref}/counters/`, output.condName), output.newCounter, {merge: true});
+      // no merge, because if any of the conditions change we just want to reset everything
+      transaction.set(doc(db, `${mode}/${appconfig.project_ref}/counters/`, output.condName), output.newCounter);
       transactionOut[output.condName] = output.selectedCond
 
       return transactionOut;
@@ -191,7 +217,7 @@ export const balancedAssignConditions = async (conditionDict, currentConditions)
     // get keys from conditionDict
     const keys = Object.keys(conditionDict)
     // split condition string based on dash
-    const splitConditions = selectedConditions.conditions.split('-')
+    const splitConditions = selectedConditions.conditions.split('~')
     // zip keys and splitConditions
     const selectedConditionsDict = Object.fromEntries(keys.map((key, i) => [key, splitConditions[i]]))
 

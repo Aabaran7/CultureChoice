@@ -29,7 +29,7 @@ export default defineStore('smilestore', {
       seedID: '',
       seedSet: false,
       pageTracker: 0,
-      possibleConditions: {'cond3': ["A", "B", "C"], 'cond2': ["X", "Y"]},
+      possibleConditions: {taskOrder: ["AFirst", "BFirst"], instructions: ["version1", "version2", "version3"]},
     }, localStorage, { mergeDefaults: true }),
     global: {
       // ephemeral state, resets on browser refresh
@@ -144,7 +144,10 @@ export default defineStore('smilestore', {
       this.local.knownUser = true
       this.local.partNum = await updateExperimentCounter('participants')
       this.local.docRef = await createDoc(this.data, this.local.seedID, this.local.partNum)
-      this.data.conditions = await balancedAssignConditions(this.local.possibleConditions, this.data.conditions)
+      // if possible conditions are not empty, assign conditions
+      if(this.local.possibleConditions){
+        this.data.conditions = await balancedAssignConditions(this.local.possibleConditions, this.data.conditions)
+      }
       if (this.local.docRef) {
         this.setDBConnected()
         // force a data save so conditions get added to the data right away
