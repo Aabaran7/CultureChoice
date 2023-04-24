@@ -78,16 +78,6 @@ const stimuli_selected = random.sampleWithReplacement(stimuli, 3)
 
 It is possible to randomize the order of routes in the timeline. See [Timeline](/timeline) for further details.
 
-## Override seed id for debugging
-
-As mentioned, <SmileText /> automatically generates a seed ID, which is used to set all local seeds throughout the experiment. When in dev mode (see [Developing](/developing)), you can also override the seed ID. By doing so, you can recreate exactly what a participant saw when they completed the experiment (or what you yourself saw in a previous run of the experiment). To do so, on the developer mode landing page, replace the contents of the textbox with the seed ID you'd like to use. Then click the green refresh button to the right of the textbox. Finally, proceed with choosing a platform. The following run of the experiment will use random numbers determined by the seed ID you entered.
-
-**Note**: You must choose a platform for the seed to work properly. Make sure you choose the same platform when trying to re-run the same seed.
-
-![Seed override](/images/seedoverride.png)
-
-You can also override the seed within a component (e.g., if you'd like to re-randomize the condition assignment without starting over the entire experiment). To do so, uncheck the box labeled "Seed" in the developer mode navigation bar. Now, every time you refresh the page, a new random seed will be set (at random---you cannot choose which seed is set). To re-enable the initial seed, check the box and refresh the page.
-
 ## "Unseeded" random number generation
 
 In rare cases, it may be desirable to generate "true" or "unseeded" random numbers (by default `Math.random()` actually does set a seed, but it's set automatically using other random stuff). To do so, you can make a local instance of a random number generator using the `seedrandom` library:
@@ -160,6 +150,18 @@ Every time a new participant connects to the Firestore database, <SmileText /> l
 **WARNING**: If the local store `possibleConditions` is changed (e.g., if you add a condition, rename one of the conditions, or even switch the order of multiple named condition groups), the condition counter in Firestore will completely reset when the next participant begins the study. All existing counts will be set to zero, and any conditions that are no longer in `possibleConditions` will be erased from the counter.
 
 
+## Override randomization for debugging
 
+As mentioned, <SmileText /> automatically generates a seed ID, which is used to set all local seeds throughout the experiment. When in dev mode (see [Developing](/developing)), you can also override the seed ID. By doing so, you can recreate exactly what a participant saw when they completed the experiment (or what you yourself saw in a previous run of the experiment). To do so, on the developer mode landing page, replace the contents of the textbox with the seed ID you'd like to use. Then click the green refresh button to the right of the textbox. Finally, proceed with choosing a platform. The following run of the experiment will use random numbers determined by the seed ID you entered.
 
+**Note**: You must choose a platform for the seed to work properly. Make sure you choose the same platform when trying to re-run the same seed.
 
+![Seed override](/images/seedoverride.png)
+
+You can also override the seed within a component (e.g., if you'd like to re-randomize the condition assignment without starting over the entire experiment). To do so, uncheck the box labeled "Seed" in the developer mode navigation bar (see below). Now, every time you refresh the page, a new random seed will be set (at random---you cannot choose which seed is set). To re-enable the initial seed, check the box and refresh the page.
+
+![Nav bar randomization override](/images/navbaroverride.png)
+
+As shown in the image above, you can also override the assigned condition using the developer mode navigation bar. Hover over the dropdown menu for any named condition (pulled from `possibleConditions` in the local store). You can then select a condition to override the assigned condition. This could be useful e.g. if you want to preview the instructions shown to participants in each condition without restarting the entire experiment.
+
+(TO DO: HOW DOES THIS INTERACT WITH TIMELINE RANDOMIZATION?)
