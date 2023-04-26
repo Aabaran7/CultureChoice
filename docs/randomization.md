@@ -126,6 +126,16 @@ When you have multiple condition variables, assignment will be balanced across a
 
 Random condition assignment occurs when the global data store is first connected to the Firestore database. By default, this occurs after the participant signs the consent form, in `src/ConsentPage.vue`, using the `smilestore.setKnown()` function. If you need access to the assigned condition before the consent page (or immediately after, since condition assignment happens asynchronously), you may need to adjust when this function is called.
 
+### How does it work?
+
+In the Firestore database, <SmileText /> maintains a collection called `counters` for each experiment. One of the counters is a document called `conditions`, which stores the number of participants assigned to each condition (or combination of conditions).
+
+![ConditionCounter](/images/conditioncounter.png)
+
+Every time a new participant connects to the Firestore database, <SmileText /> looks at these condition counts and finds which condition(s) have the lowest count. If there is only one condition/combination with the lowest count, the participant is assigned to that condition/combination. If there are multiple conditions/combinations with the lowest count, the participant is assigned at random to one of those conditions/combinations.
+
+**WARNING**: If the local store `possibleConditions` is changed (e.g., if you add a condition, rename one of the conditions, or even switch the order of multiple named condition groups), the condition counter in Firestore will completely reset when the next participant begins the study. All existing counts will be set to zero, and any conditions that are no longer in `possibleConditions` will be erased from the counter.
+
 ### Accessing the assigned conditions
 
 By default, the assigned conditions will be saved to the global store, in a field called `conditions`. They can be accessed within a component using a getter called `getConditions`.
@@ -139,15 +149,30 @@ const conds = smilestore.getConditions
 console.log(conds.taskOrder)
 ```
 
-### How does it work?
+If you want to use these conditions in a component (for example, displaying different instructions based on the assigned condition), you need to use a [Vue computed property](https://vuejs.org/guide/essentials/computed.html). This is because the conditions are reactive. If you just try to access `smilestore.getConditions` directly, the component will not update when the conditions change. Here is an example of defining a computed property based on the conditions:
 
-In the Firestore database, <SmileText /> maintains a collection called `counters` for each experiment. One of the counters is a document called `conditions`, which stores the number of participants assigned to each condition (or combination of conditions).
+```js
+import { computed } from 'vue'
+import useSmileStore from '@/stores/smiledata'
 
-![ConditionCounter](/images/conditioncounter.png)
+const smilestore = useSmileStore()
 
-Every time a new participant connects to the Firestore database, <SmileText /> looks at these condition counts and finds which condition(s) have the lowest count. If there is only one condition/combination with the lowest count, the participant is assigned to that condition/combination. If there are multiple conditions/combinations with the lowest count, the participant is assigned at random to one of those conditions/combinations.
+const instText = computed(() => {
+    if(smilestore.getConditions.instructions === 'version1') {
+      return "instructions version 1"
+    } 
+    if(smilestore.getConditions.instructions === 'version2') {
+      return "instructions version 2"
+    } 
+    if(smilestore.getConditions.instructions === 'version3') {
+      return "instructions version 3"
+    }
+    return "no condition set"
+})
 
-**WARNING**: If the local store `possibleConditions` is changed (e.g., if you add a condition, rename one of the conditions, or even switch the order of multiple named condition groups), the condition counter in Firestore will completely reset when the next participant begins the study. All existing counts will be set to zero, and any conditions that are no longer in `possibleConditions` will be erased from the counter.
+```
+
+If you then refer to `instText` in your `<template>` section, the component will display the correct instructions based on the assigned condition (or "no condition set" if no condition has been assigned yet).
 
 
 ## Override randomization for debugging
@@ -163,5 +188,3 @@ You can also override the seed within a component (e.g., if you'd like to re-ran
 ![Nav bar randomization override](/images/navbaroverride.png)
 
 As shown in the image above, you can also override the assigned condition using the developer mode navigation bar. Hover over the dropdown menu for any named condition (pulled from `possibleConditions` in the local store). You can then select a condition to override the assigned condition. This could be useful e.g. if you want to preview the instructions shown to participants in each condition without restarting the entire experiment.
-
-(TO DO: HOW DOES THIS INTERACT WITH TIMELINE RANDOMIZATION?)
