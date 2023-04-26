@@ -119,9 +119,9 @@ export const updateExperimentCounter = async (counter) => {
 
 export const balancedAssignConditions = async (conditionDict, currentConditions) => {
 
-  if(currentConditions.length === 0){
-    // if there are current conditions, we won't assign new ones
-    console.log("conditions already set")
+  if(currentConditions.length === 0 && appconfig.mode === 'development'){
+    // if there are current conditions and we're in developer mode, we won't assign new ones
+    console.log("conditions already set, not assigning new ones in dev mode")
     return currentConditions
   }
 

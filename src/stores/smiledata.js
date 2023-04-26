@@ -25,7 +25,7 @@ export default defineStore('smilestore', {
       completionCode: '',
       totalWrites: 0,
       lastWrite: null,
-      seedActive: true,
+      seedActive: true, // do you want to use a random seed based on the participant's ID?
       seedID: '',
       seedSet: false,
       pageTracker: 0,
