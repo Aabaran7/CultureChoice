@@ -122,26 +122,30 @@ timeline.pushSeqRoute({
   component: Exp,
 })
 
-// randomized block of tasks
-timeline.pushRandRoute({
+// create subtimeline for randomization
+const randTimeline = new Timeline()
+
+randTimeline.pushRoute({
   path: '/task1',
   name: 'task1',
   component: Task1,
-  meta: { rand: 'group1' }
 })
 
-timeline.pushRandRoute({
+randTimeline.pushRoute({
   path: '/task2',
   name: 'task2',
   component: Task2,
-  meta: { rand: 'group1' }
 })
-// extra step: must resolve the random routes before going back to sequential routes
-// if you need to connect to smilestore, we need to wait for this to resolve so that the routes show up properly
-// await timeline.resolveRandRoutes('group1', 'cond2', {X: ["task1", "task2"], Y: ["task2", "task1"]})
 
-// if you just want regular randomization, we can get rid of await and don't provide cond information
-timeline.resolveRandRoutes('group1')
+// timeline.pushRandomizedTimeline({
+//   name: randTimeline,
+//   meta: { label: "taskOrder", orders: {AFirst: ["task1", "task2"], BFirst: ["task2", "task1"]} }
+// })
+
+timeline.pushRandomizedTimeline({
+  name: randTimeline,
+  meta: { label: "taskOrder", orders: {AFirst: ["task1"], BFirst: ["task2"]} }
+})
 
 
 // debriefing form

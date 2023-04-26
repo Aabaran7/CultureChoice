@@ -1,16 +1,9 @@
 import _ from 'lodash'
-import seedrandom from 'seedrandom'
-import * as random from '@/randomization'
-import { pinia } from '@/createpinia'
-import '@/seed'
-import useSmileStore from '@/stores/smiledata' // get access to the global store
-
 
 class Timeline {
   constructor() {
     this.routes = [] // the actual routes given to VueRouter
     this.seqtimeline = [] // copies of routes that are sequential
-    this.randroutes = [] // temporary holder used for route randomization
   }
 
   pushToRoutes(route) {
@@ -27,30 +20,20 @@ class Timeline {
     this.routes.push(route)
   }
 
-  pushToRandRoutes(route) {
-    // check that an existing route doesn't exist with same
-    // path and/or name
-    for (let i = 0; i < this.randroutes.length; i += 1) {
-      if (this.randroutes[i].path === route.path) {
-        throw new Error(`DuplicatePathError:${route.path}`)
-      }
-      if (this.randroutes[i].name === route.name) {
-        throw new Error(`DuplicateNameError:${route.name}`)
-      }
-    }
-    this.randroutes.push(route)
-  }
-
   pushToTimeline(route) {
     // check that an existing route doesn't exist with same
     // path and/or name
     for (let i = 0; i < this.seqtimeline.length; i += 1) {
-      if (this.seqtimeline[i].path === route.path) {
-        throw new Error(`DuplicatePathError${route.path}`)
-      }
       if (this.seqtimeline[i].name === route.name) {
         throw new Error(`DuplicateNameError${route.name}`)
       }
+      // only check for duplicate paths if the route name is not an object (subtimeline)
+      if (typeof route.name !== 'object'){
+        if (this.seqtimeline[i].path === route.path) {
+          throw new Error(`DuplicatePathError${route.path}`)
+        }
+      }
+
     }
     this.seqtimeline.push(route)
   }
@@ -87,104 +70,6 @@ class Timeline {
     }
   }
 
-  pushRandRoute(routeConfig) {
-    const newroute = _.cloneDeep(routeConfig)
-    if (!newroute.meta) {
-      newroute.meta = { next: undefined, prev: undefined } // need to configure it
-    } else {
-      if (!newroute.meta.next) {
-        // need to configure next
-        newroute.meta.next = undefined
-      }
-
-      if (!newroute.meta.prev) {
-        // need to configure prev
-        newroute.meta.prev = undefined
-      }
-    }
-    newroute.meta.sequential = true
-
-    try {
-      this.pushToRandRoutes(newroute) // by reference so should update together
-    } catch (err) {
-      console.error('Smile FATAL ERROR: ', err)
-      throw err
-    }
-  }
-
-  async resolveRandRoutes(key, condLabel, condOrders) {
-    const smilestore = useSmileStore(pinia)
-
-    // set seed from seed_id, which is in local storage
-    const seedID = smilestore.getSeedID
-    seedrandom(`${seedID}-${key}`, { global: true });
-
-    // if condLabel and condOrders are supplied
-    if(condLabel && condOrders){
-      console.log("setting random route order based on supplied condition label and orders")
-
-      let conds
-      // if not known, connect to database and set conditions
-      if (!smilestore.isKnownUser) {
-        conds = await smilestore.setKnown()
-      } else {
-        if (!smilestore.isDBConnected) {
-          await smilestore.loadData()
-        }
-        conds = smilestore.getConditions
-      }
-
-      // get the condition corresponding to condLabel
-      const assignedCond = conds[condLabel]
-
-      // get the order for the assigned condition
-      const routeOrder = condOrders[assignedCond]
-
-      // put the routes in this.randroutes in the order specified by routeOrder
-      const reorderedRoutes = []
-      routeOrder.forEach(routeName => {
-        const route = this.randroutes.find(route => route.name === routeName)
-        if(route){
-          reorderedRoutes.push(route)
-        }
-      })
-      this.randroutes = reorderedRoutes;
-
-    } else {
-      console.log("setting random route order based on random seed, condition label and orders not supplied")
-      // randomly shuffle the routes in randroutes
-      this.randroutes = random.shuffle(this.randroutes);
-    }
-
-    // add routes to routes and timeline
-    Object.values(this.randroutes).forEach(route => {
-      if(route.meta.rand !== key){ // check if route matches key
-        console.error(`WARNING: random route ${  route.name  } doesn't have meta rand field matching resolution key -- check for possible error`)
-      }
-      // make a copy of the route
-      const newroute = _.cloneDeep(route)
-
-      // set as a sequential route
-      newroute.meta.sequential = true
-
-      try {
-        this.pushToRoutes(newroute) // add to routes list
-      } catch (err) {
-        console.error('Smile FATAL ERROR: ', err)
-        throw err
-      }
-      try {
-        this.pushToTimeline(newroute) // add to timeline
-      } catch (err) {
-        console.error('Smile FATAL ERROR: ', err)
-        throw err
-      }
-    });
-
-    // remove random routes so that you can reuse this later
-    this.randroutes = []
-  }
-
   pushRoute(routeConfig) {
     const newroute = _.cloneDeep(routeConfig)
     // should NOT allow meta next/prev to exist
@@ -204,6 +89,32 @@ class Timeline {
     }
   }
 
+  pushRandomizedTimeline(timeline){
+    const newtimeline = _.cloneDeep(timeline)
+
+    // need to configure next and prev
+    if(!newtimeline.meta){
+      newtimeline.meta = { next: undefined, prev: undefined, type: "timeline" } 
+    } else {
+      newtimeline.meta.next = undefined
+      newtimeline.meta.prev = undefined
+      newtimeline.meta.type = "timeline"
+    }
+
+    // get all the routes inside the timeline and add them to routes
+    newtimeline.name.routes.forEach(route => {
+      try {
+        this.pushToRoutes(route)
+      } catch (err) {
+        console.error('Smile FATAL ERROR: ', err)
+        throw err
+      }
+    })
+    
+    // add the timeline object itself to the timeline
+    this.pushToTimeline(newtimeline)
+  }
+
   build() {
     this.buildGraph()
     // this.buildProgress()
@@ -211,6 +122,9 @@ class Timeline {
 
   // buildGraph builds
   buildGraph() {
+    // keep track of which objects in sequential timeline are themselves timelines
+    const timelineIndices = []
+
     for (let i = 0; i < this.seqtimeline.length; i += 1) {
       if (this.seqtimeline[i].meta.next === undefined) {
         // pass
@@ -232,7 +146,21 @@ class Timeline {
           this.seqtimeline[i].meta.prev = this.seqtimeline[i - 1].name
         }
       }
+
+      if(this.seqtimeline[i].meta.type === "timeline"){
+        timelineIndices.push(i)
+      }
+
     }
+
+    // propogate various meta fields to the routes within the timeline
+    // this is relevant for next, previous, label, and orders -- we need that meta info at the route level
+    timelineIndices.forEach(index => {
+      this.seqtimeline[index].name.routes.forEach((route, i) => {
+        this.seqtimeline[index].name.routes[i].meta = {...this.seqtimeline[index].name.routes[i].meta, ...this.seqtimeline[index].meta}
+      })
+    })
+
   }
 
   // this won't work with new system
