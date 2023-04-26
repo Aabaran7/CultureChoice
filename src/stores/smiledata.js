@@ -57,7 +57,8 @@ export default defineStore('smilestore', {
       withdraw: false, // false
       withdraw_data: {}, // empty
       route_order: [],
-      conditions: {}
+      conditions: {},
+      smile_config: appconfig, //  adding config info to firebase document
     },
     config: appconfig,
   }),
