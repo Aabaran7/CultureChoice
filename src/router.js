@@ -137,14 +137,9 @@ randTimeline.pushRoute({
   component: Task2,
 })
 
-// timeline.pushRandomizedTimeline({
-//   name: randTimeline,
-//   meta: { label: "taskOrder", orders: {AFirst: ["task1", "task2"], BFirst: ["task2", "task1"]} }
-// })
-
 timeline.pushRandomizedTimeline({
   name: randTimeline,
-  meta: { label: "taskOrder", orders: {AFirst: ["task1"], BFirst: ["task2"]} }
+  meta: { label: "taskOrder", orders: {AFirst: ["task1", "task2"], BFirst: ["task2", "task1"]} }
 })
 
 

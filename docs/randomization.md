@@ -37,6 +37,8 @@ Why is the random number generator re-seeded upon entry to each route? Why can't
 Generates a random integer between min and max (both inclusive). For example, this can be used to assign a participant to a (numbered) condition.
 
 ```js
+import * as random from '@/randomization'
+
 // generate a random integer: 1, 2, 3, 4, or 5
 const condition = random.randomInt(1, 5)
 ```
@@ -46,6 +48,8 @@ const condition = random.randomInt(1, 5)
 Randomly shuffles an array. For example, this can be used to present some fixed stimuli in a random order.
 
 ```js
+import * as random from '@/randomization'
+
 const stimuli = ["image1.png", "image2.png", "image3.png", "image4.png", "image5.png"]
 
 // shuffle the stimulus array
@@ -57,6 +61,8 @@ const stimuli_shuffled = random.shuffle(stimuli)
 Samples **without** replacement from an array. For example, this can be used to randomly present 3 stimuli from a larger set.
 
 ```js
+import * as random from '@/randomization'
+
 const stimuli = ["image1.png", "image2.png", "image3.png", "image4.png", "image5.png"]
 
 // sample (without replacement) from array
@@ -68,6 +74,8 @@ const stimuli_selected = random.sampleWithoutReplacement(stimuli, 3)
 Samples **with** replacement from an array. For example, this can be used to randomly present 3 stimuli from a larger set (with the possibility of presenting the same stimulus twice).
 
 ```js
+import * as random from '@/randomization'
+
 const stimuli = ["image1.png", "image2.png", "image3.png", "image4.png", "image5.png"]
 
 // sample (with replacement) from array
