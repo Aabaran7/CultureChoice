@@ -137,7 +137,10 @@ During development you can, of course, comment out certain routes to help isolat
 
 Hopefully, you are thinking this sounds super easy to set up, but how do you step from one component/route to the next?  To do that we need to introduce the concept of a [stepper](#timelinestepper).  But first, let's quickly consider more complex sequential flows.
 
-## Branching flows
+## Branching and randomized flows
+
+
+### Simple branching flows 
 
 Sometimes you need timeline structures a little more complex than a simple sequence.  For example, there might be multiple initial landing pages depending on if you come in from a particular [recruitment](/recruitment) service:
 
@@ -184,9 +187,12 @@ Using this approach you can configure fairly complex branching flows through pag
 
 The `timeline.build()` method steps through all nodes pushed using `pushSeqRoute()` and mades the `next` point to the successor and `prev` point to the previous route.  If this is not what you want (because your routes need more complex flows) you can simply omnit the `build` step.
 
-## Randomized flows
 
-Sometimes you want to randomize the order or presentation of routes. For example, your experiment might have two tasks, which are presented in a randomized order. Or, you might have three tasks, and you want each participant to see only one of them.
+### Randomized flows and complex branching
+
+Sometimes you want to randomize the order or presentation of routes. For example, your experiment might have two tasks, which are presented in a randomized order. Or, you might have four tasks, and you want one group of participants to see two of the tasks and the other group to see the other two tasks. We call these "randomized flows":
+
+<img src="/images/randomizedflows.png" width="500" alt="timeline example" style="margin: auto;">
 
 These randomized flows can be accomplished by creating a <b>randomized subtimeline</b>.
 
@@ -247,7 +253,7 @@ timeline.pushRandomizedTimeline({
 
 In this case, the timeline stepper will look at the entry in <SmileText />'s global store called `conditions`, and will find the value assigned to the property called `taskOrder` (where the value is either `task1_first` or `task2_first`). Then, rather than shuffling task 1 and task 2 at random, it will show them in the order specified by the participant's assigned value.
 
-This technique can also be used to show only a subset of the possible tasks. For example, you might specify:
+This technique can also be used to show only a subset of the possible tasks to each participant. For example, you might specify:
 
 ```js
 timeline.pushRandomizedTimeline({
@@ -258,7 +264,7 @@ timeline.pushRandomizedTimeline({
 
 In this case, the participant will only see task 1 (between the `/exp` and `/debrief` routes) if their assigned `taskCondition` is `task1`, and will only see task 2 (between the `/exp` and `/debrief` routes) if their assigned `taskCondition` is `task2`.
 
-**WARNING**: If the condition you're trying to use to order the subtimeline routes doesn't exist in the global store (e.g., `smilestore.data.conditions.taskCondition` is undefined), the timeline stepper cannot successfully order the routes. In this case, all subtimeline routes will be shuffled using the default random seed.
+**WARNING**: If the condition you're trying to use to order the subtimeline routes doesn't exist in the global store (e.g., `smilestore.data.conditions.taskCondition` is undefined), the timeline stepper cannot successfully order the routes. In this case, all routes in the subtimeline will be shuffled using the default random seed. If this is not the desired fallback behavior, you might consider setting a default value for any conditions that control routing.
 
 
 ## TimelineStepper
