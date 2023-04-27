@@ -266,9 +266,15 @@ Next, remove the `.gitsecret` folder in your base repo:
 rm -rf .gitsecret
 ```
 
-Next run `git secret init` to reinitialize your gitsecret setup.
+Next run:
 
-Next, c reate a `gpg` RSA key pair for yourself (e.g., lab manager/pi)
+```
+git secret init
+```
+
+to reinitialize your gitsecret setup.
+
+Next, create a `gpg` RSA key pair for yourself (e.g., lab manager/pi)
 see [this](https://git-secret.io/#using-gpg) for more info but basically you just
 type:
 
@@ -284,12 +290,20 @@ git secret tell you@email.com
 
 (replacing you@email.com with your email address)
 
-Next, add the files
-    - `git secret add .env/.env.deploy.local`
-    - `git secret add .env/.env.local`
+Next, add the files:  
+```
+git secret add .env/.env.deploy.local
+git secret add .env/.env.local
+git secret add .env/.env.docs.local
+```
+
+(TRhe last command about `.env.docs.local` is optional)
 
 Finally, encrypt the files
-    - `git secret hide`
+
+```
+git secret hide
+```
 
 Now commit everything that has changed to your github repo.
 
@@ -301,18 +315,56 @@ those files so you will manually add and remove accounts from your base repo.
 
 ### Adding additional users to your system
 
-- get the user's GPG key (see above on instructions for that)
-    `gpg --armor --export their@email.id > public_key.txt`
-- import the key into `gpg --import public_key.txt`
-- add to your keyring `git secret tell their@email.id`
-- reencrypt the files `git secret reveal; git secret hide`
+First, get the user's GPG key (see above on instructions for that).
+Ask them to type (on mac):
+
+```
+gpg --armor --export their@email.id > pbcopy
+```
+
+and copy the public key to you in a email or slack.
+
+Next, import the key into your keychain by copying it to your keyboard
+then typing
+
+```
+pbpaste | gpg --import
+```
+
+Next this add to your keyring 
+```
+git secret tell their@email.id
+```
+
+Finally, re-encrypt the files: 
+```
+git secret reveal; git secret hide
+```
 
 ### If you make changes to the env files for your project
-- reencrypt the files `git secret hide`
-- upload them to the github repo `npm run upload_config`
+- reencrypt the files 
+```
+git secret hide
+```
+
+- upload them to the github repo 
+```
+npm run upload_config
+```
 
 ### Configure your git secrets on github
-- `gh auth login` if you haven't already
-- upload them to the github repo `npm run upload_config`
+
+To configure the github repo correct:
+
+```
+gh auth login
+``` 
+
+if you haven't already
+
+Then, upload the configuration settings
+```
+npm run upload_config
+```
 
 
