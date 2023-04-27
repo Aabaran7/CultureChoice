@@ -79,7 +79,7 @@ const getData = async (path, completeOnly, filename) => {
   if (completeOnly == 'all') {
     querySnapshot = await getDocs(collection(db, path))
   } else {
-    const q = query(collection(db, path), where('complete', '==', true))
+    const q = query(collection(db, path), where('done', '==', true))
     querySnapshot = await getDocs(q)
   }
   const data = []

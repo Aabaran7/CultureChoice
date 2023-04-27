@@ -6,7 +6,14 @@ The project is currently in the development and planning stage. We are taking a 
 
 The current development is happening at [https://github.com/nyuccl/smile](https://github.com/nyuccl/smile).
 
-Before getting started please install the [required software](/requirements).
+There are two ways to get started with Smile: 
+- If you are already using Smile in your lab, install the [required software](/requirements) to get started developing your own experiments.
+- If you are setting up Smile for the first time use in your lab, jump to the [lab config](/labconfig) docs for configuring your services. 
+
+The design choices in Smile were made so that it is relatively painless for developers to make new experiments after your lab performs the one-time setup.  This handy flow chart gives an overview of the process:
+
+![Starting pathway](/images/starting-pathways.png)
+
 
 --- 
 

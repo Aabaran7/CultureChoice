@@ -4,7 +4,8 @@ import { reactive, computed } from 'vue'
 const config = reactive({
     username: 'ghuser',
     projectname: 'my_cool_project',
-    description: 'my new research project'
+    description: 'my new research project',
+    base_git: 'nyuccl/smile'
 })
 </script>
 
@@ -75,6 +76,15 @@ below will be adapted for your situation allowing you to simply cut and paste wi
     </tr>
     <tr>
         <td class="label">
+            <label for="base_git">Base Github repot</label><br>
+            If in gureckislab then default to `nyuccl/smile` otherwise, it is the base smile repo for your lab (e.g, `hartleylab/smile`).
+        </td>
+        <td class="data">
+            <input id="base_git" type="text" v-model="config.base_git" />
+        </td>
+    </tr>
+    <tr>
+        <td class="label">
             <label for="projectname">Project name</label><br>
             We highly recommend you use underscores for spaces and name your project based on 
 the science (e.g., `question_asking`).  
@@ -110,13 +120,13 @@ For example, on Mac this might be your desktop
 cd ~/Desktop
 ```
 
-Following the steps below, copy the <SmileText/> GitHub repo into a new project name and clone it locally.
+Following the steps below, copy the Smile GitHub repo into a new project name and clone it locally.
 
 
 In this example command, the new project will be named `{{config.projectname}}` and a copy of the starting project template will be placed in a new folder with that name:
 
 
-<div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">gh repo create {{config.projectname}} --private --clone --template nyuccl/smile</span></span></code></pre></div>
+<div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">gh repo create {{config.projectname}} --private --clone --template {{config.base_git}}</span></span></code></pre></div>
 
 Next, alter the Github description for your new repo:
 
@@ -133,10 +143,11 @@ Finally change into the newly created project directory (assuming you called you
 ## 2. Configure your project
 
 
-Information about the configuration setting is [here](/configuration) but if you are in the <GureckisLabText/> you will want to simply decrypt the files provided in the repository.
+Information about the configuration setting is [here](/configuration) but if your lab has already been [set up](/labconfig) you will want to 
+simply decrypt the files provided in the repository.
 
 ::: danger Warning!
-This will only work if you have first sent Todd your gpg key and waited for him to push a change to the <SmileText/> repo.  See instructions [here](/requirements#_3-request-access-to-the-shared-database-resources).
+This will only work if you have first sent your lab coordinator your gpg key and waited for them to push a change to the <SmileText/> repo.  See instructions [here](/requirements#_3-request-access-to-the-shared-database-resources).
 :::
 
 To do this simply type: 
@@ -176,7 +187,7 @@ npm run force_deploy
 
 to create a deployment given the current code in github.  In the future, deployments will happen automatically anytime you make a push to your repo.
 
-If you are in the <GureckisLabText/> join the `#smile-deploy` slack channel.  A robot :robot: there will let you know that your project was deployed and provide you with a web link to live site.  
+If your lab coordinator set up the slack features of your [base project](/labconfig) then join the `#smile-deploy` slack channel for your lab.  A robot :robot: there will let you know that your project was deployed and provide you with a web link to live site.  
 
 If that didn't happen/work then continue reading to learn more about [deployments](/deploying) including [debugging tips](/deploying#debugging-deployment-issues).
 

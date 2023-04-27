@@ -1,9 +1,11 @@
 # :space_invader: Required software you will need to install
 
-Before getting started working on a <SmileText/> project you will need to install a few items on your local computer.  
+Before getting started working on a <SmileText/> project you will need to install a few items on your local computer (see [^gitpod] for other options).  
 
-:::info Zero-install option
-This guide is the recommended strategy for most people (particularly core lab members like postdocs and phd students).  However, there is also the option of working on the project using a pre-configured cloud-based environment hosted by [Gitpod](https://gitpod.io). Click [here](/gitpod) for more info.
+
+:::warning First time setting Smile up for a new lab?
+This guide (and most of the docs) assumes you have set up Smile for your lab.  If you need to set up Smile for your lab please read [this guide](/labconfig) first.  From here on out you will be called your lab's Smile coordinator.
+
 :::
 
 ## 1. Install the latest Node.js
@@ -13,8 +15,7 @@ You will need to install Node.js on your computer if you haven't already.  You c
 
 ## 2. Create a GitHub account if you haven't and install the command-line tool
 
-You will also need a [GitHub account](https://github.com/join) (a free account is fine).  Tell Todd your username so he can add
-you as a member of the [NYUCCL organization](https://github.com/nyuccl).  
+You will also need a [GitHub account](https://github.com/join) (a free account is fine).  Tell the main Smile coordinator for your lab your username so they can add you as a member of the lab's Github organization.
 
 Next make sure you have the GitHub Command Line Interface (cli) tool installed:
 [download it here](https://cli.github.com) using the installer or homebrew.  
@@ -30,7 +31,7 @@ into your terminal program.  This will open your default browser and ask you to 
 
 ## 3. Request access to the shared database resources
 
-Later you will want to customize the configuration of your application, but if you are in the <GureckisLabText/> you will want to simply decrypt the pre-configured files provided in the repository.
+Later you will want to customize the configuration of your application, but to begin with you will want to simply decrypt the pre-configured files provided in the repository.
 
 ::: info Great news!
 You only need to do this the first time you try out <SmileText/>!  Then you will forever be part of the family.
@@ -49,11 +50,11 @@ Next create a RSA key-pair for your email address:
 gpg --gen-key
 ```
 
-There will be a sequence of questions you answer.  Use your preferred email address e.g., the one linked to GitHub.  Send Todd your public key by sending the output of this command to him on slack or via email (replace example@gmail.com with the address you provided to `gpg`):
+There will be a sequence of questions you answer.  Use your preferred email address e.g., the one linked to GitHub.  Send the main Smile coordinator for your lab your public key by sending the output of this command to them on slack or via email (replace example@gmail.com with the address you provided to `gpg`):
 
 <div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">gpg --armor --export example@gmail.com</span></span></code></pre></div>
 
-Wait for him to reply and to make a push to the main <SmileText/> repo giving access to the encrypted files to your email address.
+Wait for the coordinator to reply and to make a push to the main Smile repo giving access to the encrypted files to your email address.
 
 ## 4. Install a web browser (or two or three)
 
@@ -77,3 +78,4 @@ brew install --cask google-cloud-sdk
 
 
 
+[^gitpod]: This guide is the recommended strategy for most people (particularly core lab members like postdocs and phd students).  However, there is also the option of working on the project using a pre-configured cloud-based environment hosted by [Gitpod](https://gitpod.io) which might be nice for undergrads with less experience installing software using the command line. Click [here](/gitpod) for more info.

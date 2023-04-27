@@ -15,7 +15,13 @@ echo "VITE_GIT_HASH          = $HASH" >> $ENV_FILE
 
 echo 'VITE_GIT_REPO_NAME     = ${VITE_PROJECT_NAME}' >> $ENV_FILE
 
-OWNER=$(basename $(dirname $(git remote get-url origin)) | tr '[:upper:]' '[:lower:]')
+GITURL=$(git remote get-url origin);
+if [[ $GITURL == git@* ]];
+then
+    OWNER=$(echo $GITURL | awk -F':' '{print $2}' | awk -F'/' '{print $1}' );
+else
+    OWNER=$(echo $GITURL | awk -F'/' '{print $4}');
+fi
 echo "VITE_GIT_OWNER         = ${OWNER}" >> $ENV_FILE
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')

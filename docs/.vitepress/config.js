@@ -36,6 +36,7 @@ export default defineConfig({
           { text: '📦 Data storage', link: '/datastorage' },
           { text: '👩‍💻 Developing', link: '/developing' },
           { text: '🐞 Testing', link: '/testing' },
+          { text: '🧪 Lab Config', link: '/labconfig' },
         ],
       },
       {

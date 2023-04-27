@@ -20,8 +20,8 @@ const forminfo = reactive({
 // }
 
 function withdraw() {
-    smilestore.data.withdraw=true
-    smilestore.data.withdraw_data = forminfo
+    smilestore.setWithdraw(forminfo) // set withdraw data fields
+    smilestore.saveData(true) // force a data save
     emit('submit-withdraw')
 }
 

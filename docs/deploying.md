@@ -11,7 +11,7 @@ The steps to deploy are...
 In response, GitHub will automatically
 1. **Build your project**
 1. **Upload your files** to the [configured](/configuration) server location
-1. **Notify a bot** in the <GureckisLabText/> slack (`#smile-deploy`) about the final URL of your project (or if there is an error)
+1. **Notify a bot** in your lab slack (e.g., `#smile-deploy`) about the final URL of your project (or if there is an error)
 
 
 ![steps for building](/images/deploy-steps.png)
@@ -128,7 +128,7 @@ Sometimes a deployment can fail due to an error in your code or your setup.  Whe
 
 First, check the `#smile-deploy` slack channel and see if there are any relevant messages.
 
-Second, make sure you have a set of `.env.*.local` files in the `env/` folder (created using `git secret reveal` for <GureckisLabText/>) and have run the `npm run config:upload` command (refer back to the [initial setup instructions](starting)).  This latter command uploads some specific configuration options to GitHub which are needed for your deployment to run.  You can verify these have been set by going to your repository on the GitHub website, clicking Settings, then "Secrets".  There should be several repository secrets including `SECRET_APP_CONFIG` and `EXP_DEPLOY_PATH`, etc...
+Second, make sure you have a set of `.env.*.local` files in the `env/` folder (created using `git secret reveal`) and have run the `npm run config:upload` command (refer back to the [initial setup instructions](starting)).  This latter command uploads some specific configuration options to GitHub which are needed for your deployment to run.  You can verify these have been set by going to your repository on the GitHub website, clicking Settings, then "Secrets".  There should be several repository secrets including `SECRET_APP_CONFIG` and `EXP_DEPLOY_PATH`, etc...
 
 Third, run the `npm run build` and `npm run preview` commands and verify that these steps are completed without error on your local machine.  If there are errors they may be preventing GitHub from building your site.  Fix the errors locally and push the changes.
 
@@ -160,7 +160,7 @@ You can run most of the steps up to this point locally by just typing `npm run b
 ### Uploading files to an Internet-accessible server
 
 Next, the GitHub action uploads the files to the server using rsync.
-The remote host, folder, and other options are set using GitHub Secrets which are encrypted environment variables that you configure on the repository settings.  Generally in the <GureckisLabText/> these will be set for you, but read more about [configuration options](configuration) to customize or adjust.
+The remote host, folder, and other options are set using GitHub Secrets which are encrypted environment variables that you configure on the repository settings.  Generally these will be set for you when your [lab base repo](/labconfig) is configured, but read more about [configuration options](configuration) to customize or adjust.
 
 ### Notifying the Slack bot
 In the <GureckisLabText/>, the final step is to send a notification about the deployment to a Slack [Workflow Builder](https://slack.com/help/articles/360035692513-Guide-to-Workflow-Builder) bot.  This lets you verify the code was deployed and provides you with an up-to-date URL to share with participants.
@@ -183,3 +183,17 @@ In addition, the `index.html` of your project should include the `noindex` meta 
 ```
 
 Google offers a [robots.text testing tool](https://www.google.com/webmasters/tools/robots-testing-tool) which can verify that your settings will be respected by at least Google.
+
+## Deploying in development mode
+
+In some cases it might be helpful to deploy a live version of your project in [developer mode](/developing).  This will allow you to share a version of your experiment with other people with the [developer bar](/developing.html#smile-developer-bar) enabled.  To do this create a new branch for public sharing.  Then edit `src/config.js` so that the line the by default reads 
+
+```  
+    mode: import.meta.env.MODE,
+```
+
+says instead 
+
+```
+    mode: "development",
+```

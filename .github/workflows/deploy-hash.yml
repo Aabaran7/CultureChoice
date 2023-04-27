@@ -153,14 +153,15 @@ jobs:
         run: npm run build
 
       # make remote folder if necessar
-      - name: create the remote folder if it doesn't exist
+      - name: create the remote folders if they don't exist
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EXP_DEPLOY_HOST }}
           username: ${{ secrets.EXP_DEPLOY_USER }}
           key: ${{ secrets.EXP_DEPLOY_KEY  }}
           port: ${{ secrets.EXP_DEPLOY_PORT }}
-          script: mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}
+          script: mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}; mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/e; mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/hashes
+
 
       # Deploy files to web server
       - name: rsync to server

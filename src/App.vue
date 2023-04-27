@@ -26,6 +26,8 @@ onMounted(() => {
   window.addEventListener('blur', (event) => {
     smilestore.recordWindowEvent('blur')
   })
+
+  smilestore.getBrowserFingerprint();
 })
 
 </script>
