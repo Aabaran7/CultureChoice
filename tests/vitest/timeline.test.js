@@ -290,7 +290,6 @@ describe('Timeline tests', () => {
       path: '/five',
       name: 'five',
       component: MockComponent,
-      meta: { next: 'one' },
     })
 
     // right hand branch
@@ -314,7 +313,7 @@ describe('Timeline tests', () => {
     timeline.build()
 
     expect(timeline.seqtimeline[0].meta.next).toBe('two')
-    expect(timeline.seqtimeline[1].meta.next).toBe('three')
+    expect(timeline.seqtimeline[1].meta.next).toBe('two')
     expect(timeline.seqtimeline[2].meta.next).toBe('four')
     expect(timeline.seqtimeline[3].meta.next).toBe('one')
 
@@ -322,7 +321,7 @@ describe('Timeline tests', () => {
     // implicily.  but it changes if you have gone through the loop
     expect(timeline.seqtimeline[0].meta.prev).toBe(null) // oh not sure about this
     expect(timeline.seqtimeline[1].meta.prev).toBe('one')
-    expect(timeline.seqtimeline[2].meta.prev).toBe('two')
+    expect(timeline.seqtimeline[2].meta.prev).toBe('one-b')
     expect(timeline.seqtimeline[3].meta.prev).toBe('three')
   })
   /*
