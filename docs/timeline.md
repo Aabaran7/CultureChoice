@@ -36,12 +36,12 @@ const router = VueRouter.createRouter({
 
 First, we define two simple Vue [components](/components), then we create an array called `routes` which configures each route.  Each route is, in effect, a mapping between a particular URL and a component.  For example, in this code snippet, `/` on the server is mapped to the `Welcome` component and `/consent` to the `Consent` component.  
 
-You can read this as literally saying "when the user requests the `/` URL on this application, display the `Welcome` component".  Specifically, it renders the template of your component in your app in place of where the `<router-view>` tag appears.  In smile, that tag appears in `src/App.vue` which is the starting component for the application.
+You can read this as saying "When the user requests the `/` URL on this application, display the `Welcome` component".  Specifically, it renders the template of your component in your app in place of where the `<router-view>` tag appears.  In Smile, that tag appears in `src/App.vue` which is the starting component for the application.
 
 
 ## URLs and Routes
 
-A quick note about URLs and routes.  We will often mention a base path or base URL for a project.  This is the full deployment URL to your experiment including the protocol (`http://`), the domain (`exps.gureckislab.org`), as well as subfolders (`/ghuser/repo/branch/`) etc...  For example `http://exps.gureckislab.org/` might be the base path.  This is configured via the `VITE_CODE_NAME_DEPLOY_URL` or `VITE_DEPLOY_URL` in the `env/.env.git` file (see the docs on [configuration](/configuration)).  
+A quick note about URLs and routes.  We will often mention a base path or base URL for a project.  This is the full deployment URL to your experiment including the protocol (`http://`), the domain (`exps.gureckislab.org`), as well as subfolders (`/ghuser/repo/branch/`) etc...  For example, `http://exps.gureckislab.org/` might be the base path.  This is configured via the `VITE_CODE_NAME_DEPLOY_URL` or `VITE_DEPLOY_URL` in the `env/.env.git` file (see the docs on [configuration](/configuration)).  
 
 Routes are configured beneath this base URL so `/` means the original base URL but `/about` means `http://exps.gureckislab.org/#/about`.  The base URL can also include subfolders so for instance the base route could just as easily be `https://exps.gureckislab.org/ghuser/repo/branch/#/about`.  The base folder is where your `index.html` for the SPA is located during deployment or development.
 
@@ -51,7 +51,7 @@ The easiest way to think about it is like this:
 
 ![how route URLS are processed](/images/routing.png)
 
-words separate by slashes appearing before the `#` (or if there are no `#`s) are sent by the browser to the webserver as resource requests using standard `http` protocol, which triggers a page reload from the server.  Things that appear after the `#` do _not_ trigger a page reload.  The Vue Router interprets changes appearing after the `#` and parses the content and uses it to determine what Vue components to load (based on the routing table that you configure).[^hash]  
+words separate by slashes appearing before the `#` (or if there are no `#`s) are sent by the browser to the web server as resource requests using standard `http` protocol, which triggers a page reload from the server.  Things that appear after the `#` do _not_ trigger a page reload.  The Vue Router interprets changes appearing after the `#` and parses the content and uses it to determine what Vue components to load (based on the routing table that you configure).[^hash]  
 
 [^hash]: The `VueRouter.createWebHashHistory()` call is what tells the router to use the `#` navigation strategy.
 
@@ -59,7 +59,7 @@ In <SmileText/> key steps in the experiment are indexed by routes that map to [p
 
 ## Timeline
 
-As just described, the Vue Router is a mapping between different URLs and Vue components to load.  However, in experiments we often want to step through content sequentially.  For this purpose <SmileText /> implements a simple Timeline class (see `src/timeline.js`) which acts as a wrapper around the basic Vue Router.
+As just described, the Vue Router is a mapping between different URLs and Vue components to load.  However, in experiments, we often want to step through content sequentially.  For this purpose, Smile implements a simple Timeline class (see `src/timeline.js`) which acts as a wrapper around the basic Vue Router.
 
 
 The timeline class allows you to configure a sequence of routes as well as allow for routes that are not part of the sequence:
@@ -185,7 +185,7 @@ timeline.build()
 
 Using this approach you can configure fairly complex branching flows through pages.
 
-The `timeline.build()` method steps through all nodes pushed using `pushSeqRoute()` and mades the `next` point to the successor and `prev` point to the previous route.  If this is not what you want (because your routes need more complex flows) you can simply omnit the `build` step.
+The `timeline.build()` method steps through all nodes pushed using `pushSeqRoute()` and makes the `next` point to the successor and `prev` point to the previous route.  If this is not what you want (because your routes need more complex flows) you can simply omit the `build` step.
 
 
 ### Randomized flows and complex branching
@@ -194,7 +194,7 @@ Sometimes you want to randomize the order or presentation of routes. For example
 
 <img src="/images/randomizedflows.png" width="500" alt="timeline example" style="margin: auto;">
 
-These randomized flows can be accomplished by creating a <b>randomized subtimeline</b>.
+These randomized flows can be accomplished by creating a <b>randomized sub-timeline</b>.
 
 Let's say you want two tasks to be presented in a random order, following a route called `/exp`. After the two tasks, you want to show the debrief route. Here's what your `router.js` file might look like:
 
@@ -238,7 +238,7 @@ timeline.pushSeqRoute({
 })
 ```
 
-The subtimeline can contain any number of routes. Any routes contained in a subtimeline get added to the main router. Initially, the `next` and `prev` meta fields for each subtimeline route automatically point to the routes that come directly before and directly after the subtimeline. For example, in the router above, both task 1 and task 2 will have `next` set to the `/debrief` route, and `prev` set to the `/exp` route.
+The sub-timeline can contain any number of routes. Any routes contained in a subtimeline get added to the main router. Initially, the `next` and `prev` meta fields for each subtimeline route automatically point to the routes that come directly before and directly after the subtimeline. For example, in the router above, both task 1 and task 2 will have `next` set to the `/debrief` route, and `prev` set to the `/exp` route.
 
 However, these meta fields are changed when the [timeline stepper](#timelinestepper)'s `next()` function is used to enter the subtimeline. When the subtimeline is identified as the next step in the timeline (for example, when the next button is pressed on the `/exp` route), the subtimeline's routes are shuffled and the `next` and `prev` meta fields are configured accordingly (e.g., the `next` field for task 2 points to task 1, if task 2 comes first in the shuffled subtimeline).
 
@@ -317,7 +317,7 @@ function finish(goto) {
 Details about the implementation of the `useTimelineStepper` are quite simple and in `src/composables/timelinestepper.js`.
 
 :::warning IMPORTANT (and helpful!)
-One important feature of the stepper is that it calls `saveData()` on the global store prior to route changes.  So as a result you can trust that your data will be saved/synchronized with the persistant store (Firestore) whenever you navigated between sequential routes.  See the data storage does on [automatic saving](/datastorage.html#automatic-saving).  This only works if you use the TimelineStepper to advance between pages/routes.  If you call this manually you need to save manually as well using the `saveData()` method.
+One important feature of the stepper is that it calls `saveData()` on the global store prior to route changes.  So as a result you can trust that your data will be saved/synchronized with the persistent store (Firestore) whenever you navigated between sequential routes.  See the data storage docs on [automatic saving](/datastorage.html#automatic-saving).  This only works if you use the TimelineStepper to advance between pages/routes.  If you call this manually you need to save manually as well using the `saveData()` method.
 :::
 
 
