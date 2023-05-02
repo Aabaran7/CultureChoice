@@ -6,6 +6,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import appconfig from '@/config'
 import { processQuery } from '@/utils'
 import Timeline from '@/timeline'
+import RandomSubTimeline from '@/subtimeline'
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -124,7 +125,7 @@ timeline.pushSeqRoute({
 })
 
 // create subtimeline for randomization
-const randTimeline = new Timeline()
+const randTimeline = new RandomSubTimeline()
 
 randTimeline.pushRoute({
   path: '/task1',

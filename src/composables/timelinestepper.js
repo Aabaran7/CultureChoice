@@ -41,8 +41,7 @@ export default function useTimelineStepper() {
         const cond = smilestore.getConditions[metaInfo.label]
 
         if(!cond){
-          console.error(`Condition label ${metaInfo.label} not found in data! Setting route order based on random seed instead.`)
-          orderedRoutes = random.shuffle(subTimeline.routes)
+          throw new Error(`ConditionError: Condition label ${metaInfo.label} not found in data`)
         } else {
           const routeOrder = metaInfo.orders[cond]
           // put subTimeline.routes in the order specified by routeOrder

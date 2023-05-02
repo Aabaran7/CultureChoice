@@ -76,7 +76,7 @@ import { Timeline } from '@/timeline'  // @ resolves to /src in Smile
 const timeline = new Timeline()
 ```
 
-There are three key methods available on the timeline instance:
+There are four key methods available on the timeline instance:
 
 ### `timeline.pushSeqRoute(route_obj)`
 
@@ -85,7 +85,11 @@ The first call to this function will make the configured route the first route i
 
 ### `timeline.pushRoute(route_obj)`
 
-This pushes a new route (specified in `route_obj`) into a nonsequential timeline.  This route will exist in the Vue router but will not be in the timeline sequence.  This is useful for configuration and debugging routes as well as routes you want to define and even link to but 
+This pushes a new route (specified in `route_obj`) into a nonsequential timeline.  This route will exist in the Vue router but will not be in the timeline sequence.  This is useful for configuration and debugging routes as well as routes you want to define and even link to but not present in the regular timeline flow.
+
+### `timeline.pushRandomizedTimeline(subtimeline_obj)`
+
+This pushes a new randomized sub-timeline (specified in `subtimeline_obj`) into the sequential timeline.  See [Randomized flows and complex branching](#randomized-flows-and-complex-branching) for further details.
 
 ### `timeline.build()`
 
@@ -199,7 +203,9 @@ These randomized flows can be accomplished by creating a <b>randomized sub-timel
 Let's say you want two tasks to be presented in a random order, following a route called `/exp`. After the two tasks, you want to show the debrief route. Here's what your `router.js` file might look like:
 
 ```js
-import { Timeline } from '@/timeline'  // @ resolves to /src in Smile
+import Timeline from '@/timeline' 
+import RandomSubTimeline from '@/subtimeline'
+
 const timeline = new Timeline()
 
 // exp route
@@ -210,7 +216,7 @@ timeline.pushSeqRoute({
 })
 
 // create subtimeline for randomization
-const randTimeline = new Timeline()
+const randTimeline = new RandomSubTimeline()
 
 // push tasks into subtimeline as non-sequential routes
 randTimeline.pushRoute({
