@@ -42,7 +42,7 @@ export default defineConfig({
       {
         text: 'Experiment Design',
         items: [
-          { text: '👩‍🎨 Overview', link: '/experimentdesign' },
+          { text: '🧑‍🎨 Overview', link: '/experimentdesign' },
           { text: '🧩 Components', link: '/components' },
           { text: '🔀 Timeline', link: '/timeline' },
           { text: '🧑‍🎨 Styling, CSS, and icons', link: '/style' },
