@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import Timeline from '@/timeline'
+import RandomSubTimeline from '@/subtimeline'
 
 describe('Timeline tests', () => {
   it('should be able to create a timeline', () => {
@@ -174,6 +175,123 @@ describe('Timeline tests', () => {
     expect(errorTrigger).toThrowError()
     expect(timeline.routes.length).toBe(1)
     expect(timeline.seqtimeline.length).toBe(1) // only first one should work
+  })
+
+  it('subtimeline can be added to sequential timeline', () => {
+    const MockComponent1 = { template: '<div>Mock Component</div>' }
+    const MockComponent2 = { template: '<div>Mock Component</div>' }
+    const timeline = new Timeline()
+    const subtimeline = new RandomSubTimeline()
+    timeline.pushSeqRoute({
+      path: '/first',
+      name: 'first',
+      component: MockComponent1,
+    })
+    subtimeline.pushRoute({
+      path: '/mid1',
+      name: 'mid1',
+      component: MockComponent2,
+    })
+    timeline.pushRandomizedTimeline({
+      name: subtimeline
+    })
+
+    expect(timeline.seqtimeline.length).toBe(2)
+  })
+
+
+  it('you cannot add a timeline to a timeline', () => {
+    const MockComponent1 = { template: '<div>Mock Component</div>' }
+    const MockComponent2 = { template: '<div>Mock Component</div>' }
+    const timeline = new Timeline()
+    const timeline2 = new Timeline()
+    timeline.pushSeqRoute({
+      path: '/first',
+      name: 'first',
+      component: MockComponent1,
+    })
+    timeline2.pushRoute({
+      path: '/mid1',
+      name: 'mid1',
+      component: MockComponent2,
+    })
+    const errorTrigger = () => {
+      timeline.pushRandomizedTimeline({
+        name: timeline2
+      })
+    }
+    expect(errorTrigger).toThrowError()
+  })
+
+  it('should not allow the same route to be registered inside and outside the subtimeline', () => {
+    const MockComponent = { template: '<div>Mock Component</div>' }
+    const timeline = new Timeline()
+    const subtimeline = new RandomSubTimeline()
+    timeline.pushSeqRoute({
+      path: '/thanks',
+      name: 'thank',
+      component: MockComponent,
+    })
+    subtimeline.pushRoute({
+      path: '/thanks',
+      name: 'thanks',
+      component: MockComponent,
+    })
+    const errorTrigger = () => {
+      timeline.pushRandomizedTimeline({
+        name: subtimeline
+      })
+    }
+    expect(errorTrigger).toThrowError()
+    expect(timeline.routes.length).toBe(1) // route won't get added
+  })
+
+  it('build method correctly configures meta and next fields of subtimeline/subtimeline routes', () => {
+    const MockComponent1 = { template: '<div>Mock Component</div>' }
+    const MockComponent2 = { template: '<div>Mock Component</div>' }
+    const MockComponent3 = { template: '<div>Mock Component</div>' }
+    const MockComponent4 = { template: '<div>Mock Component</div>' }
+
+    const timeline = new Timeline()
+    const subtimeline = new RandomSubTimeline()
+    timeline.pushSeqRoute({
+      path: '/first',
+      name: 'first',
+      component: MockComponent1,
+    })
+    subtimeline.pushRoute({
+      path: '/mid1',
+      name: 'mid1',
+      component: MockComponent2,
+    })
+    subtimeline.pushRoute({
+      path: '/mid2',
+      name: 'mid2',
+      component: MockComponent3,
+    })
+    timeline.pushRandomizedTimeline({
+      name: subtimeline
+    })
+
+    timeline.pushSeqRoute({
+      path: '/last',
+      name: 'last',
+      component: MockComponent4,
+    })
+
+    timeline.build()
+
+    // these are the prev and next fields for the first randomized route
+    expect(timeline.routes[1].meta.prev).toBe('first')
+    expect(timeline.routes[1].meta.next).toBe('last')
+
+    // these are the prev and next fields for the second randomized route
+    expect(timeline.routes[2].meta.prev).toBe('first')
+    expect(timeline.routes[2].meta.next).toBe('last')
+
+    // these are the prev and next fields for the subtimeline itself
+    expect(timeline.seqtimeline[1].meta.prev).toBe('first')
+    expect(timeline.seqtimeline[1].meta.next).toBe('last')
   })
 
   it('build method should correctly configure a doubly linked list', () => {
