@@ -215,10 +215,10 @@ timeline.pushSeqRoute({
   component: Exp,
 })
 
-// create subtimeline for randomization
+// create randomized sub-timeline
 const randTimeline = new RandomSubTimeline()
 
-// push tasks into subtimeline as non-sequential routes
+// push tasks into sub-timeline as "non-sequential" routes
 randTimeline.pushRoute({
   path: '/task1',
   name: 'task1',
@@ -231,7 +231,7 @@ randTimeline.pushRoute({
   component: Task2,
 })
 
-// push subtimeline itself into main timeline
+// push sub-timeline itself into main timeline
 timeline.pushRandomizedTimeline({
   name: randTimeline,
 })
@@ -244,11 +244,13 @@ timeline.pushSeqRoute({
 })
 ```
 
-The sub-timeline can contain any number of routes. Any routes contained in a subtimeline get added to the main router. Initially, the `next` and `prev` meta fields for each subtimeline route automatically point to the routes that come directly before and directly after the subtimeline. For example, in the router above, both task 1 and task 2 will have `next` set to the `/debrief` route, and `prev` set to the `/exp` route.
+Note that all sub-timelines routes are added with the `pushRoute` method, not the `pushSeqRoute` method. There is no `pushSeqRoute` method for randomized sub-timelines.
 
-However, these meta fields are changed when the [timeline stepper](#timelinestepper)'s `next()` function is used to enter the subtimeline. When the subtimeline is identified as the next step in the timeline (for example, when the next button is pressed on the `/exp` route), the subtimeline's routes are shuffled and the `next` and `prev` meta fields are configured accordingly (e.g., the `next` field for task 2 points to task 1, if task 2 comes first in the shuffled subtimeline).
+The randomized sub-timeline can contain any number of routes. Any routes contained in a sub-timeline get added to the main router. Initially, the `next` and `prev` meta fields for each sub-timeline route automatically point to the routes that come directly before and directly after the sub-timeline. For example, in the router above, both task 1 and task 2 will have `next` set to the `/debrief` route, and `prev` set to the `/exp` route.
 
-By default, all the routes in the randomized timeline will be shuffled using a special random seed set within the timeline stepper (see [Randomization](/randomization) for more on seeded random number generation). However, you can instead optionally specify several fixed route orders based on assigned conditions. For example, if you have two tasks, you might want to assign participants to one of two conditions: `task1_first` and `task2_first`. You can assign participants to these conditions using the procedure documented in [Randomization](/randomization). In the router, you can push the subtimeline to the main timeline like this:
+However, these meta fields are changed when the [timeline stepper](#timelinestepper)'s `next()` function is used to enter the sub-timeline. When the sub-timeline is identified as the next step in the timeline (for example, when the next button is pressed on the `/exp` route), the sub-timeline's routes are shuffled and the `next` and `prev` meta fields are configured accordingly (e.g., the `next` field for task 2 points to task 1, if task 2 comes first in the shuffled sub-timeline). This is controlled by the function `RandomizeSubTimeline` in `subtimeline.js`, so you can check it out if you're curious. Or you can call the function somewhere else directly if you don't want to shuffle the randomized sub-timeline using the timeline stepper.
+
+By default, all the routes in the randomized sub-timeline will be shuffled using a special random seed set within `RandomizeSubTimeline` (see [Randomization](/randomization) for more on seeded random number generation). However, you can instead optionally specify several fixed route orders based on assigned conditions. For example, if you have two tasks, you might want to assign participants to one of two conditions: `task1_first` and `task2_first`. You can assign participants to these conditions using the procedure documented in [Randomization](/randomization). In the router, you can push the randomized sub-timeline to the main timeline like this:
 
 ```js
 timeline.pushRandomizedTimeline({
@@ -269,9 +271,6 @@ timeline.pushRandomizedTimeline({
 ```
 
 In this case, the participant will only see task 1 (between the `/exp` and `/debrief` routes) if their assigned `taskCondition` is `task1`, and will only see task 2 (between the `/exp` and `/debrief` routes) if their assigned `taskCondition` is `task2`.
-
-**WARNING**: If the condition you're trying to use to order the subtimeline routes doesn't exist in the global store (e.g., `smilestore.data.conditions.taskCondition` is undefined), the timeline stepper cannot successfully order the routes. In this case, all routes in the subtimeline will be shuffled using the default random seed. If this is not the desired fallback behavior, you might consider setting a default value for any conditions that control routing.
-
 
 ## TimelineStepper
 

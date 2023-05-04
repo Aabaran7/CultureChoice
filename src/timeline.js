@@ -4,6 +4,7 @@ class Timeline {
   constructor() {
     this.routes = [] // the actual routes given to VueRouter
     this.seqtimeline = [] // copies of routes that are sequential
+    this.type = "timeline"
   }
 
   pushToRoutes(route) {
@@ -90,6 +91,9 @@ class Timeline {
   }
 
   pushRandomizedTimeline(timeline){
+    if(timeline.name.type !== 'randomized_sub_timeline'){
+      throw new Error("Can only push randomized timelines to timelines")
+    }
     const newtimeline = _.cloneDeep(timeline)
 
     // need to configure next and prev
