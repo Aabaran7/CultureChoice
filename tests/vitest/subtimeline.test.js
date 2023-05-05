@@ -158,6 +158,8 @@ describe('Subtimeline tests', () => {
     const wrapper = setupapp(routes)
     await router.isReady()
 
+    const smilestore = useSmileStore() // uses the testing pinia!
+
     const errorTrigger = () => {
       RandomizeSubTimeline(timeline.seqtimeline[1].name, router)
     }
