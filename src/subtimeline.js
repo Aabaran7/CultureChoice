@@ -101,17 +101,10 @@ export function RandomizeSubTimeline(subTimeline, router) {
   })
 
   
-  // for the current route, change meta.next to be the first route in the randomized subtimeline (this allows the route guards to work)
-  const newBefore = _.cloneDeep(routeBefore)
-  const newAfter = _.cloneDeep(routeAfter)
-
   // for the route before, change meta.next to be the first route in the randomized subtimeline
-  newBefore.meta.next = orderedRoutes[0].name
+  routeBefore.meta.next = orderedRoutes[0].name
   // for the route after, change meta.prev to be the last route in the randomized subtimeline
-  newAfter.meta.prev = orderedRoutes[orderedRoutes.length-1].name
-
-  router.addRoute(newBefore)
-  router.addRoute(newAfter)
+  routeAfter.meta.prev = orderedRoutes[orderedRoutes.length-1].name
 
 
   // return the next route
