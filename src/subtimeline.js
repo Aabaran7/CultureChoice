@@ -35,6 +35,7 @@ class RandomSubTimeline {
         `SubRouteError: Can't have meta.next or meta.prev defined for randomized subroute`
       )
     }
+    newroute.meta.subroute = true
     try {
       this.pushToRoutes(newroute)
     } catch (err) {
