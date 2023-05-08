@@ -80,5 +80,17 @@ describe('Randomization tests', () => {
 
   }) 
 
+  it('should get cartesian product of arrays', () => {
+
+    const combos = random.expandProduct([1, 2], [3, 4], [5, 6])
+    // should have 8 combos
+    expect(combos.length).toBe(8)
+
+    const combos2 = random.expandProduct([1, 2, 3, 4], [3, 4, 7, 10], [5, 6])
+    // should have 32 combos
+    expect(combos2.length).toBe(32)
+
+  }) 
+
 })
 
