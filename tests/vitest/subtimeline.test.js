@@ -2,7 +2,6 @@
 import RandomSubTimeline from '@/subtimeline'
 import { RandomizeSubTimeline } from '@/subtimeline'
 import Timeline from '@/timeline'
-import { defineComponent, onMounted } from 'vue'
 import { createTestingPinia } from '@pinia/testing'
 import useSmileStore from '@/stores/smiledata'
 import { createRouter, createWebHashHistory } from 'vue-router'
@@ -264,6 +263,55 @@ describe('Subtimeline tests', () => {
     // has to be mid1 or mid2 -- this is kind of a bad test
     expect(['mid1', 'mid2']).toContain(shuffledRoutes[0].name)
     expect(['mid1', 'mid2']).toContain(shuffledRoutes[1].name)
+
+  })
+
+  it('should shuffle the same way if given the same seed', async () => {
+    const MockComponent = { template: '<div>Mock Component</div>' }
+
+    const timeline = new Timeline()
+    const subtimeline = new RandomSubTimeline()
+    timeline.pushSeqRoute({
+      path: '/',
+      name: 'first',
+      component: MockComponent,
+    })
+    subtimeline.pushRoute({
+      path: '/mid1',
+      name: 'mid1',
+      component: MockComponent,
+    })
+    subtimeline.pushRoute({
+      path: '/mid2',
+      name: 'mid2',
+      component: MockComponent,
+    })
+    timeline.pushRandomizedTimeline({
+      name: subtimeline,
+    })
+
+    timeline.pushSeqRoute({
+      path: '/last',
+      name: 'last',
+      component: MockComponent,
+    })
+
+    timeline.build()
+    const { routes } = timeline
+
+    const wrapper = setupapp(routes)
+    await router.isReady()
+    
+    const smilestore = useSmileStore() // uses the testing pinia!
+    
+    // set seed
+    smilestore.local.seedID = 'seed_test'
+
+    // seed gets set in RandomizeSubTimeline, so this should just always return the same thing 
+    const shuffledRoutesArray = Array(10).fill(RandomizeSubTimeline(timeline.seqtimeline[1].name, router))
+
+    const allEqual = arr => arr.every( v => v === arr[0] )
+    expect(allEqual(shuffledRoutesArray)).toBe(true)
 
   })
 
