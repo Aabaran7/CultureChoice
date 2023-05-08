@@ -296,22 +296,32 @@ describe('Subtimeline tests', () => {
       component: MockComponent,
     })
 
-    timeline.build()
-    const { routes } = timeline
+    async function doEverything() {
+      timeline.build()
+      const { routes } = timeline
 
-    const wrapper = setupapp(routes)
-    await router.isReady()
-    
-    const smilestore = useSmileStore() // uses the testing pinia!
-    
-    // set seed
-    smilestore.local.seedID = 'seed_test'
+      const wrapper = setupapp(routes)
+      await router.isReady()
+      
+      const smilestore = useSmileStore() // uses the testing pinia!
+      
+      // set seed
+      smilestore.local.seedID = 'seed_test'
+
+      return RandomizeSubTimeline(timeline.seqtimeline[1].name, router)
+
+    }
+
 
     // seed gets set in RandomizeSubTimeline, so this should just always return the same thing 
-    const shuffledRoutesArray = Array(10).fill(RandomizeSubTimeline(timeline.seqtimeline[1].name, router))
+    const shuffledRoutesArray = await Promise.all(Array(6).fill().map(doEverything)) 
 
-    const allEqual = arr => arr.every( v => v === arr[0] )
-    expect(allEqual(shuffledRoutesArray)).toBe(true)
+    // all should be identical to first element
+    expect(shuffledRoutesArray[1]).toStrictEqual(shuffledRoutesArray[0])
+    expect(shuffledRoutesArray[2]).toStrictEqual(shuffledRoutesArray[0])
+    expect(shuffledRoutesArray[3]).toStrictEqual(shuffledRoutesArray[0])
+    expect(shuffledRoutesArray[4]).toStrictEqual(shuffledRoutesArray[0])
+    expect(shuffledRoutesArray[5]).toStrictEqual(shuffledRoutesArray[0])
 
   })
 
