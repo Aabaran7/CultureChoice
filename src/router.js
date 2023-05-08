@@ -139,9 +139,11 @@ randTimeline.pushRoute({
   component: Task2,
 })
 
+// if you want fixed orders based on conditions, uncomment meta line
+// commented out, this will shuffle the routes at random
 timeline.pushRandomizedTimeline({
   name: randTimeline,
-  meta: { label: "taskOrder", orders: {AFirst: ["task1", "task2"], BFirst: ["task2", "task1"]} }
+  // meta: { label: "taskOrder", orders: {AFirst: ["task1", "task2"], BFirst: ["task2", "task1"]} }
 })
 
 
