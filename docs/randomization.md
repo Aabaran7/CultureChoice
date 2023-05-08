@@ -84,6 +84,21 @@ const stimuli = ["image1.png", "image2.png", "image3.png", "image4.png", "image5
 const stimuli_selected = random.sampleWithReplacement(stimuli, 3)
 ```
 
+### `random.expandProduct(...arrays)`
+
+Computes the cartesian product of any number of arrays. For example, this can be used to get all permutations of three condition variables.
+
+```js
+import * as random from '@/randomization'
+
+const stimuli = ["image1.png", "image2.png", "image3.png", "image4.png", "image5.png"]
+const prompts = ["click the red button", "click the blue button"]
+const backgroundColors = ["purple", "orange", "yellow"]
+
+// get cartesian product of all arrays -- this will return an array of 5 x 2 x 3 = 30 arrays (each of length 3), each of which contains a stimulus, prompt, and background color
+const all_trial_types = random.expandProduct(stimuli, prompts, backgroundColors)
+```
+
 ### Random timeline routes
 
 It is possible to randomize the order of routes in the timeline. See [Timeline](/timeline) for further details.
