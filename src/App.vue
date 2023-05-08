@@ -30,52 +30,13 @@ onMounted(() => {
   smilestore.getBrowserFingerprint();
 })
 
-// this is tied to the router-view component, allowing us to re-render it according to the watchers below
-const componentKey = ref(0);
-const forceRerender = () => {
-  componentKey.value += 1;
-};
-
-// monitor changes to condition variable in smilestore 
-// if condition changes, pop it up to the URL
-watch(() => smilestore.getCondString, (newCond) => {
-  const newQueries = { ...route.query, ...{cond: newCond} } // add new condition to queries
-  router.replace({path: route.path, query: newQueries}) // push to router
-})
-
-// monitor changes to url
-// if url changes and it doesn't match what's already in smilestore for condition,
-// change the condition, then reload the page
-watch(() => route.query, (newquery, oldquery) => {
-  if(newquery.cond && newquery.cond !== smilestore.getCondString){ // if the query cond exists and doesn't match the one already in the data
-    const success = smilestore.overwriteConds(newquery.cond) // reassign conditions
-    if(success){
-      forceRerender() // re-render the page
-    } else{
-      router.replace({path: route.path, query: oldquery}) // push to router
-    }
-  }
-})
-
-
-// monitor changes to local state and force router changes
-
-
-// smilestore.$subscribe((mutation, state) => {
-//   // go to the new route
-//   if(!state.local.allowJumps && smilestore.config.mode === 'development') {
-//     router.push({name: state.local.lastRoute})
-//   }
-// })
-
-
 </script>
 
 <template>
   <DeveloperNavBar v-if="smilestore.config.mode=='development'"></DeveloperNavBar>
   <StatusBar v-if="$route.name!=='config' && $route.name!=='recruit'"></StatusBar>
   <div class="router">
-    <router-view :key="componentKey"></router-view> <!-- the router loads here -->
+    <router-view></router-view> <!-- the router loads here -->
   </div>
   <ProgressBar v-if="$route.name!=='config' && $route.name!=='recruit' && smilestore.config.show_progress_bar=='true'"></ProgressBar>
 </template>

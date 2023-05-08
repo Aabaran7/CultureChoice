@@ -1,5 +1,4 @@
 <script setup>
-    // import '@/seed'
     import { useRouter, useRoute } from 'vue-router'
     import useTimelineStepper from '@/composables/timelinestepper'
     import useSmileStore from '@/stores/smiledata'

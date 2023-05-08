@@ -36,12 +36,12 @@ const router = VueRouter.createRouter({
 
 First, we define two simple Vue [components](/components), then we create an array called `routes` which configures each route.  Each route is, in effect, a mapping between a particular URL and a component.  For example, in this code snippet, `/` on the server is mapped to the `Welcome` component and `/consent` to the `Consent` component.  
 
-You can read this as literally saying "when the user requests the `/` URL on this application, display the `Welcome` component".  Specifically, it renders the template of your component in your app in place of where the `<router-view>` tag appears.  In smile, that tag appears in `src/App.vue` which is the starting component for the application.
+You can read this as saying "When the user requests the `/` URL on this application, display the `Welcome` component".  Specifically, it renders the template of your component in your app in place of where the `<router-view>` tag appears.  In Smile, that tag appears in `src/App.vue` which is the starting component for the application.
 
 
 ## URLs and Routes
 
-A quick note about URLs and routes.  We will often mention a base path or base URL for a project.  This is the full deployment URL to your experiment including the protocol (`http://`), the domain (`exps.gureckislab.org`), as well as subfolders (`/ghuser/repo/branch/`) etc...  For example `http://exps.gureckislab.org/` might be the base path.  This is configured via the `VITE_CODE_NAME_DEPLOY_URL` or `VITE_DEPLOY_URL` in the `env/.env.git` file (see the docs on [configuration](/configuration)).  
+A quick note about URLs and routes.  We will often mention a base path or base URL for a project.  This is the full deployment URL to your experiment including the protocol (`http://`), the domain (`exps.gureckislab.org`), as well as subfolders (`/ghuser/repo/branch/`) etc...  For example, `http://exps.gureckislab.org/` might be the base path.  This is configured via the `VITE_CODE_NAME_DEPLOY_URL` or `VITE_DEPLOY_URL` in the `env/.env.git` file (see the docs on [configuration](/configuration)).  
 
 Routes are configured beneath this base URL so `/` means the original base URL but `/about` means `http://exps.gureckislab.org/#/about`.  The base URL can also include subfolders so for instance the base route could just as easily be `https://exps.gureckislab.org/ghuser/repo/branch/#/about`.  The base folder is where your `index.html` for the SPA is located during deployment or development.
 
@@ -51,7 +51,7 @@ The easiest way to think about it is like this:
 
 ![how route URLS are processed](/images/routing.png)
 
-words separate by slashes appearing before the `#` (or if there are no `#`s) are sent by the browser to the webserver as resource requests using standard `http` protocol, which triggers a page reload from the server.  Things that appear after the `#` do _not_ trigger a page reload.  The Vue Router interprets changes appearing after the `#` and parses the content and uses it to determine what Vue components to load (based on the routing table that you configure).[^hash]  
+words separate by slashes appearing before the `#` (or if there are no `#`s) are sent by the browser to the web server as resource requests using standard `http` protocol, which triggers a page reload from the server.  Things that appear after the `#` do _not_ trigger a page reload.  The Vue Router interprets changes appearing after the `#` and parses the content and uses it to determine what Vue components to load (based on the routing table that you configure).[^hash]  
 
 [^hash]: The `VueRouter.createWebHashHistory()` call is what tells the router to use the `#` navigation strategy.
 
@@ -59,7 +59,7 @@ In <SmileText/> key steps in the experiment are indexed by routes that map to [p
 
 ## Timeline
 
-As just described, the Vue Router is a mapping between different URLs and Vue components to load.  However, in experiments we often want to step through content sequentially.  For this purpose <SmileText /> implements a simple Timeline class (see `src/timeline.js`) which acts as a wrapper around the basic Vue Router.
+As just described, the Vue Router is a mapping between different URLs and Vue components to load.  However, in experiments, we often want to step through content sequentially.  For this purpose, Smile implements a simple Timeline class (see `src/timeline.js`) which acts as a wrapper around the basic Vue Router.
 
 
 The timeline class allows you to configure a sequence of routes as well as allow for routes that are not part of the sequence:
@@ -76,7 +76,7 @@ import { Timeline } from '@/timeline'  // @ resolves to /src in Smile
 const timeline = new Timeline()
 ```
 
-There are three key methods available on the timeline instance:
+There are four key methods available on the timeline instance:
 
 ### `timeline.pushSeqRoute(route_obj)`
 
@@ -85,7 +85,11 @@ The first call to this function will make the configured route the first route i
 
 ### `timeline.pushRoute(route_obj)`
 
-This pushes a new route (specified in `route_obj`) into a nonsequential timeline.  This route will exist in the Vue router but will not be in the timeline sequence.  This is useful for configuration and debugging routes as well as routes you want to define and even link to but 
+This pushes a new route (specified in `route_obj`) into a nonsequential timeline.  This route will exist in the Vue router but will not be in the timeline sequence.  This is useful for configuration and debugging routes as well as routes you want to define and even link to but not present in the regular timeline flow.
+
+### `timeline.pushRandomizedTimeline(subtimeline_obj)`
+
+This pushes a new randomized sub-timeline (specified in `subtimeline_obj`) into the sequential timeline.  See [Randomized flows and complex branching](#randomized-flows-and-complex-branching) for further details.
 
 ### `timeline.build()`
 
@@ -137,7 +141,10 @@ During development you can, of course, comment out certain routes to help isolat
 
 Hopefully, you are thinking this sounds super easy to set up, but how do you step from one component/route to the next?  To do that we need to introduce the concept of a [stepper](#timelinestepper).  But first, let's quickly consider more complex sequential flows.
 
-## Complex flows
+## Branching and randomized flows
+
+
+### Simple branching flows 
 
 Sometimes you need timeline structures a little more complex than a simple sequence.  For example, there might be multiple initial landing pages depending on if you come in from a particular [recruitment](/recruitment) service:
 
@@ -180,10 +187,90 @@ timeline.build()
 
 ```
 
-Using this approach you can configure fairly complex flows through pages.
-Importantly if you want to create alternative paths (e.g., going down one sequence if some condition is set otherwise following another) you need to configure this manually using the `meta` fields.  
+Using this approach you can configure fairly complex branching flows through pages.
 
-The `timeline.build()` method steps through all nodes pushed using `pushSeqRoute()` and mades the `next` point to the successor and `prev` point to the previous route.  If this is not what you want (because your routes need more complex flows) you can simply omnit the `build` step.
+The `timeline.build()` method steps through all nodes pushed using `pushSeqRoute()` and makes the `next` point to the successor and `prev` point to the previous route.  If this is not what you want (because your routes need more complex flows) you can simply omit the `build` step.
+
+
+### Randomized flows and complex branching
+
+Sometimes you want to randomize the order or presentation of routes. For example, your experiment might have two tasks, which are presented in a randomized order. Or, you might have four tasks, and you want one group of participants to see two of the tasks and the other group to see the other two tasks. We call these "randomized flows":
+
+<img src="/images/randomizedflows.png" width="500" alt="timeline example" style="margin: auto;">
+
+These randomized flows can be accomplished by creating a <b>randomized sub-timeline</b>.
+
+Let's say you want two tasks to be presented in a random order, following a route called `/exp`. After the two tasks, you want to show the debrief route. Here's what your `router.js` file might look like:
+
+```js
+import Timeline from '@/timeline' 
+import RandomSubTimeline from '@/subtimeline'
+
+const timeline = new Timeline()
+
+// exp route
+timeline.pushSeqRoute({
+  path: '/exp',
+  name: 'exp',
+  component: Exp,
+})
+
+// create randomized sub-timeline
+const randTimeline = new RandomSubTimeline()
+
+// push tasks into sub-timeline as "non-sequential" routes
+randTimeline.pushRoute({
+  path: '/task1',
+  name: 'task1',
+  component: Task1,
+})
+
+randTimeline.pushRoute({
+  path: '/task2',
+  name: 'task2',
+  component: Task2,
+})
+
+// push sub-timeline itself into main timeline
+timeline.pushRandomizedTimeline({
+  name: randTimeline,
+})
+
+// debriefing form
+timeline.pushSeqRoute({
+  path: '/debrief',
+  name: 'debrief',
+  component: Debrief,
+})
+```
+
+Note that all sub-timelines routes are added with the `pushRoute` method, not the `pushSeqRoute` method. There is no `pushSeqRoute` method for randomized sub-timelines.
+
+The randomized sub-timeline can contain any number of routes. Any routes contained in a sub-timeline get added to the main router. Initially, the `next` and `prev` meta fields for each sub-timeline route automatically point to the routes that come directly before and directly after the sub-timeline. For example, in the router above, both task 1 and task 2 will have `next` set to the `/debrief` route, and `prev` set to the `/exp` route.
+
+However, these meta fields are changed when the [timeline stepper](#timelinestepper)'s `next()` function is used to enter the sub-timeline. When the sub-timeline is identified as the next step in the timeline (for example, when the next button is pressed on the `/exp` route), the sub-timeline's routes are shuffled and the `next` and `prev` meta fields are configured accordingly (e.g., the `next` field for task 2 points to task 1, if task 2 comes first in the shuffled sub-timeline). This is controlled by the function `RandomizeSubTimeline` in `subtimeline.js`, so you can check it out if you're curious. Or you can call the function somewhere else directly if you don't want to shuffle the randomized sub-timeline using the timeline stepper.
+
+By default, all the routes in the randomized sub-timeline will be shuffled using a special random seed set within `RandomizeSubTimeline` (see [Randomization](/randomization) for more on seeded random number generation). However, you can instead optionally specify several fixed route orders based on assigned conditions. For example, if you have two tasks, you might want to assign participants to one of two conditions: `task1_first` and `task2_first`. You can assign participants to these conditions using the procedure documented in [Randomization](/randomization). In the router, you can push the randomized sub-timeline to the main timeline like this:
+
+```js
+timeline.pushRandomizedTimeline({
+  name: randTimeline,
+  meta: { label: "taskOrder", orders: {task1_first: ["task1", "task2"], task2_first: ["task2", "task1"]} }
+})
+```
+
+In this case, the timeline stepper will look at the entry in <SmileText />'s global store called `conditions`, and will find the value assigned to the property called `taskOrder` (where the value is either `task1_first` or `task2_first`). Then, rather than shuffling task 1 and task 2 at random, it will show them in the order specified by the participant's assigned value.
+
+This technique can also be used to show only a subset of the possible tasks to each participant. For example, you might specify:
+
+```js
+timeline.pushRandomizedTimeline({
+  name: randTimeline,
+  meta: { label: "taskCondition", orders: {task1: ["task1"], task2: ["task2"]} }
+})
+```
+
+In this case, the participant will only see task 1 (between the `/exp` and `/debrief` routes) if their assigned `taskCondition` is `task1`, and will only see task 2 (between the `/exp` and `/debrief` routes) if their assigned `taskCondition` is `task2`.
 
 ## TimelineStepper
 
@@ -235,7 +322,7 @@ function finish(goto) {
 Details about the implementation of the `useTimelineStepper` are quite simple and in `src/composables/timelinestepper.js`.
 
 :::warning IMPORTANT (and helpful!)
-One important feature of the stepper is that it calls `saveData()` on the global store prior to route changes.  So as a result you can trust that your data will be saved/synchronized with the persistant store (Firestore) whenever you navigated between sequential routes.  See the data storage does on [automatic saving](/datastorage.html#automatic-saving).  This only works if you use the TimelineStepper to advance between pages/routes.  If you call this manually you need to save manually as well using the `saveData()` method.
+One important feature of the stepper is that it calls `saveData()` on the global store prior to route changes.  So as a result you can trust that your data will be saved/synchronized with the persistent store (Firestore) whenever you navigated between sequential routes.  See the data storage docs on [automatic saving](/datastorage.html#automatic-saving).  This only works if you use the TimelineStepper to advance between pages/routes.  If you call this manually you need to save manually as well using the `saveData()` method.
 :::
 
 

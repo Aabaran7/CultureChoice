@@ -1,5 +1,4 @@
 <script setup>
-// import '@/seed'
 import { useRouter, useRoute } from 'vue-router'
 import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
@@ -21,6 +20,7 @@ function finish(goto) {
     // smilestore.saveData()
     if(goto) router.push(goto)
 }
+
 </script>
 
 <template>

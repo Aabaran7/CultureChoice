@@ -7,13 +7,11 @@ import {
   createDoc,
   updateSubjectDataRecord,
   updateExperimentCounter,
+  balancedAssignConditions,
   loadDoc,
   fsnow,
 } from './firestore-db'
 
-// ENTER YOUR BETWEEN-SUBJECTS CONDITIONS HERE
-const conditions = {instructionsCond: ["A", "B"], taskCond: ["C", "D", "E"]}
-// 
 
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
@@ -28,8 +26,12 @@ export default defineStore('smilestore', {
       completionCode: '',
       totalWrites: 0,
       lastWrite: null,
-      condStr: ''
-    }),
+      seedActive: true, // do you want to use a random seed based on the participant's ID?
+      seedID: '',
+      seedSet: false,
+      pageTracker: 0,
+      possibleConditions: {taskOrder: ["AFirst", "BFirst"], instructions: ["version1", "version2", "version3"]},
+    }, localStorage, { mergeDefaults: true }),
     global: {
       // ephemeral state, resets on browser refresh
       progress: 0,
@@ -39,7 +41,6 @@ export default defineStore('smilestore', {
       status_bar_text_color: '#000',
       db_connected: false,
       search_params: null,
-      possible_conditions: conditions,
     },
     dev: {
       // ephemeral state, utilized by developer mode functions
@@ -57,9 +58,10 @@ export default defineStore('smilestore', {
       browser_fingerprint: {}, // empty
       browser_data: [], // empty
       demographic_form: {}, // empty
-      conditions: {},
       withdraw: false, // false
       withdraw_data: {}, // empty
+      route_order: [],
+      conditions: {},
       smile_config: appconfig, //  adding config info to firebase document
     },
     config: appconfig,
@@ -74,71 +76,14 @@ export default defineStore('smilestore', {
     hasAutofill: (state) => state.dev.page_provides_autofill,
     searchParams: (state) => state.global.search_params,
     recruitmentService: (state) => state.data.recruitment_service,
-    getCondString: (state) => state.local.condStr
+    isSeedSet: (state) => state.local.seedSet,
+    getSeedID: (state) => state.local.seedID,
+    getPage: (state) => state.local.pageTracker,
+    getPossibleConditions: (state) => state.local.possibleConditions,
+    getConditions: (state) => state.data.conditions,
   },
 
   actions: {
-    assignConds(id){
-      if(this.data.conditions !== {}){ // if there's already a condition in the URL, skip random condition assignment
-        return 
-      }
-
-      const keys = Object.keys(conditions)
-
-      // function for all possible combinations of N arrays (from https://stackoverflow.com/questions/8936610/how-can-i-create-every-combination-possible-for-the-contents-of-two-arrays)
-      const combine = ([head, ...[headTail, ...tailTail]]) => {
-        if (!headTail) return head
-        const combined = headTail.reduce((acc, x) => acc.concat(head.map(h => `${h}-${x}`)), [])
-        return combine([combined, ...tailTail])
-      }
-
-      // Append conditions
-      const combos = combine(Object.values(conditions))
-
-      // generate as many random numbers as the id number (seeded), then take the last one
-      const rand = Array(id+1).fill().map(Math.random)[id] // add one so it works when ID is 0
-
-      // select a condition
-      const randomCond = combos[Math.floor(rand * combos.length)];
-
-      // parse into separate variables
-      const randomCondParsed = randomCond.split("-");
-
-      // save according to keys
-      const conditionList = {}
-      let i = 0;
-      while (i < keys.length) {
-          conditionList[keys[i]] = randomCondParsed[i]
-          i += 1;
-      }
-
-      this.local.condStr = randomCond // string of conditions for URL
-      this.data.conditions = conditionList // full list of conditions
-    },
-    overwriteConds(condStr){
-      const keys = Object.keys(conditions)
-
-      // parse into separate variables
-      const randomCondParsed = condStr.split("-");
-
-      // save according to keys
-      const conditionList = {}
-      let i = 0;
-      while (i < keys.length) {
-        const possibles = conditions[keys[i]]
-        const assigned = randomCondParsed[i]
-        if(possibles.indexOf(assigned) === -1){
-          alert("That's not a valid condition!")
-          return false
-        }
-        conditionList[keys[i]] = assigned
-        i += 1;
-      }
-
-      this.local.condStr = condStr // string of conditions for URL
-      this.data.conditions = conditionList // full list of conditions
-      return true
-    },
     setDBConnected() {
       this.global.db_connected = true
     },
@@ -160,6 +105,17 @@ export default defineStore('smilestore', {
     },
     setCompletionCode(code) {
       this.local.completionCode = code
+    },
+    setSeedID(seed) {
+      this.local.seedID = seed
+      this.local.seedSet = true
+    },
+    incrementPageTracker(){
+      this.local.pageTracker += 1
+      return this.local.pageTracker
+    },
+    resetPageTracker(){
+      this.local.pageTracker = 0
     },
     recordWindowEvent(type, event_data = null) {
       if (event_data) {
@@ -230,17 +186,23 @@ export default defineStore('smilestore', {
     saveDemographicForm(data) {
       this.data.demographic_form = data
     },
+    setCondition(name, cond) {
+      this.data.conditions[name] = cond
+    },
     async setKnown() {
       this.local.knownUser = true
-      this.local.docRef = await createDoc(this.data)
       this.local.partNum = await updateExperimentCounter('participants')
-
-      // assign conditions, with id number for randomization
-      this.assignConds(this.local.partNum)
-
+      this.local.docRef = await createDoc(this.data, this.local.seedID, this.local.partNum)
+      // if possible conditions are not empty, assign conditions
+      if(this.local.possibleConditions){
+        this.data.conditions = await balancedAssignConditions(this.local.possibleConditions, this.data.conditions)
+      }
       if (this.local.docRef) {
         this.setDBConnected()
+        // force a data save so conditions get added to the data right away
+        this.saveData(true)
       }
+      return this.data.conditions
     },
     async loadData() {
       let data
@@ -257,6 +219,9 @@ export default defineStore('smilestore', {
       // if (route !== 'config') {
       //   this.local.lastRoute = route
       // }
+    },
+    recordRoute(route){
+      this.data.route_order.push(route)
     },
     async saveData(force = false) {
       if (this.isDBConnected) {
@@ -297,3 +262,4 @@ export default defineStore('smilestore', {
     },
   },
 })
+

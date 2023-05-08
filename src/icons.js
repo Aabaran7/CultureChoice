@@ -31,6 +31,7 @@ import { faFaceGrinWide } from '@fortawesome/free-solid-svg-icons'
 import { faShapes } from '@fortawesome/free-solid-svg-icons'
 import { faImage } from '@fortawesome/free-solid-svg-icons'
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons'
+import { faFlask } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
 library.add(
@@ -59,5 +60,6 @@ library.add(
   faImage,
   faRainbow,
   faPenToSquare,
-  faSackDollar
+  faSackDollar,
+  faFlask
 )

@@ -1,10 +1,14 @@
 // import { ref } from 'vue'
-import '@/seed.js' // random number seed
-import { createRouter, createWebHashHistory } from 'vue-router'
+import '@/seed' 
 import useSmileStore from '@/stores/smiledata' // get access to the global store
+import seedrandom from 'seedrandom'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import appconfig from '@/config'
 import { processQuery } from '@/utils'
 import Timeline from '@/timeline'
+import RandomSubTimeline from '@/subtimeline'
+import { v4 as uuidv4 } from 'uuid';
+
 
 // 1. Import route components
 import RecruitmentChooser from '@/components/pages/RecruitmentChooserPage.vue'
@@ -15,6 +19,8 @@ import DemographicSurvey from '@/components/pages/DemographicSurveyPage.vue'
 import Captcha from '@/components/pages/CaptchaPage.vue'
 import Instructions from '@/components/pages/InstructionsPage.vue'
 import Exp from '@/components/pages/ExpPage.vue'
+import Task1 from '@/components/pages/Task1Page.vue'
+import Task2 from '@/components/pages/Task2Page.vue'
 import Debrief from '@/components/pages/DebriefPage.vue'
 import Thanks from '@/components/pages/ThanksPage.vue'
 import Config from '@/components/pages/ConfigPage.vue'
@@ -29,6 +35,7 @@ import WindowSizer from '@/components/pages/WindowSizerPage.vue'
 // but for most experiment they go in sequence from begining
 // to the end of this list
 const timeline = new Timeline()
+
 
 // add the recruitment chooser if in development mode
 if (appconfig.mode === 'development') {
@@ -117,6 +124,29 @@ timeline.pushSeqRoute({
   component: Exp,
 })
 
+// create subtimeline for randomization
+const randTimeline = new RandomSubTimeline()
+
+randTimeline.pushRoute({
+  path: '/task1',
+  name: 'task1',
+  component: Task1,
+})
+
+randTimeline.pushRoute({
+  path: '/task2',
+  name: 'task2',
+  component: Task2,
+})
+
+// if you want fixed orders based on conditions, uncomment meta line
+// commented out, this will shuffle the routes at random
+timeline.pushRandomizedTimeline({
+  name: randTimeline,
+  // meta: { label: "taskOrder", orders: {AFirst: ["task1", "task2"], BFirst: ["task2", "task1"]} }
+})
+
+
 // debriefing form
 timeline.pushSeqRoute({
   path: '/debrief',
@@ -185,11 +215,20 @@ function addGuards(r) {
         !smilestore.isKnownUser)
     ) {
       smilestore.setLastRoute(to.name)
+      smilestore.recordRoute(to.name)
       return true
     }
     // if you're trying to go to the next route, allow it
     if (from.meta.next === to.name) {
       smilestore.setLastRoute(to.name)
+      smilestore.recordRoute(to.name)
+      return true
+    }
+    // if the next route is a subtimeline and you're trying to go to a subtimeline route, allow it
+    // this is necessary because from.meta.next won't immediately get the subroute as next when the subtimeline is randomized
+    if (from.meta.next.type === 'randomized_sub_timeline' && to.meta.subroute) {
+      smilestore.setLastRoute(to.name)
+      smilestore.recordRoute(to.name)
       return true
     }
     // if you're trying to go to the same route you're already on, allow it
@@ -207,7 +246,7 @@ function addGuards(r) {
       // otherwise (for an unknown user who's not trying to go to next/same route), just send to welcome anonymous screen
       return { name: 'welcome_anonymous', replace: true }
     }
-    return true
+    return true // is this right? why is the default to allow the navigation?
   })
 }
 timeline.build()
@@ -217,7 +256,7 @@ const { routes } = timeline
 // 4. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
 // keep it simple for now.
-const router = createRouter({
+export const router = createRouter({
   history: createWebHashHistory(), // We are using the hash history for now/simplicity
   routes,
   scrollBehavior(to, from, savedPosition) {
@@ -225,6 +264,19 @@ const router = createRouter({
   },
 })
 addGuards(router) // add the guards defined above
+
+// add additional guard to set global seed before
+router.beforeResolve(to => {
+  const smilestore = useSmileStore()
+  if(smilestore.local.seedActive){
+    const seedID = smilestore.getSeedID
+    const seed = `${seedID}-${to.name}`
+    seedrandom(seed, { global: true });
+  } else{ // if inactive, generate a random string then re-seed
+    const newseed = uuidv4();
+    seedrandom(newseed, { global: true });
+  }
+})
 
 // they are defined in a function like this for the testing harness
 export { routes, addGuards }

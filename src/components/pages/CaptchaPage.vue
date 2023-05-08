@@ -1,5 +1,5 @@
 <script setup>
-import { shallowRef } from 'vue'
+import { shallowRef, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
@@ -28,8 +28,8 @@ const pages = [CaptchaInstructionsText,
                CaptchaTrialMotorControl,
                CaptchaTrialTextComprehension, 
                CaptchaTrialStroop]
-let page_indx = 0
-const currentTab = shallowRef(pages[page_indx])
+const page_indx = ref(smilestore.getPage)
+const currentTab = shallowRef(pages[page_indx.value])
 // captcha steps
 
 // a dynamic loader for different trial types which is randomized?
@@ -45,11 +45,12 @@ const currentTab = shallowRef(pages[page_indx])
 
 
 function next_trial(goto) {
-    page_indx += 1
-    if (page_indx >= pages.length) {
+    page_indx.value = smilestore.incrementPageTracker()
+    if (page_indx.value >= pages.length) {
+        smilestore.resetPageTracker()
         if(goto) router.push(goto)
     } else {
-        currentTab.value = pages[page_indx]
+        currentTab.value = pages[page_indx.value]
     }
 }
 

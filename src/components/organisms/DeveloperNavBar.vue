@@ -1,10 +1,11 @@
 <script setup>
-import { onMounted, watch, ref } from 'vue';
+import { onMounted, watch, ref, reactive } from 'vue';
 import { useMouse } from '@vueuse/core'
 import { useRouter, useRoute  } from 'vue-router'
 
 import useSmileStore from '@/stores/smiledata'
 import { routes } from '@/router' 
+import appconfig from '@/config'
 
 const smilestore = useSmileStore() // load the global store
 const { x, y } = useMouse({ touch: false }) // tracks mouse reactively
@@ -36,9 +37,37 @@ onMounted(() => {
 
 function resetLocalState() { // this is repeated on config and maybe should be a utility function
   localStorage.removeItem(smilestore.config.local_storage_key) // delete the local store
+  // localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
+  // localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
   smilestore.$reset()  // reset all the data even
-  router.push('/')
+  window.location = '/' // this will refresh the page rather than just load the route
+  // router.push('/')
 }
+
+function resetPages(routeName){
+  smilestore.resetPageTracker() // reset all the page counts
+  if (route.name === routeName){
+    router.go(0)
+  }
+}
+
+// display in the toolbar the selected conditions
+const conditions = reactive(smilestore.getConditions)
+
+// when condition is set in the store, update the toolbar conditions
+watch(() => smilestore.data.conditions, async (newConds) => {
+  // for each key in newConds, update that entry in conditions
+  Object.keys(newConds).forEach((key) => {
+    conditions[key] = newConds[key]
+  })
+})
+
+// when a condition is changed in the toolbar, update the store
+function changeCond(key, cond) {
+  smilestore.setCondition(key, cond)
+}
+
+
 </script>
 
 <template>
@@ -84,11 +113,11 @@ function resetLocalState() { // this is repeated on config and maybe should be a
                 <template v-for="r in routes">
                   <!-- make a special link for web_referred, which has params -->
                   <router-link class="dropdown-item routelink" v-if="r.name === 'welcome_referred'" :to="{ name: r.name, params: { service: 'web' }, query: currentQuery }" :key="r.path">
-                    /{{ r.name }}
+                    <span v-on:click="resetPages(r.name)">/{{ r.name }}</span>
                   </router-link>
                   <!-- make a link for everything else -->
                   <router-link class="dropdown-item routelink" v-else :to="{ name: r.name, query: currentQuery }" :key="r.name">
-                    /{{ r.name }}
+                    <span v-on:click="resetPages(r.name)">/{{ r.name }}</span>
                   </router-link>
                 </template>
 
@@ -144,7 +173,41 @@ function resetLocalState() { // this is repeated on config and maybe should be a
         </div>
 
     </div>
-        
+
+    <div class="devmode">
+          | &nbsp; Seed: 
+          <input type="checkbox" v-model='smilestore.local.seedActive'/> 
+    </div>
+    
+    <template v-for="(value, key) in smilestore.getPossibleConditions" :key="key">
+      <div class="devmode">
+          <div class="dropdown is-hoverable">
+            <div class="dropdown-trigger">
+              | &nbsp; {{key}}:
+              
+              <a alt="Condition assignments">
+                <FAIcon icon="fa-solid fa-flask" />
+              </a>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu" >
+              <div class="dropdown-content">
+                <template v-for="cond in value" :key="cond">
+                  <!-- make checkboxes for each condition -->
+                  <br>
+                  <div class="control">
+                      <input type="radio" :name="key" :id="cond" :value="cond" v-model="conditions[key]" @change="changeCond(key, cond)">
+                      <label :for="cond">{{cond}}</label>
+                  </div>
+                  <!-- <input type="checkbox" :value="isCond(key, cond)"/> <b>{{cond}}</b> -->
+                  <br>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+    </template>
+    
+
   </nav>
 </template>
 
@@ -202,5 +265,9 @@ a:hover {
   padding-top: 8px;
   font-weight: 400;
   padding-left: 10px;
+}
+
+.dropdown-menu{
+  min-width:80px
 }
 </style>
