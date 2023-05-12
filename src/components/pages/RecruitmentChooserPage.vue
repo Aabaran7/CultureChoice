@@ -97,7 +97,7 @@ function refresh(){
     
 </template>
 
-<style>
+<style scoped>
 .hero {
   background-color: #79f2cc;
   margin-bottom: 30px;

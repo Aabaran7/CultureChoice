@@ -5,6 +5,7 @@ import useSmileStore from '@/stores/smiledata'
 import DeveloperNavBar from '@/components/organisms/DeveloperNavBar.vue';
 import StatusBar from '@/components/organisms/StatusBar.vue';
 import { onMounted, watch, ref } from 'vue';
+import PresenationNavBar from '@/components/organisms/PresentationNavBar.vue';
 import ProgressBar from './components/molecules/ProgressBar.vue';
 
 // imports the global config object
@@ -34,7 +35,9 @@ onMounted(() => {
 
 <template>
   <DeveloperNavBar v-if="smilestore.config.mode=='development'"></DeveloperNavBar>
-  <StatusBar v-if="$route.name!=='config' && $route.name!=='recruit'"></StatusBar>
+  <PresenationNavBar v-if="smilestore.config.mode=='presentation'"></PresenationNavBar>
+  <StatusBar v-if="$route.name!=='config' && $route.name!=='recruit' && smilestore.config.mode!='presentation'"></StatusBar>
+
   <div class="router">
     <router-view></router-view> <!-- the router loads here -->
   </div>
