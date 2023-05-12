@@ -10,11 +10,11 @@ const smilestore = useSmileStore()
 
 const seed = ref(smilestore.getSeedID)
 
-const urls = {prolific: "/#/welcome/prolific/?PROLIFIC_PID=XXXX&STUDY_ID=XXXX&SESSION_ID=XXXXX",
-cloudResearch: "/#/welcome/cloudresearch/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE",
-amt: "/#/mturk/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE",
-citizenScience: "/#/welcome/citizensci/?CITIZEN_ID=XXXXX&CITIZEN_STUDY_ID=123RVWYBAZW00EXAMPLE&CITIZEN_SESSION_ID=AZ3456EXAMPLE",
-anon: "/#/welcome"
+const urls = {prolific: "#/welcome/prolific/?PROLIFIC_PID=XXXX&STUDY_ID=XXXX&SESSION_ID=XXXXX",
+cloudResearch: "#/welcome/cloudresearch/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE",
+amt: "#/mturk/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE",
+citizenScience: "#/welcome/citizensci/?CITIZEN_ID=XXXXX&CITIZEN_STUDY_ID=123RVWYBAZW00EXAMPLE&CITIZEN_SESSION_ID=AZ3456EXAMPLE",
+anon: "#/welcome"
 }
 
 // if we refresh with a new seed, we'll also reset the local state
