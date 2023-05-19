@@ -123,10 +123,13 @@ cd ~/Desktop
 Following the steps below, copy the Smile GitHub repo into a new project name and clone it locally.
 
 
-In this example command, the new project will be named `{{config.projectname}}` and a copy of the starting project template will be placed in a new folder with that name:
+In this example command, the new project will be named `{{config.projectname}}`:
 
+<div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">gh repo create {{config.projectname}} --private --template {{config.base_git}}</span></span></code></pre></div>
 
-<div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">gh repo create {{config.projectname}} --private --clone --template {{config.base_git}}</span></span></code></pre></div>
+Then clone that project to a local folder with the same name:
+
+<div class="language-"><pre><code><span class="line"><span style="color:#A6ACCD">gh repo clone {{config.username}}/{{config.projectname}}</span></span></code></pre></div>
 
 Next, alter the Github description for your new repo:
 

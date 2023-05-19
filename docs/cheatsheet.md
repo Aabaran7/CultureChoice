@@ -6,7 +6,8 @@
 Called `my_cool_project` for GitHub user `ghuser`:
 
 ```
-gh repo create my_cool_project --private --clone --template nyuccl/smile
+gh repo create my_cool_project --private --template nyuccl/smile
+gh repo clone ghuser/my_cool_project
 gh repo edit ghuser/my_cool_project --description "my new project description"
 cd my_cool_project
 git secret reveal
