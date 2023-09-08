@@ -22,7 +22,8 @@ then
 else
     OWNER=$(echo $GITURL | awk -F'/' '{print $4}');
 fi
-echo "VITE_GIT_OWNER         = ${OWNER}" >> $ENV_FILE
+OWNER=$(echo $OWNER | tr '[:upper:]' '[:lower:]')
+echo "VITE_GIT_OWNER = ${OWNER}" >> $ENV_FILE
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
 echo "VITE_GIT_BRANCH_NAME   = $BRANCH" >> $ENV_FILE
