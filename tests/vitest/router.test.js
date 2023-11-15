@@ -79,6 +79,7 @@ describe('Generic router tests', () => {
   // the getLocalStorage() returns null if there is not
   // local storage set yet.
   it('there should be no smilestore before the app created', () => {
+    resetLocalStorage()
     expect(getLocalStorage()).toBe(null)
   })
 
