@@ -54,6 +54,7 @@ class Timeline {
         newroute.meta.prev = undefined
       }
     }
+    newroute.meta.type = "route"
     newroute.meta.sequential = true
 
     try {
@@ -75,7 +76,7 @@ class Timeline {
     const newroute = _.cloneDeep(routeConfig)
     // should NOT allow meta next/prev to exist
     if (!newroute.meta) {
-      newroute.meta = { prev: null, next: null }
+      newroute.meta = { prev: null, next: null, type: "route" }
     } else if (newroute.meta.prev || newroute.meta.next) {
       throw new Error(
         `NonSequentialRouteError: Can't have meta.next or meta.prev defined for non-sequential route`
