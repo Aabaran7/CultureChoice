@@ -57,6 +57,24 @@ words separate by slashes appearing before the `#` (or if there are no `#`s) are
 
 In <SmileText/> key steps in the experiment are indexed by routes that map to [page-level components](/components).  So `/consent` might load the consent page form and `/debrief` would load the debriefing page form.  This is good organization but also helpful for debugging since you can easily jump to different sections of the task.  
 
+### The route object
+
+Each route is specified by a javascript object, which usually contains at the following fields:
+```js
+{
+  path: '/my_name',
+  name: 'my_name',
+  component: MyComponent,
+  meta: { ... },  // optional
+}
+```
+The `path` specifies the client-side route, as described above. The `name` offers another way to specify the route for navigation, which can be easier than using the path (see details in the `vue-router` [documentation](https://router.vuejs.org/guide/essentials/named-routes.html)). The `component` field specifies the component that should be loaded when the route is requested.
+
+The `meta` field specifies additional optional information about the route:
+* It can be used to specify different previous and next routes, in case the experiment timeline flow branches (see [Branching and randomized flows](#branching-and-randomized-flows) for more details). 
+* It can be used to specify randomized sub-timelines (see [Randomized flows and complex branching](#randomized-flows-and-complex-branching) for more details).
+* It can also be used to allow directly navigating to particular routes, which can allow for conditional navigation specifies in code, by setting `allowDirectEntry: true` in the `meta`.
+
 ## Timeline
 
 As just described, the Vue Router is a mapping between different URLs and Vue components to load.  However, in experiments, we often want to step through content sequentially.  For this purpose, Smile implements a simple Timeline class (see `src/timeline.js`) which acts as a wrapper around the basic Vue Router.
@@ -325,6 +343,85 @@ Details about the implementation of the `useTimelineStepper` are quite simple an
 One important feature of the stepper is that it calls `saveData()` on the global store prior to route changes.  So as a result you can trust that your data will be saved/synchronized with the persistent store (Firestore) whenever you navigated between sequential routes.  See the data storage docs on [automatic saving](/datastorage.html#automatic-saving).  This only works if you use the TimelineStepper to advance between pages/routes.  If you call this manually you need to save manually as well using the `saveData()` method.
 :::
 
+### Custom navigation logic
+
+In some cases, you might want to navigate to something other than `next()` or `prev()` as returned by the timeline stepper. One common use case is in an instruction understanding quiz module, where you might want to navigate back to an instructions page if the participant fails the quiz, and only navigate forward if the participant succeeds. Your timeline setup code (in `router.js`) might look like this (note the `meta: {allowDirectEntry: true}` on the instructions route, to allow to return to it from any place in the timeline):
+
+```js
+import { Timeline } from '@/timeline'  // @ resolves to /src in Smile
+const timeline = new Timeline()
+
+timeline.pushSeqRoute({
+    path: '/',
+    name: 'welcome',
+    component: WelcomeComponent
+})
+
+// Consent form, etc., ... 
+
+timeline.pushSeqRoute({
+    path: '/instructions',
+    name: 'instructions',
+    component: InstructionsComponent,
+    meta: {allowDirectEntry: true} // allow direct navigation to this route
+})
+
+// ...
+
+timeline.pushSeqRoute({
+    path: '/quiz',
+    name: 'quiz',
+    component: QuizComponent
+})
+
+// ...
+
+timeline.pushSeqRoute({
+    path: '/thanks',
+    name: 'thanks',
+    component: ThanksComponent
+})
+```
+Your quiz module then might implement something like the following:
+```vue
+<script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import useTimelineStepper from '@/composables/timelinestepper'
+import useSmileStore from '@/stores/smiledata' // get access to the global store
+
+const route = useRoute()
+const smilestore = useSmileStore()
+
+const { next, prev } = useTimelineStepper()
+
+
+quizPassed = computed(() => {...}); // computed property that checks if the quiz was passed
+
+function finish(goto) { 
+    if(goto) router.push(goto)
+}
+
+function checkQuiz() {
+    // check quiz answers
+    if (quizPassed.value) {
+        finish(next())
+    } else {
+        finish({name: 'instructions'})
+    }
+}
+
+</script>
+
+<template>
+    <div class="page">
+        <h1 class="title is-3">Instructions Quiz</h1>
+        <button class="button is-success is-light" id='finish' @click="finish()">next &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></button>
+    </div>
+</template>
+```
+
+Note that if your instructions component immediately preceded the quiz, it would be sufficient to call `finish(prev())` to return to the instructions page. However, if there are other routes between the instructions and the quiz, you would need to use `finish({name: 'instructions'})` to navigate back to the instructions page.
 
 ## Running custom code before route loading
 
