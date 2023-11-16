@@ -117,25 +117,30 @@ function resetLocalState() {
                     </li>
                   </ul>
               </span>
-
             </li>
-            
           </ul>
         </div>
         <div class="divider">Data</div>
         <div class="code">
           <ul>
             <li class="config" v-for="option, key in smilestore.data" :key="key">
-              <b>{{ key }}</b>: <span v-html='createLink(option)'></span>
+              <span v-if=" typeof(option)=='string' ">
+                <b>{{key}}</b>: <span v-html='createLink(option)'></span>
+              </span>
+              <span v-else>
+                <b>{{key}}</b>: 
+                  <ul>
+                    <li v-for="option2,key2 in option" :key="key2">
+                      <b>{{key2}}</b>: <span v-html='createLink(option2)'></span>
+                    </li>
+                  </ul>
+              </span>
             </li>
           </ul>
         </div>
         <br>
         <br>
       </div>
-     
-
-
     </div>
 
 
