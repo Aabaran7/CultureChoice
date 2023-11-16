@@ -120,7 +120,7 @@ function resetLocalState() {
             </li>
           </ul>
         </div>
-        <div class="divider">Data</div>
+        <div class="divider">Data</div> 
         <div class="code">
           <ul>
             <li class="config" v-for="option, key in smilestore.data" :key="key">
