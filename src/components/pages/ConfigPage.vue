@@ -127,7 +127,7 @@ function resetLocalState() {
               <span v-if=" typeof(option)=='string' ">
                 <b>{{key}}</b>: <span v-html='createLink(option)'></span>
               </span>
-              <span v-else>
+              <span v-else-if="key!=='smile_config'">
                 <b>{{key}}</b>: 
                   <ul>
                     <li v-for="option2,key2 in option" :key="key2">
