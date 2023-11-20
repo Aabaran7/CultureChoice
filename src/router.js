@@ -48,7 +48,9 @@ if (appconfig.mode === 'development') {
   timeline.pushRoute({
     path: '/',
     name: 'landing',
-    redirect: { name: 'welcome_anonymous' },
+    redirect: {
+      name: 'welcome_anonymous',
+    },
     meta: { allowDirectEntry: true },
   })
 }
@@ -66,7 +68,10 @@ timeline.pushSeqRoute({
   path: '/welcome/:service',
   name: 'welcome_referred',
   component: Advertisement,
-  meta: { next: 'consent', allowDirectEntry: true }, // override what is next
+  meta: {
+    next: 'consent',
+    allowDirectEntry: true,
+  }, // override what is next
   beforeEnter: (to) => {
     processQuery(to.query, to.params.service)
   },
@@ -189,7 +194,10 @@ timeline.pushRoute({
 function addGuards(r) {
   r.beforeEach((to, from) => {
     // Set queries to be combination of from queries and to queries (TO overwrites FROM if there is one with the same key)
-    const newQueries = { ...from.query, ...to.query }
+    const newQueries = {
+      ...from.query,
+      ...to.query,
+    }
     to.query = newQueries
 
     // console.log('loading', to.name)
@@ -205,11 +213,8 @@ function addGuards(r) {
     // if you're going to an always-allowed route or if you're in jumping mode, allow the new route
     if (
       to.meta.allowDirectEntry ||
-      (smilestore.config.mode === 'development' &&
-        smilestore.local.allowJumps) ||
-      (to.name === 'welcome_anonymous' &&
-        from.name === undefined &&
-        !smilestore.isKnownUser)
+      (smilestore.config.mode === 'development' && smilestore.local.allowJumps) ||
+      (to.name === 'welcome_anonymous' && from.name === undefined && !smilestore.isKnownUser)
     ) {
       if (smilestore.config.mode === 'development') {
         console.warn(
@@ -246,14 +251,23 @@ function addGuards(r) {
     }
     // if you're a known user (and not trying to go to the next or same route), send back to most recent route
     if (smilestore.isKnownUser) {
-      return { name: smilestore.lastRoute, replace: true }
+      return {
+        name: smilestore.lastRoute,
+        replace: true,
+      }
     }
     if (!smilestore.isKnownUser && to.name === 'landing') {
-      return { name: 'welcome_anonymous', replace: true }
+      return {
+        name: 'welcome_anonymous',
+        replace: true,
+      }
     }
     if (to.name !== 'welcome_anonymous') {
       // otherwise (for an unknown user who's not trying to go to next/same route), just send to welcome anonymous screen
-      return { name: 'welcome_anonymous', replace: true }
+      return {
+        name: 'welcome_anonymous',
+        replace: true,
+      }
     }
     return true // is this right? why is the default to allow the navigation?
   })
@@ -284,7 +298,9 @@ router.beforeResolve((to) => {
   } else {
     // if inactive, generate a random string then re-seed
     const newseed = uuidv4()
-    seedrandom(newseed, { global: true })
+    seedrandom(newseed, {
+      global: true,
+    })
   }
 })
 
