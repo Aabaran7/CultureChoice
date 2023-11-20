@@ -10,11 +10,7 @@ describe('test that the project will run successfully on prolific', () => {
     cy.viewport(1000, 1200) // cy.viewport('iphone-11)
 
     // visit the page
-    cy.visit(
-      `${Cypress.env(
-        'VITE_DEPLOY_URL'
-      )}#/welcome/prolific/?PROLIFIC_PID=xxxxx&STUDY_ID=xxxxxx&SESSION_ID=xxxxx`
-    )
+    cy.visit(`${Cypress.env('VITE_DEPLOY_URL')}#/welcome/prolific/?PROLIFIC_PID=xxxxx&STUDY_ID=xxxxxx&SESSION_ID=xxxxx`)
     cy.visit(`${Cypress.env('VITE_DEPLOY_URL')}#/debrief/`) // dev mode allows jumping paths like this
     cy.contains('next').click()
     cy.get('.payment').get('.has-text-left').contains('Prolific') // assert this is the right endpoint text

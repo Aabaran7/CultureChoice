@@ -3,11 +3,7 @@ const path = require('path')
 const fs = require('fs')
 
 const _omit = (obj = {}, uselessKeys = []) =>
-  Object.keys(obj || {}).reduce(
-    (cur, key) =>
-      uselessKeys.includes(key) ? cur : { ...cur, [key]: obj[key] },
-    {}
-  )
+  Object.keys(obj || {}).reduce((cur, key) => (uselessKeys.includes(key) ? cur : { ...cur, [key]: obj[key] }), {})
 
 const _pick = (obj, defaultConfig = {}) =>
   Object.keys(obj).length
@@ -49,12 +45,8 @@ const _loadEnv = (envPath = '.env') => {
 
 const _getModeEnvPath = () => {
   const argvList = process.argv.slice(2)
-  const modeIndex = argvList.findIndex(
-    (arg) => arg === '-m' || arg === '--mode'
-  )
-  const modeFuzzyIndex = argvList.findIndex(
-    (arg) => arg.indexOf('-m') > -1 || arg.indexOf('--mode') > -1
-  )
+  const modeIndex = argvList.findIndex((arg) => arg === '-m' || arg === '--mode')
+  const modeFuzzyIndex = argvList.findIndex((arg) => arg.indexOf('-m') > -1 || arg.indexOf('--mode') > -1)
 
   if (
     modeIndex !== -1 &&
@@ -63,8 +55,7 @@ const _getModeEnvPath = () => {
   )
     return `.env.${argvList[modeIndex + 1]}`
 
-  if (modeFuzzyIndex !== -1 && !!argvList[modeFuzzyIndex])
-    return `.env.${argvList[modeFuzzyIndex].split('=')[1]}`
+  if (modeFuzzyIndex !== -1 && !!argvList[modeFuzzyIndex]) return `.env.${argvList[modeFuzzyIndex].split('=')[1]}`
 }
 
 const modeEnvPath = _getModeEnvPath()
@@ -89,12 +80,7 @@ function vitePluginHtmlEnv(config) {
       let ctxEnvConfig = {}
       // Use the loadEnv method provided by vite, because the code checks that it is a dev environment
       if (ctx.server) {
-        ctxEnvConfig =
-          loadEnv(
-            ctx.server.config.mode,
-            process.cwd(),
-            envPrefixes || 'VITE_'
-          ) || {}
+        ctxEnvConfig = loadEnv(ctx.server.config.mode, process.cwd(), envPrefixes || 'VITE_') || {}
       } else {
         Object.assign(ctxEnvConfig, envConfig)
       }

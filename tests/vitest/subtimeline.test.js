@@ -10,27 +10,26 @@ import { mount } from '@vue/test-utils'
 let router
 let pinia
 
-
 describe('Subtimeline tests', () => {
-    // set up the app
-    function setupapp(routes) {
-      const TestAppRouter = {
-        template: `<h1>hi</h1><router-view></router-view>`,
-      }
-      pinia = createTestingPinia({ stubActions: true, })
-  
-      router = createRouter({
-        history: createWebHashHistory(),
-        routes,
-      })
-  
-      const wrapper = mount(TestAppRouter, {
-        global: {
-          plugins: [router, pinia],
-        },
-      })
-      return wrapper
+  // set up the app
+  function setupapp(routes) {
+    const TestAppRouter = {
+      template: `<h1>hi</h1><router-view></router-view>`,
     }
+    pinia = createTestingPinia({ stubActions: true })
+
+    router = createRouter({
+      history: createWebHashHistory(),
+      routes,
+    })
+
+    const wrapper = mount(TestAppRouter, {
+      global: {
+        plugins: [router, pinia],
+      },
+    })
+    return wrapper
+  }
 
   it('should be able to create a subtimline', () => {
     const subtimeline = new RandomSubTimeline()
@@ -70,7 +69,7 @@ describe('Subtimeline tests', () => {
         path: '/',
         name: 'index',
         component: MockComponent,
-        meta: {prev: 'prev', next: 'next'}
+        meta: { prev: 'prev', next: 'next' },
       })
     }
     expect(errorTrigger).toThrowError()
@@ -113,7 +112,7 @@ describe('Subtimeline tests', () => {
     })
     const errorTrigger = () => {
       subtimeline1.pushRandomizedTimeline({
-        name: subtimeline2
+        name: subtimeline2,
       })
     }
     expect(errorTrigger).toThrowError()
@@ -142,7 +141,7 @@ describe('Subtimeline tests', () => {
     })
     timeline.pushRandomizedTimeline({
       name: subtimeline,
-      meta: { label: "orderCond", orders: {cond1: ["mid1", "mid2"], cond2: ["mid2", "mid1"]} }
+      meta: { label: 'orderCond', orders: { cond1: ['mid1', 'mid2'], cond2: ['mid2', 'mid1'] } },
     })
 
     timeline.pushSeqRoute({
@@ -163,7 +162,6 @@ describe('Subtimeline tests', () => {
       RandomizeSubTimeline(timeline.seqtimeline[1].name, router)
     }
     expect(errorTrigger).toThrowError()
-
   })
 
   it('should re-order based on specified conditions if condition is set', async () => {
@@ -188,7 +186,7 @@ describe('Subtimeline tests', () => {
     })
     timeline.pushRandomizedTimeline({
       name: subtimeline,
-      meta: { label: "orderCond", orders: {cond1: ["mid1", "mid2"], cond2: ["mid2", "mid1"]} }
+      meta: { label: 'orderCond', orders: { cond1: ['mid1', 'mid2'], cond2: ['mid2', 'mid1'] } },
     })
 
     timeline.pushSeqRoute({
@@ -204,22 +202,20 @@ describe('Subtimeline tests', () => {
     await router.isReady()
 
     const smilestore = useSmileStore() // uses the testing pinia!
-    
+
     // first condition
     smilestore.data.conditions.orderCond = 'cond1'
     const shuffledRoutes = RandomizeSubTimeline(timeline.seqtimeline[1].name, router)
-    
+
     expect(shuffledRoutes[0].name).toBe('mid1')
     expect(shuffledRoutes[1].name).toBe('mid2')
 
     // now the other condition
     smilestore.data.conditions.orderCond = 'cond2'
     const shuffledRoutes2 = RandomizeSubTimeline(timeline.seqtimeline[1].name, router)
-    
+
     expect(shuffledRoutes2[0].name).toBe('mid2')
     expect(shuffledRoutes2[1].name).toBe('mid1')
-
-
   })
 
   it('should shuffle randomly if no specified conditions', async () => {
@@ -257,13 +253,12 @@ describe('Subtimeline tests', () => {
 
     const wrapper = setupapp(routes)
     await router.isReady()
-    
+
     const shuffledRoutes = RandomizeSubTimeline(timeline.seqtimeline[1].name, router)
 
     // has to be mid1 or mid2 -- this is kind of a bad test
     expect(['mid1', 'mid2']).toContain(shuffledRoutes[0].name)
     expect(['mid1', 'mid2']).toContain(shuffledRoutes[1].name)
-
   })
 
   it('should shuffle the same way if given the same seed', async () => {
@@ -302,19 +297,17 @@ describe('Subtimeline tests', () => {
 
       const wrapper = setupapp(routes)
       await router.isReady()
-      
+
       const smilestore = useSmileStore() // uses the testing pinia!
-      
+
       // set seed
       smilestore.local.seedID = 'seed_test'
 
       return RandomizeSubTimeline(timeline.seqtimeline[1].name, router)
-
     }
 
-
-    // seed gets set in RandomizeSubTimeline, so this should just always return the same thing 
-    const shuffledRoutesArray = await Promise.all(Array(6).fill().map(doEverything)) 
+    // seed gets set in RandomizeSubTimeline, so this should just always return the same thing
+    const shuffledRoutesArray = await Promise.all(Array(6).fill().map(doEverything))
 
     // all should be identical to first element
     expect(shuffledRoutesArray[1]).toStrictEqual(shuffledRoutesArray[0])
@@ -322,7 +315,6 @@ describe('Subtimeline tests', () => {
     expect(shuffledRoutesArray[3]).toStrictEqual(shuffledRoutesArray[0])
     expect(shuffledRoutesArray[4]).toStrictEqual(shuffledRoutesArray[0])
     expect(shuffledRoutesArray[5]).toStrictEqual(shuffledRoutesArray[0])
-
   })
 
   it('should set meta prev and next after re-ordering by conditions', async () => {
@@ -347,7 +339,7 @@ describe('Subtimeline tests', () => {
     })
     timeline.pushRandomizedTimeline({
       name: subtimeline,
-      meta: { label: "orderCond", orders: {cond1: ["mid1", "mid2"], cond2: ["mid2", "mid1"]} }
+      meta: { label: 'orderCond', orders: { cond1: ['mid1', 'mid2'], cond2: ['mid2', 'mid1'] } },
     })
 
     timeline.pushSeqRoute({
@@ -364,16 +356,15 @@ describe('Subtimeline tests', () => {
 
     const smilestore = useSmileStore() // uses the testing pinia!
     smilestore.data.conditions.orderCond = 'cond1'
-    
+
     const shuffledRoutes = RandomizeSubTimeline(timeline.seqtimeline[1].name, router)
-    
+
     // find each route in router by name
     const newRoutes = router.getRoutes()
-    const firstRoute = newRoutes.find(route => route.name === 'first')
-    const mid1Route = newRoutes.find(route => route.name === 'mid1')
-    const mid2Route = newRoutes.find(route => route.name === 'mid2')
-    const lastRoute = newRoutes.find(route => route.name === 'last')
-
+    const firstRoute = newRoutes.find((route) => route.name === 'first')
+    const mid1Route = newRoutes.find((route) => route.name === 'mid1')
+    const mid2Route = newRoutes.find((route) => route.name === 'mid2')
+    const lastRoute = newRoutes.find((route) => route.name === 'last')
 
     expect(firstRoute.meta.next).toBe('mid1')
     expect(mid1Route.meta.next).toBe('mid2')
@@ -384,7 +375,6 @@ describe('Subtimeline tests', () => {
     expect(mid1Route.meta.prev).toBe('first')
     expect(mid2Route.meta.prev).toBe('mid1')
     expect(lastRoute.meta.prev).toBe('mid2')
-
   })
 
   it('should set meta prev and next after re-ordering by random shuffle', async () => {
@@ -424,25 +414,22 @@ describe('Subtimeline tests', () => {
     await router.isReady()
 
     const shuffledRoutes = RandomizeSubTimeline(timeline.seqtimeline[1].name, router)
-    
+
     // find each route in router by name
     const newRoutes = router.getRoutes()
-    const firstRoute = newRoutes.find(route => route.name === 'first')
-    const mid1Route = newRoutes.find(route => route.name === 'mid1')
-    const mid2Route = newRoutes.find(route => route.name === 'mid2')
-    const lastRoute = newRoutes.find(route => route.name === 'last')
+    const firstRoute = newRoutes.find((route) => route.name === 'first')
+    const mid1Route = newRoutes.find((route) => route.name === 'mid1')
+    const mid2Route = newRoutes.find((route) => route.name === 'mid2')
+    const lastRoute = newRoutes.find((route) => route.name === 'last')
 
-
-    expect(['mid1', 'mid2']).toContain(firstRoute.meta.next) 
+    expect(['mid1', 'mid2']).toContain(firstRoute.meta.next)
     expect(['mid2', 'last']).toContain(mid1Route.meta.next)
     expect(['mid1', 'last']).toContain(mid2Route.meta.next)
     expect(lastRoute.meta.next).toBe(null)
 
     expect(firstRoute.meta.prev).toBe(null)
-    expect(['first', 'mid2']).toContain(mid1Route.meta.prev) 
+    expect(['first', 'mid2']).toContain(mid1Route.meta.prev)
     expect(['first', 'mid1']).toContain(mid2Route.meta.prev)
     expect(['mid1', 'mid2']).toContain(lastRoute.meta.prev)
-
   })
-
 })

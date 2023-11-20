@@ -46,10 +46,7 @@ function resetLocalState() {
       <div class="devmode-title">PRESENTATION MODE</div>
       <div class="devmode">
         -- &nbsp; Reset:
-        <a
-          alt="Reset all state and return to / route"
-          @click="resetLocalState()"
-        >
+        <a alt="Reset all state and return to / route" @click="resetLocalState()">
           <FAIcon icon="fa-solid fa-arrow-rotate-left" />
         </a>
       </div>

@@ -8,7 +8,7 @@ import {
   setDoc,
   getDoc,
   Timestamp,
-  runTransaction
+  runTransaction,
 } from 'firebase/firestore'
 import appconfig from '@/config'
 import { split } from 'lodash'
@@ -63,10 +63,7 @@ export const createDoc = async (data, seedid, partnum) => {
       },
       { merge: true }
     )
-    console.log(
-      'Document written with ID: ',
-      `${mode}/${appconfig.project_ref}`
-    )
+    console.log('Document written with ID: ', `${mode}/${appconfig.project_ref}`)
 
     // Add a new document with a generated id.
     // const docRef = await addDoc(
@@ -77,19 +74,18 @@ export const createDoc = async (data, seedid, partnum) => {
     // Append the participnt number to the end of the docID -- this should ALWAYS make a unique record
     const fulldocid = `${seedid}-p${partnum}`
     const docRef = doc(db, `${mode}/${appconfig.project_ref}/data`, fulldocid)
-    const docSnap = await getDoc(docRef);
+    const docSnap = await getDoc(docRef)
 
     // however, we'll still check to make sure the record doesn't already exist. If it does, we append override, but any additional overrides with same id and participant will overwrite the data
     if (docSnap.exists()) {
-      await setDoc(doc(db, `${mode}/${appconfig.project_ref}/data`, `${fulldocid  }-override`), data);
-      console.log('Document written with ID: ', `${fulldocid  }-override`)
-      return `${fulldocid  }-override`
+      await setDoc(doc(db, `${mode}/${appconfig.project_ref}/data`, `${fulldocid}-override`), data)
+      console.log('Document written with ID: ', `${fulldocid}-override`)
+      return `${fulldocid}-override`
     }
-    // otherwise, we create a document with the specified docID 
-      await setDoc(doc(db, `${mode}/${appconfig.project_ref}/data`, fulldocid), data);
-      console.log('Document written with ID: ', fulldocid)
-      return fulldocid
-    
+    // otherwise, we create a document with the specified docID
+    await setDoc(doc(db, `${mode}/${appconfig.project_ref}/data`, fulldocid), data)
+    console.log('Document written with ID: ', fulldocid)
+    return fulldocid
   } catch (e) {
     console.error('Error adding document: ', e)
     return null
@@ -99,66 +95,63 @@ export const createDoc = async (data, seedid, partnum) => {
 export const updateExperimentCounter = async (counter) => {
   const docRef = doc(db, `${mode}/${appconfig.project_ref}/counters/`, counter)
 
-  let newCounter = null;
-    try {
-      await runTransaction(db, async (transaction) => {
-        const docSnap = await transaction.get(docRef);
-        if (!docSnap.exists()) {
-          newCounter = 0
-        } else{
-          newCounter = docSnap.data().n + 1;
-        }
-        transaction.set(docRef, { n: newCounter }, {merge: true});
-      });
-      console.log("New participant number is: ", newCounter);
-    } catch (e) {
-      console.log("Transaction failed: ", e);
-    }
-    return newCounter
+  let newCounter = null
+  try {
+    await runTransaction(db, async (transaction) => {
+      const docSnap = await transaction.get(docRef)
+      if (!docSnap.exists()) {
+        newCounter = 0
+      } else {
+        newCounter = docSnap.data().n + 1
+      }
+      transaction.set(docRef, { n: newCounter }, { merge: true })
+    })
+    console.log('New participant number is: ', newCounter)
+  } catch (e) {
+    console.log('Transaction failed: ', e)
+  }
+  return newCounter
 }
 
 export const balancedAssignConditions = async (conditionDict, currentConditions) => {
-
-  if(currentConditions.length === 0 && appconfig.mode === 'development'){
+  if (currentConditions.length === 0 && appconfig.mode === 'development') {
     // if there are current conditions and we're in developer mode, we won't assign new ones
-    console.log("conditions already set, not assigning new ones in dev mode")
+    console.log('conditions already set, not assigning new ones in dev mode')
     return currentConditions
   }
 
   // if the conditionDict is empty, we'll just return an empty list
-  if(Object.keys(conditionDict).length === 0){
-    console.log("no conditions to assign")
+  if (Object.keys(conditionDict).length === 0) {
+    console.log('no conditions to assign')
     return {}
   }
 
   // function for all possible combinations of N arrays (from https://stackoverflow.com/questions/8936610/how-can-i-create-every-combination-possible-for-the-contents-of-two-arrays)
   const combine = ([head, ...[headTail, ...tailTail]]) => {
     if (!headTail) return head
-    const combined = headTail.reduce((acc, x) => acc.concat(head.map(h => `${h}~${x}`)), [])
+    const combined = headTail.reduce((acc, x) => acc.concat(head.map((h) => `${h}~${x}`)), [])
     return combine([combined, ...tailTail])
   }
 
   // Append between-subjects conditions
   const conditionCombos = combine(Object.values(conditionDict))
 
-  
   // get a docRef for the conditions counter
-  const docRef =  doc(db, `${mode}/${appconfig.project_ref}/counters/conditions`)
+  const docRef = doc(db, `${mode}/${appconfig.project_ref}/counters/conditions`)
 
   // make a list of docRefs for each key in keys
   // const docRefs = keys.map((keyCond) => doc(db, `${mode}/${appconfig.project_ref}/counters/`, keyCond))
 
   try {
     const selectedConditions = await runTransaction(db, async (transaction) => {
-
       // for docRef, get the data
       const docSnap = await transaction.get(docRef)
       // const docSnaps = await Promise.all(docRefs.map((docRef) => transaction.get(docRef)))
 
-      // see if it exists. 
+      // see if it exists.
       // If it doesn't, choose a random condition from the list of conditions for that key
       let output
-      
+
       if (!docSnap.exists()) {
         const newCondCounter = {}
         const conditions = conditionCombos
@@ -170,16 +163,16 @@ export const balancedAssignConditions = async (conditionDict, currentConditions)
         })
         newCondCounter[minCondition] += 1
         // return selected condition and new incremented counter
-        output = {condName: docSnap.id, selectedCond: minCondition, newCounter: newCondCounter}
+        output = { condName: docSnap.id, selectedCond: minCondition, newCounter: newCondCounter }
       } else {
         //  otherwise, choose the condition with the lowest count
         const conditions = conditionCombos
         const oldCondCounter = docSnap.data()
-        
+
         // check if the current counter data has all the conditions
         // if there are any missing, we're going to start over everything at zero and choose at random
         const missingConditions = conditions.filter((cond) => !Object.keys(oldCondCounter).includes(cond))
-        if(missingConditions.length > 0){
+        if (missingConditions.length > 0) {
           const newCondCounter = {}
           const randomIndex = Math.floor(Math.random() * conditions.length)
           const minCondition = conditions[randomIndex]
@@ -189,7 +182,7 @@ export const balancedAssignConditions = async (conditionDict, currentConditions)
           })
           newCondCounter[minCondition] += 1
           // return selected condition and new incremented counter
-          output = {condName: docSnap.id, selectedCond: minCondition, newCounter: newCondCounter}
+          output = { condName: docSnap.id, selectedCond: minCondition, newCounter: newCondCounter }
         }
 
         // otherwise, we'll just choose the condition with the lowest count
@@ -200,19 +193,18 @@ export const balancedAssignConditions = async (conditionDict, currentConditions)
           // (if there are more than one, pick one at random)
           const minCondition = matchMinConds[Math.floor(Math.random() * matchMinConds.length)]
           oldCondCounter[minCondition] += 1
-          output = {condName: docSnap.id, selectedCond: minCondition, newCounter: oldCondCounter}
+          output = { condName: docSnap.id, selectedCond: minCondition, newCounter: oldCondCounter }
         }
       }
-
 
       // for each entry in output, update firestore with the newCounter and add selected cond to output dict
       const transactionOut = {}
       // no merge, because if any of the conditions change we just want to reset everything
-      transaction.set(doc(db, `${mode}/${appconfig.project_ref}/counters/`, output.condName), output.newCounter);
+      transaction.set(doc(db, `${mode}/${appconfig.project_ref}/counters/`, output.condName), output.newCounter)
       transactionOut[output.condName] = output.selectedCond
 
-      return transactionOut;
-    });
+      return transactionOut
+    })
     // Split back up into dictionary
     // get keys from conditionDict
     const keys = Object.keys(conditionDict)
@@ -221,13 +213,13 @@ export const balancedAssignConditions = async (conditionDict, currentConditions)
     // zip keys and splitConditions
     const selectedConditionsDict = Object.fromEntries(keys.map((key, i) => [key, splitConditions[i]]))
 
-    console.log("Conditions set to ", selectedConditionsDict);
+    console.log('Conditions set to ', selectedConditionsDict)
 
     return selectedConditionsDict
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
-  return null;
+  return null
 }
 
 // export default createDoc

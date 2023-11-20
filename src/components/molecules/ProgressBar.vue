@@ -7,22 +7,19 @@ const smilestore = useSmileStore() // get the global store
 const route = useRoute()
 </script>
 
-
-
 <template>
-    <nav class="navbar is-fixed-bottom" v-if="(route.name!=='recruit'&&route.name!=='mturk')">
-        <div class="container is-fluid pl-6 pr-6">
-            <progress class="progress is-success" v-bind:value="smilestore.global.progress" max="100">60%</progress> 
-        </div>
-    </nav>
+  <nav class="navbar is-fixed-bottom" v-if="route.name !== 'recruit' && route.name !== 'mturk'">
+    <div class="container is-fluid pl-6 pr-6">
+      <progress class="progress is-success" v-bind:value="smilestore.global.progress" max="100">60%</progress>
+    </div>
+  </nav>
 </template>
 
 <style scoped>
-
-.labeltext{
-    color: #000;
-    width: 20%;
-    font-weight: 700;
+.labeltext {
+  color: #000;
+  width: 20%;
+  font-weight: 700;
 }
 .navbar {
   font-size: 13px;

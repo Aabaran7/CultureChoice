@@ -4,7 +4,7 @@ class Timeline {
   constructor() {
     this.routes = [] // the actual routes given to VueRouter
     this.seqtimeline = [] // copies of routes that are sequential
-    this.type = "timeline"
+    this.type = 'timeline'
   }
 
   pushToRoutes(route) {
@@ -29,12 +29,11 @@ class Timeline {
         throw new Error(`DuplicateNameError${route.name}`)
       }
       // only check for duplicate paths if the route name is not an object (subtimeline)
-      if (typeof route.name !== 'object'){
+      if (typeof route.name !== 'object') {
         if (this.seqtimeline[i].path === route.path) {
           throw new Error(`DuplicatePathError${route.path}`)
         }
       }
-
     }
     this.seqtimeline.push(route)
   }
@@ -54,7 +53,7 @@ class Timeline {
         newroute.meta.prev = undefined
       }
     }
-    newroute.meta.type = "route"
+    newroute.meta.type = 'route'
     newroute.meta.sequential = true
 
     try {
@@ -76,11 +75,9 @@ class Timeline {
     const newroute = _.cloneDeep(routeConfig)
     // should NOT allow meta next/prev to exist
     if (!newroute.meta) {
-      newroute.meta = { prev: null, next: null, type: "route" }
+      newroute.meta = { prev: null, next: null, type: 'route' }
     } else if (newroute.meta.prev || newroute.meta.next) {
-      throw new Error(
-        `NonSequentialRouteError: Can't have meta.next or meta.prev defined for non-sequential route`
-      )
+      throw new Error(`NonSequentialRouteError: Can't have meta.next or meta.prev defined for non-sequential route`)
     }
     newroute.meta.sequential = false
     try {
@@ -91,23 +88,23 @@ class Timeline {
     }
   }
 
-  pushRandomizedTimeline(timeline){
-    if(timeline.name.type !== 'randomized_sub_timeline'){
-      throw new Error("Can only push randomized timelines to timelines")
+  pushRandomizedTimeline(timeline) {
+    if (timeline.name.type !== 'randomized_sub_timeline') {
+      throw new Error('Can only push randomized timelines to timelines')
     }
     const newtimeline = _.cloneDeep(timeline)
 
     // need to configure next and prev
-    if(!newtimeline.meta){
-      newtimeline.meta = { next: undefined, prev: undefined, type: "timeline" } 
+    if (!newtimeline.meta) {
+      newtimeline.meta = { next: undefined, prev: undefined, type: 'timeline' }
     } else {
       newtimeline.meta.next = undefined
       newtimeline.meta.prev = undefined
-      newtimeline.meta.type = "timeline"
+      newtimeline.meta.type = 'timeline'
     }
 
     // get all the routes inside the timeline and add them to routes
-    newtimeline.name.routes.forEach(route => {
+    newtimeline.name.routes.forEach((route) => {
       try {
         this.pushToRoutes(route)
       } catch (err) {
@@ -115,7 +112,7 @@ class Timeline {
         throw err
       }
     })
-    
+
     // add the timeline object itself to the timeline
     this.pushToTimeline(newtimeline)
   }
@@ -152,20 +149,21 @@ class Timeline {
         }
       }
 
-      if(this.seqtimeline[i].meta.type === "timeline"){
+      if (this.seqtimeline[i].meta.type === 'timeline') {
         timelineIndices.push(i)
       }
-
     }
 
     // propogate various meta fields to the routes within the timeline
     // this is relevant for next, previous, label, and orders -- we need that meta info at the route level
-    timelineIndices.forEach(index => {
+    timelineIndices.forEach((index) => {
       this.seqtimeline[index].name.routes.forEach((route, i) => {
-        this.seqtimeline[index].name.routes[i].meta = {...this.seqtimeline[index].name.routes[i].meta, ...this.seqtimeline[index].meta}
+        this.seqtimeline[index].name.routes[i].meta = {
+          ...this.seqtimeline[index].name.routes[i].meta,
+          ...this.seqtimeline[index].meta,
+        }
       })
     })
-
   }
 
   // this won't work with new system

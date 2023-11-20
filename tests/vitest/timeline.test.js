@@ -192,12 +192,11 @@ describe('Timeline tests', () => {
       component: MockComponent,
     })
     timeline.pushRandomizedTimeline({
-      name: subtimeline
+      name: subtimeline,
     })
 
     expect(timeline.seqtimeline.length).toBe(2)
   })
-
 
   it('cannot add a timeline to a timeline', () => {
     const MockComponent = { template: '<div>Mock Component</div>' }
@@ -215,7 +214,7 @@ describe('Timeline tests', () => {
     })
     const errorTrigger = () => {
       timeline.pushRandomizedTimeline({
-        name: timeline2
+        name: timeline2,
       })
     }
     expect(errorTrigger).toThrowError()
@@ -237,7 +236,7 @@ describe('Timeline tests', () => {
     })
     const errorTrigger = () => {
       timeline.pushRandomizedTimeline({
-        name: subtimeline
+        name: subtimeline,
       })
     }
     expect(errorTrigger).toThrowError()
@@ -265,7 +264,7 @@ describe('Timeline tests', () => {
       component: MockComponent,
     })
     timeline.pushRandomizedTimeline({
-      name: subtimeline
+      name: subtimeline,
     })
 
     timeline.pushSeqRoute({
@@ -288,7 +287,7 @@ describe('Timeline tests', () => {
     expect(timeline.seqtimeline[1].meta.prev).toBe('first')
     expect(timeline.seqtimeline[1].meta.next).toBe('last')
   })
-  
+
   it('build method should propogate specified conditions to routes when set', () => {
     const MockComponent = { template: '<div>Mock Component</div>' }
 
@@ -311,7 +310,7 @@ describe('Timeline tests', () => {
     })
     timeline.pushRandomizedTimeline({
       name: subtimeline,
-      meta: { label: "condition", orders: {cond1: ["mid1", "mid2"], BFirst: ["mid2", "mid1"]} }
+      meta: { label: 'condition', orders: { cond1: ['mid1', 'mid2'], BFirst: ['mid2', 'mid1'] } },
     })
 
     timeline.pushSeqRoute({
@@ -327,7 +326,6 @@ describe('Timeline tests', () => {
 
     expect(timeline.routes[2].meta.label).toBeDefined()
     expect(timeline.routes[2].meta.orders).toBeDefined()
-    
   })
 
   it('build method should correctly configure a doubly linked list', () => {

@@ -16,18 +16,20 @@ const smilestore = useSmileStore()
 
 const { next, prev } = useTimelineStepper()
 
-if(route.meta.progress) smilestore.global.progress = route.meta.progress
+if (route.meta.progress) smilestore.global.progress = route.meta.progress
 
-function finish(goto) { 
-    // smilestore.saveData()
-    if(goto) router.push(goto)
+function finish(goto) {
+  // smilestore.saveData()
+  if (goto) router.push(goto)
 }
 
-const pages = [CaptchaInstructionsText, 
-               CaptchaTrialImageCategorization, 
-               CaptchaTrialMotorControl,
-               CaptchaTrialTextComprehension, 
-               CaptchaTrialStroop]
+const pages = [
+  CaptchaInstructionsText,
+  CaptchaTrialImageCategorization,
+  CaptchaTrialMotorControl,
+  CaptchaTrialTextComprehension,
+  CaptchaTrialStroop,
+]
 const page_indx = ref(smilestore.getPage)
 const currentTab = shallowRef(pages[page_indx.value])
 // captcha steps
@@ -41,28 +43,24 @@ const currentTab = shallowRef(pages[page_indx.value])
 // 3 - text comprehension
 // 4 - foraging in semantic memory
 // 5 - human brain should show stroop interference
-// 6 - 
-
+// 6 -
 
 function next_trial(goto) {
-    page_indx.value = smilestore.incrementPageTracker()
-    if (page_indx.value >= pages.length) {
-        smilestore.resetPageTracker()
-        if(goto) router.push(goto)
-    } else {
-        currentTab.value = pages[page_indx.value]
-    }
+  page_indx.value = smilestore.incrementPageTracker()
+  if (page_indx.value >= pages.length) {
+    smilestore.resetPageTracker()
+    if (goto) router.push(goto)
+  } else {
+    currentTab.value = pages[page_indx.value]
+  }
 }
-
 </script>
 
 <template>
-    <div class="page" >
-        <!-- Component changes when currentTab changes -->
-        <component :is="currentTab" @next-page-captcha="next_trial(next())"></component>
-    </div>
+  <div class="page">
+    <!-- Component changes when currentTab changes -->
+    <component :is="currentTab" @next-page-captcha="next_trial(next())"></component>
+  </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

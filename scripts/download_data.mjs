@@ -6,13 +6,7 @@ import chalk from 'chalk'
 import figlet from 'figlet'
 // import shell from 'shelljs'
 import { initializeApp } from 'firebase/app'
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore'
+import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore'
 import * as dotenv from 'dotenv'
 import * as fs from 'fs'
 // import appconfig from '../src/config'
@@ -91,9 +85,7 @@ const getData = async (path, completeOnly, filename) => {
 }
 
 const success = (filename) => {
-  console.log(
-    chalk.green(`your data has been exported to 'data/${filename}.json'.`)
-  )
+  console.log(chalk.green(`your data has been exported to 'data/${filename}.json'.`))
 }
 
 const run = async () => {

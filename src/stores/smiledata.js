@@ -12,26 +12,30 @@ import {
   fsnow,
 } from './firestore-db'
 
-
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
   state: () => ({
-    local: useStorage(appconfig.local_storage_key, {
-      // syncs with local storage
-      knownUser: false,
-      lastRoute: appconfig.mode === 'development' ? 'recruit' : 'landing',
-      allowJumps: appconfig.mode === 'development',
-      docRef: null,
-      partNum: null,
-      completionCode: '',
-      totalWrites: 0,
-      lastWrite: null,
-      seedActive: true, // do you want to use a random seed based on the participant's ID?
-      seedID: '',
-      seedSet: false,
-      pageTracker: 0,
-      possibleConditions: {taskOrder: ["AFirst", "BFirst"], instructions: ["version1", "version2", "version3"]},
-    }, localStorage, { mergeDefaults: true }),
+    local: useStorage(
+      appconfig.local_storage_key,
+      {
+        // syncs with local storage
+        knownUser: false,
+        lastRoute: appconfig.mode === 'development' ? 'recruit' : 'landing',
+        allowJumps: appconfig.mode === 'development',
+        docRef: null,
+        partNum: null,
+        completionCode: '',
+        totalWrites: 0,
+        lastWrite: null,
+        seedActive: true, // do you want to use a random seed based on the participant's ID?
+        seedID: '',
+        seedSet: false,
+        pageTracker: 0,
+        possibleConditions: { taskOrder: ['AFirst', 'BFirst'], instructions: ['version1', 'version2', 'version3'] },
+      },
+      localStorage,
+      { mergeDefaults: true }
+    ),
     global: {
       // ephemeral state, resets on browser refresh
       progress: 0,
@@ -110,11 +114,11 @@ export default defineStore('smilestore', {
       this.local.seedID = seed
       this.local.seedSet = true
     },
-    incrementPageTracker(){
+    incrementPageTracker() {
       this.local.pageTracker += 1
       return this.local.pageTracker
     },
-    resetPageTracker(){
+    resetPageTracker() {
       this.local.pageTracker = 0
     },
     recordWindowEvent(type, event_data = null) {
@@ -194,7 +198,7 @@ export default defineStore('smilestore', {
       this.local.partNum = await updateExperimentCounter('participants')
       this.local.docRef = await createDoc(this.data, this.local.seedID, this.local.partNum)
       // if possible conditions are not empty, assign conditions
-      if(this.local.possibleConditions){
+      if (this.local.possibleConditions) {
         this.data.conditions = await balancedAssignConditions(this.local.possibleConditions, this.data.conditions)
       }
       if (this.local.docRef) {
@@ -220,7 +224,7 @@ export default defineStore('smilestore', {
       //   this.local.lastRoute = route
       // }
     },
-    recordRoute(route){
+    recordRoute(route) {
       this.data.route_order.push(route)
     },
     async saveData(force = false) {
@@ -232,18 +236,11 @@ export default defineStore('smilestore', {
           return
         }
 
-        if (
-          !force &&
-          this.local.lastWrite &&
-          Date.now() - this.local.lastWrite < appconfig.min_write_interval
-        ) {
+        if (!force && this.local.lastWrite && Date.now() - this.local.lastWrite < appconfig.min_write_interval) {
           console.error(
             'SMILESTORE: write interval too short for firebase.  Data NOT saved. Call saveData() less frequently to avoid problems/cost issues.'
           )
-          console.error(
-            'SMILESTORE: interval was',
-            appconfig.min_write_interval
-          )
+          console.error('SMILESTORE: interval was', appconfig.min_write_interval)
           // console.error(Date.now() - this.local.lastWrite)
           return
         }
@@ -262,4 +259,3 @@ export default defineStore('smilestore', {
     },
   },
 })
-

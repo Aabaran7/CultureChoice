@@ -35,10 +35,7 @@ export default ({ mode }) => {
       strictPort: true,
       hmr: process.env.GITPOD_WORKSPACE_URL
         ? {
-            host: process.env.GITPOD_WORKSPACE_URL.replace(
-              'https://',
-              `${process.env.VITE_DEV_PORT_NUM}-`
-            ),
+            host: process.env.GITPOD_WORKSPACE_URL.replace('https://', `${process.env.VITE_DEV_PORT_NUM}-`),
             protocol: 'wss',
             clientPort: 443,
           }

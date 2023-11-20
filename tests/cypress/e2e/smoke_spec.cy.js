@@ -26,9 +26,7 @@ describe('user flow', () => {
     cy.contains("I'm ready!").click() // click the continue button
     cy.url().should('include', '/consent') // should go to consent next
     cy.get('.consentbox').should('contain', 'We first must verify') // verify it loaded by checking text on the page
-    cy.get('.formkit-outer')
-      .get('[name="consent_toggle"]')
-      .check({ force: true }) // required with formkit, sorry, toggles the consent switch
+    cy.get('.formkit-outer').get('[name="consent_toggle"]').check({ force: true }) // required with formkit, sorry, toggles the consent switch
     cy.contains("Let's start").click() // continue now
 
     // demographic page

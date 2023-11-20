@@ -12,10 +12,7 @@ function parse_w_h(value) {
 export default {
   mode: import.meta.env.MODE,
   project_name: import.meta.env.VITE_PROJECT_NAME, // autocompute this on intitialization
-  project_ref: import.meta.env.VITE_DEPLOY_BASE_PATH.slice(1, -1).replace(
-    /\//g,
-    '-'
-  ),
+  project_ref: import.meta.env.VITE_DEPLOY_BASE_PATH.slice(1, -1).replace(/\//g, '-'),
   code_name: import.meta.env.VITE_CODE_NAME,
   code_name_url: import.meta.env.VITE_CODE_NAME_DEPLOY_URL,
   local_storage_key: `smilestore-${import.meta.env.VITE_CODE_NAME}`,
@@ -25,9 +22,9 @@ export default {
     branch: import.meta.env.VITE_GIT_BRANCH_NAME,
     last_commit_msg: import.meta.env.VITE_GIT_LAST_MSG,
     last_commit_hash: import.meta.env.VITE_GIT_HASH, // autocompute this all the time
-    commit_url: `https://github.com/${import.meta.env.VITE_GIT_OWNER}/${
-      import.meta.env.VITE_GIT_REPO_NAME
-    }/commit/${import.meta.env.VITE_GIT_HASH}`,
+    commit_url: `https://github.com/${import.meta.env.VITE_GIT_OWNER}/${import.meta.env.VITE_GIT_REPO_NAME}/commit/${
+      import.meta.env.VITE_GIT_HASH
+    }`,
   },
   browser_exclude: import.meta.env.VITE_BROWSER_EXCLUDE,
   allow_repeats: import.meta.env.VITE_ALLOW_REPEATS,
