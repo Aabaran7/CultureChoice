@@ -214,6 +214,13 @@ function addGuards(r) {
         from.name === undefined &&
         !smilestore.isKnownUser)
     ) {
+      if (smilestore.config.mode === 'development') {
+        console.warn(
+          'WARNING: allowing direct navigation to',
+          to.name,
+          '.  This is allowed in development mode but not in production.'
+        )
+      }
       smilestore.setLastRoute(to.name)
       smilestore.recordRoute(to.name)
       return true
