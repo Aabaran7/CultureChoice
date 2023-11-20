@@ -1,5 +1,5 @@
 // import { ref } from 'vue'
-import '@/seed' 
+import '@/seed'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import seedrandom from 'seedrandom'
 import { createRouter, createWebHashHistory } from 'vue-router'
@@ -7,8 +7,7 @@ import appconfig from '@/config'
 import { processQuery } from '@/utils'
 import Timeline from '@/timeline'
 import RandomSubTimeline from '@/subtimeline'
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from 'uuid'
 
 // 1. Import route components
 import RecruitmentChooser from '@/components/pages/RecruitmentChooserPage.vue'
@@ -35,7 +34,6 @@ import WindowSizer from '@/components/pages/WindowSizerPage.vue'
 // but for most experiment they go in sequence from begining
 // to the end of this list
 const timeline = new Timeline()
-
 
 // add the recruitment chooser if in development mode
 if (appconfig.mode === 'development') {
@@ -146,7 +144,6 @@ timeline.pushRandomizedTimeline({
   // meta: { label: "taskOrder", orders: {AFirst: ["task1", "task2"], BFirst: ["task2", "task1"]} }
 })
 
-
 // debriefing form
 timeline.pushSeqRoute({
   path: '/debrief',
@@ -233,7 +230,12 @@ function addGuards(r) {
     }
     // if the next route is a subtimeline and you're trying to go to a subtimeline route, allow it
     // this is necessary because from.meta.next won't immediately get the subroute as next when the subtimeline is randomized
-    if (from.meta !== undefined && from.meta.next !== undefined && from.meta.next.type === 'randomized_sub_timeline' && to.meta.subroute) {
+    if (
+      from.meta !== undefined &&
+      from.meta.next !== undefined &&
+      from.meta.next.type === 'randomized_sub_timeline' &&
+      to.meta.subroute
+    ) {
       smilestore.setLastRoute(to.name)
       smilestore.recordRoute(to.name)
       return true
@@ -273,15 +275,16 @@ export const router = createRouter({
 addGuards(router) // add the guards defined above
 
 // add additional guard to set global seed before
-router.beforeResolve(to => {
+router.beforeResolve((to) => {
   const smilestore = useSmileStore()
-  if(smilestore.local.seedActive){
+  if (smilestore.local.seedActive) {
     const seedID = smilestore.getSeedID
     const seed = `${seedID}-${to.name}`
-    seedrandom(seed, { global: true });
-  } else{ // if inactive, generate a random string then re-seed
-    const newseed = uuidv4();
-    seedrandom(newseed, { global: true });
+    seedrandom(seed, { global: true })
+  } else {
+    // if inactive, generate a random string then re-seed
+    const newseed = uuidv4()
+    seedrandom(newseed, { global: true })
   }
 })
 
