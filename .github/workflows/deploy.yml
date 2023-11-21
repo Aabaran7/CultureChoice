@@ -156,7 +156,7 @@ jobs:
       # Build the web app
       - name: Build web app
         run: |
-        if [${{ env.GITHUB_REF_SLUG }} == 'presentation']; then
+        if "${{ env.GITHUB_REF_SLUG }}" == "presentation" then
             npm run build:present 
         else
             npm run build
