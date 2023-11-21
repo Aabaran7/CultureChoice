@@ -16,28 +16,6 @@
             <p class="is-size-5 has-text-left">
                 Use the links below to navigate to different parts of the experiment, or use the navigation bar at the top of the page.
                 <br>
-                <p class="is-size-6">
-                  This website is set up for you to explore the experiment design for a project exploring how people help one another in real time. 
-                  If you have questions or comments, please contact the project lead <a href="https://pamop.com">Pam Osborn Popp</a>.
-                </p>
-                <hr>
-                <h3 class="title is-5">Play farm game (single-player)</h3>
-                  <p class="is-size-6">
-                    Try out the experimental task in a single-player format where you control both players.
-                  </p>
-                  <a href="#/expgame" class="button is-pink is-small" id='citizen_tester'>Farm game &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
-                <hr>
-                <h3 class="title is-5">View real gameplay from data</h3>
-                  <p class="is-size-6">
-                    Watch a replay of a game that was played by two real participants.
-                  </p>
-                  <a href="#/replayselectpage" class="button is-pink is-small" id='citizen_tester'>Replay game &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
-                <hr>
-                <h3 class="title is-5">Show game environments (stimuli)</h3>
-                  <p class="is-size-6">
-                    See the twelve different game environments that participants play in. 
-                  </p>
-                  <a href="#/stimulipage" class="button is-pink is-small" id='citizen_tester'>Environments &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
                 <hr>
                 <h3 class="title is-5">Start from beginning</h3>
                 <p class="is-size-6">

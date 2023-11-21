@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 // 1. Import route components
 import RecruitmentChooser from '@/components/pages/RecruitmentChooserPage.vue'
+import PresentationModeHomePage from '@/components/pages/PresentationModeHomePage.vue'
 import MTurk from '@/components/pages/MTurkRecruitPage.vue'
 import Advertisement from '@/components/pages/AdvertisementPage.vue'
 import Consent from '@/components/pages/ConsentPage.vue'
@@ -41,6 +42,13 @@ if (appconfig.mode === 'development') {
     path: '/',
     name: 'recruit',
     component: RecruitmentChooser,
+    meta: { allowDirectEntry: true },
+  })
+} else if (appconfig.mode === 'presentation') {
+  timeline.pushRoute({
+    path: '/',
+    name: 'presentation_home',
+    component: PresentationModeHomePage,
     meta: { allowDirectEntry: true },
   })
 } else {
@@ -214,13 +222,14 @@ function addGuards(r) {
     if (
       to.meta.allowDirectEntry ||
       (smilestore.config.mode === 'development' && smilestore.local.allowJumps) ||
+      smilestore.config.mode === 'presentation' ||
       (to.name === 'welcome_anonymous' && from.name === undefined && !smilestore.isKnownUser)
     ) {
-      if (smilestore.config.mode === 'development') {
+      if (smilestore.config.mode === 'development' || smilestore.config.mode === 'presentation') {
         console.warn(
-          'WARNING: allowing direct navigation to',
+          'WARNING: allowing direct, out-of-order navigation to',
           to.name,
-          '.  This is allowed in development mode but not in production.'
+          '.  This is allowed in development/presentation mode but not in production.'
         )
       }
       smilestore.setLastRoute(to.name)
