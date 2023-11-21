@@ -156,11 +156,11 @@ jobs:
       # Build the web app
       - name: Build web app
         run: |
-        if "${{ github.ref }}" == "refs/heads/presentation"; then 
+          if "${{ github.ref }}" == "refs/heads/presentation"; then 
             npm run build:present 
-        else
+          else
             npm run build
-        fi
+          fi
 
       # make remote folder if necessar
       - name: create the remote folders if they don't exist
