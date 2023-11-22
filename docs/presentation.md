@@ -17,7 +17,8 @@ npm run dev:present
 
 This will launch a website that looks something like this:
 
-![Presentation Mode](/images/presentmode.png)
+![Presentation Mode](/images/presentmode.png)  
+
 
 Notice that you can use the drop down "jump" menu to jump around between the parts of your experiment in this mode.
 
