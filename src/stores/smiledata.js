@@ -13,7 +13,7 @@ import {
 } from './firestore-db'
 import { mode } from 'crypto-js'
 
-initLastRoute(mode) {
+function initLastRoute(mode) {
   if (mode === 'development') {
     return 'recruit'
   } else if (mode === 'presentation') {
@@ -22,7 +22,7 @@ initLastRoute(mode) {
   return 'landing'
 }
 
-initAllowJumps(mode) {
+function initAllowJumps(mode) {
   return (mode === 'development' || mode === 'presentation')
 }
 
