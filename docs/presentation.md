@@ -17,21 +17,20 @@ npm run dev:present
 
 This will launch a website that looks something like this:
 
-![Presentation Mode](/images/presentmode.png)  
-
+![Presentation Mode](/images/presentmode.png)
 
 Notice that you can use the drop down "jump" menu to jump around between the parts of your experiment in this mode.
 
 ## How to customize Presentation Mode
 
-To customize this presentation mode page edit the `src/components/pages/PresentationModeHomePage.vue` component. You can add
+To customize this presentation mode page edit the `src/components/presentation_mode/PresentationModeHomePage.vue` component. You can add
 links to papers, hot link to different parts of your experiment, or add custom routes that help to visualize your data, etc...
 
 ## How to deploy in Presentation Mode
 
 To deploy your project in presentation mode there are two options. The first is to create a new branch titled 'presentation'
 and push this to GitHub. This will generate a special "presentation mode" deployment and you'll receive a slack notification
-about when the website is ready.  An example from the default <SmileText/> repo is [here](https://exps.gureckislab.org/nyuccl/smile/presentation/#/)
+about when the website is ready. An example from the default <SmileText/> repo is [here](https://exps.gureckislab.org/nyuccl/smile/presentation/#/)
 
 The second option is to edit `src/config.js` and change the line that reads
 
@@ -51,4 +50,3 @@ branch.
 ### Notes
 
 The `/config` route is not reachable in presentation mode by default to prevent certain information being leaked publically on your website.
-

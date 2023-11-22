@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Advertisement from '@/components/pages/AdvertisementPage.vue'
+import Advertisement from '@/components/recruitment/AdvertisementPage.vue'
 // import useSmileStore from '@/stores/smiledata'
 import { routes } from '@/router' // This import should point to your routes file declared above
 

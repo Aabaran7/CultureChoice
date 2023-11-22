@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 //import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
-import StudyPreviewText from '@/components/atoms/StudyPreviewText.vue'
+import StudyPreviewText from '@/components/recruitment/StudyPreviewText.vue'
 
 // const router = useRouter()
 const route = useRoute()

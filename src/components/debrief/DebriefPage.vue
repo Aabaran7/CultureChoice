@@ -2,7 +2,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata'
-import DebriefText from '@/components/atoms/DebriefText.vue' // get access to the global store
+import DebriefText from '@/components/debrief/DebriefText.vue' // get access to the global store
 
 const router = useRouter()
 const route = useRoute()

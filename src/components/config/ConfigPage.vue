@@ -95,7 +95,7 @@ function resetLocalState() {
 
         <p>
           Edit
-          <code>components/pages/ConfigPage.vue</code> to test hot module replacement.
+          <code>components/config/ConfigPage.vue</code> to test hot module replacement.
         </p>    
         
       </div>
