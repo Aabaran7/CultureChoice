@@ -6,7 +6,6 @@ Online docs: [https://smile.gureckislab.org](https://smile.gureckislab.org)
 
 ## Required software to work on this
 
-- test
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 - [Node.js](https://nodejs.org/en/download/)
 - A git client (VS Code built in works!)
