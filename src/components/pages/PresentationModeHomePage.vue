@@ -33,7 +33,7 @@
                   <p class="is-size-6">
                     Try out the captcha game participants play to ensure that they are human (and that the required software loads properly in their browser).
                   </p>
-                  <a href="#/captchagame" class="button is-yellow is-small" id='citizen_tester'>Captcha Game &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
+                  <a href="#/captcha" class="button is-yellow is-small" id='citizen_tester'>Captcha &nbsp;<FAIcon icon="fa-solid fa-arrow-right" /></a>
               </p>        
         </div>
 
