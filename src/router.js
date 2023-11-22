@@ -189,12 +189,14 @@ timeline.pushRoute({
 })
 
 // this is a special route with config/debugging information
-timeline.pushRoute({
-  path: '/config',
-  name: 'config',
-  component: Config,
-  meta: { allowDirectEntry: true },
-})
+if (appconfig.mode !== 'presentation') {
+  timeline.pushRoute({
+    path: '/config',
+    name: 'config',
+    component: Config,
+    meta: { allowDirectEntry: true },
+  })
+}
 
 // 3. add navigation guards
 //    currently these check if user is known
