@@ -31,7 +31,7 @@ links to papers, hot link to different parts of your experiment, or add custom r
 
 To deploy your project in presentation mode there are two options. The first is to create a new branch titled 'presentation'
 and push this to GitHub. This will generate a special "presentation mode" deployment and you'll receive a slack notification
-about when the website is ready.
+about when the website is ready.  An example from the default <SmileText/> repo is [here](https://exps.gureckislab.org/nyuccl/smile/presentation/#/)
 
 The second option is to edit `src/config.js` and change the line that reads
 
@@ -47,3 +47,8 @@ mode: 'presentation',
 
 When you next commit this change to your repo, the new site will be built in presentation mode. This can be done on any
 branch.
+
+### Notes
+
+The `/config` route is not reachable in presentation mode by default to prevent certain information being leaked publically on your website.
+
