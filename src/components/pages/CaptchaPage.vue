@@ -4,11 +4,11 @@ import { useRouter, useRoute } from 'vue-router'
 import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 
-import CaptchaInstructionsText from '@/components/atoms/CaptchaInstructionsText.vue'
-import CaptchaTrialImageCategorization from '@/components/organisms/CaptchaTrialImageCategorization.vue'
-import CaptchaTrialMotorControl from '@/components/organisms/CaptchaTrialMotorControl.vue'
-import CaptchaTrialTextComprehension from '@/components/organisms/CaptchaTrialTextComprehension.vue'
-import CaptchaTrialStroop from '@/components/organisms/CaptchaTrialStroop.vue'
+import CaptchaInstructionsText from '@/components/captcha/CaptchaInstructionsText.vue'
+import CaptchaTrialImageCategorization from '@/components/captcha/CaptchaTrialImageCategorization.vue'
+import CaptchaTrialMotorControl from '@/components/captcha/CaptchaTrialMotorControl.vue'
+import CaptchaTrialTextComprehension from '@/components/captcha/CaptchaTrialTextComprehension.vue'
+import CaptchaTrialStroop from '@/components/captcha/CaptchaTrialStroop.vue'
 
 const router = useRouter()
 const route = useRoute()
