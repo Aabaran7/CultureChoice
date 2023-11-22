@@ -159,7 +159,7 @@ jobs:
           if "${{ github.ref }}" == "refs/heads/presentation"; then 
             npm run build:present 
           else
-            npm run build:present
+            npm run build
           fi
 
       # make remote folder if necessar
