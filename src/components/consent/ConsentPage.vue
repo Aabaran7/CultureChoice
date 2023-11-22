@@ -4,7 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import useTimelineStepper from '@/composables/timelinestepper'
 import useSmileStore from '@/stores/smiledata'
 
-import InformedConsentText from '@/components/atoms/InformedConsentText.vue';
+import InformedConsentText from '@/components/consent/InformedConsentText.vue';
 
 const router = useRouter()
 const route = useRoute()
