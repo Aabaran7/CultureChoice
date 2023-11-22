@@ -210,7 +210,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: ${{ env.SLACK_WEBHOOK_URL != '' }} # this should only run if SLACK_WEBHOOK exists
         id: slack
-        uses: slackapi/slack-github-action@v1.19.0
+        uses: slackapi/slack-github-action@v1.24.0
         with:
           # This data can be any valid JSON from a previous step in the GitHub Action
           payload: |
