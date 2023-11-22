@@ -28,7 +28,17 @@ echo "VITE_GIT_OWNER = ${OWNER}" >> $ENV_FILE
 BRANCH=$(git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
 echo "VITE_GIT_BRANCH_NAME   = $BRANCH" >> $ENV_FILE
 
-MSG=$(git log -1 --pretty=%s)
+escape_quotes() {
+  # Get the input string
+  input="$1"
+  # Escape single quotes
+  input="${input//\'/\'}"
+  # Escape double quotes
+  input="${input//\"/\\\"}"
+  # Return the escaped string
+  echo "$input"
+}
+MSG=$(escape_quotes "$(git log -1 --pretty=%s)");
 echo "VITE_GIT_LAST_MSG      = $MSG" >> $ENV_FILE
 
 echo 'VITE_DEPLOY_BASE_PATH   =  "/${VITE_GIT_OWNER}/${VITE_GIT_REPO_NAME}/${VITE_GIT_BRANCH_NAME}/"' >> $ENV_FILE
