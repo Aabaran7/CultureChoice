@@ -11,6 +11,20 @@ import {
   loadDoc,
   fsnow,
 } from './firestore-db'
+import { mode } from 'crypto-js'
+
+initLastRoute(mode) {
+  if (mode === 'development') {
+    return 'recruit'
+  } else if (mode === 'presentation') {
+    return 'presentation_home'
+  }
+  return 'landing'
+}
+
+initAllowJumps(mode) {
+  return (mode === 'development' || mode === 'presentation')
+}
 
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
@@ -20,8 +34,8 @@ export default defineStore('smilestore', {
       {
         // syncs with local storage
         knownUser: false,
-        lastRoute: appconfig.mode === 'development' ? 'recruit' : 'landing',
-        allowJumps: appconfig.mode === 'development',
+        lastRoute: initLastRoute(appconfig.mode),
+        allowJumps: initAllowJumps(appconfig.mode),
         docRef: null,
         partNum: null,
         completionCode: '',
