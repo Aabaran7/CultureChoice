@@ -48,10 +48,10 @@ export default defineConfig({
           { text: '🔀 Timeline', link: '/timeline' },
           { text: '🎲 Randomization', link: '/randomization' },
           { text: '🧑‍🎨 Styling, CSS, and icons', link: '/style' },
-          { text: '💰 Computing bonuses', link: '/bonuses' },
+          //{ text: '💰 Computing bonuses', link: '/bonuses' },
           { text: '🆘 Errors and other issues', link: '/problems' },
           { text: '🧐 Analyzing data', link: '/analysis' },
-          { text: '🔌 Server-side Computations', link: '/server' },
+          //{ text: '🔌 Server-side Computations', link: '/server' },
         ],
       },
       {
