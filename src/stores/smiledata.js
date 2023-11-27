@@ -11,7 +11,6 @@ import {
   loadDoc,
   fsnow,
 } from './firestore-db'
-import { mode } from 'crypto-js'
 
 function initLastRoute(mode) {
   if (mode === 'development') {
@@ -23,7 +22,7 @@ function initLastRoute(mode) {
 }
 
 function initAllowJumps(mode) {
-  return (mode === 'development' || mode === 'presentation')
+  return mode === 'development' || mode === 'presentation'
 }
 
 export default defineStore('smilestore', {
