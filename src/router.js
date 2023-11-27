@@ -4,7 +4,7 @@ import useSmileStore from '@/stores/smiledata' // get access to the global store
 import seedrandom from 'seedrandom'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import appconfig from '@/config'
-import { processQuery } from '@/utils'
+import { processQuery, getQueryParams } from '@/utils'
 import Timeline from '@/timeline'
 import RandomSubTimeline from '@/subtimeline'
 import { v4 as uuidv4 } from 'uuid'
@@ -204,12 +204,14 @@ if (appconfig.mode !== 'presentation') {
 function addGuards(r) {
   r.beforeEach((to, from) => {
     // Set queries to be combination of from queries and to queries (TO overwrites FROM if there is one with the same key)
+    // Also add queries that come before the URL
     const newQueries = {
       ...from.query,
       ...to.query,
+      ...getQueryParams(),
     }
     to.query = newQueries
-
+    //console.log('query params', to.query)
     // console.log('loading', to.name)
     // console.log('from', from.name)
     // console.log('allowDirectEntry', to.meta.allowDirectEntry)

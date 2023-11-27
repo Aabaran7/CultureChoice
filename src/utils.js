@@ -1,5 +1,15 @@
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 
+export function getQueryParams() {
+  const queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString)
+  const queryDict = {}
+  for (const [key, value] of urlParams.entries()) {
+    queryDict[key] = value
+  }
+  return queryDict
+}
+
 export function processQuery(query, service) {
   const smilestore = useSmileStore()
   const urlParams = query
