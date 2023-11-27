@@ -9,16 +9,27 @@ import {
   getDoc,
   Timestamp,
   runTransaction,
+  connectFirestoreEmulator,
 } from 'firebase/firestore'
 import appconfig from '@/config'
 import { split } from 'lodash'
 
 // initialize firebase connection
 // since this is a module these will run once at the start
+
 const firebaseApp = initializeApp(appconfig.firebaseConfig)
-const db = getFirestore(firebaseApp)
+var db
+if (appconfig.mode === 'testing') {
+  db = getFirestore()
+  connectFirestoreEmulator(db, '127.0.0.1', 8080)
+  console.warn('WARNING: using local firestore emulator')
+} else {
+  const firebaseApp = initializeApp(appconfig.firebaseConfig)
+  db = getFirestore(firebaseApp)
+}
+
 let mode = 'real'
-if (appconfig.mode === 'development') {
+if (appconfig.mode === 'development' || appconfig.mode === 'testing') {
   mode = 'testing'
 }
 
