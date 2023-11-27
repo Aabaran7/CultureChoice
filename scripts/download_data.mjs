@@ -40,6 +40,12 @@ const askQuestions = () => {
     },
     {
       type: 'input',
+      name: 'BRANCH_NAME',
+      message: 'What is the name of the branch you want data from?',
+      default: 'main',
+    },
+    {
+      type: 'input',
       name: 'FILENAME',
       message: 'What is the name of the file without extension?',
       default: 'data',
@@ -81,29 +87,31 @@ const getData = async (path, completeOnly, filename) => {
     data.push({ id: doc.id, data: doc.data() })
   })
 
-  await storeData(data, `data/${filename}.json`)
+  await storeData(data, `data/raw/${filename}.json`)
 }
 
 const success = (filename) => {
-  console.log(chalk.green(`your data has been exported to 'data/${filename}.json'.`))
+  console.log(chalk.green(`your data has been exported to 'data/raw/${filename}.json'.`))
 }
 
 const run = async () => {
   // show script introduction
   init()
   const env = dotenv.config({ path: 'env/.env.git.local' })
-  const project_ref = `${env.parsed.VITE_GIT_OWNER}-${env.parsed.VITE_PROJECT_NAME}-${env.parsed.VITE_GIT_BRANCH_NAME}`
+  // const project_ref = `${env.parsed.VITE_GIT_OWNER}-${env.parsed.VITE_PROJECT_NAME}-${env.parsed.VITE_GIT_BRANCH_NAME}`
 
   // ask questions
   const answers = await askQuestions()
-  const { TYPE, COMPLETE_ONLY, FILENAME } = answers
+  const { TYPE, COMPLETE_ONLY, BRANCH_NAME, FILENAME } = answers
+
+  const project_ref = `${env.parsed.VITE_GIT_OWNER}-${env.parsed.VITE_PROJECT_NAME}-${BRANCH_NAME}`
 
   // create the file
   const path = `${TYPE}/${project_ref}/data`
-  await getData(path, COMPLETE_ONLY, `${TYPE}-${COMPLETE_ONLY}-${FILENAME}`)
+  await getData(path, COMPLETE_ONLY, `${TYPE}-${COMPLETE_ONLY}-${BRANCH_NAME}-${FILENAME}`)
 
   // show success message
-  success(`${TYPE}-${COMPLETE_ONLY}-${FILENAME}`)
+  success(`${TYPE}-${COMPLETE_ONLY}-${BRANCH_NAME}-${FILENAME}`)
 }
 
 run()
