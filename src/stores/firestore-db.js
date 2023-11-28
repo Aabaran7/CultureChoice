@@ -19,12 +19,12 @@ import { split } from 'lodash'
 
 const firebaseApp = initializeApp(appconfig.firebaseConfig)
 var db
+
 if (appconfig.mode === 'testing') {
   db = getFirestore()
   connectFirestoreEmulator(db, '127.0.0.1', 8080)
   console.warn('WARNING: using local firestore emulator')
 } else {
-  const firebaseApp = initializeApp(appconfig.firebaseConfig)
   db = getFirestore(firebaseApp)
 }
 
