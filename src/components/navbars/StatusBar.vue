@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
+import appconfig from '@/config'
 
 // load sub-components used in this compomnents
 import WithdrawFormModal from '@/components/errors_withdraw/WithdrawFormModal.vue'
@@ -55,7 +56,12 @@ function submitWithdraw() {
       </a>
       <div class="navbar-item">
         <p class="is-size-7 studyinfo">
-          Study: {{ smilestore.config.code_name }}<br />Version: {{ smilestore.config.github.last_commit_hash }}
+          Study: {{ smilestore.config.code_name }}<br />Version: {{ smilestore.config.github.last_commit_hash
+          }}{{
+            appconfig.mode === 'testing' || appconfig.mode === 'development' || appconfig.mode === 'presentation'
+              ? '-' + appconfig.mode
+              : ''
+          }}
         </p>
       </div>
     </div>
