@@ -182,7 +182,7 @@ cloned version (see above) your listing in that folder will look like this:
 
 You are going to first delete the files ending in `.secret`.  You will regenerate those secret files in a later step.
 
-Next you need to create a file called `.env.local.secret` in the `env/` folder.
+Next you need to create a file called `.env.local` in the `env/` folder.
 The content of that file should look like this:
 
 ```
@@ -292,9 +292,9 @@ git secret tell you@email.com
 
 Next, add the files:  
 ```
-git secret add .env/.env.deploy.local
-git secret add .env/.env.local
-git secret add .env/.env.docs.local
+git secret add env/.env.deploy.local
+git secret add env/.env.local
+git secret add env/.env.docs.local
 ```
 
 (TRhe last command about `.env.docs.local` is optional)
