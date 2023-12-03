@@ -1,13 +1,13 @@
 // import { ref } from 'vue'
 import '@/seed'
-import useSmileStore from '@/stores/smiledata' // get access to the global store
 import seedrandom from 'seedrandom'
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { v4 as uuidv4 } from 'uuid'
+import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/config'
 import { processQuery, getQueryParams } from '@/utils'
 import Timeline from '@/timeline'
 import RandomSubTimeline from '@/subtimeline'
-import { v4 as uuidv4 } from 'uuid'
 
 // 1. Import route components
 import RecruitmentChooser from '@/components/recruitment/RecruitmentChooserPage.vue'
@@ -211,7 +211,7 @@ function addGuards(r) {
       ...getQueryParams(),
     }
     to.query = newQueries
-    //console.log('query params', to.query)
+    // console.log('query params', to.query)
     // console.log('loading', to.name)
     // console.log('from', from.name)
     // console.log('allowDirectEntry', to.meta.allowDirectEntry)
@@ -222,30 +222,44 @@ function addGuards(r) {
       smilestore.loadData()
     }
 
-    // if you're going to an always-allowed route or if you're in jumping mode, allow the new route
-    if (
-      to.meta.allowDirectEntry ||
-      (smilestore.config.mode === 'development' && smilestore.local.allowJumps) ||
-      smilestore.config.mode === 'presentation' ||
-      (to.name === 'welcome_anonymous' && from.name === undefined && !smilestore.isKnownUser)
-    ) {
-      if (smilestore.config.mode === 'development' || smilestore.config.mode === 'presentation') {
-        console.warn(
-          'WARNING: allowing direct, out-of-order navigation to',
-          to.name,
-          '.  This is allowed in development/presentation mode but not in production.'
-        )
-      }
+    // if you're going to an always-allowed route, allow it
+    if (to.meta.allowDirectEntry) {
       smilestore.setLastRoute(to.name)
       smilestore.recordRoute(to.name)
       return true
     }
+
+    // if you're trying to go to the welcome screen and you're not a known user, allow it
+    if (to.name === 'welcome_anonymous' && from.name === undefined && !smilestore.isKnownUser) {
+      smilestore.setLastRoute(to.name)
+      smilestore.recordRoute(to.name)
+      return true
+    }
+
     // if you're trying to go to the next route, allow it
     if (from.meta !== undefined && from.meta.next === to.name) {
       smilestore.setLastRoute(to.name)
       smilestore.recordRoute(to.name)
       return true
     }
+
+    // if you're in jumping mode
+    // or you're in presentation mode allow the new route
+    if (
+      (smilestore.config.mode === 'development' && smilestore.local.allowJumps) ||
+      smilestore.config.mode === 'presentation'
+    ) {
+      console.warn(
+        'WARNING: allowing direct, out-of-order navigation to',
+        to.name,
+        to.meta.allowDirectEntry,
+        '.  This is allowed in development/presentation mode but not in production.'
+      )
+      smilestore.setLastRoute(to.name)
+      smilestore.recordRoute(to.name)
+      return true
+    }
+
     // if the next route is a subtimeline and you're trying to go to a subtimeline route, allow it
     // this is necessary because from.meta.next won't immediately get the subroute as next when the subtimeline is randomized
     if (
