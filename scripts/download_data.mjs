@@ -9,6 +9,7 @@ import { initializeApp } from 'firebase/app'
 import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore'
 import * as dotenv from 'dotenv'
 import * as fs from 'fs'
+import { dirname } from 'path'
 // import appconfig from '../src/config'
 
 const init = () => {
@@ -56,6 +57,11 @@ const askQuestions = () => {
 
 const storeData = async (data, path) => {
   try {
+    const dir = dirname(path);
+    if (!fs.existsSync(dir)) {
+      console.log(`creating directory ${dir} since it does not exist`);
+      fs.mkdirSync(dir, { recursive: true });
+    }
     fs.writeFileSync(path, JSON.stringify(data))
   } catch (err) {
     console.error(err)
