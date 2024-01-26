@@ -9,7 +9,8 @@ import { initializeApp } from 'firebase/app'
 import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore'
 import * as dotenv from 'dotenv'
 import * as fs from 'fs'
-import { dirname } from 'path'
+import { dirname, isAbsolute, extname, parse, format } from 'path'
+import { Command, Option } from 'commander'
 // import appconfig from '../src/config'
 
 const init = () => {
@@ -25,7 +26,17 @@ const init = () => {
   console.log(chalk.green('your data is almost here.'))
 }
 
-const askQuestions = () => {
+async function askQuestions() {
+  const program = new Command();
+  program
+    .addOption(new Option('-t, --type <type>', 'type of data to download').choices(['testing', 'real']))
+    .addOption(new Option('-c, --complete_only <complete_only>', 'complete only or all data').choices(['all', 'complete_only']))
+    .option('-b, --branch_name <branch_name>', 'branch name')
+    .option('-f, --filename <filename>', 'filename')
+
+  program.parse();
+  const options = program.opts();
+
   const questions = [
     {
       type: 'list',
@@ -51,21 +62,40 @@ const askQuestions = () => {
       message: 'What is the name of the file without extension?',
       default: 'data',
     },
-  ]
-  return inquirer.prompt(questions)
+  ];
+
+  const filteredQuestions = questions.filter((q) => !(q.name.toLowerCase() in options));
+  const answers = filteredQuestions.length === 0 ? {} : await inquirer.prompt(filteredQuestions);
+  
+  return {
+    ...answers,
+    ...Object.fromEntries(Object.entries(options).map(([k, v]) => [k.toUpperCase(), v])),
+  }
 }
 
-const storeData = async (data, path) => {
+const storeData = async (data, path, relativeDir = 'data/raw', ext = '.json' ) => {
   try {
-    const dir = dirname(path);
+    let filename = path;
+    if (extname(path) !== ext) {
+      filename = `${path}${ext}`
+    }
+
+    if (!isAbsolute(filename)) {
+      filename = `${relativeDir}/${filename}`
+    }
+    
+    const dir = dirname(filename);
     if (!fs.existsSync(dir)) {
       console.log(`creating directory ${dir} since it does not exist`);
       fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync(path, JSON.stringify(data))
+    fs.writeFileSync(filename, JSON.stringify(data))
+    return filename;
   } catch (err) {
     console.error(err)
   }
+
+  return null;
 }
 
 const getData = async (path, completeOnly, filename) => {
@@ -93,7 +123,7 @@ const getData = async (path, completeOnly, filename) => {
     data.push({ id: doc.id, data: doc.data() })
   })
 
-  await storeData(data, `data/raw/${filename}.json`)
+  return storeData(data, filename)
 }
 
 const success = (filename) => {
@@ -107,17 +137,38 @@ const run = async () => {
   // const project_ref = `${env.parsed.VITE_GIT_OWNER}-${env.parsed.VITE_PROJECT_NAME}-${env.parsed.VITE_GIT_BRANCH_NAME}`
 
   // ask questions
+
   const answers = await askQuestions()
   const { TYPE, COMPLETE_ONLY, BRANCH_NAME, FILENAME } = answers
 
-  const project_ref = `${env.parsed.VITE_GIT_OWNER}-${env.parsed.VITE_PROJECT_NAME}-${BRANCH_NAME}`
+  const projectRef = `${env.parsed.VITE_GIT_OWNER}-${env.parsed.VITE_PROJECT_NAME}-${BRANCH_NAME}`
 
   // create the file
-  const path = `${TYPE}/${project_ref}/data`
-  await getData(path, COMPLETE_ONLY, `${TYPE}-${COMPLETE_ONLY}-${BRANCH_NAME}-${FILENAME}`)
+  const path = `${TYPE}/${projectRef}/data`
+
+  const formatFilename = (f) => {
+    const prefix = `${TYPE}-${COMPLETE_ONLY}-${BRANCH_NAME}`;
+    if (!f.startsWith(prefix)) {
+      return `${prefix}-${f}`;
+    }
+
+    return f;
+  };
+
+  let filename = FILENAME;
+  if (isAbsolute(FILENAME)) {
+    const parsedFile = parse(FILENAME);
+    parsedFile.base = formatFilename(parsedFile.base);
+    filename = format(parsedFile);
+
+  } else {
+    filename = formatFilename(filename);
+  }
+
+  const finalPath = await getData(path, COMPLETE_ONLY, filename)
 
   // show success message
-  success(`${TYPE}-${COMPLETE_ONLY}-${BRANCH_NAME}-${FILENAME}`)
+  success(finalPath);
 }
 
 run()
