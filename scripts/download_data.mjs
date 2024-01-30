@@ -33,6 +33,7 @@ async function askQuestions() {
     .addOption(new Option('-c, --complete_only <complete_only>', 'complete only or all data').choices(['all', 'complete_only']))
     .option('-b, --branch_name <branch_name>', 'branch name')
     .option('-f, --filename <filename>', 'filename')
+    .option('-r', '--save_recruitment_info', 'save recruitment info')
 
   program.parse();
   const options = program.opts();
@@ -55,6 +56,12 @@ async function askQuestions() {
       name: 'BRANCH_NAME',
       message: 'What is the name of the branch you want data from?',
       default: 'main',
+    },
+    {
+      type: 'confirm',
+      name: 'SAVE_RECRUITMENT_INFO',
+      message: 'Should this save the recruitment info (e.g., Prolific IDs)? Defaults to false.',
+      default: false,
     },
     {
       type: 'input',
@@ -98,7 +105,7 @@ const storeData = async (data, path, relativeDir = 'data/raw', ext = '.json' ) =
   return null;
 }
 
-const getData = async (path, completeOnly, filename) => {
+const getData = async (path, completeOnly, filename, saveRecruitmentInfo = false) => {
   const localenv = dotenv.config({ path: 'env/.env.local' })
   const firebaseConfig = {
     apiKey: localenv.parsed.VITE_FIREBASE_APIKEY,
@@ -112,7 +119,7 @@ const getData = async (path, completeOnly, filename) => {
   const db = getFirestore(app)
   let querySnapshot = null
 
-  if (completeOnly == 'all') {
+  if (completeOnly === 'all') {
     querySnapshot = await getDocs(collection(db, path))
   } else {
     const q = query(collection(db, path), where('done', '==', true))
@@ -120,14 +127,19 @@ const getData = async (path, completeOnly, filename) => {
   }
   const data = []
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, data: doc.data() })
+    const docData = doc.data();
+    docData.smile_config.firebaseConfig = {};
+    if (!saveRecruitmentInfo) {
+      docData.recruitment_info = {};
+    }
+    data.push({ id: doc.id, data: docData })
   })
 
   return storeData(data, filename)
 }
 
 const success = (filename) => {
-  console.log(chalk.green(`your data has been exported to 'data/raw/${filename}.json'.`))
+  console.log(chalk.green(`your data has been exported to '${filename}'.`))
 }
 
 const run = async () => {
@@ -139,7 +151,7 @@ const run = async () => {
   // ask questions
 
   const answers = await askQuestions()
-  const { TYPE, COMPLETE_ONLY, BRANCH_NAME, FILENAME } = answers
+  const { TYPE, COMPLETE_ONLY, BRANCH_NAME, FILENAME, SAVE_RECRUITMENT_INFO } = answers
 
   const projectRef = `${env.parsed.VITE_GIT_OWNER}-${env.parsed.VITE_PROJECT_NAME}-${BRANCH_NAME}`
 
@@ -163,9 +175,10 @@ const run = async () => {
 
   } else {
     filename = formatFilename(filename);
-  }
 
-  const finalPath = await getData(path, COMPLETE_ONLY, filename)
+  }
+  
+  const finalPath = await getData(path, COMPLETE_ONLY, filename, SAVE_RECRUITMENT_INFO)
 
   // show success message
   success(finalPath);
