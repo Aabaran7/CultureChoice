@@ -1,5 +1,5 @@
 import _ from 'lodash'
-
+import useSmileStore from '@/stores/smiledata'
 class Timeline {
   constructor() {
     this.routes = [] // the actual routes given to VueRouter
@@ -119,7 +119,18 @@ class Timeline {
 
   build() {
     this.buildGraph()
+    this.registerCounters()
     // this.buildProgress()
+  }
+
+  registerCounters() {
+    const smilestore = useSmileStore()
+    // for each route, register a counter based on the name
+    for (let i = 0; i < this.routes.length; i += 1) {
+      console.log(this.routes[i].name, ' ', this.routes[i].path)
+      smilestore.registerPageTracker(this.routes[i].name)
+    }
+    console.log('now the page tracker is,', smilestore.getLocal.pageTracker)
   }
 
   // buildGraph builds

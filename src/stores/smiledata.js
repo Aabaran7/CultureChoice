@@ -44,7 +44,7 @@ export default defineStore('smilestore', {
         seedActive: true, // do you want to use a random seed based on the participant's ID?
         seedID: '',
         seedSet: false,
-        pageTracker: 0,
+        pageTracker: {},
         possibleConditions: { taskOrder: ['AFirst', 'BFirst'], instructions: ['version1', 'version2', 'version3'] },
       },
       localStorage,
@@ -96,6 +96,7 @@ export default defineStore('smilestore', {
     recruitmentService: (state) => state.data.recruitment_service,
     isSeedSet: (state) => state.local.seedSet,
     getSeedID: (state) => state.local.seedID,
+    getLocal: (state) => state.local,
     getPage: (state) => state.local.pageTracker,
     getPossibleConditions: (state) => state.local.possibleConditions,
     getConditions: (state) => state.data.conditions,
@@ -128,12 +129,38 @@ export default defineStore('smilestore', {
       this.local.seedID = seed
       this.local.seedSet = true
     },
-    incrementPageTracker() {
-      this.local.pageTracker += 1
-      return this.local.pageTracker
+    registerPageTracker(page) {
+      if (this.local.pageTracker[page] === undefined) {
+        console.log('registering', page, this.local.pageTracker[page])
+        this.local.pageTracker[page] = 0
+      }
     },
-    resetPageTracker() {
-      this.local.pageTracker = 0
+    getPageTracker(page) {
+      return this.local.pageTracker[page]
+    },
+    incrementPageTracker(page) {
+      if (this.local.pageTracker[page] !== undefined) {
+        this.local.pageTracker[page] += 1
+        return this.local.pageTracker[page]
+      } else {
+        console.error('SMILESTORE: page tracker not initialized for page', page)
+      }
+    },
+    decrementPageTracker(page) {
+      if (this.local.pageTracker[page] !== undefined) {
+        this.local.pageTracker[page] -= 1
+        if (this.local.pageTracker[page] < 0) {
+          this.local.pageTracker[page] = 0
+        }
+        return this.local.pageTracker[page]
+      } else {
+        console.error('SMILESTORE: page tracker not initialized for page', page)
+      }
+    },
+    resetPageTracker(page) {
+      if (this.local.pageTracker[page]) {
+        this.local.pageTracker[page] = 0
+      }
     },
     recordWindowEvent(type, event_data = null) {
       if (event_data) {
