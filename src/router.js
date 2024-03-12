@@ -21,9 +21,10 @@ import Instructions from '@/components/instructions/InstructionsPage.vue'
 import Exp from '@/components/tasks/ExpPage.vue'
 import Task1 from '@/components/tasks/Task1Page.vue'
 import Task2 from '@/components/tasks/Task2Page.vue'
+import StroopExp from '@/components/tasks/StroopExp.vue'
 import Debrief from '@/components/debrief/DebriefPage.vue'
 import Thanks from '@/components/thanks/ThanksPage.vue'
-import Config from '@/components/config/ConfigPage.vue'
+import Data from '@/components/dev/DataPage.vue'
 import Withdraw from '@/components/errors_withdraw/WithdrawPage.vue'
 import WindowSizer from '@/components/screen_adjust/WindowSizerPage.vue'
 // add new routes here.  generally these will be things in components/pages/[something].vue
@@ -42,6 +43,12 @@ if (appconfig.mode === 'development') {
     path: '/',
     name: 'recruit',
     component: RecruitmentChooser,
+    meta: { allowDirectEntry: true },
+  })
+  timeline.pushRoute({
+    path: '/data',
+    name: 'data',
+    component: Data,
     meta: { allowDirectEntry: true },
   })
 } else if (appconfig.mode === 'presentation') {
@@ -157,6 +164,13 @@ timeline.pushRandomizedTimeline({
   // meta: { label: "taskOrder", orders: {AFirst: ["task1", "task2"], BFirst: ["task2", "task1"]} }
 })
 
+// stroop exp
+timeline.pushSeqRoute({
+  path: '/stroop',
+  name: 'stroop',
+  component: StroopExp,
+})
+
 // debriefing form
 timeline.pushSeqRoute({
   path: '/debrief',
@@ -187,16 +201,6 @@ timeline.pushRoute({
     processQuery(to.query, 'mturk')
   },
 })
-
-// this is a special route with config/debugging information
-if (appconfig.mode !== 'presentation') {
-  timeline.pushRoute({
-    path: '/config',
-    name: 'config',
-    component: Config,
-    meta: { allowDirectEntry: true },
-  })
-}
 
 // 3. add navigation guards
 //    currently these check if user is known
@@ -252,7 +256,7 @@ function addGuards(r) {
       console.warn(
         'WARNING: allowing direct, out-of-order navigation to',
         to.name,
-        to.meta.allowDirectEntry,
+        //to.meta.allowDirectEntry,
         '.  This is allowed in development/presentation mode but not in production.'
       )
       smilestore.setLastRoute(to.name)

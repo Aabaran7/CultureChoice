@@ -35,7 +35,12 @@ onMounted(() => {
   <DeveloperNavBar v-if="smilestore.config.mode == 'development'"></DeveloperNavBar>
   <PresenationNavBar v-if="smilestore.config.mode == 'presentation'"></PresenationNavBar>
   <StatusBar
-    v-if="$route.name !== 'config' && $route.name !== 'recruit' && smilestore.config.mode != 'presentation'"
+    v-if="
+      $route.name !== 'config' &&
+      $route.name !== 'data' &&
+      $route.name !== 'recruit' &&
+      smilestore.config.mode != 'presentation'
+    "
   ></StatusBar>
 
   <div class="router">

@@ -38,7 +38,7 @@ export default defineStore('smilestore', {
         allowJumps: initAllowJumps(appconfig.mode),
         docRef: null,
         partNum: null,
-        completionCode: '',
+        completionCode: null,
         totalWrites: 0,
         lastWrite: null,
         seedActive: true, // do you want to use a random seed based on the participant's ID?
@@ -112,6 +112,9 @@ export default defineStore('smilestore', {
     setConsented() {
       this.data.consented = true
       this.data.starttime = fsnow()
+    },
+    setUnconsented() {
+      this.data.consented = false
     },
     setWithdraw(forminfo) {
       this.data.withdraw = true
