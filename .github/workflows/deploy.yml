@@ -36,7 +36,7 @@ jobs:
       - name: Setup node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16.15.1 # this is what i'm using locally
+          node-version: 20.11.1 # this is what i'm using locally
 
       # install node packages
       - name: Install node dependencies

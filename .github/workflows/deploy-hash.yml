@@ -32,7 +32,7 @@ jobs:
       - name: Setup node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16.15.1 # this is what i'm using locally
+          node-version: 20.11.1 # this is what i'm using locally
 
       # install node packages
       - name: Install node dependencies
@@ -147,7 +147,7 @@ jobs:
       # Build the web app
       - name: Build css files
         run: npm run css-build
-      
+
       # Build the web app
       - name: Build web app
         run: npm run build
@@ -161,7 +161,6 @@ jobs:
           key: ${{ secrets.EXP_DEPLOY_KEY  }}
           port: ${{ secrets.EXP_DEPLOY_PORT }}
           script: mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/${{ steps.dotenv_github.outputs.VITE_DEPLOY_BASE_PATH }}; mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/e; mkdir -p ${{ secrets.EXP_DEPLOY_PATH }}/hashes
-
 
       # Deploy files to web server
       - name: rsync to server
