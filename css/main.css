@@ -1,18 +1,17 @@
 @import './styles.css';
-@import "../node_modules/@creativebulma/bulma-divider";
+@import '../node_modules/@creativebulma/bulma-divider';
+@import '../node_modules/@creativebulma/bulma-tooltip';
+@import '../node_modules/bulma-switch/dist/css/bulma-switch.min.css';
 
 /* fixes a bug in Bulma */
 .navbar-menu {
-    background-color: inherit;
+  background-color: inherit;
 }
 
 .config li {
-    padding-left: 35px;
+  padding-left: 35px;
 }
-
 .page {
-    padding-top: 40px;
-    height: 100vh;
+  padding-top: 40px;
+  height: 100vh;
 }
-
-
