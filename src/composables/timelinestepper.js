@@ -1,18 +1,14 @@
-import { RandomizeSubTimeline } from '@/subtimeline'
 import { useRoute, useRouter } from 'vue-router'
-import useSmileStore from '@/stores/smiledata'
 import _ from 'lodash'
+import { RandomizeSubTimeline } from '@/subtimeline'
+import useSmileStore from '@/stores/smiledata'
 
 export default function useTimelineStepper() {
   const smilestore = useSmileStore()
   const route = useRoute()
   const router = useRouter()
 
-  const next = () => {
-    if (smilestore.config.auto_save) {
-      smilestore.saveData() // automatically saves data
-    }
-
+  const nextRoute = () => {
     // HANDLE RANDOMIZATION OF SUBTIMELINES
     // if the next thing has a type field of randomized_sub_timeline, then we want to randomize the subtimeline
     if (route.meta.next.type === 'randomized_sub_timeline') {
@@ -31,15 +27,29 @@ export default function useTimelineStepper() {
     return null
   }
 
-  const prev = () => {
-    if (smilestore.config.auto_save) {
-      smilestore.saveData() // automatically saves data
-    }
+  const prevRoute = () => {
     if (route.meta.prev) {
       return { name: route.meta.prev, query: route.query }
     }
     return null
   }
 
-  return { next, prev }
+  const navigateTo = (goto) => {
+    if (smilestore.config.auto_save) {
+      console.warn('auto saving on navigateTo() navigation')
+      smilestore.saveData() // automatically saves data
+    }
+    if (goto) router.push(goto)
+  }
+
+  const stepNextRoute = (fn) => {
+    if (fn) fn()
+    navigateTo(nextRoute())
+  }
+  const stepPrevRoute = (fn) => {
+    if (fn) fn()
+    navigateTo(prevRoute())
+  }
+
+  return { stepNextRoute, stepPrevRoute, navigateTo }
 }
