@@ -4,38 +4,16 @@
 // first import from basic functions from Vue
 import { ref, computed } from 'vue'
 
-// import and create the Timeline stepper which advances/retreats
-// through the routes on the timeline
-import useTimelineStepper from '@/composables/timelinestepper'
-const { stepNextRoute, stepPrevRoute } = useTimelineStepper()
+// do you need keyboard or mouse for your experiment?
+import { onKeyDown } from '@vueuse/core'
+import { useMouse } from '@vueuse/core'
 
-// if you need to save data import and create the smilestore
-import useSmileStore from '@/stores/smiledata'
-const smilestore = useSmileStore()
-if (smilestore.config.mode == 'development') smilestore.removePageAutofill() // should put there everywhere on init
-
-// if you need low-level access to the router do it here
-import { useRouter, useRoute } from 'vue-router'
-const router = useRouter()
-const route = useRoute()
+// import and initalize smile API
+import useSmileAPI from '@/composables/smileapi'
+const api = useSmileAPI()
 
 // this progress bar is not implemented and a little hard so lets pass for now
 //if (route.meta.progress) smilestore.global.progress = route.meta.progress
-
-// import seeded randomization function for this component/route
-// random seeding is unique to each component/route
-import { shuffle } from '@/randomization'
-
-// import the trial stepper functionality which advances linearly through
-// a set of trials
-import { useTrialStepper } from '@/composables/trialstepper'
-
-// import tool for recording keypresses
-import { onKeyDown } from '@vueuse/core'
-
-// import tool for recording mouse position if required
-// import { useMouse } from '@vueuse/core'
-// const { x, y, sourceType } = useMouse()
 
 /*
    Next we need to define the trials for the experiment.  Create
@@ -58,7 +36,7 @@ var trials = [
 ]
 
 // next we shuffle the trials
-trials = shuffle(trials)
+trials = api.shuffle(trials)
 
 //const index = smilestore.getPage[route.name]
 // now we create the trial stepper which will advance through the trials.
@@ -67,12 +45,12 @@ trials = shuffle(trials)
 // or analysis (e.g., if you are showing the subject performance feedback about
 // their performance on the task).  it called the finalize() function which is
 // defined below
-const { nextTrial, prevTrial } = useTrialStepper(trials, route.name, () => {
+const { nextTrial, prevTrial } = api.useTrialStepper(trials, api.currentRouteName(), () => {
   finalize()
 })
 
 const trial = computed(() => {
-  return trials[smilestore.getPage[route.name]]
+  return trials[api.getCurrentTrial()]
 })
 
 // Handle the key presses for the task
@@ -82,8 +60,7 @@ const trial = computed(() => {
 onKeyDown(
   ['r', 'R', 'g', 'G', 'b', 'B'],
   (e) => {
-    console.log('got keypress', smilestore.getPage[route.name])
-    if (smilestore.getPage[route.name] < trials.length) {
+    if (api.getCurrentTrial() < trials.length) {
       e.preventDefault()
       console.log('pressed ', e)
       if (['r', 'R'].includes(e.key)) {
@@ -93,7 +70,14 @@ onKeyDown(
       } else if (['b', 'B'].includes(e.key)) {
         console.log('blue')
       }
-      //smilestore.incrementPageTracker(route.name)
+      console.log(trial.value)
+      api.saveTrialData({
+        trialnum: api.getCurrentTrial(),
+        word: trial.value.word,
+        color: trial.value.color,
+        condition: trial.value.condition,
+        response: e.key,
+      })
       nextTrial()
     }
   },
@@ -103,32 +87,19 @@ onKeyDown(
 // load up the trials including any randomization based on the random see
 // initialize the state of the component
 // set up the call backs that take you through the task
-
+var final_score = ref(0)
 function finalize() {
   // sort out what data you are putting in the smile store here?
   console.log('finished, so will save data and stuff')
-  smilestore.incrementPageTracker(route.name)
+  final_score.value = 100 // compute a final score here
 }
-
-// TODO
-// -- save data
-
-// custom advance to next route when we finish showing all the trials
-// function advance() {
-//   if (index.value >= trials.length - 1) {
-//     stepNextRoute(finalize())
-//   } else {
-//     index.value += 1
-//   }
-// }
 </script>
 
 <template>
   <div class="page">
     <!-- Show this for each trial -->
-    <div class="strooptrial"
-      v-if="smilestore.getPage[route.name] < trials.length">
-      {{ smilestore.getPage[route.name] + 1 }} / {{ trials.length }}
+    <div class="strooptrial" v-if="api.getCurrentTrial() < trials.length">
+      {{ api.getCurrentTrial() + 1 }} / {{ trials.length }}
       <h1 class="title is-1 is-huge" :class="trial.color">{{ trial.word }}</h1>
       <p id="prompt">Type "R" for Red, "B" for blue, "G" for green.</p>
     </div>
@@ -136,10 +107,10 @@ function finalize() {
     <!-- Show this when you are done with the trials and offer a button
          which will advance to the next route -->
     <div class="endoftask" v-else>
-      <p id="prompt">Thanks! You are finished with this task and can move on.
-      </p>
-      <button class="button is-success is-light" id="finish"
-        @click="stepNextRoute()">
+      <p id="prompt">Thanks! You are finished with this task and can move on.</p>
+      <!-- display the final score -->
+      <p>Your score was {{ final_score }}</p>
+      <button class="button is-success is-light" id="finish" @click="api.stepNextRoute()">
         Continue &nbsp;
         <FAIcon icon="fa-solid fa-arrow-right" />
       </button>

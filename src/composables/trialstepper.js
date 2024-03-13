@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import useSmileStore from '@/stores/smiledata'
 
 export function useTrialStepper(trials, page, finishedCallback) {
-  
   const smilestore = useSmileStore()
   //const index = ref(0)
   const n_trials = trials.length
@@ -15,6 +14,7 @@ export function useTrialStepper(trials, page, finishedCallback) {
       smilestore.incrementPageTracker(page)
     } else {
       finishedCallback()
+      smilestore.incrementPageTracker(page)
     }
   }
 
@@ -29,7 +29,6 @@ export function useTrialStepper(trials, page, finishedCallback) {
 }
 
 export function useStatelessTrialStepper(trials, index, finishedCallback) {
-  
   //const index = ref(0)
   const n_trials = trials.length
 
@@ -39,6 +38,7 @@ export function useStatelessTrialStepper(trials, index, finishedCallback) {
       index.value += 1
     } else {
       finishedCallback()
+      index.value += 1
     }
   }
 

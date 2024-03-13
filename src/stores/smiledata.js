@@ -81,6 +81,7 @@ export default defineStore('smilestore', {
       route_order: [],
       conditions: {},
       smile_config: appconfig, //  adding config info to firebase document
+      study_data: [],
     },
     config: appconfig,
   }),
@@ -230,6 +231,9 @@ export default defineStore('smilestore', {
       if (this.dev.page_provides_autofill) {
         this.dev.page_provides_autofill()
       }
+    },
+    saveTrialData(data) {
+      this.data.study_data.push(data)
     },
     saveDemographicForm(data) {
       this.data.demographic_form = data
