@@ -24,7 +24,6 @@ import Task2 from '@/components/tasks/Task2Page.vue'
 import StroopExp from '@/components/tasks/StroopExp.vue'
 import Debrief from '@/components/debrief/DebriefPage.vue'
 import Thanks from '@/components/thanks/ThanksPage.vue'
-import Data from '@/components/dev/DataPage.vue'
 import Withdraw from '@/components/errors_withdraw/WithdrawPage.vue'
 import WindowSizer from '@/components/screen_adjust/WindowSizerPage.vue'
 // add new routes here.  generally these will be things in components/pages/[something].vue
@@ -43,12 +42,6 @@ if (appconfig.mode === 'development') {
     path: '/',
     name: 'recruit',
     component: RecruitmentChooser,
-    meta: { allowDirectEntry: true },
-  })
-  timeline.pushRoute({
-    path: '/data',
-    name: 'data',
-    component: Data,
     meta: { allowDirectEntry: true },
   })
 } else if (appconfig.mode === 'presentation') {
