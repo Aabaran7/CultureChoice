@@ -6,6 +6,7 @@ import { useRouter, useRoute } from 'vue-router'
 import DocsDropDown from '@/components/navbars/DocsDropDown.vue'
 import RandomizationDropDown from '@/components/navbars/RandomizationDropDown.vue'
 import ConfigDropDown from '@/components/navbars/ConfigDropDown.vue'
+import StateVarsDropDown from '@/components/navbars/StateVarsDropDown.vue'
 import TrialStepper from './TrialStepper.vue'
 
 import useSmileStore from '@/stores/smiledata'
@@ -56,52 +57,27 @@ function resetLocalState() {
             data-tooltip="Reset entire state"
             @click="resetLocalState()"
           >
-            <FAIcon icon="fa-solid fa-arrow-rotate-left" /> &nbsp; Reset
-          </button>
-
-          <!-- home button -->
-          <button
-            class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom"
-            data-tooltip="Return to recruit page"
-            @click="router.push('/')"
-          >
-            <FAIcon icon="fa-solid fa-house" /> &nbsp; Dev Home
+            <FAIcon icon="fa-solid fa-arrow-rotate-left" />
           </button>
 
           <!-- config button -->
           <ConfigDropDown></ConfigDropDown>
-          &nbsp;&nbsp;
-
-          <!-- randomization button -->
-          <RandomizationDropDown></RandomizationDropDown>
 
           <button
             class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-2"
-            data-tooltip="View data"
+            data-tooltip="Toggle data panel"
             @click="router.push('/data')"
           >
-            <FAIcon icon="fa-solid fa-database" /> &nbsp; Database &nbsp;&nbsp;
-            <FAIcon icon="fa-solid fa-circle has-tooltip-bottom" class="reddot" data-tooltip="status" />
-            &nbsp;&nbsp;
-            <FAIcon icon="fa-solid fa-circle-dot" class="reddot" />
+            <FAIcon icon="fa-solid fa-database" />
           </button>
 
-          <button
-            class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-0"
-            data-tooltip="Click to toggle Consent"
-            v-if="smilestore.isConsented"
-            @click="smilestore.setUnconsented()"
-          >
-            <FAIcon icon="fa-solid fa-square-check has-tooltip-bottom" class="greendot" data-tooltip="status" />
-          </button>
-          <button
-            v-else
-            class="button is-danger is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-0"
-            data-tooltip="Click to toggle Consent"
-            @click="smilestore.setConsented()"
-          >
-            <FAIcon icon="fa-solid fa-square-xmark has-tooltip-bottom" class="reddot" data-tooltip="status" />
-          </button>
+          <!-- randomization button -->
+          <RandomizationDropDown></RandomizationDropDown>
+          &nbsp;&nbsp;
+
+          <!-- state variable buttons -->
+          <StateVarsDropDown></StateVarsDropDown>
+          &nbsp;&nbsp;
         </div>
       </div>
       <!-- drop down-->
