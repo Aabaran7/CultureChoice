@@ -219,6 +219,16 @@ function addGuards(r) {
       smilestore.loadData()
     }
 
+    //if withdrew
+    // this is leading to infinite redirects.
+    // if (smilestore.data.withdraw && !smilestore.local.allowJumps) {
+    //   console.log("withdraw so can't go anywhere")
+    //   return {
+    //     name: 'withdraw',
+    //     replace: true,
+    //   }
+    // }
+
     // if you're going to an always-allowed route, allow it
     if (to.meta.allowDirectEntry) {
       smilestore.setLastRoute(to.name)
@@ -233,7 +243,7 @@ function addGuards(r) {
       return true
     }
 
-    // if you're trying to go to the next route, allow it
+    // if you're trying to go to the next route
     if (from.meta !== undefined && from.meta.next === to.name) {
       smilestore.setLastRoute(to.name)
       smilestore.recordRoute(to.name)
