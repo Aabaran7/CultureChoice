@@ -47,6 +47,3 @@ mode: 'presentation',
 When you next commit this change to your repo, the new site will be built in presentation mode. This can be done on any
 branch.
 
-### Notes
-
-The `/config` route is not reachable in presentation mode by default to prevent certain information being leaked publically on your website.

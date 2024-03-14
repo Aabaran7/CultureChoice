@@ -34,8 +34,6 @@ When you are viewing your website on the development server there is a special b
 
 On pages that have forms that have to be filled out you as the developer can make a new button appear in the developer bar called "Autofill Form" which will automatically fill in the form with some preset values making it easier to advance to the next stage of debugging.
 
-A special page (`#/config`) on your project allows you to view configuration settings for the current experiment and to "reset" the state of the experiment to act as though it is a new user.
-
 ## Testing the build process
 
 You can also test the build process locally. Simply type
