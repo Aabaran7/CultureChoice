@@ -3,7 +3,7 @@ import { onMounted, watch, ref } from 'vue'
 // load sub-components used in this compomnents
 import DeveloperNavBar from '@/components/navbars/DeveloperNavBar.vue'
 import StatusBar from '@/components/navbars/StatusBar.vue'
-import PresenationNavBar from '@/components/navbars/PresentationNavBar.vue'
+import PresentationNavBar from '@/components/navbars/PresentationNavBar.vue'
 import ProgressBar from './components/navbars/ProgressBar.vue'
 import DevDataBar from './components/navbars/DevDataBar.vue'
 
@@ -31,7 +31,7 @@ onMounted(() => {
 
 <template>
   <DeveloperNavBar v-if="api.config.mode == 'development'"> </DeveloperNavBar>
-  <PresenationNavBar v-if="api.config.mode == 'presentation'"> </PresenationNavBar>
+  <PresentationNavBar v-if="api.config.mode == 'presentation'"> </PresentationNavBar>
   <StatusBar
     v-if="
       api.currentRouteName() !== 'data' && api.currentRouteName() !== 'recruit' && api.config.mode != 'presentation'
@@ -51,7 +51,9 @@ onMounted(() => {
     "
   >
   </ProgressBar>
-  <!-- <DevDataBar v-if="smilestore.config.mode == 'development'"></DevDataBar> -->
+  <Transition>
+    <DevDataBar v-if="api.dev.show_data_bar"></DevDataBar>
+  </Transition>
 </template>
 
 <style>

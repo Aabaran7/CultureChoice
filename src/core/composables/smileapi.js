@@ -19,6 +19,7 @@ export default function useSmileAPI() {
     data: smilestore.data,
     local: smilestore.local,
     global: smilestore.global,
+    dev: smilestore.dev,
     route: route,
     router: router,
     stepNextRoute: stepNextRoute,
@@ -27,6 +28,9 @@ export default function useSmileAPI() {
     useTrialStepper: useTrialStepper,
     isKnownUser: smilestore.isKnownUser,
     urls: smilestore.global.urls,
+    resetStore: () => {
+      smilestore.resetLocal()
+    },
     setKnown: () => {
       smilestore.setKnown()
     },

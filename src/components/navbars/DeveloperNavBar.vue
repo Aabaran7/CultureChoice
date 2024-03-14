@@ -9,10 +9,8 @@ import ConfigDropDown from '@/components/navbars/ConfigDropDown.vue'
 import StateVarsDropDown from '@/components/navbars/StateVarsDropDown.vue'
 import TrialStepper from './TrialStepper.vue'
 
-import useSmileStore from '@/core/stores/smiledata'
-const smilestore = useSmileStore() // load the global store
-const router = useRouter() // this is needed in composition API because this.$router not availabel
-const route = useRoute()
+import useSmileAPI from '@/core/composables/smileapi'
+const api = useSmileAPI()
 
 const showpanels = reactive({
   docs: false,
@@ -23,10 +21,10 @@ const showpanels = reactive({
 })
 
 function resetLocalState() {
-  localStorage.removeItem(smilestore.config.local_storage_key) // delete the local store
+  localStorage.removeItem(api.config.local_storage_key) // delete the local store
   // localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
   // localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
-  smilestore.$reset() // reset all the data even
+  api.resetStore() // reset all the data even
 
   // go back to the landing page (don't use router because it won't refresh the page and thus won't reset the app)
   const url = window.location.href
@@ -66,7 +64,7 @@ function resetLocalState() {
           <button
             class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-2"
             data-tooltip="Toggle data panel"
-            @click="router.push('/data')"
+            @click="api.dev.show_data_bar = !api.dev.show_data_bar"
           >
             <FAIcon icon="fa-solid fa-database" />
           </button>
@@ -83,7 +81,7 @@ function resetLocalState() {
       <!-- drop down-->
       <div class="navbar-item jumper">
         <div class="devmode">
-          <TrialStepper :routeName="route.name"> </TrialStepper>
+          <TrialStepper :routeName="api.currentRouteName()"> </TrialStepper>
         </div>
       </div>
     </div>

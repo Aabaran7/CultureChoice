@@ -73,6 +73,7 @@ export default defineStore('smilestore', {
     dev: {
       // ephemeral state, utilized by developer mode functions
       page_provides_autofill: null,
+      show_data_bar: false,
     },
     data: {
       // syncs with firestore
