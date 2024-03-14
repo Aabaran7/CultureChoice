@@ -10,7 +10,7 @@ import '@/icons' // configure fontawesome
 import App from '@/App.vue'
 import { routes, addGuards } from '@/router' // This import should point to your routes file declared above
 import useSmileStore from '@/stores/smiledata'
-import appconfig from '@/config'
+import appconfig from '@/core/config'
 
 let router
 let pinia

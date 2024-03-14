@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useSmileStore from '@/stores/smiledata'
-import appconfig from '@/config'
+import appconfig from '@/core/config'
 
 // load sub-components used in this compomnents
 import WithdrawFormModal from '@/components/errors_withdraw/WithdrawFormModal.vue'

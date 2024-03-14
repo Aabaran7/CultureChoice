@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import axios from 'axios'
-import appconfig from '@/config'
+import appconfig from '@/core/config'
 
 import {
   createDoc,
