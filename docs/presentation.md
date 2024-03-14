@@ -32,7 +32,7 @@ To deploy your project in presentation mode there are two options. The first is 
 and push this to GitHub. This will generate a special "presentation mode" deployment and you'll receive a slack notification
 about when the website is ready. An example from the default <SmileText/> repo is [here](https://exps.gureckislab.org/nyuccl/smile/presentation/#/)
 
-The second option is to edit `src/config.js` and change the line that reads
+The second option is to edit `src/config/config.js` and change the line that reads
 
 ```
 mode: import.meta.env.MODE,

@@ -118,8 +118,6 @@ src/components
 │   ├── CaptchaTrialMotorControl.vue
 │   ├── CaptchaTrialStroop.vue
 │   └── CaptchaTrialTextComprehension.vue
-├── config
-│   └── ConfigPage.vue
 ├── consent
 │   ├── ConsentPage.vue
 │   ├── InformedConsentModal.vue
@@ -161,7 +159,6 @@ The following sections describe which types of components go in each folder. Bas
 
 ### Captcha
 
-### Config
 
 ### Consent
 

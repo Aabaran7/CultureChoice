@@ -314,11 +314,11 @@ export default {
 }
 ```
 
-It is important to keep in mind that variables passed to `src/config.js` will not necessarily appear in GitHub but **will** be visible to people performing your experiment via the source code.  So it is useful to keep in mind if a configuration option should or shouldn't be shared with your Javascript experiment.
+It is important to keep in mind that variables passed to `src/core/config.js` will not necessarily appear in GitHub but **will** be visible to people performing your experiment via the source code.  So it is useful to keep in mind if a configuration option should or shouldn't be shared with your Javascript experiment.
 
 
 ## Adding New Configuration Options
 
-Adding new configuration options should mostly happen in `.env.local`.  You simply make up a new `VITE_SOMETHING` variable.  Then add it to the object in `src/config.js` to expose it to your web application!  The configuration is available as `smileconfig` anywhere in your Vue app.  It's pretty easy.
+Adding new configuration options should mostly happen in `.env.local`.  You simply make up a new `VITE_SOMETHING` variable.  Then add it to the object in `src/core/config.js` to expose it to your web application!  The configuration is available as `smileconfig` anywhere in your Vue app.  It's pretty easy.
 
 Note: if you add new configuration options, you need to also update them on GitHub for those to sync to deployments. Run `npm run upload_config` as explained above under [Configuring your deployment settings on GitHub](#configuring-your-deployment-settings-on-github). 

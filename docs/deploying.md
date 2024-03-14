@@ -186,7 +186,7 @@ Google offers a [robots.text testing tool](https://www.google.com/webmasters/too
 
 ## Deploying in development mode
 
-In some cases it might be helpful to deploy a live version of your project in [developer mode](/developing).  This will allow you to share a version of your experiment with other people with the [developer bar](/developing.html#smile-developer-bar) enabled.  To do this create a new branch for public sharing.  Then edit `src/config.js` so that the line the by default reads 
+In some cases it might be helpful to deploy a live version of your project in [developer mode](/developing).  This will allow you to share a version of your experiment with other people with the [developer bar](/developing.html#smile-developer-bar) enabled.  To do this create a new branch for public sharing.  Then edit `src/core/config.js` so that the line the by default reads 
 
 ```  
     mode: import.meta.env.MODE,
