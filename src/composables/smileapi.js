@@ -3,7 +3,7 @@ import useSmileStore from '@/stores/smiledata'
 import useTimelineStepper from '@/composables/timelinestepper'
 // import seeded randomization function for this component/route
 // random seeding is unique to each component/route
-import { shuffle } from '@/randomization'
+import { shuffle } from '@/core/randomization'
 
 // import the trial stepper functionality which advances linearly through
 // a set of trials

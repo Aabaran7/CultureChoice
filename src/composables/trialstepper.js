@@ -1,4 +1,4 @@
-import { shuffle } from '@/randomization'
+import { shuffle } from '@/core/randomization'
 import { ref } from 'vue'
 import useSmileStore from '@/stores/smiledata'
 
