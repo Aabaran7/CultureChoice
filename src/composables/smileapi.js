@@ -1,5 +1,5 @@
 import { useRoute, useRouter } from 'vue-router'
-import useSmileStore from '@/stores/smiledata'
+import useSmileStore from '@/core/stores/smiledata'
 import useTimelineStepper from '@/composables/timelinestepper'
 // import seeded randomization function for this component/route
 // random seeding is unique to each component/route
@@ -36,7 +36,7 @@ export default function useSmileAPI() {
       smilestore.setConsented()
     },
     setWithdraw: (forminfo) => {
-        smilestore.setWithdraw(forminfo)
+      smilestore.setWithdraw(forminfo)
     },
     saveDemographicForm: (data) => {
       smilestore.saveDemographicForm(data)
@@ -44,7 +44,7 @@ export default function useSmileAPI() {
     setPageAutofill: (autofill) => {
       console.log('setting autofil')
       if (smilestore.config.mode === 'development') smilestore.setPageAutofill(autofill)
-      },
+    },
     setCompletionCode: (code) => {
       smilestore.setCompletionCode(code)
     },
@@ -62,7 +62,7 @@ export default function useSmileAPI() {
     },
     decrementTrial: () => {
       smilestore.decrementPageTracker(route.name)
-      },
+    },
     resetTrial: () => {
       smilestore.resetPageTracker(route.name)
     },

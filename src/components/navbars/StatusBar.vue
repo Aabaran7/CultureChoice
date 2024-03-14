@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import useSmileStore from '@/stores/smiledata'
+import useSmileStore from '@/core/stores/smiledata'
 import appconfig from '@/core/config'
 
 // load sub-components used in this compomnents
@@ -56,14 +56,12 @@ function submitWithdraw() {
       </a>
       <div class="navbar-item">
         <p class="is-size-7 studyinfo">
-          Study: {{ smilestore.config.code_name }}<br />Version: {{
-            smilestore.config.github.last_commit_hash
+          Study: {{ smilestore.config.code_name }}<br />Version: {{ smilestore.config.github.last_commit_hash
           }}{{
-              appconfig.mode === 'testing' || appconfig.mode === 'development' ||
-                appconfig.mode === 'presentation'
-                ? '-' + appconfig.mode
-                : ''
-            }}
+            appconfig.mode === 'testing' || appconfig.mode === 'development' || appconfig.mode === 'presentation'
+              ? '-' + appconfig.mode
+              : ''
+          }}
         </p>
       </div>
     </div>
@@ -71,17 +69,17 @@ function submitWithdraw() {
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons" v-if="smilestore.data.withdraw !== true">
-            <button class="button is-info is-small is-light"
-              v-if="smilestore.isConsented" @click="toggleConsent()">
+            <button class="button is-info is-small is-light" v-if="smilestore.isConsented" @click="toggleConsent()">
               <FAIcon icon="magnifying-glass" />&nbsp;&nbsp;View consent
             </button>
-            <button class="button is-danger is-small is-light"
+            <button
+              class="button is-danger is-small is-light"
               v-if="smilestore.isConsented && !smilestore.isDone"
-              @click="toggleWithdraw()">
+              @click="toggleWithdraw()"
+            >
               <FAIcon icon="circle-xmark" />&nbsp;&nbsp;Withdraw
             </button>
-            <button class="button is-warning is-small is-light"
-              @click="toggleReport()" v-if="false">
+            <button class="button is-warning is-small is-light" @click="toggleReport()" v-if="false">
               <FAIcon icon="hand" />&nbsp;&nbsp;Report issue
             </button>
           </div>
@@ -98,8 +96,7 @@ function submitWithdraw() {
         <InformedConsentModal @toggle-consent="toggleConsent()" />
       </div>
     </div>
-    <button class="modal-close is-large" aria-label="close"
-      @click="toggleConsent()"></button>
+    <button class="modal-close is-large" aria-label="close" @click="toggleConsent()"></button>
   </div>
 
   <!-- modal for withdrawing from study -->
@@ -107,13 +104,15 @@ function submitWithdraw() {
     <div class="modal-background" @click="toggleWithdraw()"></div>
     <div class="modal-content">
       <div class="modaltext">
-        <WithdrawFormModal :prefill-email="email" ref="withdrawform"
+        <WithdrawFormModal
+          :prefill-email="email"
+          ref="withdrawform"
           @toggle-withdraw="toggleWithdraw()"
-          @submit-withdraw="submitWithdraw()" />
+          @submit-withdraw="submitWithdraw()"
+        />
       </div>
     </div>
-    <button class="modal-close is-large" aria-label="close"
-      @click="toggleWithdraw()"></button>
+    <button class="modal-close is-large" aria-label="close" @click="toggleWithdraw()"></button>
   </div>
 
   <!-- modal for reporting issues -->
@@ -124,8 +123,7 @@ function submitWithdraw() {
         <ReportIssueModal @toggle-report="toggleReport()" />
       </div>
     </div>
-    <button class="modal-close is-large" aria-label="close"
-      @click="toggleReport()"></button>
+    <button class="modal-close is-large" aria-label="close" @click="toggleReport()"></button>
   </div>
 </template>
 

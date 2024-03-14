@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import useSmileStore from '@/stores/smiledata'
+import useSmileStore from '@/core/stores/smiledata'
 import * as dagre from '@dagrejs/dagre'
 
 class Timeline {

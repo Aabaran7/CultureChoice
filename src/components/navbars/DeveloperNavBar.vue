@@ -1,5 +1,4 @@
-// create a default vue component using script setup // a default vue component
-using script setup
+// create a default vue component using script setup // a default vue component using script setup
 <script setup>
 import { onMounted, watch, ref, reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -10,7 +9,7 @@ import ConfigDropDown from '@/components/navbars/ConfigDropDown.vue'
 import StateVarsDropDown from '@/components/navbars/StateVarsDropDown.vue'
 import TrialStepper from './TrialStepper.vue'
 
-import useSmileStore from '@/stores/smiledata'
+import useSmileStore from '@/core/stores/smiledata'
 const smilestore = useSmileStore() // load the global store
 const router = useRouter() // this is needed in composition API because this.$router not availabel
 const route = useRoute()
@@ -55,7 +54,9 @@ function resetLocalState() {
           <!-- reset button -->
           <button
             class="button is-warning is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom"
-            data-tooltip="Reset entire state" @click="resetLocalState()">
+            data-tooltip="Reset entire state"
+            @click="resetLocalState()"
+          >
             <FAIcon icon="fa-solid fa-arrow-rotate-left" />
           </button>
 
@@ -64,7 +65,9 @@ function resetLocalState() {
 
           <button
             class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-2"
-            data-tooltip="Toggle data panel" @click="router.push('/data')">
+            data-tooltip="Toggle data panel"
+            @click="router.push('/data')"
+          >
             <FAIcon icon="fa-solid fa-database" />
           </button>
 

@@ -1,6 +1,6 @@
 import { shuffle } from '@/core/randomization'
 import { ref } from 'vue'
-import useSmileStore from '@/stores/smiledata'
+import useSmileStore from '@/core/stores/smiledata'
 
 export function useTrialStepper(trials, page, finishedCallback) {
   const smilestore = useSmileStore()

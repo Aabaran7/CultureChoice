@@ -3,7 +3,7 @@ import { onMounted, watch, ref } from 'vue'
 import { useMouse } from '@vueuse/core'
 import { useRouter, useRoute } from 'vue-router'
 
-import useSmileStore from '@/stores/smiledata'
+import useSmileStore from '@/core/stores/smiledata'
 import { routes } from '@/router'
 
 const smilestore = useSmileStore() // load the global store
@@ -43,8 +43,7 @@ function resetLocalState() {
       <div class="devmode-title">PRESENTATION MODE</div>
       <div class="devmode">
         -- &nbsp; Reset:
-        <a alt="Reset all state and return to / route"
-          @click="resetLocalState()">
+        <a alt="Reset all state and return to / route" @click="resetLocalState()">
           <FAIcon icon="fa-solid fa-arrow-rotate-left" />
         </a>
       </div>
@@ -65,17 +64,25 @@ function resetLocalState() {
               <hr class="dropdown-divider" />
               <template v-for="r in routes">
                 <!-- make a special link for web_referred, which has params -->
-                <router-link class="dropdown-item routelink"
-                  v-if="r.name === 'welcome_referred'" :to="{
-            name: r.name,
-            params: { service: 'web' },
-            query: currentQuery,
-          }" :key="r.path">
+                <router-link
+                  class="dropdown-item routelink"
+                  v-if="r.name === 'welcome_referred'"
+                  :to="{
+                    name: r.name,
+                    params: { service: 'web' },
+                    query: currentQuery,
+                  }"
+                  :key="r.path"
+                >
                   /{{ r.name }}
                 </router-link>
                 <!-- make a link for everything else -->
-                <router-link class="dropdown-item routelink" v-else
-                  :to="{ name: r.name, query: currentQuery }" :key="r.name">
+                <router-link
+                  class="dropdown-item routelink"
+                  v-else
+                  :to="{ name: r.name, query: currentQuery }"
+                  :key="r.name"
+                >
                   /{{ r.name }}
                 </router-link>
               </template>

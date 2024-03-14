@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import useSmileStore from '@/stores/smiledata'
+import useSmileStore from '@/core/stores/smiledata'
 const smilestore = useSmileStore() // load the global store
 
 const showpanel = ref(false)

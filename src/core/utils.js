@@ -1,4 +1,4 @@
-import useSmileStore from '@/stores/smiledata' // get access to the global store
+import useSmileStore from '@/core/stores/smiledata' // get access to the global store
 
 export function getQueryParams() {
   const queryString = window.location.search

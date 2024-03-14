@@ -1,12 +1,13 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import useSmileStore from '@/stores/smiledata'
+import useSmileStore from '@/core/stores/smiledata'
 import { onMounted, watch, ref } from 'vue'
 // load sub-components used in this compomnents
 import DeveloperNavBar from '@/components/navbars/DeveloperNavBar.vue'
 import StatusBar from '@/components/navbars/StatusBar.vue'
 import PresenationNavBar from '@/components/navbars/PresentationNavBar.vue'
 import ProgressBar from './components/navbars/ProgressBar.vue'
+import DevDataBar from './components/navbars/DevDataBar.vue'
 
 // imports the global config object
 const router = useRouter()
@@ -32,24 +33,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <DeveloperNavBar v-if="smilestore.config.mode == 'development'"></DeveloperNavBar>
-  <PresenationNavBar v-if="smilestore.config.mode == 'presentation'"></PresenationNavBar>
+  <DeveloperNavBar v-if="smilestore.config.mode == 'development'"> </DeveloperNavBar>
+  <PresenationNavBar v-if="smilestore.config.mode == 'presentation'"> </PresenationNavBar>
   <StatusBar
-    v-if="
-      $route.name !== 'config' &&
-      $route.name !== 'data' &&
-      $route.name !== 'recruit' &&
-      smilestore.config.mode != 'presentation'
-    "
+    v-if="$route.name !== 'data' && $route.name !== 'recruit' && smilestore.config.mode != 'presentation'"
   ></StatusBar>
 
   <div class="router">
     <router-view></router-view>
     <!-- the router loads here -->
   </div>
+
   <ProgressBar
     v-if="$route.name !== 'config' && $route.name !== 'recruit' && smilestore.config.show_progress_bar == 'true'"
-  ></ProgressBar>
+  >
+  </ProgressBar>
+  <!-- <DevDataBar v-if="smilestore.config.mode == 'development'"></DevDataBar> -->
 </template>
 
 <style>

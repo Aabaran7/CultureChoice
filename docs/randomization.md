@@ -165,7 +165,7 @@ Every time a new participant connects to the Firestore database, <SmileText /> l
 By default, the assigned conditions will be saved to the global store, in a field called `conditions`. They can be accessed within a component using a getter called `getConditions`.
 
 ```js
-import useSmileStore from '@/stores/smiledata' // get access to the global store
+import useSmileStore from '@/core/stores/smiledata' // get access to the global store
 
 const smilestore = useSmileStore()
 
@@ -177,7 +177,7 @@ If you want to use these conditions in a component (for example, displaying diff
 
 ```js
 import { computed } from 'vue'
-import useSmileStore from '@/stores/smiledata'
+import useSmileStore from '@/core/stores/smiledata'
 
 const smilestore = useSmileStore()
 
