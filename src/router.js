@@ -1,5 +1,5 @@
 // import { ref } from 'vue'
-import '@/seed'
+import '@/core/seed'
 import seedrandom from 'seedrandom'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { v4 as uuidv4 } from 'uuid'
