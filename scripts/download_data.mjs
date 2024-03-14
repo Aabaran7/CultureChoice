@@ -11,7 +11,7 @@ import * as dotenv from 'dotenv'
 import * as fs from 'fs'
 import { dirname, isAbsolute, extname, parse, format } from 'path'
 import { Command, Option } from 'commander'
-// import appconfig from '../src/config'
+// import appconfig from '../src/core/config'
 
 const init = () => {
   console.log(
