@@ -1,10 +1,14 @@
 import _ from 'lodash'
 import useSmileStore from '@/stores/smiledata'
+import * as dagre from '@dagrejs/dagre'
+
 class Timeline {
   constructor() {
     this.routes = [] // the actual routes given to VueRouter
     this.seqtimeline = [] // copies of routes that are sequential
     this.type = 'timeline'
+    this.g = null
+    this.g_nonseq = null
   }
 
   pushToRoutes(route) {
@@ -120,6 +124,7 @@ class Timeline {
   build() {
     this.buildGraph()
     this.registerCounters()
+    this.buildDAG()
     // this.buildProgress()
   }
 
@@ -131,6 +136,15 @@ class Timeline {
       smilestore.registerPageTracker(this.routes[i].name)
     }
     console.log('now the page tracker is,', smilestore.getLocal.pageTracker)
+  }
+
+  buildDAG() {
+    this.g = new dagre.graphlib.Graph().setGraph({ nodesep: 80, ranksep: 40 }).setDefaultEdgeLabel(function () {
+      return {}
+    }) // Default to assigning a new object as a label for each new edge.
+    this.g_nonseq = new dagre.graphlib.Graph().setGraph({ nodesep: 80, ranksep: 40 }).setDefaultEdgeLabel(function () {
+      return {}
+    }) // Default to assigning a new object as a label for each new edge.
   }
 
   // buildGraph builds
