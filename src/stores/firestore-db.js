@@ -12,7 +12,7 @@ import {
   connectFirestoreEmulator,
 } from 'firebase/firestore'
 import { split } from 'lodash'
-import appconfig from '@/config'
+import appconfig from '@/core/config'
 
 // initialize firebase connection
 // since this is a module these will run once at the start
