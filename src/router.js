@@ -5,7 +5,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { v4 as uuidv4 } from 'uuid'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/core/config'
-import { processQuery, getQueryParams } from '@/utils'
+import { processQuery, getQueryParams } from '@/core/utils'
 import Timeline from '@/core/timeline'
 import RandomSubTimeline from '@/core/subtimeline'
 
