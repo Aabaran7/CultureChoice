@@ -8,7 +8,7 @@ import VueGtag from 'vue-gtag' // google analytics
 import App from '@/App.vue' // import the main app component
 import { router } from '@/router' // import the router
 import { pinia } from '@/core/createpinia'
-import '@/icons' // configure fontawesome
+import '@/core/icons' // configure fontawesome
 
 // Create the app and the data store
 // const pinia = createPinia() // create the data store
