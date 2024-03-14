@@ -18,6 +18,7 @@ export default function useSmileAPI() {
     config: smilestore.config,
     data: smilestore.data,
     local: smilestore.local,
+    global: smilestore.global,
     route: route,
     router: router,
     stepNextRoute: stepNextRoute,
@@ -56,6 +57,12 @@ export default function useSmileAPI() {
     },
     getCurrentTrial: () => {
       return smilestore.getPage[route.name]
+    },
+    getBrowserFingerprint: () => {
+      return smilestore.getBrowserFingerprint()
+    },
+    recordWindowEvent: (type, event_data = null) => {
+      smilestore.recordWindowEvent(type, event_data)
     },
     incrementTrial: () => {
       smilestore.incrementPageTracker(route.name)

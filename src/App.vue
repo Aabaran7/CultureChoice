@@ -1,6 +1,4 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-import useSmileStore from '@/core/stores/smiledata'
 import { onMounted, watch, ref } from 'vue'
 // load sub-components used in this compomnents
 import DeveloperNavBar from '@/components/navbars/DeveloperNavBar.vue'
@@ -9,34 +7,35 @@ import PresenationNavBar from '@/components/navbars/PresentationNavBar.vue'
 import ProgressBar from './components/navbars/ProgressBar.vue'
 import DevDataBar from './components/navbars/DevDataBar.vue'
 
-// imports the global config object
-const router = useRouter()
-const route = useRoute()
-const smilestore = useSmileStore()
+// import and initalize smile API
+import useSmileAPI from '@/core/composables/smileapi'
+const api = useSmileAPI()
 
 // monitor events on the main window
 onMounted(() => {
   window.addEventListener('resize', (event) => {
-    smilestore.recordWindowEvent('resize', { width: window.innerWidth, height: window.innerHeight })
+    api.recordWindowEvent('resize', { width: window.innerWidth, height: window.innerHeight })
   })
 
   window.addEventListener('focus', (event) => {
-    smilestore.recordWindowEvent('focus')
+    api.recordWindowEvent('focus')
   })
 
   window.addEventListener('blur', (event) => {
-    smilestore.recordWindowEvent('blur')
+    api.recordWindowEvent('blur')
   })
 
-  smilestore.getBrowserFingerprint()
+  api.getBrowserFingerprint()
 })
 </script>
 
 <template>
-  <DeveloperNavBar v-if="smilestore.config.mode == 'development'"> </DeveloperNavBar>
-  <PresenationNavBar v-if="smilestore.config.mode == 'presentation'"> </PresenationNavBar>
+  <DeveloperNavBar v-if="api.config.mode == 'development'"> </DeveloperNavBar>
+  <PresenationNavBar v-if="api.config.mode == 'presentation'"> </PresenationNavBar>
   <StatusBar
-    v-if="$route.name !== 'data' && $route.name !== 'recruit' && smilestore.config.mode != 'presentation'"
+    v-if="
+      api.currentRouteName() !== 'data' && api.currentRouteName() !== 'recruit' && api.config.mode != 'presentation'
+    "
   ></StatusBar>
 
   <div class="router">
@@ -45,7 +44,11 @@ onMounted(() => {
   </div>
 
   <ProgressBar
-    v-if="$route.name !== 'config' && $route.name !== 'recruit' && smilestore.config.show_progress_bar == 'true'"
+    v-if="
+      api.currentRouteName() !== 'config' &&
+      api.currentRouteName() !== 'recruit' &&
+      api.config.show_progress_bar == 'true'
+    "
   >
   </ProgressBar>
   <!-- <DevDataBar v-if="smilestore.config.mode == 'development'"></DevDataBar> -->
@@ -63,7 +66,7 @@ onMounted(() => {
 
 .router {
   height: 100vh;
-  background-color: v-bind(smilestore.global.page_bg_color);
+  background-color: v-bind(api.global.page_bg_color);
 }
 
 #app {
