@@ -4,7 +4,7 @@
 // NOTE: this DOES NOT set the seed. Seed is set in beforeResolve in router.js (before each component)
 // this script simply defines an ID number that is used to set seeds throughout the experiment
 import { v4 as uuidv4 } from 'uuid'
-import { pinia } from '@/createpinia'
+import { pinia } from '@/core/createpinia'
 import useSmileStore from '@/stores/smiledata' // get access to the global store
 
 const smilestore = useSmileStore(pinia)

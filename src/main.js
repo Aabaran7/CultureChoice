@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { plugin, defaultConfig } from '@formkit/vue'
 import '@formkit/themes/genesis'
@@ -8,7 +7,7 @@ import VueGtag from 'vue-gtag' // google analytics
 
 import App from '@/App.vue' // import the main app component
 import { router } from '@/router' // import the router
-import { pinia } from '@/createpinia'
+import { pinia } from '@/core/createpinia'
 import '@/icons' // configure fontawesome
 
 // Create the app and the data store
