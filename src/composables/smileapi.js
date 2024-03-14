@@ -15,13 +15,42 @@ export default function useSmileAPI() {
   const router = useRouter()
   const smilestore = useSmileStore()
   const api = {
-    store: smilestore,
+    config: smilestore.config,
+    data: smilestore.data,
+    local: smilestore.local,
     route: route,
     router: router,
     stepNextRoute: stepNextRoute,
     stepPrevRoute: stepPrevRoute,
     shuffle: shuffle,
     useTrialStepper: useTrialStepper,
+    isKnownUser: smilestore.isKnownUser,
+    urls: smilestore.global.urls,
+    setKnown: () => {
+      smilestore.setKnown()
+    },
+    setDone: () => {
+      smilestore.setDone()
+    },
+    setConsented: () => {
+      smilestore.setConsented()
+    },
+    setWithdraw: (forminfo) => {
+        smilestore.setWithdraw(forminfo)
+    },
+    saveDemographicForm: (data) => {
+      smilestore.saveDemographicForm(data)
+    },
+    setPageAutofill: (autofill) => {
+      console.log('setting autofil')
+      if (smilestore.config.mode === 'development') smilestore.setPageAutofill(autofill)
+      },
+    setCompletionCode: (code) => {
+      smilestore.setCompletionCode(code)
+    },
+    getRecruitmentService: () => {
+      return smilestore.data.recruitment_service
+    },
     currentRouteName: () => {
       return route.name
     },
@@ -30,6 +59,15 @@ export default function useSmileAPI() {
     },
     incrementTrial: () => {
       smilestore.incrementPageTracker(route.name)
+    },
+    decrementTrial: () => {
+      smilestore.decrementPageTracker(route.name)
+      },
+    resetTrial: () => {
+      smilestore.resetPageTracker(route.name)
+    },
+    saveData: (force) => {
+      smilestore.saveData(force)
     },
     saveTrialData: (data) => {
       smilestore.saveTrialData(data)

@@ -22,7 +22,7 @@ function createLink(option) {
         :class="{ 'is-active': showpanel }">
         <div class=" dropdown-trigger">
             <button class="button is-success is-light dev-bar-button">
-                <FAIcon icon="fa-solid fa-gear" /> 
+                <FAIcon icon="fa-solid fa-gear" />
             </button>
         </div>
         <div class="dropdown-menu pt-0 mt-0" id="dropdown-menu" role="menu">
@@ -49,18 +49,19 @@ function createLink(option) {
                         <ul>
                             <li :class="{ 'is-active': panel == 'local' }">
                                 <a @click="panel = 'local'"><b>
-                                    Local
+                                        Local
                                         State
-                                </b></a>
+                                    </b></a>
                             </li>
                             <li :class="{ 'is-active': panel == 'code' }">
                                 <a @click="panel = 'code'"><b>
-                                    Code
+                                        Code
                                         Version
-                                </b></a>
+                                    </b></a>
                             </li>
                             <li :class="{ 'is-active': panel == 'full' }">
-                                <a @click="panel = 'full'"><b>Full Config</b></a>
+                                <a @click="panel = 'full'"><b>Full
+                                        Config</b></a>
                             </li>
                         </ul>
                     </div>

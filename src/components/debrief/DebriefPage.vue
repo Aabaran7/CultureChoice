@@ -1,21 +1,14 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-import useTimelineStepper from '@/composables/timelinestepper'
-import useSmileStore from '@/stores/smiledata'
 import DebriefText from '@/components/debrief/DebriefText.vue' // get access to the global store
+// import and initalize smile API
+import useSmileAPI from '@/composables/smileapi'
+const api = useSmileAPI()
 
-const router = useRouter()
-const route = useRoute()
-const smilestore = useSmileStore()
+api.setDone()
 
-const { next, prev } = useTimelineStepper()
-
-if (route.meta.progress) smilestore.global.progress = route.meta.progress
-
-smilestore.setDone()
-
-function finish(goto) {
-  if (goto) router.push(goto)
+function finish() {
+  // do stuff if you want
+  api.stepNextRoute()
 }
 </script>
 
@@ -23,8 +16,9 @@ function finish(goto) {
   <div class="page">
     <h1 class="title is-3">What was that about?</h1>
     <DebriefText />
-    <button class="button is-success is-light" id="finish" @click="finish(next())">
-      next &nbsp;<FAIcon icon="fa-solid fa-arrow-right" />
+    <button class="button is-success is-light" id="finish" @click="finish()">
+      next &nbsp;
+      <FAIcon icon="fa-solid fa-arrow-right" />
     </button>
   </div>
 </template>

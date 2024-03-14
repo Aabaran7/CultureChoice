@@ -46,7 +46,8 @@ function resetLocalState() {
       <div class="devmode-title">PRESENTATION MODE</div>
       <div class="devmode">
         -- &nbsp; Reset:
-        <a alt="Reset all state and return to / route" @click="resetLocalState()">
+        <a alt="Reset all state and return to / route"
+          @click="resetLocalState()">
           <FAIcon icon="fa-solid fa-arrow-rotate-left" />
         </a>
       </div>
@@ -67,25 +68,17 @@ function resetLocalState() {
               <hr class="dropdown-divider" />
               <template v-for="r in routes">
                 <!-- make a special link for web_referred, which has params -->
-                <router-link
-                  class="dropdown-item routelink"
-                  v-if="r.name === 'welcome_referred'"
-                  :to="{
-                    name: r.name,
-                    params: { service: 'web' },
-                    query: currentQuery,
-                  }"
-                  :key="r.path"
-                >
+                <router-link class="dropdown-item routelink"
+                  v-if="r.name === 'welcome_referred'" :to="{
+            name: r.name,
+            params: { service: 'web' },
+            query: currentQuery,
+          }" :key="r.path">
                   /{{ r.name }}
                 </router-link>
                 <!-- make a link for everything else -->
-                <router-link
-                  class="dropdown-item routelink"
-                  v-else
-                  :to="{ name: r.name, query: currentQuery }"
-                  :key="r.name"
-                >
+                <router-link class="dropdown-item routelink" v-else
+                  :to="{ name: r.name, query: currentQuery }" :key="r.name">
                   /{{ r.name }}
                 </router-link>
               </template>
@@ -108,22 +101,27 @@ function resetLocalState() {
 a {
   color: #fff;
 }
+
 .dropdown-content {
   border-radius: 0;
   padding-top: 0;
   padding-bottom: 0;
   color: #000;
 }
+
 .routelink {
   font-family: monospace;
 }
+
 .dropdown-content b {
   color: #000;
   font-size: 13px;
 }
+
 .dropdown-divider {
   margin: 0;
 }
+
 .dropdown-item {
   color: #000;
   font-size: 13px;
@@ -131,6 +129,7 @@ a {
   margin: 0px;
   text-align: left;
 }
+
 a:hover {
   color: #10dffa;
 }
@@ -138,6 +137,7 @@ a:hover {
 .iconcolor {
   color: #10dffa;
 }
+
 .navbar {
   font-size: 13px;
   background: rgb(234, 180, 44);
@@ -149,11 +149,13 @@ a:hover {
   min-height: 32px;
   text-align: center;
 }
+
 .devmode-title {
   padding-top: 8px;
   font-weight: 500;
   padding-left: 10px;
 }
+
 .devmode {
   padding-top: 8px;
   font-weight: 400;

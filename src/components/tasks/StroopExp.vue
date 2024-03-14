@@ -93,6 +93,11 @@ function finalize() {
   console.log('finished, so will save data and stuff')
   final_score.value = 100 // compute a final score here
 }
+
+function finish() {
+  // do stuff if you want
+  api.stepNextRoute()
+}
 </script>
 
 <template>
@@ -107,10 +112,11 @@ function finalize() {
     <!-- Show this when you are done with the trials and offer a button
          which will advance to the next route -->
     <div class="endoftask" v-else>
-      <p id="prompt">Thanks! You are finished with this task and can move on.</p>
+      <p id="prompt">Thanks! You are finished with this task and can move on.
+      </p>
       <!-- display the final score -->
       <p>Your score was {{ final_score }}</p>
-      <button class="button is-success is-light" id="finish" @click="api.stepNextRoute()">
+      <button class="button is-success is-light" id="finish" @click="finish()">
         Continue &nbsp;
         <FAIcon icon="fa-solid fa-arrow-right" />
       </button>

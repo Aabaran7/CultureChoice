@@ -12,7 +12,7 @@ const showpanel = ref(false)
         :class="{ 'is-active': showpanel }">
         <div class=" dropdown-trigger">
             <button class="button is-success is-light dev-bar-button">
-                <FAIcon icon=" fa-solid fa-dice" /> 
+                <FAIcon icon=" fa-solid fa-dice" />
             </button>
         </div>
         <div class="dropdown-menu pt-0 mt-0" id="dropdown-menu" role="menu">

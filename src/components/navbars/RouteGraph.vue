@@ -16,7 +16,7 @@ var g_nonseq = new dagre.graphlib.Graph().setGraph({ nodesep: 80, ranksep: 40 })
 
 // Here we're setting nodeclass, which is used by our custom drawNodes function
 // below.
-g.setNode('recruit', { name: 'recruit', label: 'RecruitmentChooser.vue', class: 'node', shape: 'circle' })
+g_nonseq.setNode('recruit', { name: 'recruit', label: 'RecruitmentChooser.vue', class: 'node', shape: 'circle' })
 g.setNode('welcome_anonymous', {
   name: 'welcome_anonymous',
   label: 'Advertisement.vue',
@@ -44,10 +44,8 @@ g.setNode('thanks', { name: 'thanks', label: 'Thanks.vue', class: 'node', shape:
 // nonseq routes
 g_nonseq.setNode('withdraw', { name: 'withdraw', label: 'Withdraw.vue', class: 'nonseq', shape: 'circle' })
 g_nonseq.setNode('mturk', { name: 'mturk', label: 'MTurk.vue', class: 'nonseq', shape: 'circle' })
-g_nonseq.setNode('data', { name: 'data', label: 'DataPage', class: 'nonseq', shape: 'circle' })
+//g_nonseq.setNode('data', { name: 'data', label: 'DataPage', class: 'nonseq', shape: 'circle' })
 // Set up edges, no special attributes.
-g.setEdge('recruit', 'welcome_anonymous')
-g.setEdge('recruit', 'welcome_referred')
 g.setEdge('welcome_anonymous', 'consent')
 g.setEdge('welcome_referred', 'consent')
 g.setEdge('consent', 'demograph')
@@ -69,11 +67,9 @@ dagre.layout(g_nonseq)
 var nonseq = 0
 g_nonseq.nodes().forEach(function (v) {
   var node = g_nonseq.node(v)
-  if (node.class == 'nonseq') {
-    node.x = 180
-    node.y = 20 + nonseq * 30
-    nonseq += 1
-  }
+  node.x = 180
+  node.y = 20 + nonseq * 30
+  nonseq += 1
 })
 
 const nonseq_nodes = []
@@ -89,7 +85,7 @@ g.nodes().forEach(function (v) {
   seq_nodes.push(node)
 })
 var nudge_x = 160
-var nudge_y = 25
+var nudge_y = 15
 function translate(x, y) {
   return 'translate(' + x + ',' + y + ')'
 }
@@ -137,34 +133,29 @@ const mainCircle = 10
       <g id="edges"></g>
       <g id="nodes">
         <g v-for="n in nonseq_nodes" :transform="translate(n.x, n.y)">
-          <circle
-            :r="n.name == props.hoverRoute ? inflatedCircle : mainCircle"
+          <circle :r="n.name == props.hoverRoute ? inflatedCircle : mainCircle"
             style="stroke: #ccba82; stroke-width: 1.5px; fill: #ffe8a3"
             :style="n.name == props.hoverRoute ? 'fill: #ccba82' : 'fill: #ffe8a3'"
             @mouseover="$emit('hoveredOn', n.name)"
             @mouseout="$emit('hoveredOn', '')"
-            @click="$emit('clickedOn', n.name)"
-          ></circle>
-          <circle
-            r="6"
+            @click="$emit('clickedOn', n.name)"></circle>
+          <circle r="6"
             style="stroke: #000; stroke-width: 1.5px; fill: #ccba82; visibility: visible"
-            v-if="n.name == currentRoute"
-          ></circle>
-          <text
-            :x="14"
-            y="4"
+            v-if="n.name == currentRoute"></circle>
+          <text :x="14" y="4"
             style="fill: #000; font-size: 11px; font-family: Helvetica"
-            :style="bold(n.name, currentRoute)"
-          >
+            :style="bold(n.name, currentRoute)">
             {{ n.label }}
           </text>
         </g>
       </g>
       <g id="notes">
-        <text x="10" y="35" width="50px" style="font-weight: 400; font-family: Helvetica; font-size: 13px">
+        <text x="10" y="35" width="50px"
+          style="font-weight: 400; font-family: Helvetica; font-size: 13px">
           accessed in any order.
         </text>
-        <text x="10" y="20" width="50px" style="font-weight: 400; font-family: Helvetica; font-size: 13px">
+        <text x="10" y="20" width="50px"
+          style="font-weight: 400; font-family: Helvetica; font-size: 13px">
           These routes can be
         </text>
       </g>
@@ -172,64 +163,36 @@ const mainCircle = 10
   </div>
   <div class="sequential">
     <div class="seqtitle">Sequential Routes</div>
-    <svg id="seqgraph" width="400" height="500">
+    <svg id="seqgraph" width="400" height="450">
       <g id="edges">
         <g v-for="e in g.edges()" :key="e.v + '-' + e.w">
-          <path
-            :d="`M ${g.node(e.v).x + nudge_x},${g.node(e.v).y + nudge_y} L ${g.edge(e).points[1].x + nudge_x} ${
-              g.edge(e).points[1].y + nudge_y
-            } L ${g.node(e.w).x + nudge_x},${g.node(e.w).y + nudge_y}`"
-            style="stroke: #1a3f; stroke-width: 1.5px; fill: none"
-          ></path>
-          <path
-            :d="`M ${g.node(e.w).x + nudge_x},${g.node(e.w).y + nudge_y - 10} L ${g.node(e.w).x - 6 + nudge_x},${
-              g.node(e.w).y + nudge_y - 15
-            }`"
-            style="stroke: #1a3f; stroke-width: 1.5px; fill: none"
-          ></path>
-          <path
-            :d="`M ${g.node(e.w).x + nudge_x},${g.node(e.w).y + nudge_y - 10} L ${g.node(e.w).x + 6 + nudge_x},${
-              g.node(e.w).y + nudge_y - 15
-            }`"
-            style="stroke: #1a3f; stroke-width: 1.5px; fill: none"
-          ></path>
+          <path :d="`M ${g.node(e.v).x + nudge_x},${g.node(e.v).y + nudge_y} L ${g.edge(e).points[1].x + nudge_x} ${g.edge(e).points[1].y + nudge_y
+      } L ${g.node(e.w).x + nudge_x},${g.node(e.w).y + nudge_y}`"
+            style="stroke: #1a3f; stroke-width: 1.5px; fill: none"></path>
+          <path :d="`M ${g.node(e.w).x + nudge_x},${g.node(e.w).y + nudge_y - 10} L ${g.node(e.w).x - 6 + nudge_x},${g.node(e.w).y + nudge_y - 15
+      }`" style="stroke: #1a3f; stroke-width: 1.5px; fill: none"></path>
+          <path :d="`M ${g.node(e.w).x + nudge_x},${g.node(e.w).y + nudge_y - 10} L ${g.node(e.w).x + 6 + nudge_x},${g.node(e.w).y + nudge_y - 15
+      }`" style="stroke: #1a3f; stroke-width: 1.5px; fill: none"></path>
         </g>
       </g>
       <g id="nodes">
-        <g v-for="n in seq_nodes" :transform="translate(n.x + nudge_x, n.y + nudge_y)">
-          <circle
-            :r="n.name == props.hoverRoute ? inflatedCircle : mainCircle"
+        <g v-for="n in seq_nodes"
+          :transform="translate(n.x + nudge_x, n.y + nudge_y)">
+          <circle :r="n.name == props.hoverRoute ? inflatedCircle : mainCircle"
             style="stroke: #8cc39e; stroke-width: 1.5px; fill: #aff4c6"
             :style="n.name == props.hoverRoute ? 'fill: #8cc39e' : 'fill: #aff4c6'"
             @mouseover="$emit('hoveredOn', n.name)"
             @mouseout="$emit('hoveredOn', '')"
-            @click="$emit('clickedOn', n.name)"
-          ></circle>
-          <circle
-            r="6"
+            @click="$emit('clickedOn', n.name)"></circle>
+          <circle r="6"
             style="stroke: #000; stroke-width: 1.5px; fill: #8cc39e; visibility: visible"
-            v-if="n.name == currentRoute"
-          ></circle>
-          <text
-            :x="xlabel_pos(n.x + nudge_x, n.label)"
-            y="4"
+            v-if="n.name == currentRoute"></circle>
+          <text :x="xlabel_pos(n.x + nudge_x, n.label)" y="4"
             style="fill: #000; font-size: 11px; font-family: Helvetica"
-            :style="bold(n.name, currentRoute)"
-          >
+            :style="bold(n.name, currentRoute)">
             {{ n.label }}
           </text>
         </g>
-      </g>
-      <g id="notes">
-        <text x="10" y="20" width="50px" style="font-weight: 400; font-family: Helvetica; font-size: 13px">
-          These routes/pages are
-        </text>
-        <text x="10" y="35" width="50px" style="font-weight: 400; font-family: Helvetica; font-size: 13px">
-          arranged on the sequential
-        </text>
-        <text x="10" y="50" width="50px" style="font-weight: 400; font-family: Helvetica; font-size: 13px">
-          timeline.
-        </text>
       </g>
     </svg>
   </div>
@@ -248,6 +211,7 @@ const mainCircle = 10
   font-size: 0.8em;
   font-weight: 600;
 }
+
 .nonsequential {
   background-color: #fffcf1;
   border: 1px solid #d9c58b;
@@ -255,6 +219,7 @@ const mainCircle = 10
   margin-bottom: 20px;
   margin-top: 5px;
 }
+
 .seqtitle {
   background-color: #aff4c6;
   border: 1px solid #95d0a8;
@@ -267,11 +232,13 @@ const mainCircle = 10
   font-size: 0.8em;
   font-weight: 600;
 }
+
 .sequential {
   background-color: #f3fdf6;
   border: 1px solid #aff4c6;
   border-radius: 10px;
 }
+
 .title {
   padding-top: 8px;
   padding-left: 10px;
@@ -280,7 +247,7 @@ const mainCircle = 10
 }
 
 /* This sets the color for "TK" nodes to a light blue green. */
-g.type-TK > rect {
+g.type-TK>rect {
   fill: #00ffd0;
 }
 

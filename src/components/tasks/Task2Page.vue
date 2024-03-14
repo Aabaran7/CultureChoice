@@ -1,27 +1,8 @@
 <script setup>
-// maybe a smile store component
-// reorganize files to make more clear what you are or are not expected to edit
-//
-
-import { ref } from 'vue'
-import useTimelineStepper from '@/composables/timelinestepper'
-const { stepNextRoute, stepPrevRoute } = useTimelineStepper()
-
-import useTrialStepper from '@/composables/trialstepper'
-
-// if you need to acess the global store do it here
-import useSmileStore from '@/stores/smiledata'
-const smilestore = useSmileStore()
-
-// if you need low-level access to the router do it here
-//import { useRouter, useRoute } from 'vue-router'
-// const router = useRouter()
-// const route = useRoute()
-
-// this progress bar is not implemented and a little hard so lets pass for now
-//if (route.meta.progress) smilestore.global.progress = route.meta.progress
-
-import { shuffle } from '@/randomization'
+import { ref, computed } from 'vue'
+// import and initalize smile API
+import useSmileAPI from '@/composables/smileapi'
+const api = useSmileAPI()
 
 var trials = [
   {
@@ -41,10 +22,16 @@ var trials = [
   },
 ]
 
-const { index, trial, nextTrial, prevTrial } = useTrialStepper(trials, () => {
-  stepNextRoute(finalize())
+// next we shuffle the trials
+trials = api.shuffle(trials)
+
+const { nextTrial, prevTrial } = api.useTrialStepper(trials, api.currentRouteName(), () => {
+  finalize()
 })
 
+const trial = computed(() => {
+  return trials[api.getCurrentTrial()]
+})
 // const index = ref(0)
 // trials = shuffle(trials) // shuffle is not "in place"
 
@@ -55,8 +42,27 @@ const { index, trial, nextTrial, prevTrial } = useTrialStepper(trials, () => {
 function finalize() {
   // sort out what data you are putting in the smile store here?
   console.log('finished ')
+  finish()
 }
 
+function finish() {
+  // do stuff if you want
+  api.stepNextRoute()
+}
+
+function next() {
+  if (api.getCurrentTrial() < trials.length - 1) {
+    nextTrial()
+  } else {
+    api.stepNextRoute()
+  }
+}
+
+function prev() {
+  if (api.getCurrentTrial() > 0) {
+    prevTrial()
+  }
+}
 // custom advance to next route when we finish showing all the trials
 // function advance() {
 //   if (index.value >= trials.length - 1) {
@@ -70,13 +76,15 @@ function finalize() {
 <template>
   <div class="page">
     <h1 class="title is-3">Task 2</h1>
-    {{ trial.sentence }}/{{ index }}<br /><br />
-    <button class="button is-success is-light" id="finish" @click="prevTrial()" v-if="index > 0">
+    {{ trial.sentence }}/{{ api.getCurrentTrial() }}<br /><br />
+    <button class="button is-success is-light" id="finish" @click="prev()"
+      v-if="api.getCurrentTrial() > 0">
       <FAIcon icon="fa-solid fa-arrow-left" />&nbsp; prev
     </button>
     &nbsp;&nbsp;&nbsp;
-    <button class="button is-success is-light" id="finish" @click="nextTrial()">
-      next &nbsp;<FAIcon icon="fa-solid fa-arrow-right" />
+    <button class="button is-success is-light" id="finish" @click="next()">
+      next &nbsp;
+      <FAIcon icon="fa-solid fa-arrow-right" />
     </button>
   </div>
 </template>

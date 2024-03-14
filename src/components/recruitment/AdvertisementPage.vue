@@ -1,24 +1,12 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-import useTimelineStepper from '@/composables/timelinestepper'
-import useSmileStore from '@/stores/smiledata' // get access to the global store
+// import and initalize smile API
+import useSmileAPI from '@/composables/smileapi'
+const api = useSmileAPI()
 
-const router = useRouter()
-const route = useRoute()
-const smilestore = useSmileStore()
-
-const { next, prev } = useTimelineStepper()
-
-smilestore.global.page_bg_color = '#fff'
-smilestore.global.page_text_color = '#000'
-smilestore.global.status_bar_bg_color = '#fff'
-smilestore.global.status_bar_text_color = '#000'
-
-if (route.meta.progress) smilestore.global.progress = route.meta.progress
-
-function finish(goto) {
+function finish() {
+  // if there's anything else you wanted to do here
   // smilestore.saveData()
-  if (goto) router.push(goto)
+  api.stepNextRoute()
 }
 </script>
 
@@ -29,8 +17,9 @@ function finish(goto) {
     <h1 class="title is-3">Please help us understand the mind!</h1>
     <p>Take part in a short experiment where you play a game for money.</p>
     <br />
-    <button class="button is-warning" id="begintask" @click="finish(next())">
-      I'm ready! &nbsp;<FAIcon icon="fa-solid fa-arrow-right" />
+    <button class="button is-warning" id="begintask" @click="finish()">
+      I'm ready! &nbsp;
+      <FAIcon icon="fa-solid fa-arrow-right" />
     </button>
   </div>
 </template>

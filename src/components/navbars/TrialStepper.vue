@@ -36,8 +36,7 @@ function setClicked(route) {
         <p class="control">
           <button
             class="button is-small is-warning is-jump-bar has-tooltip-arrow has-tooltip-bottom"
-            data-tooltip="Current trial counter"
-          >
+            data-tooltip="Current trial counter">
             <span>{{ smilestore.getPageTracker(routeName) }}</span>
           </button>
         </p>
@@ -45,8 +44,7 @@ function setClicked(route) {
           <button
             class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
             v-on:click="smilestore.incrementPageTracker(routeName)"
-            data-tooltip="Step trial forward"
-          >
+            data-tooltip="Step trial forward">
             <span>
               <FAIcon icon="fa-solid fa-angle-up" />
             </span>
@@ -56,8 +54,7 @@ function setClicked(route) {
           <button
             class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
             v-on:click="smilestore.decrementPageTracker(routeName)"
-            data-tooltip="Step trial back"
-          >
+            data-tooltip="Step trial back">
             <span>
               <FAIcon icon="fa-solid fa-angle-down" />
             </span>
@@ -67,9 +64,7 @@ function setClicked(route) {
         <p class="control" v-if="smilestore.hasAutofill">
           <button
             class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
-            v-on:click="smilestore.autofill()"
-            data-tooltip="Autofill Form"
-          >
+            v-on:click="smilestore.autofill()" data-tooltip="Autofill Form">
             <span>
               <FAIcon icon="fa-solid fa-pen-to-square" />
             </span>
@@ -78,8 +73,10 @@ function setClicked(route) {
       </div>
     </div>
     <div class="column is-one-half">
-      <div class="dropdown is-right is-hoverable" :class="{ 'is-active': showpanel }">
-        <div class="dropdown-trigger routelabel" @click="$emit('toggleVisible')">
+      <div class="dropdown is-right is-hoverable"
+        :class="{ 'is-active': showpanel }">
+        <div class="dropdown-trigger routelabel"
+          @click="$emit('toggleVisible')">
           <span>/{{ routeName }}</span>
         </div>
         <div class="dropdown-menu pt-2" id="dropdown-menu" role="menu">
@@ -92,61 +89,56 @@ function setClicked(route) {
             <div class="content">
               <h1 class="title is-6">Experiment Timeline</h1>
               <p class="has-text-left">
-                When running in live mode, the experiment disallows arbitrary navigation between routes. If you enable
-                the "force" option you can jump between routes even when it would be disallowed in live mode. The
-                timeline graphs show how transitions between pages are arranged. Read more about the
-                <a href="https://smile.gureckislab.org/timeline.html">timeline</a> here. <br />
+                When running in live mode, the experiment disallows arbitrary
+                navigation between routes. If you enable
+                the "force" option you can jump between routes even when it
+                would be disallowed in live mode. The
+                timeline graphs show how transitions between pages are arranged.
+                Read more about the
+                <a
+                  href="https://smile.gureckislab.org/timeline.html">timeline</a>
+                here. <br />
               </p>
 
               <hr class="dropdown-divider" />
               <div class="columns pt-0 mt-0">
                 <div class="column pt-0 mt-0">
-                  <RouteGraph
-                    :current-route="routeName"
-                    :hover-route="hoverRoute"
-                    @hovered-on="setHover"
-                    @clicked-on="setClicked"
-                  ></RouteGraph>
+                  <RouteGraph :current-route="routeName"
+                    :hover-route="hoverRoute" @hovered-on="setHover"
+                    @clicked-on="setClicked"></RouteGraph>
                 </div>
                 <div class="column pt-0 mt-0">
                   <div class="field mt-4">
-                    <input
-                      id="switchRoundedDefaultJump"
-                      type="checkbox"
+                    <input id="switchRoundedDefaultJump" type="checkbox"
                       name="switchRoundedDefaultJump"
                       class="switch is-rounded is-rtl is-small"
-                      v-model="smilestore.local.allowJumps"
-                    />
-                    <label for="switchRoundedDefaultJump">Force navigation:</label>
+                      v-model="smilestore.local.allowJumps" />
+                    <label for="switchRoundedDefaultJump">Force
+                      navigation:</label>
                   </div>
                   <hr class="dropdown-divider" />
                   <br />
                   <template v-for="r in routes">
                     <!-- make a special link for web_referred, which has params -->
-                    <router-link
-                      @mouseover="hoverRoute = r.name"
+                    <router-link @mouseover="hoverRoute = r.name"
                       @mouseout="hoverRoute = ''"
                       class="dropdown-item routelink"
                       :class="{ hover: hoverRoute === r.name }"
                       v-if="r.name === 'welcome_referred'"
                       :to="{ name: r.name, params: { service: 'web' }, query: currentQuery }"
-                      :key="r.path"
-                    >
+                      :key="r.path">
                       <div class="routelabel">
                         <span>/{{ r.name }}</span>
                       </div>
                     </router-link>
                     <!-- make a link for everything else -->
 
-                    <router-link
-                      @mouseover="hoverRoute = r.name"
+                    <router-link @mouseover="hoverRoute = r.name"
                       @mouseout="hoverRoute = ''"
                       class="dropdown-item routelink"
                       :class="{ route_selected: routeName === r.name, hover: hoverRoute === r.name }"
-                      v-else
-                      :to="{ name: r.name, query: currentQuery }"
-                      :key="r.name"
-                    >
+                      v-else :to="{ name: r.name, query: currentQuery }"
+                      :key="r.name">
                       <div class="routelabel">
                         <span>/{{ r.name }}</span>
                       </div>
@@ -197,6 +189,7 @@ function setClicked(route) {
 .hover {
   background-color: whitesmoke;
 }
+
 .routelabel {
   font-weight: 800;
   font-family: 'Courier New', Courier, monospace;

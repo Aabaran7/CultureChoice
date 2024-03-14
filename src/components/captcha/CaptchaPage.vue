@@ -1,8 +1,5 @@
 <script setup>
-import { shallowRef, ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import useTimelineStepper from '@/composables/timelinestepper'
-import useSmileStore from '@/stores/smiledata' // get access to the global store
+import { shallowRef, ref, computed } from 'vue'
 
 import CaptchaInstructionsText from '@/components/captcha/CaptchaInstructionsText.vue'
 import CaptchaTrialImageCategorization from '@/components/captcha/CaptchaTrialImageCategorization.vue'
@@ -10,28 +7,22 @@ import CaptchaTrialMotorControl from '@/components/captcha/CaptchaTrialMotorCont
 import CaptchaTrialTextComprehension from '@/components/captcha/CaptchaTrialTextComprehension.vue'
 import CaptchaTrialStroop from '@/components/captcha/CaptchaTrialStroop.vue'
 
-const router = useRouter()
-const route = useRoute()
-const smilestore = useSmileStore()
+// import and initalize smile API
+import useSmileAPI from '@/composables/smileapi'
+const api = useSmileAPI()
 
-const { next, prev } = useTimelineStepper()
-
-if (route.meta.progress) smilestore.global.progress = route.meta.progress
-
-function finish(goto) {
-  // smilestore.saveData()
-  if (goto) router.push(goto)
-}
 
 const pages = [
   CaptchaInstructionsText,
+  //CaptchaTrialTextComprehension,
   CaptchaTrialImageCategorization,
   CaptchaTrialMotorControl,
-  CaptchaTrialTextComprehension,
-  CaptchaTrialStroop,
 ]
-const page_indx = ref(smilestore.getPage)
-const currentTab = shallowRef(pages[page_indx.value])
+
+
+const currentTab = computed(() => {
+  return pages[api.getCurrentTrial()]
+})
 // captcha steps
 
 // a dynamic loader for different trial types which is randomized?
@@ -45,21 +36,27 @@ const currentTab = shallowRef(pages[page_indx.value])
 // 5 - human brain should show stroop interference
 // 6 -
 
-function next_trial(goto) {
-  page_indx.value = smilestore.incrementPageTracker()
-  if (page_indx.value >= pages.length) {
-    smilestore.resetPageTracker()
-    if (goto) router.push(goto)
-  } else {
-    currentTab.value = pages[page_indx.value]
+function next_trial() {
+  if (api.getCurrentTrial() >= pages.length - 1) {
+    //api.resetPageTracker() // you coudl reset when you leavr but why?
+    finish()
   }
+  api.incrementTrial()
+
 }
+
+function finish() {
+  // smilestore.saveData()
+  api.stepNextRoute()
+}
+
 </script>
 
 <template>
   <div class="page">
     <!-- Component changes when currentTab changes -->
-    <component :is="currentTab" @next-page-captcha="next_trial(next())"></component>
+    <component :is="currentTab" @next-page-captcha="next_trial()">
+    </component>
   </div>
 </template>
 

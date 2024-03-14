@@ -1,23 +1,10 @@
 <script setup>
-import { reactive, ref, computed, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import useSmileStore from '@/stores/smiledata' // get access to the global store
-import appconfig from '@/config'
+// this route doesn't actually use any vue features
+//import { ref } from 'vue'
 
-const router = useRouter()
-const route = useRoute()
-const smilestore = useSmileStore()
-
-
-const urls = {
-  prolific: "?PROLIFIC_PID=XXXX&STUDY_ID=XXXX&SESSION_ID=XXXXX#/welcome/prolific/",
-  cloudResearch: "#/welcome/cloudresearch/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE",
-  amt: "#/mturk/?assignmentId=123RVWYBAZW00EXAMPLE456RVWYBAZW00EXAMPLE&hitId=123RVWYBAZW00EXAMPLE&turkSubmitTo=https://www.mturk.com/&workerId=AZ3456EXAMPLE",
-  citizenScience: "#/welcome/citizensci/?CITIZEN_ID=XXXXX&CITIZEN_STUDY_ID=123RVWYBAZW00EXAMPLE&CITIZEN_SESSION_ID=AZ3456EXAMPLE",
-  anon: "#/welcome"
-}
-
-
+// import and initalize smile API
+import useSmileAPI from '@/composables/smileapi'
+const api = useSmileAPI()
 </script>
 
 <template>
@@ -43,7 +30,7 @@ const urls = {
       platform for online experiments with slightly higher overall quality than
       AMT.
     </p>
-    <a :href="urls['prolific']" class="button is-info is-small"
+    <a :href="api.urls['prolific']" class="button is-info is-small"
       id='prolific_tester'>Random Fake Prolific User &nbsp;
       <FAIcon icon="fa-solid fa-arrow-right" />
     </a>
@@ -54,7 +41,7 @@ const urls = {
       a platform that recruits from several sources, including Mechanical Turk
       but includes some screening for bots and server farms.
     </p>
-    <a :href="urls['cloudResearch']" class="button is-pink is-small"
+    <a :href="api.urls['cloudresearch']" class="button is-pink is-small"
       id='prolific_tester'>Random Fake CloudResearch User &nbsp;
       <FAIcon icon="fa-solid fa-arrow-right" />
     </a>
@@ -69,7 +56,7 @@ const urls = {
       &nbsp;
       <FAIcon icon="fa-solid fa-arrow-right" />
     </a>
-    <a :href="urls['amt']" class="button is-warning is-small"
+    <a :href="api.urls['mturk']" class="button is-warning is-small"
       id="amt_tester">Random Fake AMT User &nbsp;
       <FAIcon icon="fa-solid fa-arrow-right" />
     </a>
@@ -79,7 +66,7 @@ const urls = {
       Citizen Science is a stand-in for a posssible future platform run by the
       lab.
     </p>
-    <a :href="urls['citizenScience']" class="button is-success is-small"
+    <a :href="api.urls['citizensci']" class="button is-success is-small"
       id="citizen_tester">Random Fake Citizen Science User &nbsp;
       <FAIcon icon="fa-solid fa-arrow-right" />
     </a>
@@ -88,7 +75,7 @@ const urls = {
     <p class="is-size-6">
       Anonymous web user is not referred by any recruitment service
     </p>
-    <a :href="urls['anon']" class="button is-orange is-small"
+    <a :href="api.urls['web']" class="button is-orange is-small"
       id="citizen_tester">Anonymous Web User &nbsp;
       <FAIcon icon="fa-solid fa-arrow-right" />
     </a>
