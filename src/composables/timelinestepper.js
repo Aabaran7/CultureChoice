@@ -1,6 +1,6 @@
 import { useRoute, useRouter } from 'vue-router'
 import _ from 'lodash'
-import { RandomizeSubTimeline } from '@/subtimeline'
+import { RandomizeSubTimeline } from '@/core/subtimeline'
 import useSmileStore from '@/stores/smiledata'
 
 export default function useTimelineStepper() {

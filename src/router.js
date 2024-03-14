@@ -7,7 +7,7 @@ import useSmileStore from '@/stores/smiledata' // get access to the global store
 import appconfig from '@/core/config'
 import { processQuery, getQueryParams } from '@/utils'
 import Timeline from '@/timeline'
-import RandomSubTimeline from '@/subtimeline'
+import RandomSubTimeline from '@/core/subtimeline'
 
 // 1. Import route components
 import RecruitmentChooser from '@/components/recruitment/RecruitmentChooserPage.vue'
