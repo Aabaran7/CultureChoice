@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 // import and initalize smile API
-import useSmileAPI from '@/composables/smileapi'
+import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 const ntrials = ref(1)
 
@@ -16,13 +16,18 @@ function finish() {
     <h1 class="title is-3">Task 1</h1>
 
     <div class="formcontent">
-      <FormKit type="text" name="zipcode" label="Number of trials"
-        placeholder="Enter zip or postal code" validation="optional"
-        v-model="ntrials" help="How many trials do you want to do?" />
+      <FormKit
+        type="text"
+        name="zipcode"
+        label="Number of trials"
+        placeholder="Enter zip or postal code"
+        validation="optional"
+        v-model="ntrials"
+        help="How many trials do you want to do?"
+      />
 
       <div class="formbutton">
-        <button class="button is-success is-light" id="finish"
-          @click="finish()">
+        <button class="button is-success is-light" id="finish" @click="finish()">
           next &nbsp;
           <FAIcon icon="fa-solid fa-arrow-right" />
         </button>

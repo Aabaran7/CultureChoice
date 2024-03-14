@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 // import and initalize smile API
-import useSmileAPI from '@/composables/smileapi'
+import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
 var trials = [
@@ -77,8 +77,7 @@ function prev() {
   <div class="page">
     <h1 class="title is-3">Task 2</h1>
     {{ trial.sentence }}/{{ api.getCurrentTrial() }}<br /><br />
-    <button class="button is-success is-light" id="finish" @click="prev()"
-      v-if="api.getCurrentTrial() > 0">
+    <button class="button is-success is-light" id="finish" @click="prev()" v-if="api.getCurrentTrial() > 0">
       <FAIcon icon="fa-solid fa-arrow-left" />&nbsp; prev
     </button>
     &nbsp;&nbsp;&nbsp;

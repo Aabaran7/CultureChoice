@@ -1,6 +1,6 @@
 <script setup>
 // import and initalize smile API
-import useSmileAPI from '@/composables/smileapi'
+import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
 function finish() {
@@ -17,14 +17,11 @@ function finish() {
         <span class="is-size-2">
           <FAIcon icon="fa-solid fa-arrows-up-down-left-right "></FAIcon>
         </span>
-        <h1 class="is-size-4">Please adjust the size of your browser until the
-          edges of this box are visible.</h1>
+        <h1 class="is-size-4">Please adjust the size of your browser until the edges of this box are visible.</h1>
         <hr />
         <div class="is-8 is-size-7 has-text-left note">
-          <b>Warning</b>: If you can't resize your window and see the entire box
-          please click the red "withdraw" button
-          at the top of the page and return the task. You need to be able view
-          the entire page at once.
+          <b>Warning</b>: If you can't resize your window and see the entire box please click the red "withdraw" button
+          at the top of the page and return the task. You need to be able view the entire page at once.
         </div>
         <hr />
         <br /><br />

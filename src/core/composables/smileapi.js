@@ -1,13 +1,13 @@
 import { useRoute, useRouter } from 'vue-router'
 import useSmileStore from '@/core/stores/smiledata'
-import useTimelineStepper from '@/composables/timelinestepper'
+import useTimelineStepper from '@/core/composables/timelinestepper'
 // import seeded randomization function for this component/route
 // random seeding is unique to each component/route
 import { shuffle } from '@/core/randomization'
 
 // import the trial stepper functionality which advances linearly through
 // a set of trials
-import { useTrialStepper } from '@/composables/trialstepper'
+import { useTrialStepper } from '@/core/composables/trialstepper'
 
 export default function useSmileAPI() {
   const { stepNextRoute, stepPrevRoute } = useTimelineStepper()

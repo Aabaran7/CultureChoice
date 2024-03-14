@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import InformedConsentText from '@/components/consent/InformedConsentText.vue';
 
 // import and initalize smile API
-import useSmileAPI from '@/composables/smileapi'
+import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
 function finish() {

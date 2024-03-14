@@ -8,9 +8,8 @@ import CaptchaTrialTextComprehension from '@/components/captcha/CaptchaTrialText
 import CaptchaTrialStroop from '@/components/captcha/CaptchaTrialStroop.vue'
 
 // import and initalize smile API
-import useSmileAPI from '@/composables/smileapi'
+import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
-
 
 const pages = [
   CaptchaInstructionsText,
@@ -18,7 +17,6 @@ const pages = [
   CaptchaTrialImageCategorization,
   CaptchaTrialMotorControl,
 ]
-
 
 const currentTab = computed(() => {
   return pages[api.getCurrentTrial()]
@@ -42,21 +40,18 @@ function next_trial() {
     finish()
   }
   api.incrementTrial()
-
 }
 
 function finish() {
   // smilestore.saveData()
   api.stepNextRoute()
 }
-
 </script>
 
 <template>
   <div class="page">
     <!-- Component changes when currentTab changes -->
-    <component :is="currentTab" @next-page-captcha="next_trial()">
-    </component>
+    <component :is="currentTab" @next-page-captcha="next_trial()"> </component>
   </div>
 </template>
 

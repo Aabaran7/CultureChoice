@@ -1,5 +1,5 @@
 <script setup>
-import useSmileAPI from '@/composables/smileapi'
+import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 </script>
 

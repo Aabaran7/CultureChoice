@@ -9,7 +9,7 @@ import { onKeyDown } from '@vueuse/core'
 import { useMouse } from '@vueuse/core'
 
 // import and initalize smile API
-import useSmileAPI from '@/composables/smileapi'
+import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
 // this progress bar is not implemented and a little hard so lets pass for now
@@ -112,8 +112,7 @@ function finish() {
     <!-- Show this when you are done with the trials and offer a button
          which will advance to the next route -->
     <div class="endoftask" v-else>
-      <p id="prompt">Thanks! You are finished with this task and can move on.
-      </p>
+      <p id="prompt">Thanks! You are finished with this task and can move on.</p>
       <!-- display the final score -->
       <p>Your score was {{ final_score }}</p>
       <button class="button is-success is-light" id="finish" @click="finish()">
