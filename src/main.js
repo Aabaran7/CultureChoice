@@ -23,7 +23,7 @@ app.use(
   VueGtag,
   {
     disableScriptLoad: import.meta.env.MODE === 'development', // disable script load in development
-    pageTrackerExcludedRoutes: ['config'], // ignore the config route
+    pageTrackerExcludedRoutes: ['recruit'], // ignore the recruit route
     config: { id: import.meta.env.VITE_GOOGLE_ANALYTICS },
   },
   router

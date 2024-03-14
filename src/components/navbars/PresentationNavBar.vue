@@ -20,9 +20,6 @@ watch(route, async (newRoute, oldRoute) => {
 // easter egg to jump to config page (press 2 with mouse in top right of screen)
 onMounted(() => {
   window.addEventListener('keyup', (ev) => {
-    if (x.value < 10 && y.value < 50 && ev.key === '2') {
-      router.push('/config') // jump to the config page
-    }
     if (x.value < 10 && y.value < 50 && ev.key === '1') {
       router.push('/') // jump to the start page (or get redirected)
     }
