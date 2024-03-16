@@ -51,7 +51,7 @@ onMounted(() => {
     "
   >
   </ProgressBar>
-  <Transition>
+  <Transition name="v-slide">
     <DevDataBar v-if="api.dev.show_data_bar"></DevDataBar>
   </Transition>
 </template>
@@ -77,5 +77,22 @@ onMounted(() => {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.v-slide-enter-active,
+.v-slide-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+.v-slide-enter-from,
+.v-slide-leave-to {
+  overflow: hidden;
+  max-height: 0;
+  height: 0;
+}
+.v-slide-enter-to,
+.v-slide-leave-from {
+  overflow: hidden;
+  max-height: 100%;
+  height: auto;
 }
 </style>

@@ -1,41 +1,170 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-import useSmileStore from '@/core/stores/smiledata'
+import { ref } from 'vue'
+import DatabaseInfoPanel from '@/components/navbars/DatabaseInfoPanel.vue'
+import DatabaseLogPanel from '@/components/navbars/DatabaseLogPanel.vue'
+import DatabaseBrowsePanel from '@/components/navbars/DatabaseBrowsePanel.vue'
 
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
+const tab = ref('database')
 </script>
 
 <template>
-  <nav class="navbar is-fixed-bottom">
-    <div class="container is-fluid pl-6 pr-6">
-      <div class="columns">
-        <div class="column is-3">Side tabs</div>
-        <div class="column is-9">Show me the data</div>
-      </div>
-    </div>
+  <nav class="navbar devdatabar is-fixed-bottom">
+    <aside class="menu">
+      <ul class="menu-list">
+        <li :class="{ active: tab == 'database' }">
+          <a @click="tab = 'database'"><FAIcon icon="fa-solid fa-database icon" /> Database Info</a>
+        </li>
+        <li :class="{ active: tab == 'browse' }">
+          <a @click="tab = 'browse'"> <FAIcon icon="fa-solid fa-magnifying-glass icon" /> Data Explorer </a>
+        </li>
+        <li :class="{ active: tab == 'log' }">
+          <a @click="tab = 'log'"> <FAIcon icon="fa-solid fa-book icon" /> Transaction Log </a>
+        </li>
+      </ul>
+    </aside>
+
+    <section class="section secpanel">
+      <nav class="navbar logpanel" role="navigation" aria-label="data navigation">
+        <div id="navbardatabase" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item" v-if="tab == 'database'"
+              ><FAIcon icon="fa-solid fa-database icon" />&nbsp;&nbsp;<b>Firestore Database Info</b></a
+            >
+            <a class="navbar-item" v-if="tab == 'browse'"
+              ><FAIcon icon="fa-solid fa-database icon" />&nbsp;&nbsp;<b>Firestore Explorer</b></a
+            >
+            <a class="navbar-item" v-if="tab == 'log'"
+              ><FAIcon icon="fa-solid fa-book icon" />&nbsp;&nbsp;<b>Data Transaction Log</b></a
+            >
+          </div>
+
+          <div class="navbar-end">
+            <div class="navbar-item closebutton">
+              <a class="navbar-item" @click="api.dev.show_data_bar = !api.dev.show_data_bar">
+                <FAIcon icon="fa-solid fa-circle-xmark icon" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- content of panel here -->
+      <DatabaseInfoPanel v-if="tab == 'database'"></DatabaseInfoPanel>
+      <DatabaseBrowsePanel v-if="tab == 'browse'"></DatabaseBrowsePanel>
+      <DatabaseLogPanel v-if="tab == 'log'"></DatabaseLogPanel>
+    </section>
   </nav>
 </template>
 
 <style scoped>
+.menu-label {
+  background: #78bfe0;
+  color: #fff;
+}
+.secpanel {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+.logpanel {
+  width: 100%;
+  font-size: 12px;
+  background: rgba(238, 238, 238, 0.987);
+  color: #fff;
+  height: 0px;
+  padding: 0px;
+  padding-left: 10px;
+  margin: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 28px;
+  text-align: center;
+  width: 100%;
+  border-top: none;
+}
+.closebutton {
+  padding-right: 2px;
+}
 .labeltext {
   color: #000;
   width: 20%;
   font-weight: 700;
 }
 
-.navbar {
-  font-size: 13px;
-  border-top: 2px solid #b9b9b9;
-  background: #f2f2f2;
+.icon {
+  color: #f9d403;
+}
+
+.navbar-end {
+  width: 100%;
+}
+
+.menu {
+  background: #e6f5fc;
+  width: 200px;
+  padding-left: 5px;
+  border-right: 1px solid #b9b9b9;
+}
+
+.menu-label {
+  font-size: 0.8em;
+  text-align: left;
+  padding-top: 10px;
+  padding-left: 3px;
+}
+
+.menu-list {
+  padding-top: 6px;
+}
+.menu-list li {
+  font-size: 0.75em;
+  text-align: left;
+}
+
+.menu-list a:hover {
+  background: #c1e7ef;
+  color: #000;
+}
+
+.active a {
+  background-color: rgb(40, 118, 176);
+  color: #fff;
+}
+.active a:hover {
+  background-color: rgb(40, 118, 176);
+  color: #fff;
+}
+
+.databar {
+  padding: 0px;
+  margin: 0px;
+}
+
+.container {
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+.columns {
+  border: 1px solid;
+  width: 100%;
+}
+.column {
+  border: 1px solid;
+  padding: 0px;
+  margin: 0px;
+  text-align: left;
+}
+
+.devdatabar {
+  border-top: 1px solid #b9b9b9;
+  background: #fff;
   color: #000;
   height: 25%;
   padding: 0px;
-  padding-top: 20px;
-  padding-left: 0px;
-  padding-bottom: 50px;
   margin: 0px;
-  min-height: 10%;
-  text-align: center;
 }
 </style>
