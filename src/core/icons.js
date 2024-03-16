@@ -40,7 +40,11 @@ import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { faCircleDot } from '@fortawesome/free-solid-svg-icons'
 import { faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons'
-
+import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import { faChartLine } from '@fortawesome/free-solid-svg-icons'
+import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { faUserMinus } from '@fortawesome/free-solid-svg-icons'
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 /* add icons to the library */
 library.add(
   faUserSecret,
@@ -77,5 +81,10 @@ library.add(
   faCircle,
   faCircleDot,
   faSquareXmark,
-  faThumbtack
+  faThumbtack,
+  faPencil,
+  faChartLine,
+  faEye,
+  faUserMinus,
+  faUserPlus
 )

@@ -35,7 +35,7 @@ function resetLocalState() {
 <template>
   <nav class="navbar">
     <div class="navbar-brand">
-      <div class="devmode-title">DEVELOPER MODE</div>
+      <div class="devmode-title"><b>DEVELOPER MODE</b></div>
     </div>
 
     <div id="mainbar" class="navbar-menu">
@@ -63,10 +63,26 @@ function resetLocalState() {
 
           <button
             class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-2"
-            data-tooltip="Toggle data panel"
+            data-tooltip="Toggle data panel | Firebase connected"
+            v-if="api.global.db_connected"
             @click="api.dev.show_data_bar = !api.dev.show_data_bar"
           >
-            <FAIcon icon="fa-solid fa-database" />
+            <FAIcon icon="fa-solid fa-database" /> &nbsp;&nbsp;|&nbsp;&nbsp;<FAIcon
+              icon="fa-solid fa-circle"
+              class="connected"
+              :class="{ connected: api.global.db_connected == true }"
+            />
+          </button>
+          <button
+            class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-2"
+            data-tooltip="Toggle data panel | Firebase not connected"
+            @click="api.dev.show_data_bar = !api.dev.show_data_bar"
+            v-else
+          >
+            <FAIcon icon="fa-solid fa-database" /> &nbsp;&nbsp;|&nbsp;&nbsp;<FAIcon
+              icon="fa-solid fa-circle"
+              class="disconnected"
+            />
           </button>
 
           <!-- randomization button -->
@@ -95,6 +111,12 @@ function resetLocalState() {
 }
 </style>
 <style scoped>
+.disconnected {
+  color: red;
+}
+.connected {
+  color: rgb(13, 206, 13);
+}
 a:hover {
   color: #10dffa;
 }

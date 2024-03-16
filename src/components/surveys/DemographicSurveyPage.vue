@@ -95,7 +95,6 @@ function finish() {
                 v-model="forminfo.dob"
                 help="Enter your birthday (required)"
                 validation="required"
-                validation-visibility="live"
               />
               <FormKit
                 type="select"

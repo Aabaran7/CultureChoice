@@ -30,13 +30,13 @@ const tab = ref('database')
         <div id="navbardatabase" class="navbar-menu">
           <div class="navbar-start">
             <a class="navbar-item" v-if="tab == 'database'"
-              ><FAIcon icon="fa-solid fa-database icon" />&nbsp;&nbsp;<b>Firestore Database Info</b></a
+              ><FAIcon icon="fa-solid fa-database icon" />&nbsp;&nbsp;<b>Database Info</b></a
             >
             <a class="navbar-item" v-if="tab == 'browse'"
-              ><FAIcon icon="fa-solid fa-database icon" />&nbsp;&nbsp;<b>Firestore Explorer</b></a
+              ><FAIcon icon="fa-solid fa-magnifying-glass icon" />&nbsp;&nbsp;<b>Data Explorer</b></a
             >
             <a class="navbar-item" v-if="tab == 'log'"
-              ><FAIcon icon="fa-solid fa-book icon" />&nbsp;&nbsp;<b>Data Transaction Log</b></a
+              ><FAIcon icon="fa-solid fa-book icon" />&nbsp;&nbsp;<b>Transaction Log</b></a
             >
           </div>
 
@@ -122,6 +122,7 @@ const tab = ref('database')
 .menu-list li {
   font-size: 0.75em;
   text-align: left;
+  padding-right: 3px;
 }
 
 .menu-list a:hover {

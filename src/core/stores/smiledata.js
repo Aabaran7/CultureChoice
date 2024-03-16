@@ -58,6 +58,7 @@ export default defineStore('smilestore', {
       status_bar_bg_color: '#fff',
       status_bar_text_color: '#000',
       db_connected: false,
+      db_changes: false,
       search_params: null,
       urls: {
         prolific: '?PROLIFIC_PID=XXXX&STUDY_ID=XXXX&SESSION_ID=XXXXX#/welcome/prolific/',
