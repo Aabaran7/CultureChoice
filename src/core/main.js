@@ -10,6 +10,8 @@ import { router } from '@/router' // import the router
 import { pinia } from '@/core/createpinia'
 import '@/core/icons' // configure fontawesome
 
+// drag components
+import VueDraggableResizable from 'vue-draggable-resizable'
 // Create the app and the data store
 // const pinia = createPinia() // create the data store
 const app = createApp(App) // create the app
@@ -30,6 +32,9 @@ app.use(
 
 // load any global components (these will be available in all other components)
 app.component('FAIcon', FontAwesomeIcon)
+
+// add the ability to drag and resize elements
+app.component('vue-draggable-resizable', VueDraggableResizable)
 
 // you "mount the app starting at the #app element"
 app.mount('#app') // start the app!
