@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { useMouse } from '@vueuse/core'
+import { ref, computed } from 'vue'
 import DatabaseInfoPanel from '@/components/navbars/DatabaseInfoPanel.vue'
 import DatabaseLogPanel from '@/components/navbars/DatabaseLogPanel.vue'
 import DatabaseBrowsePanel from '@/components/navbars/DatabaseBrowsePanel.vue'
@@ -7,6 +8,29 @@ import DatabaseBrowsePanel from '@/components/navbars/DatabaseBrowsePanel.vue'
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 const tab = ref('database')
+const mousedown = ref(false)
+
+const { x, y } = useMouse()
+
+const height = ref(300)
+const height_pct = computed(() => `${height.value}px`)
+
+function down() {
+  mousedown.value = true
+  window.addEventListener('mousemove', move)
+  window.addEventListener('mouseup', up)
+}
+function up() {
+  mousedown.value = false
+  height.value = height.value
+}
+function move() {
+  if (mousedown.value == true) {
+    height.value = Math.min(window.innerHeight - y.value + 20, window.innerHeight) // small adjustment to where you probably click
+  } else {
+    height.value = height.value
+  }
+}
 </script>
 
 <template>
@@ -27,7 +51,7 @@ const tab = ref('database')
 
     <section class="section secpanel">
       <nav class="navbar logpanel" role="navigation" aria-label="data navigation">
-        <div id="navbardatabase" class="navbar-menu">
+        <div id="navbardatabase" class="navbar-menu" @mousedown="down()">
           <div class="navbar-start">
             <a class="navbar-item" v-if="tab == 'database'"
               ><FAIcon icon="fa-solid fa-database icon" />&nbsp;&nbsp;<b>Database Info</b></a
@@ -74,7 +98,7 @@ const tab = ref('database')
   font-size: 12px;
   background: rgba(238, 238, 238, 0.987);
   color: #fff;
-  height: 0px;
+  height: 23px;
   padding: 0px;
   padding-left: 10px;
   margin: 0px;
@@ -164,7 +188,7 @@ const tab = ref('database')
   border-top: 1px solid #b9b9b9;
   background: #fff;
   color: #000;
-  height: 25%;
+  height: v-bind(height_pct);
   padding: 0px;
   margin: 0px;
 }

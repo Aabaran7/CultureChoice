@@ -25,7 +25,7 @@ const api = SmileAPI()
         <p class="is-size-7 has-text-left">
           <b>docRef:</b> {{ api.local.docRef }}<br />
           <b>partNum:</b> {{ api.local.partNum }}<br />
-          <b>mode:</b> {{ api.local.mode }}<br />
+          <b>mode:</b> {{ api.config.mode == 'development'? 'testing':'live' }}<br />
         </p>
       </div>
       <div class="column is-2 edge isdark">
@@ -75,6 +75,7 @@ const api = SmileAPI()
 .contentpanel {
   padding-left: 20px;
   height: 100%;
+
 }
 .isdark {
   background: #414141;
@@ -90,6 +91,7 @@ const api = SmileAPI()
 }
 .colcontent {
   height: 100%;
+  user-select: none;
 }
 .edge {
   border-right: 1px solid #010101;
