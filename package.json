@@ -47,6 +47,7 @@
     "seedrandom": "^3.0.5",
     "uuid": "^9.0.1",
     "vue": "^3.2.25",
+    "vue-draggable-resizable": "^3.0.0",
     "vue-gtag": "^2.0.1",
     "vue-router": "^4.0.16"
   },

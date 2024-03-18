@@ -12,13 +12,7 @@ import TrialStepper from './TrialStepper.vue'
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
-const showpanels = reactive({
-  docs: false,
-  config: false,
-  randomize: false,
-  database: false,
-  route: false,
-})
+const panel = reactive({ visible: false, x: 0, y: 0 })
 
 function resetLocalState() {
   localStorage.removeItem(api.config.local_storage_key) // delete the local store
@@ -63,7 +57,7 @@ function resetLocalState() {
 
           <button
             class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-2"
-            data-tooltip="Toggle data panel | Firebase connected"
+            data-tooltip="Toggle data panel | Firebase connected | Changes in data"
             v-if="api.global.db_connected"
             @click="api.dev.show_data_bar = !api.dev.show_data_bar"
           >
@@ -72,16 +66,30 @@ function resetLocalState() {
               class="connected"
               :class="{ connected: api.global.db_connected == true }"
             />
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <FAIcon
+              icon="fa-solid
+            fa-circle-dot"
+              class="warning"
+              :class="{ disconnected: api.global.db_changes }"
+            />
           </button>
           <button
             class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-2"
-            data-tooltip="Toggle data panel | Firebase not connected"
+            data-tooltip="Toggle data panel | Firebase not connected | Changes in data"
             @click="api.dev.show_data_bar = !api.dev.show_data_bar"
             v-else
           >
             <FAIcon icon="fa-solid fa-database" /> &nbsp;&nbsp;|&nbsp;&nbsp;<FAIcon
               icon="fa-solid fa-circle"
               class="disconnected"
+            />
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <FAIcon
+              icon="fa-solid
+            fa-circle-dot"
+              class="warning"
+              :class="{ disconnected: api.global.db_changes }"
             />
           </button>
 
@@ -116,6 +124,9 @@ function resetLocalState() {
 }
 .connected {
   color: rgb(13, 206, 13);
+}
+.warning {
+  color: #d5d808;
 }
 a:hover {
   color: #10dffa;

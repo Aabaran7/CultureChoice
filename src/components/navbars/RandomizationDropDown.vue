@@ -1,81 +1,115 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import useSmileStore from '@/core/stores/smiledata'
 const smilestore = useSmileStore() // load the global store
 const seed = ref(smilestore.getSeedID)
+const panel = reactive({ visible: false, x: -130, y: 0 })
 
-const showpanel = ref(false)
+function toggle_and_reset() {
+  panel.visible = !panel.visible
+  if (panel.visible == false) {
+    panel.x = -130
+    panel.y = 0
+  }
+}
+
+function onDragCallback(x, y) {
+  panel.x = x
+  panel.y = y
+}
 </script>
 <template>
-  <div class="dropdown is-hoverable is-right" :class="{ 'is-active': showpanel }">
+  <div class="dropdown is-hoverable is-right" :class="{ 'is-active': panel.visible }">
     <div class="dropdown-trigger">
       <button class="button is-success is-light dev-bar-button">
         <FAIcon icon=" fa-solid fa-dice" />
       </button>
     </div>
+
     <div class="dropdown-menu pt-0 mt-0" id="dropdown-menu" role="menu">
-      <div class="dropdown-content">
-        <div class="pin" :class="{ 'pin-selected': showpanel }">
-          <a @click="showpanel = !showpanel">
-            <FAIcon icon=" fa-solid fa-thumbtack" />
-          </a>
-        </div>
-        <div class="randomization is-right">
-          <h1 class="title is-6">Seeded Randomization</h1>
-
-          <p class="is-left">
-            You have the option of manually setting the seed id, which is used to seed random number generators
-            throughout the experiment. To do so, replace the value in the textbox with the desired seed id and click the
-            green reset button before proceeding. Read more about randomization
-            <a href="https://smile.gureckislab.org/randomization.html">in the docs</a>.
-          </p>
-          <br />
-          <div class="field">
-            <input
-              id="switchRoundedDefault"
-              type="checkbox"
-              name="switchRoundedDefault"
-              class="switch is-rounded is-rtl is-small"
-              v-model="smilestore.local.seedActive"
-            />
-            <label for="switchRoundedDefault"><b>Use fixed seed</b>:</label>
+      <vue-draggable-resizable
+        :x="panel.x"
+        :y="panel.y"
+        :draggable="panel.visible"
+        :resizable="false"
+        :onDrag="onDragCallback"
+      >
+        <div class="dropdown-content">
+          <div class="pin" :class="{ 'pin-selected': panel.visible }">
+            <a @click="toggle_and_reset()">
+              <FAIcon icon=" fa-solid fa-thumbtack" />
+            </a>
           </div>
-          <div class="field">
-            <input class="input is-small" type="text" placeholder="Current seed" size="15" width="10" v-model="seed" />
-            <button class="button is-success is-small" id="refresh" @click="refresh()">
-              <FAIcon icon="fa-solid fa-arrow-rotate-left" />
-            </button>
-          </div>
-
-          <hr class="dropdown-divider mt-2 mb-2" />
-          &nbsp;
-
-          <hr class="dropdown-divider" />
-          <h1 class="title is-6">Random variables</h1>
-          <p class="is-left">
-            Some text about this. Read more about randomization
-            <a href="https://smile.gureckislab.org/randomization.html"> in the docs </a>.
-          </p>
-          <br />
-          <template v-for="(value, key) in smilestore.getPossibleConditions" :key="key">
-            <b>{{ key }}</b
-            >:
-            <div class="select is-small">
-              <select>
-                <option v-for="cond in value" :key="cond">
-                  {{ cond }}
-                </option>
-              </select>
+          <div class="randomization is-right">
+            <h1 class="title is-6">Seeded Randomization</h1>
+            <p class="is-left">
+              You have the option of manually setting the seed id, which is used to seed random number generators
+              throughout the experiment. To do so, replace the value in the textbox with the desired seed id and click
+              the green reset button before proceeding. Read more about randomization
+              <a href="https://smile.gureckislab.org/randomization.html">in the docs</a>.
+            </p>
+            <br />
+            <div class="field">
+              <input
+                id="switchRoundedDefault"
+                type="checkbox"
+                name="switchRoundedDefault"
+                class="switch is-rounded is-rtl is-small"
+                v-model="smilestore.local.seedActive"
+              />
+              <label for="switchRoundedDefault"><b>Use fixed seed</b>:</label>
             </div>
-            <br /><br />
-          </template>
+            <div class="field">
+              <input
+                class="input is-small"
+                type="text"
+                placeholder="Current seed"
+                size="15"
+                width="10"
+                v-model="seed"
+              />
+              <button class="button is-success is-small" id="refresh" @click="refresh()">
+                <FAIcon icon="fa-solid fa-arrow-rotate-left" />
+              </button>
+            </div>
+
+            <hr class="dropdown-divider mt-2 mb-2" />
+            &nbsp;
+
+            <hr class="dropdown-divider" />
+            <h1 class="title is-6">Random variables</h1>
+            <p class="is-left">
+              Some text about this. Read more about randomization
+              <a href="https://smile.gureckislab.org/randomization.html"> in the docs </a>.
+            </p>
+            <br />
+            <template v-for="(value, key) in smilestore.getPossibleConditions" :key="key">
+              <b>{{ key }}</b
+              >:
+              <div class="select is-small">
+                <select>
+                  <option v-for="cond in value" :key="cond">
+                    {{ cond }}
+                  </option>
+                </select>
+              </div>
+              <br /><br />
+            </template>
+          </div>
         </div>
-      </div>
+      </vue-draggable-resizable>
     </div>
   </div>
 </template>
 
 <style scoped>
+.dropdown-content {
+  padding: 0;
+  padding-top: 8px;
+  margin: 0;
+  width: 350px;
+  text-align: left;
+}
 .pin {
   float: right;
   margin: 0;

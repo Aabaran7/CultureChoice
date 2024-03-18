@@ -1,5 +1,5 @@
 <script setup>
-import { watch, ref } from 'vue'
+import { watch, ref, reactive } from 'vue'
 import useSmileStore from '@/core/stores/smiledata'
 import { routes } from '@/router'
 import { useRouter, useRoute } from 'vue-router'
@@ -17,6 +17,20 @@ const currentQuery = ref(route.query)
 watch(route, async (newRoute, oldRoute) => {
   currentQuery.value = newRoute.query
 })
+
+const panel = reactive({ visible: false, x: -490, y: 1 })
+
+function toggle_and_reset() {
+  panel.visible = !panel.visible
+  if (panel.visible == false) {
+    panel.x = -490
+    panel.y = 1
+  }
+}
+function onDragCallback(x, y) {
+  panel.x = x
+  panel.y = y
+}
 
 function setHover(route) {
   console.log('got the hover event')
@@ -78,85 +92,93 @@ function setClicked(route) {
       </div>
     </div>
     <div class="column is-one-half">
-      <div class="dropdown is-right is-hoverable" :class="{ 'is-active': showpanel }">
+      <div class="dropdown is-right is-hoverable" :class="{ 'is-active': panel.visible }">
         <div class="dropdown-trigger routelabel" @click="$emit('toggleVisible')">
           <span>/{{ routeName }}</span>
         </div>
         <div class="dropdown-menu pt-2" id="dropdown-menu" role="menu">
-          <div class="dropdown-content p*-3 is-left">
-            <div class="pin" :class="{ 'pin-selected': showpanel }">
-              <a @click="showpanel = !showpanel">
-                <FAIcon icon=" fa-solid fa-thumbtack" />
-              </a>
-            </div>
-            <div class="content">
-              <h1 class="title is-6">Experiment Timeline</h1>
-              <p class="has-text-left">
-                When running in live mode, the experiment disallows arbitrary navigation between routes. If you enable
-                the "force" option you can jump between routes even when it would be disallowed in live mode. The
-                timeline graphs show how transitions between pages are arranged. Read more about the
-                <a href="https://smile.gureckislab.org/timeline.html">timeline</a>
-                here. <br />
-              </p>
+          <vue-draggable-resizable
+            :x="panel.x"
+            :y="panel.y"
+            :draggable="panel.visible"
+            :resizable="false"
+            :onDrag="onDragCallback"
+          >
+            <div class="dropdown-content p*-3 is-left">
+              <div class="pin" :class="{ 'pin-selected': panel.visible }">
+                <a @click="toggle_and_reset()">
+                  <FAIcon icon=" fa-solid fa-thumbtack" />
+                </a>
+              </div>
+              <div class="content">
+                <h1 class="title is-6">Experiment Timeline</h1>
+                <p class="has-text-left">
+                  When running in live mode, the experiment disallows arbitrary navigation between routes. If you enable
+                  the "force" option you can jump between routes even when it would be disallowed in live mode. The
+                  timeline graphs show how transitions between pages are arranged. Read more about the
+                  <a href="https://smile.gureckislab.org/timeline.html">timeline</a>
+                  here. <br />
+                </p>
 
-              <hr class="dropdown-divider" />
-              <div class="columns pt-0 mt-0">
-                <div class="column pt-0 mt-0">
-                  <RouteGraph
-                    :current-route="routeName"
-                    :hover-route="hoverRoute"
-                    @hovered-on="setHover"
-                    @clicked-on="setClicked"
-                  ></RouteGraph>
-                </div>
-                <div class="column pt-0 mt-0">
-                  <div class="field mt-4">
-                    <input
-                      id="switchRoundedDefaultJump"
-                      type="checkbox"
-                      name="switchRoundedDefaultJump"
-                      class="switch is-rounded is-rtl is-small"
-                      v-model="smilestore.local.allowJumps"
-                    />
-                    <label for="switchRoundedDefaultJump">Force navigation:</label>
+                <hr class="dropdown-divider" />
+                <div class="columns pt-0 mt-0">
+                  <div class="column pt-0 mt-0">
+                    <RouteGraph
+                      :current-route="routeName"
+                      :hover-route="hoverRoute"
+                      @hovered-on="setHover"
+                      @clicked-on="setClicked"
+                    ></RouteGraph>
                   </div>
-                  <hr class="dropdown-divider" />
-                  <br />
-                  <template v-for="r in routes">
-                    <!-- make a special link for web_referred, which has params -->
-                    <router-link
-                      @mouseover="hoverRoute = r.name"
-                      @mouseout="hoverRoute = ''"
-                      class="dropdown-item routelink"
-                      :class="{ hover: hoverRoute === r.name }"
-                      v-if="r.name === 'welcome_referred'"
-                      :to="{ name: r.name, params: { service: 'web' }, query: currentQuery }"
-                      :key="r.path"
-                    >
-                      <div class="routelabel">
-                        <span>/{{ r.name }}</span>
-                      </div>
-                    </router-link>
-                    <!-- make a link for everything else -->
+                  <div class="column pt-0 mt-0">
+                    <div class="field mt-4">
+                      <input
+                        id="switchRoundedDefaultJump"
+                        type="checkbox"
+                        name="switchRoundedDefaultJump"
+                        class="switch is-rounded is-rtl is-small"
+                        v-model="smilestore.local.allowJumps"
+                      />
+                      <label for="switchRoundedDefaultJump">Force navigation:</label>
+                    </div>
+                    <hr class="dropdown-divider" />
+                    <br />
+                    <template v-for="r in routes">
+                      <!-- make a special link for web_referred, which has params -->
+                      <router-link
+                        @mouseover="hoverRoute = r.name"
+                        @mouseout="hoverRoute = ''"
+                        class="dropdown-item routelink"
+                        :class="{ hover: hoverRoute === r.name }"
+                        v-if="r.name === 'welcome_referred'"
+                        :to="{ name: r.name, params: { service: 'web' }, query: currentQuery }"
+                        :key="r.path"
+                      >
+                        <div class="routelabel">
+                          <span>/{{ r.name }}</span>
+                        </div>
+                      </router-link>
+                      <!-- make a link for everything else -->
 
-                    <router-link
-                      @mouseover="hoverRoute = r.name"
-                      @mouseout="hoverRoute = ''"
-                      class="dropdown-item routelink"
-                      :class="{ route_selected: routeName === r.name, hover: hoverRoute === r.name }"
-                      v-else
-                      :to="{ name: r.name, query: currentQuery }"
-                      :key="r.name"
-                    >
-                      <div class="routelabel">
-                        <span>/{{ r.name }}</span>
-                      </div>
-                    </router-link>
-                  </template>
+                      <router-link
+                        @mouseover="hoverRoute = r.name"
+                        @mouseout="hoverRoute = ''"
+                        class="dropdown-item routelink"
+                        :class="{ route_selected: routeName === r.name, hover: hoverRoute === r.name }"
+                        v-else
+                        :to="{ name: r.name, query: currentQuery }"
+                        :key="r.name"
+                      >
+                        <div class="routelabel">
+                          <span>/{{ r.name }}</span>
+                        </div>
+                      </router-link>
+                    </template>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </vue-draggable-resizable>
         </div>
       </div>
     </div>
@@ -164,6 +186,14 @@ function setClicked(route) {
 </template>
 
 <style scoped>
+.dropdown-content {
+  padding: 0;
+  padding-top: 8px;
+  margin: 0;
+  width: 700px;
+  text-align: left;
+}
+
 .pin {
   float: right;
   margin: 0;
