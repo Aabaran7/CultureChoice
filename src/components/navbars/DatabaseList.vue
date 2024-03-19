@@ -6,6 +6,8 @@ import SmileAPI from '@/core/composables/smileapi'
 const api = SmileAPI()
 const emit = defineEmits(['selected'])
 
+const height_pct = computed(() => `${api.dev.data_bar_height - 100}px`)
+
 const header = computed(() => {
   console.log('header', props.data)
   if (props.data === undefined || props.data === null) {
@@ -102,6 +104,7 @@ console.log('full data', data_field)
   padding-left: 10px;
 }
 .menu-list {
+  height: v-bind(height_pct);
   overflow-y: scroll;
   overflow-x: hidden;
 }

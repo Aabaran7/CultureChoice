@@ -1,6 +1,9 @@
 <script setup>
+import { computed } from 'vue'
 import SmileAPI from '@/core/composables/smileapi'
 const api = SmileAPI()
+
+const height_pct = computed(() => `${api.dev.data_bar_height - 32}px`)
 </script>
 <template>
   <!-- content of panel here -->
@@ -31,16 +34,16 @@ const api = SmileAPI()
 }
 .contentpanel {
   padding-left: 0px;
+  margin: 0px;
   margin-right: 0px;
   margin-bottom: 0px;
   height: 100%;
 }
 .scrollablelog {
-  height: 100%;
+  height: v-bind(height_pct);
   width: 100%;
   margin: 0px;
-  overflow: scroll;
-  overflow-x: hidden;
+  margin-top: 0px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column-reverse;
