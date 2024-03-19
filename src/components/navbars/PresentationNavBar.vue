@@ -4,7 +4,7 @@ import { useMouse } from '@vueuse/core'
 import { useRouter, useRoute } from 'vue-router'
 
 import useSmileStore from '@/core/stores/smiledata'
-import { routes } from '@/router'
+import { routes } from '@/core/router'
 
 const smilestore = useSmileStore() // load the global store
 const { x, y } = useMouse({ touch: false }) // tracks mouse reactively

@@ -4,7 +4,7 @@ import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
 import useSmileStore from '@/core/stores/smiledata'
-import { routes } from '@/router'
+import { routes } from '@/core/router'
 import { useRouter, useRoute } from 'vue-router'
 import RouteGraph from './RouteGraph.vue'
 

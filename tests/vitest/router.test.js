@@ -8,7 +8,7 @@ import { plugin, defaultConfig, reset } from '@formkit/vue'
 import '@/core/icons' // configure fontawesome
 
 import App from '@/App.vue'
-import { routes, addGuards } from '@/router' // This import should point to your routes file declared above
+import { routes, addGuards } from '@/core/router' // This import should point to your routes file declared above
 import useSmileStore from '@/core/stores/smiledata'
 import appconfig from '@/core/config'
 
