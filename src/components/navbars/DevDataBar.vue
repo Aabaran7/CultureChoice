@@ -7,13 +7,11 @@ import DatabaseBrowsePanel from '@/components/navbars/DatabaseBrowsePanel.vue'
 
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
-const tab = ref('database')
 const mousedown = ref(false)
 
 const { x, y } = useMouse()
 
-const height = ref(300)
-const height_pct = computed(() => `${height.value}px`)
+const height_pct = computed(() => `${api.dev.data_bar_height}px`)
 
 function down() {
   mousedown.value = true
@@ -22,13 +20,10 @@ function down() {
 }
 function up() {
   mousedown.value = false
-  height.value = height.value
 }
 function move() {
   if (mousedown.value == true) {
-    height.value = Math.min(window.innerHeight - y.value + 20, window.innerHeight) // small adjustment to where you probably click
-  } else {
-    height.value = height.value
+    api.dev.data_bar_height = Math.min(window.innerHeight - y.value + 20, window.innerHeight) // small adjustment to where you probably click
   }
 }
 </script>
@@ -37,14 +32,16 @@ function move() {
   <nav class="navbar devdatabar is-fixed-bottom">
     <aside class="menu">
       <ul class="menu-list">
-        <li :class="{ active: tab == 'database' }">
-          <a @click="tab = 'database'"><FAIcon icon="fa-solid fa-database icon" /> Database Info</a>
+        <li :class="{ active: api.dev.data_bar_tab == 'database' }">
+          <a @click="api.dev.data_bar_tab = 'database'"><FAIcon icon="fa-solid fa-database icon" /> Database Info</a>
         </li>
-        <li :class="{ active: tab == 'browse' }">
-          <a @click="tab = 'browse'"> <FAIcon icon="fa-solid fa-magnifying-glass icon" /> Data Explorer </a>
+        <li :class="{ active: api.dev.data_bar_tab == 'browse' }">
+          <a @click="api.dev.data_bar_tab = 'browse'">
+            <FAIcon icon="fa-solid fa-magnifying-glass icon" /> Data Explorer
+          </a>
         </li>
-        <li :class="{ active: tab == 'log' }">
-          <a @click="tab = 'log'"> <FAIcon icon="fa-solid fa-book icon" /> Transaction Log </a>
+        <li :class="{ active: api.dev.data_bar_tab == 'log' }">
+          <a @click="api.dev.data_bar_tab = 'log'"> <FAIcon icon="fa-solid fa-book icon" /> Transaction Log </a>
         </li>
       </ul>
     </aside>
@@ -53,13 +50,13 @@ function move() {
       <nav class="navbar logpanel" role="navigation" aria-label="data navigation">
         <div id="navbardatabase" class="navbar-menu" @mousedown="down()">
           <div class="navbar-start">
-            <a class="navbar-item" v-if="tab == 'database'"
+            <a class="navbar-item" v-if="api.dev.data_bar_tab == 'database'"
               ><FAIcon icon="fa-solid fa-database icon" />&nbsp;&nbsp;<b>Database Info</b></a
             >
-            <a class="navbar-item" v-if="tab == 'browse'"
+            <a class="navbar-item" v-if="api.dev.data_bar_tab == 'browse'"
               ><FAIcon icon="fa-solid fa-magnifying-glass icon" />&nbsp;&nbsp;<b>Data Explorer</b></a
             >
-            <a class="navbar-item" v-if="tab == 'log'"
+            <a class="navbar-item" v-if="api.dev.data_bar_tab == 'log'"
               ><FAIcon icon="fa-solid fa-book icon" />&nbsp;&nbsp;<b>Transaction Log</b></a
             >
           </div>
@@ -75,9 +72,9 @@ function move() {
       </nav>
 
       <!-- content of panel here -->
-      <DatabaseInfoPanel v-if="tab == 'database'"></DatabaseInfoPanel>
-      <DatabaseBrowsePanel v-if="tab == 'browse'"></DatabaseBrowsePanel>
-      <DatabaseLogPanel v-if="tab == 'log'"></DatabaseLogPanel>
+      <DatabaseInfoPanel v-if="api.dev.data_bar_tab == 'database'"></DatabaseInfoPanel>
+      <DatabaseBrowsePanel v-if="api.dev.data_bar_tab == 'browse'"></DatabaseBrowsePanel>
+      <DatabaseLogPanel v-if="api.dev.data_bar_tab == 'log'"></DatabaseLogPanel>
     </section>
   </nav>
 </template>
@@ -92,21 +89,20 @@ function move() {
   padding: 0;
   margin: 0;
   text-align: left;
+  height: 100%;
 }
 .logpanel {
   width: 100%;
   font-size: 12px;
-  background: rgba(238, 238, 238, 0.987);
+  background: #e6f5fc;
   color: #fff;
-  height: 23px;
+  height: 30px;
+  min-height: 30px;
   padding: 0px;
-  padding-left: 10px;
   margin: 0px;
   margin-left: auto;
   margin-right: auto;
-  min-height: 28px;
   text-align: center;
-  width: 100%;
   border-top: none;
 }
 .closebutton {

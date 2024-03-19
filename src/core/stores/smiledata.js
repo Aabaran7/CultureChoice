@@ -71,11 +71,19 @@ export default defineStore('smilestore', {
         web: '#/welcome',
       },
     },
-    dev: {
-      // ephemeral state, utilized by developer mode functions
-      page_provides_autofill: null,
-      show_data_bar: false,
-    },
+    dev: useStorage(
+      appconfig.dev_local_storage_key,
+      {
+        // syncs with local storage
+        page_provides_autofill: null,
+        show_data_bar: false,
+        data_bar_height: 300,
+        data_bar_tab: 'database',
+        data_path: null,
+      },
+      localStorage,
+      { mergeDefaults: true }
+    ),
     data: {
       // syncs with firestore
       trial_num: 0, // not being updated correctly

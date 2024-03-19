@@ -16,6 +16,7 @@ export default {
   code_name: import.meta.env.VITE_CODE_NAME,
   code_name_url: import.meta.env.VITE_CODE_NAME_DEPLOY_URL,
   local_storage_key: `smilestore-${import.meta.env.VITE_CODE_NAME}`,
+  dev_local_storage_key: `smilestore-${import.meta.env.VITE_CODE_NAME}_dev`,
   github: {
     repo_name: import.meta.env.VITE_GIT_REPO_NAME,
     owner: import.meta.env.VITE_GIT_OWNER,

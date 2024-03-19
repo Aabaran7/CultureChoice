@@ -24,12 +24,25 @@ function resetLocalState() {
   const url = window.location.href
   window.location.href = url.substring(0, url.lastIndexOf('#/'))
 }
+
+function resetDevState() {
+  localStorage.removeItem(api.config.dev_local_storage_key) // delete the local store
+  location.reload()
+}
 </script>
 
 <template>
   <nav class="navbar">
     <div class="navbar-brand">
-      <div class="devmode-title"><b>DEVELOPER MODE</b></div>
+      <div class="devmode-title">
+        <div
+          class="has-tooltip-arrow has-tooltip-bottom"
+          @click="resetDevState()"
+          data-tooltip="Reset developer interface"
+        >
+          <FAIcon icon="fa-solid fa-arrow-rotate-left" />&nbsp;<b>DEVELOPER MODE</b>
+        </div>
+      </div>
     </div>
 
     <div id="mainbar" class="navbar-menu">
