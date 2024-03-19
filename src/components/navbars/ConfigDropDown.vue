@@ -1,21 +1,23 @@
 <script setup>
 import { ref, reactive } from 'vue'
+import useSmileAPI from '@/core/composables/smileapi'
+const api = useSmileAPI()
 import useSmileStore from '@/core/stores/smiledata'
 const smilestore = useSmileStore() // load the global store
 const seed = ref(smilestore.getSeedID)
 
-const panel = reactive({ type: 'local', visible: false, x: -280, y: 0 })
+//const panel = reactive({ type: 'local', visible: false, x: -280, y: 0 })
 
 function toggle_and_reset() {
-  panel.visible = !panel.visible
-  if (panel.visible == false) {
-    panel.x = -280
-    panel.y = 0
+  api.dev.config_panel.visible = !api.dev.config_panel.visible
+  if (api.dev.config_panel.visible == false) {
+    api.dev.config_panel.x = -280
+    api.dev.config_panel.y = 0
   }
 }
 function onDragCallback(x, y) {
-  panel.x = x
-  panel.y = y
+  api.dev.config_panel.x = x
+  api.dev.config_panel.y = y
 }
 
 function createLink(option) {
@@ -28,7 +30,7 @@ function createLink(option) {
 }
 </script>
 <template>
-  <div class="dropdown is-hoverable is-right" :class="{ 'is-active': panel.visible }">
+  <div class="dropdown is-hoverable is-right" :class="{ 'is-active': api.dev.config_panel.visible }">
     <div class="dropdown-trigger">
       <button class="button is-success is-light dev-bar-button">
         <FAIcon icon="fa-solid fa-gear" />
@@ -36,14 +38,14 @@ function createLink(option) {
     </div>
     <div class="dropdown-menu pt-0 mt-0" id="dropdown-menu" role="menu">
       <vue-draggable-resizable
-        :x="panel.x"
-        :y="panel.y"
-        :draggable="panel.visible"
+        :x="api.dev.config_panel.x"
+        :y="api.dev.config_panel.y"
+        :draggable="api.dev.config_panel.visible"
         :resizable="false"
         :onDrag="onDragCallback"
       >
         <div class="dropdown-content">
-          <div class="pin" :class="{ 'pin-selected': panel.visible }">
+          <div class="pin" :class="{ 'pin-selected': api.dev.config_panel.visible }">
             <a @click="toggle_and_reset()">
               <FAIcon icon=" fa-solid fa-thumbtack" />
             </a>
@@ -58,18 +60,18 @@ function createLink(option) {
             <br />
             <div class="tabs is-small is-centered">
               <ul>
-                <li :class="{ 'is-active': panel.type == 'local' }">
-                  <a @click="panel.type = 'local'"><b> Local State </b></a>
+                <li :class="{ 'is-active': api.dev.config_panel.type == 'local' }">
+                  <a @click="api.dev.config_panel.type = 'local'"><b> Local State </b></a>
                 </li>
-                <li :class="{ 'is-active': panel.type == 'code' }">
-                  <a @click="panel.type = 'code'"><b> Code Version </b></a>
+                <li :class="{ 'is-active': api.dev.config_panel.type == 'code' }">
+                  <a @click="api.dev.config_panel.type = 'code'"><b> Code Version </b></a>
                 </li>
-                <li :class="{ 'is-active': panel.type == 'full' }">
-                  <a @click="panel.type = 'full'"><b>Full Config</b></a>
+                <li :class="{ 'is-active': api.dev.config_panel.type == 'full' }">
+                  <a @click="api.dev.config_panel.type = 'full'"><b>Full Config</b></a>
                 </li>
               </ul>
             </div>
-            <div class="datapanel" v-if="panel.type == 'local'">
+            <div class="datapanel" v-if="api.dev.config_panel.type == 'local'">
               <div class="code">
                 <ul>
                   <li class="config" v-for="(option, key) in smilestore.local" :key="key">
@@ -91,7 +93,7 @@ function createLink(option) {
                 </ul>
               </div>
             </div>
-            <div class="configinfo" v-if="panel.type == 'code'">
+            <div class="configinfo" v-if="api.dev.config_panel.type == 'code'">
               <div class="datapanel">
                 <div class="code">
                   <ul>
@@ -103,7 +105,7 @@ function createLink(option) {
                 </div>
               </div>
             </div>
-            <div class="configinfo" v-if="panel.type == 'full'">
+            <div class="configinfo" v-if="api.dev.config_panel.type == 'full'">
               <div class="datapanel">
                 <div class="code">
                   <ul>

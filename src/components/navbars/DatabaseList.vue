@@ -2,8 +2,8 @@
 import { computed } from 'vue'
 
 const props = defineProps(['data', 'selected'])
-import SmileAPI from '@/core/composables/smileapi'
-const api = SmileAPI()
+import useSmileAPI from '@/core/composables/smileapi'
+const api = useSmileAPI()
 const emit = defineEmits(['selected'])
 
 const height_pct = computed(() => `${api.dev.data_bar_height - 100}px`)

@@ -80,6 +80,10 @@ export default defineStore('smilestore', {
         data_bar_height: 300,
         data_bar_tab: 'database',
         data_path: null,
+        config_panel: { type: 'local', visible: false, x: -280, y: 0 },
+        state_var_panel: { type: 'local', visible: false, x: -150, y: 0 },
+        randomization_panel: { visible: false, x: -130, y: 0 },
+        route_panel: { visible: false, x: -490, y: 1 },
       },
       localStorage,
       { mergeDefaults: true }

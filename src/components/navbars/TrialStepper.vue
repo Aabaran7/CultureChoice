@@ -1,5 +1,8 @@
 <script setup>
 import { watch, ref, reactive } from 'vue'
+import useSmileAPI from '@/core/composables/smileapi'
+const api = useSmileAPI()
+
 import useSmileStore from '@/core/stores/smiledata'
 import { routes } from '@/router'
 import { useRouter, useRoute } from 'vue-router'
@@ -8,7 +11,6 @@ import RouteGraph from './RouteGraph.vue'
 const smilestore = useSmileStore() // load the global store
 const props = defineProps(['routeName'])
 
-const showpanel = ref(false)
 const hoverRoute = ref('')
 const router = useRouter() // this is needed in composition API because this.$router not availabel
 const route = useRoute()
@@ -18,18 +20,18 @@ watch(route, async (newRoute, oldRoute) => {
   currentQuery.value = newRoute.query
 })
 
-const panel = reactive({ visible: false, x: -490, y: 1 })
+//const panel = reactive({ visible: false, x: -490, y: 1 })
 
 function toggle_and_reset() {
-  panel.visible = !panel.visible
-  if (panel.visible == false) {
-    panel.x = -490
-    panel.y = 1
+  api.dev.route_panel.visible = !api.dev.route_panel.visible
+  if (api.dev.route_panel.visible == false) {
+    api.dev.route_panel.x = -490
+    api.dev.route_panel.y = 1
   }
 }
 function onDragCallback(x, y) {
-  panel.x = x
-  panel.y = y
+  api.dev.route_panel.x = x
+  api.dev.route_panel.y = y
 }
 
 function setHover(route) {
@@ -92,20 +94,20 @@ function setClicked(route) {
       </div>
     </div>
     <div class="column is-one-half">
-      <div class="dropdown is-right is-hoverable" :class="{ 'is-active': panel.visible }">
+      <div class="dropdown is-right is-hoverable" :class="{ 'is-active': api.dev.route_panel.visible }">
         <div class="dropdown-trigger routelabel" @click="$emit('toggleVisible')">
           <span>/{{ routeName }}</span>
         </div>
         <div class="dropdown-menu pt-2" id="dropdown-menu" role="menu">
           <vue-draggable-resizable
-            :x="panel.x"
-            :y="panel.y"
-            :draggable="panel.visible"
+            :x="api.dev.route_panel.x"
+            :y="api.dev.route_panel.y"
+            :draggable="api.dev.route_panel.visible"
             :resizable="false"
             :onDrag="onDragCallback"
           >
             <div class="dropdown-content p*-3 is-left">
-              <div class="pin" :class="{ 'pin-selected': panel.visible }">
+              <div class="pin" :class="{ 'pin-selected': api.dev.route_panel.visible }">
                 <a @click="toggle_and_reset()">
                   <FAIcon icon=" fa-solid fa-thumbtack" />
                 </a>
