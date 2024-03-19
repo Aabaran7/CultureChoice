@@ -1,6 +1,6 @@
 // create a default vue component using script setup // a default vue component using script setup
 <script setup>
-import { onMounted, watch, ref, reactive } from 'vue'
+import { onMounted, watch, ref, reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 import DocsDropDown from '@/components/navbars/DocsDropDown.vue'
@@ -29,6 +29,21 @@ function resetDevState() {
   localStorage.removeItem(api.config.dev_local_storage_key) // delete the local store
   location.reload()
 }
+
+const database_tooltip = computed(() => {
+  var msg = 'Toggle data panel | '
+  if (api.global.db_connected == true) {
+    msg += 'Database connected | '
+  } else {
+    msg += 'Database not connected | '
+  }
+  if (api.global.db_changes == true) {
+    msg += 'Unsynced data'
+  } else {
+    msg += 'Data in sync'
+  }
+  return msg
+})
 </script>
 
 <template>
@@ -70,39 +85,20 @@ function resetDevState() {
 
           <button
             class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-2"
-            data-tooltip="Toggle data panel | Firebase connected | Changes in data"
-            v-if="api.global.db_connected"
+            :data-tooltip="database_tooltip"
             @click="api.dev.show_data_bar = !api.dev.show_data_bar"
           >
-            <FAIcon icon="fa-solid fa-database" /> &nbsp;&nbsp;|&nbsp;&nbsp;<FAIcon
-              icon="fa-solid fa-circle"
-              class="connected"
+            <FAIcon
+              icon="fa-solid fa-database"
+              class="disconnected"
               :class="{ connected: api.global.db_connected == true }"
             />
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <FAIcon
               icon="fa-solid
-            fa-circle-dot"
-              class="warning"
-              :class="{ disconnected: api.global.db_changes }"
-            />
-          </button>
-          <button
-            class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-2"
-            data-tooltip="Toggle data panel | Firebase not connected | Changes in data"
-            @click="api.dev.show_data_bar = !api.dev.show_data_bar"
-            v-else
-          >
-            <FAIcon icon="fa-solid fa-database" /> &nbsp;&nbsp;|&nbsp;&nbsp;<FAIcon
-              icon="fa-solid fa-circle"
-              class="disconnected"
-            />
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            <FAIcon
-              icon="fa-solid
-            fa-circle-dot"
-              class="warning"
-              :class="{ disconnected: api.global.db_changes }"
+            fa-rotate"
+              class="insync"
+              :class="{ outofsync: api.global.db_changes == true || api.global.db_connected == false }"
             />
           </button>
 
@@ -138,9 +134,14 @@ function resetDevState() {
 .connected {
   color: rgb(13, 206, 13);
 }
-.warning {
-  color: #d5d808;
+.outofsync {
+  color: red;
 }
+
+.insync {
+  color: rgb(13, 206, 13);
+}
+
 a:hover {
   color: #10dffa;
 }

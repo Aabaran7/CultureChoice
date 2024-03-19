@@ -50,15 +50,16 @@ function move() {
       <nav class="navbar logpanel" role="navigation" aria-label="data navigation">
         <div id="navbardatabase" class="navbar-menu" @mousedown="down()">
           <div class="navbar-start">
-            <a class="navbar-item" v-if="api.dev.data_bar_tab == 'database'"
-              ><FAIcon icon="fa-solid fa-database icon" />&nbsp;&nbsp;<b>Database Info</b></a
-            >
-            <a class="navbar-item" v-if="api.dev.data_bar_tab == 'browse'"
-              ><FAIcon icon="fa-solid fa-magnifying-glass icon" />&nbsp;&nbsp;<b>Data Explorer</b></a
-            >
-            <a class="navbar-item" v-if="api.dev.data_bar_tab == 'log'"
-              ><FAIcon icon="fa-solid fa-book icon" />&nbsp;&nbsp;<b>Transaction Log</b></a
-            >
+            <div class="navbar-item info" v-if="api.dev.data_bar_tab == 'database'">
+              <FAIcon icon="fa-solid fa-database icon" />&nbsp;&nbsp;<b>Database Info</b>
+            </div>
+
+            <div class="navbar-item info" v-if="api.dev.data_bar_tab == 'browse'">
+              <FAIcon icon="fa-solid fa-magnifying-glass icon" />&nbsp;&nbsp;<b>Data Explorer</b>
+            </div>
+            <div class="navbar-item info" v-if="api.dev.data_bar_tab == 'log'">
+              <FAIcon icon="fa-solid fa-book icon" />&nbsp;&nbsp;<b>Transaction Log</b>
+            </div>
           </div>
 
           <div class="navbar-end">
@@ -80,6 +81,10 @@ function move() {
 </template>
 
 <style scoped>
+.info {
+  color: #333;
+}
+
 .menu-label {
   background: #78bfe0;
   color: #fff;
@@ -94,8 +99,8 @@ function move() {
 .logpanel {
   width: 100%;
   font-size: 12px;
-  background: #e6f5fc;
-  color: #fff;
+  background: #c1e7ef;
+  color: #333;
   height: 30px;
   min-height: 30px;
   padding: 0px;

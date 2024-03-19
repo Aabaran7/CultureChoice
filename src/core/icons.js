@@ -48,6 +48,7 @@ import { faChartLine } from '@fortawesome/free-solid-svg-icons'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { faUserMinus } from '@fortawesome/free-solid-svg-icons'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
+import { faRotate } from '@fortawesome/free-solid-svg-icons'
 /* add icons to the library */
 library.add(
   faUserSecret,
@@ -91,5 +92,6 @@ library.add(
   faChartLine,
   faEye,
   faUserMinus,
-  faUserPlus
+  faUserPlus,
+  faRotate
 )
