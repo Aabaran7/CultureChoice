@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import useSmileStore from '@/core/stores/smiledata'
 import * as dagre from '@dagrejs/dagre'
+import RandomSubTimeline from '@/core/subtimeline'
 
 class Timeline {
   constructor() {
@@ -139,12 +140,42 @@ class Timeline {
   }
 
   buildDAG() {
+    console.log('building DAG')
     this.g = new dagre.graphlib.Graph().setGraph({ nodesep: 80, ranksep: 40 }).setDefaultEdgeLabel(function () {
       return {}
     }) // Default to assigning a new object as a label for each new edge.
     this.g_nonseq = new dagre.graphlib.Graph().setGraph({ nodesep: 80, ranksep: 40 }).setDefaultEdgeLabel(function () {
       return {}
     }) // Default to assigning a new object as a label for each new edge.
+
+    for (let i = 0; i < this.routes.length; i += 1) {
+      if (this.routes[i].meta.sequential == false) {
+        this.g_nonseq.setNode(this.routes[i].name, {
+          name: this.routes[i].name,
+          label: this.routes[i].component.__name + '.vue',
+          class: 'node',
+          shape: 'circle',
+        })
+      }
+    }
+    /*  add a non sequential route
+    this.g_nonseq.setNode('recruit', { name: 'recruit', label: 'RecruitmentChooser.vue', class: 'node', shape: 'circle' })
+    */
+    for (let i = 0; i < this.seqtimeline.length; i += 1) {
+      if (this.seqtimeline[i].meta.type === 'timeline') {
+        // don't know whast to do about the subtimeline things
+      } else {
+        this.g.setNode(this.seqtimeline[i].name, {
+          name: this.seqtimeline[i].name,
+          label: this.seqtimeline[i].component.__name + '.vue',
+          class: 'node',
+          shape: 'circle',
+        })
+        if (!(this.seqtimeline[i].meta.next instanceof RandomSubTimeline) && this.seqtimeline[i].meta.next !== null) {
+          this.g.setEdge(this.seqtimeline[i].name, this.seqtimeline[i].meta.next)
+        }
+      }
+    }
   }
 
   // buildGraph builds
