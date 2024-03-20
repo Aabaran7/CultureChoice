@@ -3,6 +3,7 @@ import useSmileStore from '@/core/stores/smiledata'
 import * as dagre from '@dagrejs/dagre'
 import RandomSubTimeline from '@/core/subtimeline'
 
+const smilestore = useSmileStore()
 class Timeline {
   constructor() {
     this.routes = [] // the actual routes given to VueRouter
@@ -124,13 +125,14 @@ class Timeline {
 
   build() {
     this.buildGraph()
-    this.registerCounters()
-    this.buildDAG()
+    if (smilestore.config.mode === 'development') {
+      this.registerCounters()
+      this.buildDAG()
+    }
     // this.buildProgress()
   }
 
   registerCounters() {
-    const smilestore = useSmileStore()
     // for each route, register a counter based on the name
     for (let i = 0; i < this.routes.length; i += 1) {
       console.log(this.routes[i].name, ' ', this.routes[i].path)
@@ -150,12 +152,14 @@ class Timeline {
 
     for (let i = 0; i < this.routes.length; i += 1) {
       if (this.routes[i].meta.sequential == false) {
-        this.g_nonseq.setNode(this.routes[i].name, {
-          name: this.routes[i].name,
-          label: this.routes[i].component.__name + '.vue',
-          class: 'node',
-          shape: 'circle',
-        })
+        if (this.routes[i].component) {
+          this.g_nonseq.setNode(this.routes[i].name, {
+            name: this.routes[i].name,
+            label: this.routes[i].component.__name + '.vue',
+            class: 'node',
+            shape: 'circle',
+          })
+        }
       }
     }
     /*  add a non sequential route
