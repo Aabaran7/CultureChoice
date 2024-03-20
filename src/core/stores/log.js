@@ -7,14 +7,33 @@ export default defineStore('log', {
   }),
   actions: {
     log(message) {
+      if (appconfig.mode === 'development') {
+        // console.log(message)
+      }
       const msg = {
-        time: new Date().toISOString(),
+        type: 'log',
+        time: new Date().toLocaleTimeString('en-US', {timeZoneName: "short"}),
         message: message,
       }
       this.history.push(msg)
-      if (appconfig.mode === 'development') {
-        console.log(msg)
-      }
     },
+    warn(message) {
+      console.warn(message)
+      const msg = {
+        type: 'warn',
+        time: new Date().toLocaleTimeString('en-US', {timeZoneName: "short"}),
+        message: message,
+      }
+      this.history.push(msg)
+    },
+    error(message) {
+      console.error(message)
+      const msg = {
+        type: 'error',
+        time: new Date().toLocaleTimeString('en-US', {timeZoneName: "short"}),
+        message: message,
+      }
+      this.history.push(msg)
+    }
   },
 })

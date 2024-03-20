@@ -69,14 +69,8 @@ function addGuards(r) {
       (smilestore.config.mode === 'development' && smilestore.local.allowJumps) ||
       smilestore.config.mode === 'presentation'
     ) {
-      console.warn(
-        'WARNING: allowing direct, out-of-order navigation to',
-        to.name,
-        //to.meta.allowDirectEntry,
-        '.  This is allowed in development/presentation mode but not in production.'
-      )
-      log.log(
-        'WARNING: allowing direct, out-of-order navigation to /' +
+      log.warn(
+        'allowing direct, out-of-order navigation to /' +
           to.name +
           //to.meta.allowDirectEntry,
           '.  This is allowed in development/presentation mode but not in production.'

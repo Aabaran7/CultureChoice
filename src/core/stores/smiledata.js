@@ -12,6 +12,8 @@ import {
   fsnow,
 } from './firestore-db'
 
+import useLog from '@/core/stores/log'
+
 function initLastRoute(mode) {
   if (mode === 'development') {
     return 'recruit'
@@ -159,8 +161,9 @@ export default defineStore('smilestore', {
       this.local.seedSet = true
     },
     registerPageTracker(page) {
+      const log = useLog()
       if (this.local.pageTracker[page] === undefined) {
-        console.log('registering', page, this.local.pageTracker[page])
+        log.log('registering', page, this.local.pageTracker[page])
         this.local.pageTracker[page] = 0
       }
     },
@@ -168,14 +171,16 @@ export default defineStore('smilestore', {
       return this.local.pageTracker[page]
     },
     incrementPageTracker(page) {
+      const log = useLog()
       if (this.local.pageTracker[page] !== undefined) {
         this.local.pageTracker[page] += 1
         return this.local.pageTracker[page]
       } else {
-        console.error('SMILESTORE: page tracker not initialized for page', page)
+        log.error('SMILESTORE: page tracker not initialized for page', page)
       }
     },
     decrementPageTracker(page) {
+      const log = useLog()
       if (this.local.pageTracker[page] !== undefined) {
         this.local.pageTracker[page] -= 1
         if (this.local.pageTracker[page] < 0) {
@@ -183,7 +188,7 @@ export default defineStore('smilestore', {
         }
         return this.local.pageTracker[page]
       } else {
-        console.error('SMILESTORE: page tracker not initialized for page', page)
+        log.error('SMILESTORE: page tracker not initialized for page', page)
       }
     },
     resetPageTracker(page) {
@@ -210,12 +215,13 @@ export default defineStore('smilestore', {
       // it just finds things like browser version, OS, and IP address of user
       // which can be helpful for debugging purposes
       let ip = 'unknown'
+      const log = useLog()
       // Make a request for a user with a given ID
       axios
         .get('https://api.ipify.org/?format=json')
         .then((response) => {
           // handle success
-          console.log('ip address', response.data)
+          log.log('ip address', response.data)
           // check if ip field exists
           if (response.data.ip) {
             ip = response.data.ip
@@ -223,7 +229,7 @@ export default defineStore('smilestore', {
         })
         .catch((error) => {
           // handle error
-          console.log(error)
+          log.log(error)
         })
         .finally(() => {
           // always executed
@@ -234,13 +240,14 @@ export default defineStore('smilestore', {
         })
     },
     setFingerPrint(ip, userAgent, language, webdriver) {
+      const log = useLog()
       this.data.browser_fingerprint = {
         ip,
         userAgent,
         language,
         webdriver,
       }
-      console.log(this.data.browser_fingerprint)
+      log.log(this.data.browser_fingerprint)
     },
     setPageAutofill(fn) {
       this.dev.page_provides_autofill = fn
@@ -270,6 +277,7 @@ export default defineStore('smilestore', {
       this.data.conditions[name] = cond
     },
     async setKnown() {
+      const log = useLog()
       // TODD: this need to have an exception handler wrapping around it
       // because things go wrong
       this.local.knownUser = true
@@ -284,7 +292,7 @@ export default defineStore('smilestore', {
         // force a data save so conditions get added to the data right away
         this.saveData(true)
       } else {
-        console.error('SMILESTORE: could not create document in firebase')
+        log.error('SMILESTORE: could not create document in firebase')
       }
       return this.data.conditions
     },
@@ -308,19 +316,20 @@ export default defineStore('smilestore', {
       this.data.route_order.push(route)
     },
     async saveData(force = false) {
+      const log = useLog()
       if (this.isDBConnected) {
         if (!force && this.local.totalWrites >= appconfig.max_writes) {
-          console.error(
+          log.error(
             'SMILESTORE: max writes reached to firebase.  Data NOT saved.  Call saveData() less numerously to avoid problems/cost issues.'
           )
           return
         }
 
         if (!force && this.local.lastWrite && Date.now() - this.local.lastWrite < appconfig.min_write_interval) {
-          console.error(
+          log.log(
             'SMILESTORE: write interval too short for firebase.  Data NOT saved. Call saveData() less frequently to avoid problems/cost issues.'
           )
-          console.error('SMILESTORE: interval was', appconfig.min_write_interval)
+          log.error('SMILESTORE: interval was ' + appconfig.min_write_interval)
           // console.error(Date.now() - this.local.lastWrite)
           return
         }
@@ -329,10 +338,9 @@ export default defineStore('smilestore', {
         this.local.lastWrite = Date.now()
         //this.global.snapshot = { ...smilestore.$state.data }
         this.global.db_changes = false // reset the changes flag
-
-        console.log('Request to firebase successful')
+        log.log('Request to firebase successful')
       } else {
-        console.error("SMILESTORE: can't save data, not connected to firebase")
+        log.error("SMILESTORE: can't save data, not connected to firebase")
       }
     },
     resetLocal() {

@@ -7,6 +7,19 @@ import useLog from '@/core/stores/log'
 const log = useLog()
 
 const height_pct = computed(() => `${api.dev.data_bar_height - 32}px`)
+
+function getBgClass(msg) {
+    switch (msg.type) {
+      case 'log':
+        return 'bg-white';
+      case 'warn':
+        return 'bg-yellow';
+      case 'error':
+        return 'bg-red';
+      default:
+        return '';
+    }
+  }
 </script>
 <template>
   <!-- content of panel here -->
@@ -14,7 +27,7 @@ const height_pct = computed(() => `${api.dev.data_bar_height - 32}px`)
     <div class="scrollablelog">
       <aside class="menu">
         <ul class="menu-list">
-          <li v-for="msg in log.history">
+          <li v-for="msg in log.history" :class="getBgClass(msg)">
             <a
               ><FAIcon icon=" fa-solid fa-angle-right" /> {{ msg.time }} <b>{{ msg.message }}</b></a
             >
@@ -55,5 +68,14 @@ const height_pct = computed(() => `${api.dev.data_bar_height - 32}px`)
   font-size: 0.8em;
   font-family: monospace;
   border-bottom: 1px solid #f2f2f2;
+}
+.bg-white {
+  background-color: #ffffff;
+}
+.bg-yellow {
+  background-color: #e0deaa;
+}
+.bg-red {
+  background-color: #e0aaaa;
 }
 </style>
