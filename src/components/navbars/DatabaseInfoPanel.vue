@@ -1,8 +1,18 @@
 <script setup>
 //import { useTimeAgo } from '@vueuse/core'
-
+import { computed } from 'vue'
 import SmileAPI from '@/core/composables/smileapi'
 const api = SmileAPI()
+
+const firebase_url = computed(() => {
+  const mode = api.config.mode == 'development' ? 'testing' : 'real'
+
+  return `https://console.firebase.google.com/u/0/project/${api.config.firebaseConfig.projectId}/firestore/data/~2F${mode}~2F${api.config.project_ref}~2Fdata~2F${api.local.docRef}`
+})
+
+function open_firebase_console(url) {
+  window.open(url, '_new')
+}
 </script>
 <template>
   <!-- content of panel here -->
@@ -54,7 +64,13 @@ const api = SmileAPI()
             <b>DocRef:</b> {{ api.local.docRef }}<br />
             <b>PartNum:</b> {{ api.local.partNum }}<br />
             <b>Mode:</b> {{ api.config.mode == 'development' ? 'testing' : 'live' }}<br />
-            <button class="button is-info is-light is-small is-rounded">View in Firebase</button>
+            <button
+              v-if="api.local.docRef"
+              class="button is-info is-light is-small is-rounded"
+              @click="open_firebase_console(firebase_url)"
+            >
+              View in Firebase
+            </button>
           </p>
         </div>
       </div>
