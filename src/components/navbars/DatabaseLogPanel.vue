@@ -3,6 +3,9 @@ import { computed } from 'vue'
 import SmileAPI from '@/core/composables/smileapi'
 const api = SmileAPI()
 
+import useLog from '@/core/stores/log'
+const log = useLog()
+
 const height_pct = computed(() => `${api.dev.data_bar_height - 32}px`)
 </script>
 <template>
@@ -11,9 +14,9 @@ const height_pct = computed(() => `${api.dev.data_bar_height - 32}px`)
     <div class="scrollablelog">
       <aside class="menu">
         <ul class="menu-list">
-          <li v-for="i in [...Array(50).keys()]">
+          <li v-for="msg in log.history">
             <a
-              ><FAIcon icon=" fa-solid fa-angle-right" /> 04-05-2004 @8:34: <b>hifdf {{ i }}</b></a
+              ><FAIcon icon=" fa-solid fa-angle-right" /> {{ msg.time }} <b>{{ msg.message }}</b></a
             >
           </li>
         </ul>
