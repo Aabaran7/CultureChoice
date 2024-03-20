@@ -18,37 +18,38 @@ function open_firebase_console(url) {
   <!-- content of panel here -->
   <div class="contentpanel">
     <div class="columns colcontent">
-      <div class="column is-3 edge pr-0">
+      <div class="column is-2 edge pr-0">
         <div class="columnheader"><FAIcon icon="fa-solid fa-eye" />&nbsp;&nbsp;Status</div>
         <div class="columncontent">
           <div class="statusinfo">
             <template v-if="api.local.knownUser">
-              <FAIcon icon="fa-solid fa-user-plus" class="connected" />&nbsp;&nbsp;<span class="is-size-7">known</span
+              <FAIcon icon="fa-solid fa-user-plus" class="connected" />&nbsp;&nbsp;<span class="is-size-7"
+                >user known</span
               ><br />
             </template>
             <template v-else>
               <FAIcon icon="fa-solid fa-user-minus" class="disconnected" />&nbsp;&nbsp;<span class="is-size-7"
-                >unknown</span
+                >user unknown</span
               ><br />
             </template>
 
             <template v-if="api.global.db_connected">
               <FAIcon icon="fa-solid fa-database" class="connected" />&nbsp;&nbsp;<span class="is-size-7"
-                >connected</span
+                >db connected</span
               ><br />
             </template>
             <template v-else>
               <FAIcon icon="fa-solid fa-database" class="disconnected" />&nbsp;&nbsp;<span class="is-size-7"
-                >connected</span
+                >db disconnected</span
               ><br />
             </template>
 
             <template v-if="api.global.db_changes">
-              <FAIcon icon="fa-solid fa-rotate" class="outofsync" />&nbsp;&nbsp;
+              <FAIcon icon="fa-solid fa-rotate" class="disconnected" />&nbsp;&nbsp;
               <span class="is-size-7">out of sync</span>
             </template>
             <template v-else>
-              <FAIcon icon="fa-solid fa-rotate" class="insync" />&nbsp;&nbsp;
+              <FAIcon icon="fa-solid fa-rotate" class="connected" />&nbsp;&nbsp;
               <span class="is-size-7">synced</span>
             </template>
             <br />
@@ -74,7 +75,7 @@ function open_firebase_console(url) {
           </p>
         </div>
       </div>
-      <div class="column is-3 edge pl-0 pr-0">
+      <div class="column is-2 edge pl-0 pr-0">
         <div class="columnheader"><FAIcon icon="fa-solid fa-pencil" />&nbsp;&nbsp;Database Writes</div>
         <div class="columncontent">
           <div class="statusinfo">
@@ -96,7 +97,7 @@ function open_firebase_console(url) {
         </div>
       </div>
 
-      <div class="column is-6 edge pl-0 pr-0">
+      <div class="column is-9 edge pl-0 pr-0">
         <div class="columnheader"><FAIcon icon="fa-solid fa-chart-line" />&nbsp;&nbsp;Graphs</div>
         <div class="columncontent">stuff here</div>
       </div>
