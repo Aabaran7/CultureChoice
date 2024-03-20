@@ -58,7 +58,7 @@ export default defineStore('smilestore', {
       status_bar_bg_color: '#fff',
       status_bar_text_color: '#000',
       db_connected: false,
-      db_changes: false,
+      db_changes: true,
       search_params: null,
       urls: {
         prolific: '?PROLIFIC_PID=XXXX&STUDY_ID=XXXX&SESSION_ID=XXXXX#/welcome/prolific/',
@@ -320,9 +320,12 @@ export default defineStore('smilestore', {
           // console.error(Date.now() - this.local.lastWrite)
           return
         }
-        updateSubjectDataRecord(this.data, this.local.docRef)
+        await updateSubjectDataRecord(this.data, this.local.docRef)
         this.local.totalWrites += 1
         this.local.lastWrite = Date.now()
+        //this.global.snapshot = { ...smilestore.$state.data }
+        this.global.db_changes = false // reset the changes flag
+
         console.log('Request to firebase successful')
       } else {
         console.error("SMILESTORE: can't save data, not connected to firebase")

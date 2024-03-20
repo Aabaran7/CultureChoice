@@ -8,35 +8,40 @@ const api = SmileAPI()
   <!-- content of panel here -->
   <div class="contentpanel">
     <div class="columns colcontent">
-      <div class="column is-2 edge pr-0">
+      <div class="column is-3 edge pr-0">
         <div class="columnheader"><FAIcon icon="fa-solid fa-eye" />&nbsp;&nbsp;Status</div>
         <div class="columncontent">
           <div class="statusinfo">
             <template v-if="api.local.knownUser">
-              <FAIcon
-                icon="fa-solid fa-user-plus"
-                class="disconnected"
-                :class="{ connected: api.local.knownUser }"
-              />&nbsp;&nbsp;<span class="is-size-7">user known</span><br />
+              <FAIcon icon="fa-solid fa-user-plus" class="connected" />&nbsp;&nbsp;<span class="is-size-7">known</span
+              ><br />
             </template>
             <template v-else>
-              <FAIcon
-                icon="fa-solid fa-user-minus"
-                class="disconnected"
-                :class="{ connected: api.local.knownUser }"
-              />&nbsp;&nbsp;<span class="is-size-7">user known</span><br />
+              <FAIcon icon="fa-solid fa-user-minus" class="disconnected" />&nbsp;&nbsp;<span class="is-size-7"
+                >unknown</span
+              ><br />
             </template>
 
-            <FAIcon
-              icon="fa-solid fa-database"
-              class="disconnected"
-              :class="{ connected: api.global.db_connected }"
-            />&nbsp;&nbsp;<span class="is-size-7">db connected</span><br />
-            <FAIcon
-              icon="fa-solid fa-rotate"
-              class="warning"
-              :class="{ disconnected: api.global.db_changes }"
-            />&nbsp;&nbsp;<span class="is-size-7">synced</span><br />
+            <template v-if="api.global.db_connected">
+              <FAIcon icon="fa-solid fa-database" class="connected" />&nbsp;&nbsp;<span class="is-size-7"
+                >connected</span
+              ><br />
+            </template>
+            <template v-else>
+              <FAIcon icon="fa-solid fa-database" class="disconnected" />&nbsp;&nbsp;<span class="is-size-7"
+                >connected</span
+              ><br />
+            </template>
+
+            <template v-if="api.global.db_changes">
+              <FAIcon icon="fa-solid fa-rotate" class="outofsync" />&nbsp;&nbsp;
+              <span class="is-size-7">out of sync</span>
+            </template>
+            <template v-else>
+              <FAIcon icon="fa-solid fa-rotate" class="insync" />&nbsp;&nbsp;
+              <span class="is-size-7">synced</span>
+            </template>
+            <br />
             <!--
           <b>The user current appear unknown.:</b> {{ api.local.knownUser }}<br />
           <b>There are changes to the data since last write:</b> {{ api.local.knownUser }}<br />
@@ -45,13 +50,15 @@ const api = SmileAPI()
           <hr />
 
           <p class="is-size-7 has-text-left">
-            <b>docRef:</b> {{ api.local.docRef }}<br />
-            <b>partNum:</b> {{ api.local.partNum }}<br />
-            <b>mode:</b> {{ api.config.mode == 'development' ? 'testing' : 'live' }}<br />
+            <b>Project:</b> {{ api.local.docRef }}<br />
+            <b>DocRef:</b> {{ api.local.docRef }}<br />
+            <b>PartNum:</b> {{ api.local.partNum }}<br />
+            <b>Mode:</b> {{ api.config.mode == 'development' ? 'testing' : 'live' }}<br />
+            <button class="button is-info is-light is-small is-rounded">View in Firebase</button>
           </p>
         </div>
       </div>
-      <div class="column is-2 edge pl-0 pr-0">
+      <div class="column is-3 edge pl-0 pr-0">
         <div class="columnheader"><FAIcon icon="fa-solid fa-pencil" />&nbsp;&nbsp;Database Writes</div>
         <div class="columncontent">
           <div class="statusinfo">
@@ -73,7 +80,7 @@ const api = SmileAPI()
         </div>
       </div>
 
-      <div class="column is-8 edge pl-0 pr-0">
+      <div class="column is-6 edge pl-0 pr-0">
         <div class="columnheader"><FAIcon icon="fa-solid fa-chart-line" />&nbsp;&nbsp;Graphs</div>
         <div class="columncontent">stuff here</div>
       </div>
@@ -110,6 +117,12 @@ const api = SmileAPI()
 }
 .warning {
   color: #d5d808;
+}
+.outofsync {
+  color: red;
+}
+.insync {
+  color: rgb(13, 206, 13);
 }
 .disconnected {
   color: #f60909;

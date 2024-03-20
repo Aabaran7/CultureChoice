@@ -11,6 +11,32 @@ import DevDataBar from './components/navbars/DevDataBar.vue'
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
+import useSmileStore from '@/core/stores/smiledata'
+const smilestore = useSmileStore() // load the global store
+
+var snapshot = { ...smilestore.$state.data }
+
+smilestore.$subscribe((mutation, newstate) => {
+  //console.log('something changed', mutation, newstate)
+  // // import { MutationType } from 'pinia'
+  // mutation.type // 'direct' | 'patch object' | 'patch function'
+  // // same as cartStore.$id
+  // mutation.storeId // 'cart'
+  // // only available with mutation.type === 'patch object'
+  // mutation.payload // patch object passed to cartStore.$patch()
+  Object.keys(newstate.data).forEach((key) => {
+    //console.log(newstate.data[key])
+    if (snapshot[key] !== newstate.data[key]) {
+      console.log(`Value changed for ${key}: from ${snapshot[key]} to ${newstate.data[key]}`)
+      smilestore.global.db_changes = true
+    }
+  })
+
+  snapshot = { ...newstate.data }
+  // // persist the whole state to the local storage whenever it changes
+  // localStorage.setItem('cart', JSON.stringify(state))
+})
+
 // monitor events on the main window
 onMounted(() => {
   window.addEventListener('resize', (event) => {

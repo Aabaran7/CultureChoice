@@ -38,7 +38,7 @@ if (appconfig.mode === 'development' || appconfig.mode === 'testing') {
 export const fsnow = () => Timestamp.now()
 
 // create a collection
-export const updateSubjectDataRecord = (data, docid) => {
+export const updateSubjectDataRecord = async (data, docid) => {
   // is it weird to have a aync method that doesn't return anything?
   try {
     const docRef = doc(db, `${mode}/${appconfig.project_ref}/data/`, docid)

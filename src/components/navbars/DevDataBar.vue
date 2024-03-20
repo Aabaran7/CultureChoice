@@ -99,7 +99,7 @@ function move() {
 .logpanel {
   width: 100%;
   font-size: 12px;
-  background: #c1e7ef;
+  background: #c7c7c7;
   color: #333;
   height: 30px;
   min-height: 30px;
@@ -129,7 +129,7 @@ function move() {
 
 .menu {
   background: #e6f5fc;
-  width: 200px;
+  min-width: 160px;
   padding-left: 5px;
   border-right: 1px solid #b9b9b9;
 }

@@ -94,12 +94,12 @@ const database_tooltip = computed(() => {
               :class="{ connected: api.global.db_connected == true }"
             />
             &nbsp;&nbsp;|&nbsp;&nbsp;
-            <FAIcon
-              icon="fa-solid
-            fa-rotate"
-              class="insync"
-              :class="{ outofsync: api.global.db_changes == true || api.global.db_connected == false }"
-            />
+            <template v-if="api.global.db_changes">
+              <FAIcon icon="fa-solid fa-rotate" class="outofsync" />
+            </template>
+            <template v-else>
+              <FAIcon icon="fa-solid fa-rotate" class="insync" />
+            </template>
           </button>
 
           <!-- randomization button -->
@@ -137,7 +137,6 @@ const database_tooltip = computed(() => {
 .outofsync {
   color: red;
 }
-
 .insync {
   color: rgb(13, 206, 13);
 }
