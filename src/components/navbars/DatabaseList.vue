@@ -67,9 +67,7 @@ console.log('full data', data_field)
           <a>
             <b>{{ key }}</b>
             <div class="arrow">
-              <a>
-                <FAIcon icon=" fa-solid fa-angle-right" />
-              </a>
+              <FAIcon icon=" fa-solid fa-angle-right" />
             </div>
           </a>
         </div>
@@ -80,15 +78,11 @@ console.log('full data', data_field)
 
 <style scoped>
 .active a {
-  background-color: rgb(40, 118, 176);
-  color: #fff;
-}
-.active a {
-  background-color: rgb(40, 118, 176);
+  background-color: rgb(199, 215, 228);
   color: #fff;
 }
 .active a:hover {
-  background-color: rgb(40, 118, 176);
+  background-color: rgb(199, 215, 228);
   color: #fff;
 }
 .active li a {
@@ -126,7 +120,7 @@ console.log('full data', data_field)
   float: right;
   margin: 0px;
   padding-right: 0px;
-  color: #fff;
+  color: #434343;
   vertical-align: middle;
   padding: 0px;
   font-size: 0.9em;
