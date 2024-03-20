@@ -6,7 +6,8 @@ import { v4 as uuidv4 } from 'uuid'
 import useSmileStore from '@/core/stores/smiledata' // get access to the global store
 import { getQueryParams } from '@/core/utils'
 import timeline from '@/app_timeline'
-
+import useLog from '@/core/stores/log'
+const log = useLog()
 // 3. add navigation guards
 //    currently these check if user is known
 //    and if they are, they redirect to last route
@@ -74,6 +75,12 @@ function addGuards(r) {
         //to.meta.allowDirectEntry,
         '.  This is allowed in development/presentation mode but not in production.'
       )
+      log.log(
+        'WARNING: allowing direct, out-of-order navigation to /' +
+          to.name +
+          //to.meta.allowDirectEntry,
+          '.  This is allowed in development/presentation mode but not in production.'
+      )
       smilestore.setLastRoute(to.name)
       smilestore.recordRoute(to.name)
       return true
@@ -132,7 +139,7 @@ export const router = createRouter({
   },
 })
 addGuards(router) // add the guards defined above
-
+log.log('Vue Router initialized')
 // add additional guard to set global seed before
 router.beforeResolve((to) => {
   const smilestore = useSmileStore()
@@ -147,6 +154,7 @@ router.beforeResolve((to) => {
       global: true,
     })
   }
+  log.log('Router navigated to /' + to.name)
 })
 
 // they are defined in a function like this for the testing harness

@@ -31,7 +31,7 @@ smilestore.$subscribe((mutation, newstate) => {
     //console.log(newstate.data[key])
     if (snapshot[key] !== newstate.data[key]) {
       //console.log(`Value changed for ${key}: from ${snapshot[key]} to ${newstate.data[key]}`)
-      log.log(`Value changed for ${key}: from ${snapshot[key]} to ${newstate.data[key]}`)
+      log.log(`smilestore.data value changed for ${key}: from ${snapshot[key]} to ${newstate.data[key]}`)
       smilestore.global.db_changes = true
     }
   })
@@ -43,6 +43,7 @@ smilestore.$subscribe((mutation, newstate) => {
 
 // monitor events on the main window
 onMounted(() => {
+  log.log('App.vue initialized')
   window.addEventListener('resize', (event) => {
     api.recordWindowEvent('resize', { width: window.innerWidth, height: window.innerHeight })
   })
