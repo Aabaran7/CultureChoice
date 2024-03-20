@@ -6,6 +6,7 @@ const api = useSmileAPI()
 function finish() {
   // smilestore.setConsented()
   // smilestore.saveData()
+  api.verifyVisibility(true)
   api.stepNextRoute()
 }
 </script>

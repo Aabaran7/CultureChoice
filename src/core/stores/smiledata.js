@@ -92,6 +92,7 @@ export default defineStore('smilestore', {
       // syncs with firestore
       trial_num: 0, // not being updated correctly
       consented: false,
+      verified_visibility: false,
       done: false,
       starttime: null, // time consented
       endtime: null, // time finished or withdrew
@@ -261,6 +262,9 @@ export default defineStore('smilestore', {
     },
     saveDemographicForm(data) {
       this.data.demographic_form = data
+    },
+    verifyVisibility(value) {
+      this.data.verified_visibility = value
     },
     setCondition(name, cond) {
       this.data.conditions[name] = cond

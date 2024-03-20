@@ -46,6 +46,9 @@ export default function useSmileAPI() {
     saveDemographicForm: (data) => {
       smilestore.saveDemographicForm(data)
     },
+    verifyVisibility: (value) => {
+      smilestore.verifyVisibility(value)
+    },
     setPageAutofill: (autofill) => {
       console.log('setting autofil')
       if (smilestore.config.mode === 'development') smilestore.setPageAutofill(autofill)
