@@ -89,8 +89,5 @@ export default function useSmileAPI() {
     },
   }
 
-  // on startup set the page to not autofill by default
-  if (smilestore.config.mode == 'development') smilestore.removePageAutofill() // should put there everywhere on init
-
   return api
 }

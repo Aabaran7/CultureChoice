@@ -27,6 +27,9 @@ function addGuards(r) {
     // console.log('allowDirectEntry', to.meta.allowDirectEntry)
 
     const smilestore = useSmileStore()
+    // on startup set the page to not autofill by default
+    if (smilestore.config.mode == 'development') smilestore.removePageAutofill() // should put there everywhere on init
+
     // if the database isn't connected and they're a known user, reload their data
     if (smilestore.isKnownUser && !smilestore.isDBConnected) {
       smilestore.loadData()
