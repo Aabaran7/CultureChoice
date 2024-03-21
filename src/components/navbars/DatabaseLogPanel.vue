@@ -9,17 +9,17 @@ const log = useLog()
 const height_pct = computed(() => `${api.dev.data_bar_height - 32}px`)
 
 function getBgClass(msg) {
-    switch (msg.type) {
-      case 'log':
-        return 'bg-white';
-      case 'warn':
-        return 'bg-yellow';
-      case 'error':
-        return 'bg-red';
-      default:
-        return '';
-    }
+  switch (msg.type) {
+    case 'log':
+      return 'bg-white'
+    case 'warn':
+      return 'bg-yellow'
+    case 'error':
+      return 'bg-red'
+    default:
+      return ''
   }
+}
 </script>
 <template>
   <!-- content of panel here -->
@@ -65,7 +65,7 @@ function getBgClass(msg) {
   flex-direction: column-reverse;
 }
 .menu-list li {
-  font-size: 0.8em;
+  font-size: 0.7em;
   font-family: monospace;
   border-bottom: 1px solid #f2f2f2;
 }

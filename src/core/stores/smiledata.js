@@ -163,7 +163,6 @@ export default defineStore('smilestore', {
     registerPageTracker(page) {
       const log = useLog()
       if (this.local.pageTracker[page] === undefined) {
-        log.log('registering', page, this.local.pageTracker[page])
         this.local.pageTracker[page] = 0
       }
     },
@@ -221,10 +220,11 @@ export default defineStore('smilestore', {
         .get('https://api.ipify.org/?format=json')
         .then((response) => {
           // handle success
-          log.log('ip address', response.data)
+
           // check if ip field exists
           if (response.data.ip) {
             ip = response.data.ip
+            log.log('User IP address detected (using api.ipify.org): ' + ip)
           }
         })
         .catch((error) => {
@@ -247,7 +247,7 @@ export default defineStore('smilestore', {
         language,
         webdriver,
       }
-      log.log(this.data.browser_fingerprint)
+      log.log('Browser fingerprint: ' + this.data.browser_fingerprint)
     },
     setPageAutofill(fn) {
       this.dev.page_provides_autofill = fn

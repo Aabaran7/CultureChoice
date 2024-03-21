@@ -41,7 +41,7 @@ function move() {
           </a>
         </li>
         <li :class="{ active: api.dev.data_bar_tab == 'log' }">
-          <a @click="api.dev.data_bar_tab = 'log'"> <FAIcon icon="fa-solid fa-book icon" /> Transaction Log </a>
+          <a @click="api.dev.data_bar_tab = 'log'"> <FAIcon icon="fa-solid fa-book icon" /> Narrative Log </a>
         </li>
       </ul>
     </aside>
@@ -58,7 +58,7 @@ function move() {
               <FAIcon icon="fa-solid fa-magnifying-glass icon" />&nbsp;&nbsp;<b>Data Explorer</b>
             </div>
             <div class="navbar-item info" v-if="api.dev.data_bar_tab == 'log'">
-              <FAIcon icon="fa-solid fa-book icon" />&nbsp;&nbsp;<b>Transaction Log</b>
+              <FAIcon icon="fa-solid fa-book icon" />&nbsp;&nbsp;<b>Narrative Log</b>
             </div>
           </div>
 
