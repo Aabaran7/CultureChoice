@@ -35,7 +35,6 @@ function onDragCallback(x, y) {
 }
 
 function setHover(route) {
-  console.log('got the hover event')
   hoverRoute.value = route
 }
 

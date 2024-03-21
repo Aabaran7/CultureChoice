@@ -262,6 +262,8 @@ export default defineStore('smilestore', {
     autofill() {
       if (this.dev.page_provides_autofill) {
         this.dev.page_provides_autofill()
+        const log = useLog()
+        log.log('DEV MODE: Page was autofilled by a user-provided component function')
       }
     },
     saveTrialData(data) {
@@ -326,10 +328,12 @@ export default defineStore('smilestore', {
         }
 
         if (!force && this.local.lastWrite && Date.now() - this.local.lastWrite < appconfig.min_write_interval) {
-          log.log(
+          log.error(
             'SMILESTORE: write interval too short for firebase.  Data NOT saved. Call saveData() less frequently to avoid problems/cost issues.'
           )
-          log.error('SMILESTORE: interval was ' + appconfig.min_write_interval)
+          log.error(
+            'SMILESTORE: interval was ' + appconfig.min_write_interval + '.  See env/.env file to alter this setting.'
+          )
           // console.error(Date.now() - this.local.lastWrite)
           return
         }
@@ -338,7 +342,7 @@ export default defineStore('smilestore', {
         this.local.lastWrite = Date.now()
         //this.global.snapshot = { ...smilestore.$state.data }
         this.global.db_changes = false // reset the changes flag
-        log.log('Request to firebase successful')
+        log.log('saveData() Request to firebase successful (force = ' + force + ')')
       } else {
         log.error("SMILESTORE: can't save data, not connected to firebase")
       }
