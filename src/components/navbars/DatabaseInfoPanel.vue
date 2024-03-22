@@ -87,7 +87,7 @@ function open_firebase_console(url) {
               <span class="is-size-6">out of {{ api.config.max_writes }} max</span>
               <br />
             </p>
-            <span class="is-size-7">Last was {{ Date.now() - api.local.lastWrite }} seconds ago.</span>
+            <span class="is-size-7">Last was {{ ((Date.now() - api.local.lastWrite) / 1000).toFixed(1) }} seconds ago.</span>
           </div>
           <br />
           <p class="pl-10 pr-10 mb-10">
