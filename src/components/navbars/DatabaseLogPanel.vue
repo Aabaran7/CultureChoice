@@ -29,7 +29,7 @@ function getBgClass(msg) {
         <ul class="menu-list">
           <li v-for="msg in log.history" :class="getBgClass(msg)">
             <a
-              ><FAIcon icon=" fa-solid fa-angle-right" /> {{ msg.time }} <b>{{ msg.message }}</b></a
+              ><FAIcon icon=" fa-solid fa-angle-right" /> {{ msg.time }} <b>{{ msg.message }}</b> <br>&nbsp;&nbsp;{{ msg.trace }}</a
             >
           </li>
         </ul>
