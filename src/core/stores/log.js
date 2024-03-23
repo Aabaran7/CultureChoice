@@ -7,8 +7,8 @@ function getLogTrace() {
   if (lines.length < 4) {
     return '(could not parse trace)'
   }
-  // strip leading 'http://localhost:xxx/' and '?t=xxx' query param, if present
-  const regex = /(?:at\s|@)(?:.*?\s\()?(http:\/\/localhost:\d+\/)?(?<filePath>.+?)(?:\?.*?)?(?::(?<lineNumber>\d+):(?<columnNumber>\d+))\)?/
+  // strip leading 'http://localhost:xxx/.../.../.../' and '?t=xxx' query param, if present
+  const regex = /(?:at\s|@)(?:.*?\s\()?(http:\/\/localhost:\d+\/\w+\/\w+\/\w+\/)?(?<filePath>.+?)(?:\?.*?)?(?::(?<lineNumber>\d+):(?<columnNumber>\d+))\)?/
   const match = regex.exec(lines[3])
   if (match) {
     return `${match.groups.filePath} (line ${match.groups.lineNumber}, column ${match.groups.columnNumber})`
