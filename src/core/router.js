@@ -66,6 +66,18 @@ function addGuards(r) {
       return true
     }
 
+    // if the next route is a subtimeline and you're trying to go to a subtimeline route, allow it
+    // this is necessary because from.meta.next won't immediately get the subroute as next when the subtimeline is randomized
+    if (
+      from.meta !== undefined &&
+      from.meta.next !== undefined &&
+      from.meta.next.type === 'randomized_sub_timeline' &&
+      to.meta.subroute
+    ) {
+      smilestore.setLastRoute(to.name)
+      smilestore.recordRoute(to.name)
+      return true
+    }
     // if you're in jumping mode
     // or you're in presentation mode allow the new route
     if (
@@ -83,18 +95,6 @@ function addGuards(r) {
       return true
     }
 
-    // if the next route is a subtimeline and you're trying to go to a subtimeline route, allow it
-    // this is necessary because from.meta.next won't immediately get the subroute as next when the subtimeline is randomized
-    if (
-      from.meta !== undefined &&
-      from.meta.next !== undefined &&
-      from.meta.next.type === 'randomized_sub_timeline' &&
-      to.meta.subroute
-    ) {
-      smilestore.setLastRoute(to.name)
-      smilestore.recordRoute(to.name)
-      return true
-    }
     // if you're trying to go to the same route you're already on, allow it
     if (smilestore.lastRoute === to.name) {
       return true
