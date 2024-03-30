@@ -47,7 +47,7 @@ jobs:
         run: npm run css-build
 
       - name: Strip dev stuff out of the app
-        run: cat src/App.vue
+        run: cat src/App.vue | grep -v "DeveloperNavBar" | grep -v "DevDataBar"
 
       # accesses some git variables and processes them to be lower case/short/escaped
       - name: Inject slug/short variables
