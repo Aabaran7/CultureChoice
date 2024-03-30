@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, watch, ref } from 'vue'
+import { onMounted } from 'vue'
 // load sub-components used in this compomnents
 import DeveloperNavBar from '@/components/navbars/DeveloperNavBar.vue'
 import StatusBar from '@/components/navbars/StatusBar.vue'
@@ -68,12 +68,10 @@ onMounted(() => {
       api.currentRouteName() !== 'data' && api.currentRouteName() !== 'recruit' && api.config.mode != 'presentation'
     "
   ></StatusBar>
-
+  <!-- the router loads here -->
   <div class="router">
     <router-view></router-view>
-    <!-- the router loads here -->
   </div>
-
   <ProgressBar
     v-if="
       api.currentRouteName() !== 'config' &&
