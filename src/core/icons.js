@@ -20,7 +20,7 @@ import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
-
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { faSquareCheck } from '@fortawesome/free-solid-svg-icons'
 import { faDatabase } from '@fortawesome/free-solid-svg-icons'
 import { faRainbow } from '@fortawesome/free-solid-svg-icons'
@@ -49,9 +49,14 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { faUserMinus } from '@fortawesome/free-solid-svg-icons'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { faRotate } from '@fortawesome/free-solid-svg-icons'
+import { faSquareUpRight } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 /* add icons to the library */
 library.add(
+  faCheck,
+  faXmark,
   faUserSecret,
+  faSquareUpRight,
   faGear,
   faBook,
   faArrowsTurnToDots,

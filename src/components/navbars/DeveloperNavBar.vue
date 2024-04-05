@@ -84,7 +84,7 @@ const database_tooltip = computed(() => {
           <ConfigDropDown></ConfigDropDown>
 
           <button
-            class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom ml-2"
+            class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom"
             :data-tooltip="database_tooltip"
             @click="api.dev.show_data_bar = !api.dev.show_data_bar"
           >
@@ -94,7 +94,10 @@ const database_tooltip = computed(() => {
               :class="{ connected: api.global.db_connected == true }"
             />
             &nbsp;&nbsp;|&nbsp;&nbsp;
-            <template v-if="api.global.db_changes">
+            <template v-if="!api.global.db_connected">
+              <FAIcon icon="fa-solid fa-rotate" class="has-text-grey" />
+            </template>
+            <template v-else-if="api.global.db_changes">
               <FAIcon icon="fa-solid fa-rotate" class="outofsync" />
             </template>
             <template v-else>
@@ -104,11 +107,9 @@ const database_tooltip = computed(() => {
 
           <!-- randomization button -->
           <RandomizationDropDown></RandomizationDropDown>
-          &nbsp;&nbsp;
 
           <!-- state variable buttons -->
           <StateVarsDropDown></StateVarsDropDown>
-          &nbsp;&nbsp;
         </div>
       </div>
       <!-- drop down-->
@@ -135,7 +136,7 @@ const database_tooltip = computed(() => {
   color: rgb(13, 206, 13);
 }
 .outofsync {
-  color: red;
+  color: rgb(245, 206, 14);
 }
 .insync {
   color: rgb(13, 206, 13);

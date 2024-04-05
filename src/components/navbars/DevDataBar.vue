@@ -33,15 +33,30 @@ function move() {
     <aside class="menu">
       <ul class="menu-list">
         <li :class="{ active: api.dev.data_bar_tab == 'database' }">
-          <a @click="api.dev.data_bar_tab = 'database'"><FAIcon icon="fa-solid fa-database icon" /> Database Info</a>
+          <a
+            @click="api.dev.data_bar_tab = 'database'"
+            class="has-tooltip-arrow has-tooltip-right"
+            data-tooltip="Database Info"
+            ><FAIcon icon="fa-solid fa-database icon" />
+          </a>
         </li>
         <li :class="{ active: api.dev.data_bar_tab == 'browse' }">
-          <a @click="api.dev.data_bar_tab = 'browse'">
-            <FAIcon icon="fa-solid fa-magnifying-glass icon" /> Data Explorer
+          <a
+            @click="api.dev.data_bar_tab = 'browse'"
+            class="has-tooltip-arrow has-tooltip-right"
+            data-tooltip="Data Explorer"
+          >
+            <FAIcon icon="fa-solid fa-magnifying-glass icon" />
           </a>
         </li>
         <li :class="{ active: api.dev.data_bar_tab == 'log' }">
-          <a @click="api.dev.data_bar_tab = 'log'"> <FAIcon icon="fa-solid fa-book icon" /> Narrative Log </a>
+          <a
+            @click="api.dev.data_bar_tab = 'log'"
+            class="has-tooltip-arrow has-tooltip-right"
+            data-tooltip="Narrative Log"
+          >
+            <FAIcon icon="fa-solid fa-book icon" />
+          </a>
         </li>
       </ul>
     </aside>
@@ -99,7 +114,8 @@ function move() {
 .logpanel {
   width: 100%;
   font-size: 12px;
-  background: #c7c7c7;
+  background: rgb(243, 243, 243);
+  /*background: rgb(210, 233, 240);*/
   color: #333;
   height: 30px;
   min-height: 30px;
@@ -129,7 +145,7 @@ function move() {
 
 .menu {
   background: #e6f5fc;
-  min-width: 160px;
+  min-width: 20px;
   padding-left: 5px;
   border-right: 1px solid #b9b9b9;
 }
@@ -148,6 +164,10 @@ function move() {
   font-size: 0.75em;
   text-align: left;
   padding-right: 3px;
+}
+
+.menu-list a {
+  background: inherit;
 }
 
 .menu-list a:hover {

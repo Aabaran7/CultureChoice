@@ -81,7 +81,7 @@ export default defineStore('smilestore', {
         // syncs with local storage
         page_provides_autofill: null,
         show_data_bar: false,
-        data_bar_height: 300,
+        data_bar_height: 360,
         data_bar_tab: 'database',
         data_path: null,
         config_panel: { type: 'local', visible: false, x: -280, y: 0 },

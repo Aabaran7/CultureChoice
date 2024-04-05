@@ -13,99 +13,165 @@ const firebase_url = computed(() => {
 function open_firebase_console(url) {
   window.open(url, '_new')
 }
+
+const sync_state = computed(() => {
+  if (api.global.db_changes && api.global.db_connected) {
+    return 'is-warning is-completed'
+  } else if (!api.global.db_changes && api.global.db_connected) {
+    return 'is-success is-completed'
+  } else {
+    return ''
+  }
+})
 </script>
 <template>
   <!-- content of panel here -->
-  <div class="contentpanel">
-    <div class="columns colcontent">
-      <div class="column is-2 edge pr-0">
-        <div class="columnheader"><FAIcon icon="fa-solid fa-eye" />&nbsp;&nbsp;Status</div>
-        <div class="columncontent">
-          <div class="statusinfo">
-            <template v-if="api.local.knownUser">
-              <FAIcon icon="fa-solid fa-user-plus" class="connected" />&nbsp;&nbsp;<span class="is-size-7"
-                >user known</span
-              ><br />
-            </template>
-            <template v-else>
-              <FAIcon icon="fa-solid fa-user-minus" class="disconnected" />&nbsp;&nbsp;<span class="is-size-7"
-                >user unknown</span
-              ><br />
-            </template>
-
-            <template v-if="api.global.db_connected">
-              <FAIcon icon="fa-solid fa-database" class="connected" />&nbsp;&nbsp;<span class="is-size-7"
-                >db connected</span
-              ><br />
-            </template>
-            <template v-else>
-              <FAIcon icon="fa-solid fa-database" class="disconnected" />&nbsp;&nbsp;<span class="is-size-7"
-                >db disconnected</span
-              ><br />
-            </template>
-
-            <template v-if="api.global.db_changes">
-              <FAIcon icon="fa-solid fa-rotate" class="disconnected" />&nbsp;&nbsp;
-              <span class="is-size-7">out of sync</span>
-            </template>
-            <template v-else>
-              <FAIcon icon="fa-solid fa-rotate" class="connected" />&nbsp;&nbsp;
-              <span class="is-size-7">synced</span>
-            </template>
-            <br />
-            <!--
-          <b>The user current appear unknown.:</b> {{ api.local.knownUser }}<br />
-          <b>There are changes to the data since last write:</b> {{ api.local.knownUser }}<br />
-          <b>The database is disconnected:</b> {{ api.global.db_connected }}<br />
-          --></div>
-          <hr />
-
-          <p class="is-size-7 has-text-left">
-            <b>Project:</b> {{ api.local.docRef }}<br />
-            <b>DocRef:</b> {{ api.local.docRef }}<br />
-            <b>PartNum:</b> {{ api.local.partNum }}<br />
-            <b>Mode:</b> {{ api.config.mode == 'development' ? 'testing' : 'live' }}<br />
-            <button
-              v-if="api.local.docRef"
-              class="button is-info is-light is-small is-rounded"
-              @click="open_firebase_console(firebase_url)"
-            >
-              View in Firebase
-            </button>
-          </p>
-        </div>
-      </div>
-      <div class="column is-2 edge pl-0 pr-0">
-        <div class="columnheader"><FAIcon icon="fa-solid fa-pencil" />&nbsp;&nbsp;Database Writes</div>
-        <div class="columncontent">
-          <div class="statusinfo">
-            <p class="has-text-centered">
-              <span class="is-size-1">
-                {{ api.local.totalWrites }}
-              </span>
-              writes <br />
-              <span class="is-size-6">out of {{ api.config.max_writes }} max</span>
-              <br />
-            </p>
-            <span class="is-size-7">Last was {{ ((Date.now() - api.local.lastWrite) / 1000).toFixed(1) }} seconds ago.</span>
-          </div>
+  <div class="contentpanel info">
+    <div class="steps">
+      <div class="step-item" :class="{ 'is-success is-completed': api.local.knownUser }">
+        <div class="step-marker" v-if="!api.local.knownUser">1</div>
+        <div class="step-marker" v-else><FAIcon icon="fa-solid fa-check" /></div>
+        <div class="step-details" :class="{ 'is-success is-completed': api.local.knownUser }">
+          <p class="step-title is-size-6"><FAIcon icon="fa-solid fa-user-plus" />&nbsp;&nbsp;User status</p>
+          <p v-if="!api.local.knownUser">User has <b>not been seen before</b>.</p>
+          <p v-else>User <b>has</b> been seen before.</p>
           <br />
-          <p class="pl-10 pr-10 mb-10">
-            Firebase limits document writes to 1 per second. The Smile API limits writes to a few per second to prevent
-            runaway writes. Also there is a maximum number of writes given to each application.
-          </p>
+          <table class="table is-hoverable is-striped is-fullwidth">
+            <tr>
+              <th width="55%"></th>
+              <th></th>
+            </tr>
+            <tr>
+              <td class="has-text-left"><b>Last route:</b></td>
+              <td class="has-text-left is-family-code is-size-7">{{ '/' + api.local.lastRoute }}</td>
+            </tr>
+            <tr>
+              <td class="has-text-left"><b>Allow repeat:</b></td>
+              <td class="has-text-left is-family-code is-size-7">{{ api.config.allow_repeats }}</td>
+            </tr>
+          </table>
+
+          <!--
+            <p class="pl-10 pr-10 mb-10 is-size-7">
+              User unknown means that the users does not have any localStorage data set indicating they have started the
+              task before. localStorage is used to restart when the user left off when they reload the browser.
+              Typically the user becomes known when the agree to the consent form (prior to that we treat them as just
+              anonymously viewing the recruitment pages before deciding to participate).)
+            </p>
+            -->
         </div>
       </div>
 
-      <div class="column is-9 edge pl-0 pr-0">
-        <div class="columnheader"><FAIcon icon="fa-solid fa-chart-line" />&nbsp;&nbsp;Graphs</div>
-        <div class="columncontent">stuff here</div>
+      <div class="step-item" :class="{ 'is-success is-completed': api.global.db_connected }">
+        <div class="step-marker" v-if="!api.global.db_connected">2</div>
+        <div class="step-marker" v-else><FAIcon icon="fa-solid fa-check" /></div>
+
+        <div class="step-details" :class="{ 'is-success is-completed': api.global.db_connected }">
+          <p class="step-title is-size-6">
+            <img src="/src/assets/dev/logo_lockup_firebase_vertical.svg" width="15" />&nbsp;&nbsp;Firestore
+          </p>
+          <p v-if="!api.global.db_connected">Database is <b>not</b> connected.</p>
+          <p v-else>Database is connected.</p>
+          <br />
+          <table class="table is-hoverable is-striped is-fullwidth">
+            <tr>
+              <th width="40%"></th>
+              <th></th>
+            </tr>
+            <tr>
+              <td class="has-text-left"><b>Mode:</b></td>
+              <td class="has-text-left is-family-code is-size-7">
+                {{ api.config.mode == 'development' ? 'testing' : 'live' }}
+              </td>
+            </tr>
+            <tr>
+              <td class="has-text-left"><b>Project:</b></td>
+              <td class="has-text-left is-family-code is-size-7">{{ api.config.firebaseConfig.projectId }}</td>
+            </tr>
+            <tr>
+              <td class="has-text-left"><b>PartNum:</b></td>
+              <td class="has-text-left is-family-code is-size-7">
+                {{ api.local.partNum }}
+              </td>
+            </tr>
+            <tr>
+              <td class="has-text-left"><b>DocRef:</b></td>
+              <td class="has-text-left is-family-code is-size-7">
+                {{ api.local.docRef }}&nbsp;&nbsp;<a
+                  v-if="api.local.docRef"
+                  @click.prevent="open_firebase_console(firebase_url)"
+                  ><FAIcon icon="fa-solid fa-square-up-right"
+                /></a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="step-item" :class="sync_state">
+        <div class="step-marker" v-if="!api.global.db_connected">3</div>
+        <div class="step-marker" v-if="api.global.db_connected && api.global.db_changes">
+          <FAIcon icon="fa-solid fa-xmark" />
+        </div>
+        <div class="step-marker" v-else><FAIcon icon="fa-solid fa-check" /></div>
+        <div class="step-details">
+          <p class="step-title is-size-6" :class="sync_state"><FAIcon icon="fa-solid fa-rotate" />&nbsp;&nbsp;Sync</p>
+          <p v-if="!api.global.db_connected">Data never synced.</p>
+          <p v-else-if="api.global.db_changes">Data out of sync.</p>
+          <p v-else>Database is synced.</p>
+
+          <br />
+          <table class="table is-hoverable is-striped is-fullwidth">
+            <tr>
+              <th width="40%"></th>
+              <th></th>
+            </tr>
+            <tr>
+              <td class="has-text-left"><b>Writes:</b></td>
+              <td class="has-text-left is-family-code is-size-7">
+                {{ api.local.totalWrites }} out of {{ api.config.max_writes }} max
+              </td>
+            </tr>
+            <tr>
+              <td class="has-text-left"><b>Last write:</b></td>
+              <td class="has-text-left is-family-code is-size-7">
+                {{ ((Date.now() - api.local.lastWrite) / 1000).toFixed(1) }} secs ago
+              </td>
+            </tr>
+            <tr>
+              <td class="has-text-left"><b>Auto save:</b></td>
+              <td class="has-text-left is-family-code is-size-7">{{ api.config.auto_save }}</td>
+            </tr>
+            <tr>
+              <td class="has-text-left"><b>Approx size:</b></td>
+              <td class="has-text-left is-family-code is-size-7">
+                {{ api.local.approx_data_size }} / 1,048,576 max<br />
+                ({{ Math.round((api.local.approx_data_size / 1048576) * 1000) / 1000 }}%)
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.step-title {
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.step-details {
+  font-size: 0.85em;
+  padding: 25px;
+}
+
+.info {
+  margin: 20px;
+  margin-top: 20px;
+  margin-left: 40px;
+  margin-right: 20px;
+}
 .statusinfo {
   padding: 10px;
   font-size: 2em;
@@ -113,22 +179,7 @@ function open_firebase_console(url) {
   border-radius: 0.8em;
   background-color: #f7f7f7;
 }
-.columncontent {
-  padding: 10px;
-  font-size: 0.8em;
-}
-.columncontent hr {
-  padding: 0px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.columnheader {
-  background: #f4f4f4;
-  padding: 5px;
-  font-size: 0.8em;
-  margin-bottom: 10px;
-  padding-left: 10px;
-}
+
 .connected {
   color: #00c42e;
 }
