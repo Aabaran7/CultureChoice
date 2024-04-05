@@ -3,6 +3,7 @@
 import { onMounted, watch, ref, reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
+import CircleProgress from './CircleProgress.vue'
 import DocsDropDown from '@/components/navbars/DocsDropDown.vue'
 import RandomizationDropDown from '@/components/navbars/RandomizationDropDown.vue'
 import ConfigDropDown from '@/components/navbars/ConfigDropDown.vue'
@@ -103,6 +104,14 @@ const database_tooltip = computed(() => {
             <template v-else>
               <FAIcon icon="fa-solid fa-rotate" class="insync" />
             </template>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <CircleProgress
+              :percentage="Math.round(api.local.approx_data_size / 1048576) * 100"
+              :size="15"
+              :strokeWidth="40"
+              slicecolor="hsl(var(--bulma-button-h), var(--bulma-button-s), calc(var(--bulma-button-background-l) + var(--bulma-button-background-l-delta)))"
+              basecolor="rgb(13, 206, 13)"
+            />
           </button>
 
           <!-- randomization button -->
