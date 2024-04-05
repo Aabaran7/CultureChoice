@@ -69,6 +69,9 @@ function createLink(option) {
                 <li :class="{ 'is-active': api.dev.config_panel.type == 'full' }">
                   <a @click="api.dev.config_panel.type = 'full'"><b>Full Config</b></a>
                 </li>
+                <li :class="{ 'is-active': api.dev.config_panel.type == 'dev' }">
+                  <a @click="api.dev.config_panel.type = 'dev'"><b>Dev Vars</b></a>
+                </li>
               </ul>
             </div>
             <div class="datapanel" v-if="api.dev.config_panel.type == 'local'">
@@ -105,12 +108,38 @@ function createLink(option) {
                 </div>
               </div>
             </div>
+
             <div class="configinfo" v-if="api.dev.config_panel.type == 'full'">
               <div class="datapanel">
                 <div class="code">
                   <ul>
                     <li class="config" v-for="(option, key) in smilestore.config" :key="key">
                       <span v-if="typeof option == 'string'">
+                        <b>{{ key }}</b
+                        >: <span v-html="createLink(option)"></span>
+                      </span>
+                      <span v-else>
+                        <b>{{ key }}</b
+                        >:
+                        <ul>
+                          <li v-for="(option2, key2) in option" :key="key2">
+                            <b>{{ key2 }}</b
+                            >: <span v-html="createLink(option2)"></span>
+                          </li>
+                        </ul>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="configinfo" v-if="api.dev.config_panel.type == 'dev'">
+              <div class="datapanel">
+                <div class="code">
+                  <ul>
+                    <li class="config" v-for="(option, key) in smilestore.dev" :key="key">
+                      <span v-if="typeof option != 'object' || option === undefined || option === null">
                         <b>{{ key }}</b
                         >: <span v-html="createLink(option)"></span>
                       </span>
