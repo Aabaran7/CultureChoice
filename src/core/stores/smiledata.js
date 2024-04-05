@@ -11,6 +11,7 @@ import {
   loadDoc,
   fsnow,
 } from './firestore-db'
+import sizeof from 'firestore-size'
 
 import useLog from '@/core/stores/log'
 
@@ -43,6 +44,7 @@ export default defineStore('smilestore', {
         completionCode: null,
         totalWrites: 0,
         lastWrite: null,
+        approx_data_size: 0,
         seedActive: true, // do you want to use a random seed based on the participant's ID?
         seedID: '',
         seedSet: false,
@@ -305,6 +307,7 @@ export default defineStore('smilestore', {
       }
       if (data) {
         this.data = data
+        this.local.approx_data_size = sizeof(data)
         this.setDBConnected()
       }
     },
@@ -338,6 +341,8 @@ export default defineStore('smilestore', {
           return
         }
         await updateSubjectDataRecord(this.data, this.local.docRef)
+        //console.log('data size = ', sizeof(data))
+        this.local.approx_data_size = sizeof(this.data)
         this.local.totalWrites += 1
         this.local.lastWrite = Date.now()
         //this.global.snapshot = { ...smilestore.$state.data }
