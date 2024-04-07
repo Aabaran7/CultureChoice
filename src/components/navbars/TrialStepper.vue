@@ -116,12 +116,22 @@ function setClicked(route) {
                   <div class="column is-9 pt-0 mt-0">
                     <h1 class="title is-6">Experiment Timeline</h1>
                     <p class="has-text-left">
-                      When running in live mode, the experiment disallows arbitrary navigation between routes. If you
-                      enable the "force" option you can jump between routes even when it would be disallowed in live
-                      mode. The timeline graphs show how transitions between pages are arranged. Read more about the
+                      If you enable the "force" option you can jump between routes even when it would be disallowed in
+                      live mode. The timeline graphs show how transitions between pages are arranged. Read more about
+                      the
                       <a href="https://smile.gureckislab.org/timeline.html">timeline</a>
                       here. <br />
                     </p>
+                    <div class="field mt-4 has-text-right">
+                      <input
+                        id="switchRoundedDefaultJump"
+                        type="checkbox"
+                        name="switchRoundedDefaultJump"
+                        class="switch is-rounded is-rtl is-small"
+                        v-model="smilestore.local.allowJumps"
+                      />
+                      <label for="switchRoundedDefaultJump"><b>Force navigation:</b></label>
+                    </div>
                     <RouteGraph
                       :current-route="routeName"
                       :hover-route="hoverRoute"
@@ -130,18 +140,6 @@ function setClicked(route) {
                     ></RouteGraph>
                   </div>
                   <div class="column is-3 pt-0 mt-0">
-                    <div class="field mt-4">
-                      <input
-                        id="switchRoundedDefaultJump"
-                        type="checkbox"
-                        name="switchRoundedDefaultJump"
-                        class="switch is-rounded is-rtl is-small"
-                        v-model="smilestore.local.allowJumps"
-                      />
-                      <label for="switchRoundedDefaultJump">Force navigation:</label>
-                    </div>
-                    <hr class="dropdown-divider" />
-                    <br />
                     <template v-for="r in routes">
                       <!-- make a special link for web_referred, which has params -->
                       <router-link
