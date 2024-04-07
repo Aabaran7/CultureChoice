@@ -59,22 +59,22 @@ function setClicked(route) {
         <p class="control">
           <button
             class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
-            v-on:click="smilestore.incrementPageTracker(routeName)"
-            data-tooltip="Step trial forward"
+            v-on:click="smilestore.decrementPageTracker(routeName)"
+            data-tooltip="Step trial back"
           >
             <span>
-              <FAIcon icon="fa-solid fa-angle-up" />
+              <FAIcon icon="fa-solid fa-angle-left" />
             </span>
           </button>
         </p>
         <p class="control">
           <button
             class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
-            v-on:click="smilestore.decrementPageTracker(routeName)"
-            data-tooltip="Step trial back"
+            v-on:click="smilestore.incrementPageTracker(routeName)"
+            data-tooltip="Step trial forward"
           >
             <span>
-              <FAIcon icon="fa-solid fa-angle-down" />
+              <FAIcon icon="fa-solid fa-angle-right" />
             </span>
           </button>
         </p>
@@ -112,18 +112,16 @@ function setClicked(route) {
                 </a>
               </div>
               <div class="content">
-                <h1 class="title is-6">Experiment Timeline</h1>
-                <p class="has-text-left">
-                  When running in live mode, the experiment disallows arbitrary navigation between routes. If you enable
-                  the "force" option you can jump between routes even when it would be disallowed in live mode. The
-                  timeline graphs show how transitions between pages are arranged. Read more about the
-                  <a href="https://smile.gureckislab.org/timeline.html">timeline</a>
-                  here. <br />
-                </p>
-
-                <hr class="dropdown-divider" />
                 <div class="columns pt-0 mt-0">
-                  <div class="column pt-0 mt-0">
+                  <div class="column is-9 pt-0 mt-0">
+                    <h1 class="title is-6">Experiment Timeline</h1>
+                    <p class="has-text-left">
+                      When running in live mode, the experiment disallows arbitrary navigation between routes. If you
+                      enable the "force" option you can jump between routes even when it would be disallowed in live
+                      mode. The timeline graphs show how transitions between pages are arranged. Read more about the
+                      <a href="https://smile.gureckislab.org/timeline.html">timeline</a>
+                      here. <br />
+                    </p>
                     <RouteGraph
                       :current-route="routeName"
                       :hover-route="hoverRoute"
@@ -131,7 +129,7 @@ function setClicked(route) {
                       @clicked-on="setClicked"
                     ></RouteGraph>
                   </div>
-                  <div class="column pt-0 mt-0">
+                  <div class="column is-3 pt-0 mt-0">
                     <div class="field mt-4">
                       <input
                         id="switchRoundedDefaultJump"
@@ -156,7 +154,7 @@ function setClicked(route) {
                         :key="r.path"
                       >
                         <div class="routelabel">
-                          <span>/{{ r.name }}</span>
+                          <span class="is-size-7">/{{ r.name }}</span>
                         </div>
                       </router-link>
                       <!-- make a link for everything else -->
@@ -171,7 +169,7 @@ function setClicked(route) {
                         :key="r.name"
                       >
                         <div class="routelabel">
-                          <span>/{{ r.name }}</span>
+                          <span class="is-size-7">/{{ r.name }}</span>
                         </div>
                       </router-link>
                     </template>
