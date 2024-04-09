@@ -1,6 +1,6 @@
 <script setup>
 //import { useTimeAgo } from '@vueuse/core'
-import { computed } from 'vue'
+import { computed, ref, onMounted, onDeactivated } from 'vue'
 import SmileAPI from '@/core/composables/smileapi'
 const api = SmileAPI()
 
@@ -23,6 +23,31 @@ const sync_state = computed(() => {
     return ''
   }
 })
+
+const last_write_time_string = ref('')
+onMounted(() => {
+  var myInterval = setInterval(() => {
+    if (!api.global.db_connected) {
+      last_write_time_string.value = `Never happened`
+    } else {
+      var time = ((Date.now() - api.local.lastWrite) / 1000).toFixed(1)
+      if (time > 60) {
+        time = (time / 60).toFixed(2)
+        last_write_time_string.value = `${time} mins ago`
+      } else {
+        last_write_time_string.value = `${time} secs ago`
+      }
+      if (time >= 60 * 10) {
+        last_write_time_string.value = 'So long ago I stopped counting'
+        clearInterval(myInterval)
+      }
+    }
+  }, 500)
+})
+
+onDeactivated(() => {
+  console.log('unmounting')
+})
 </script>
 <template>
   <!-- content of panel here -->
@@ -32,7 +57,11 @@ const sync_state = computed(() => {
         <div class="step-marker" v-if="!api.local.knownUser">1</div>
         <div class="step-marker" v-else><FAIcon icon="fa-solid fa-check" /></div>
         <div class="step-details" :class="{ 'is-success is-completed': api.local.knownUser }">
-          <p class="step-title is-size-6"><FAIcon icon="fa-solid fa-user-plus" />&nbsp;&nbsp;User status</p>
+          <p class="step-title is-size-6">
+            <FAIcon icon="fa-solid fa-user-plus" v-if="api.local.knownUser" />
+            <FAIcon icon="fa-solid fa-user-minus" v-else />
+            &nbsp;&nbsp;User status
+          </p>
           <p v-if="!api.local.knownUser">User has <b>not been seen before</b>.</p>
           <p v-else>User <b>has</b> been seen before.</p>
           <br />
@@ -134,7 +163,7 @@ const sync_state = computed(() => {
             <tr>
               <td class="has-text-left"><b>Last write:</b></td>
               <td class="has-text-left is-family-code is-size-7">
-                {{ ((Date.now() - api.local.lastWrite) / 1000).toFixed(1) }} secs ago
+                {{ last_write_time_string }}
               </td>
             </tr>
             <tr>
