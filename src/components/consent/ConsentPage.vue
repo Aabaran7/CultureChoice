@@ -15,6 +15,7 @@ function finish() {
     api.setConsented()
     api.stepNextRoute()
 }
+
 const agree = ref(false)
 const name = ref('enter your name')
 
@@ -25,10 +26,10 @@ const name = ref('enter your name')
         <div class="pagecontent">
             <div class="has-background-light  bumper">
                 <div class="columns">
-                    <div class="column">
+                    <div class="column is-8 pr-0 ">
                         <InformedConsentText />
                     </div>
-                    <div class="column is-one-third">
+                    <div class="column is-4">
                         <div class="box consentbox">
                             <p class="has-text-left has-text-weight-semibold">
                                 We first must verify that you are
