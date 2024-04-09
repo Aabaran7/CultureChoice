@@ -45,57 +45,11 @@ function setClicked(route) {
 </script>
 
 <template>
-  <div class="columns is-right">
-    <div class="column is-one-half">
-      <div class="field has-addons">
-        <p class="control">
-          <button
-            class="button is-small is-warning is-jump-bar has-tooltip-arrow has-tooltip-bottom"
-            data-tooltip="Current trial counter"
-          >
-            <span>{{ smilestore.getPageTracker(routeName) }}</span>
-          </button>
-        </p>
-        <p class="control">
-          <button
-            class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
-            v-on:click="smilestore.decrementPageTracker(routeName)"
-            data-tooltip="Step trial back"
-          >
-            <span>
-              <FAIcon icon="fa-solid fa-angle-left" />
-            </span>
-          </button>
-        </p>
-        <p class="control">
-          <button
-            class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
-            v-on:click="smilestore.incrementPageTracker(routeName)"
-            data-tooltip="Step trial forward"
-          >
-            <span>
-              <FAIcon icon="fa-solid fa-angle-right" />
-            </span>
-          </button>
-        </p>
-
-        <p class="control" v-if="smilestore.hasAutofill">
-          <button
-            class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
-            v-on:click="smilestore.autofill()"
-            data-tooltip="Autofill Form"
-          >
-            <span>
-              <FAIcon icon="fa-solid fa-pen-to-square" />
-            </span>
-          </button>
-        </p>
-      </div>
-    </div>
+  <div class="columns is-right fixedcol">
     <div class="column is-one-half">
       <div class="dropdown is-right is-hoverable" :class="{ 'is-active': api.dev.route_panel.visible }">
-        <div class="dropdown-trigger routelabel" @click="$emit('toggleVisible')">
-          <span>/{{ routeName }}</span>
+        <div class="dropdown-trigger routelabel has-text-left" @click="$emit('toggleVisible')">
+          <button class="button is-small">/{{ routeName }}</button>
         </div>
         <div class="dropdown-menu pt-2" id="dropdown-menu" role="menu">
           <vue-draggable-resizable
@@ -179,10 +133,83 @@ function setClicked(route) {
         </div>
       </div>
     </div>
+
+    <div class="column is-one">
+      <div class="field has-addons">
+        <p class="control">
+          <button
+            class="button is-small is-warning is-jump-bar has-tooltip-arrow has-tooltip-bottom"
+            data-tooltip="Current trial counter"
+          >
+            <span>{{ smilestore.getPageTracker(routeName) }}</span>
+          </button>
+        </p>
+        <p class="control" v-if="smilestore.hasAutofill">
+          <button
+            class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
+            v-on:click="smilestore.autofill()"
+            data-tooltip="Autofill Form"
+          >
+            <span>
+              <FAIcon icon="fa-solid fa-pen-to-square" />
+            </span>
+          </button>
+        </p>
+      </div>
+      <div class="field has-addons">
+        <p class="control">
+          <button
+            class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
+            v-on:click="api.stepPrevRoute()"
+            data-tooltip="Step page back"
+          >
+            <span>
+              <FAIcon icon="fa-solid fa-angles-left" />
+            </span>
+          </button>
+        </p>
+        <p class="control">
+          <button
+            class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-bottom"
+            v-on:click="smilestore.decrementPageTracker(routeName)"
+            data-tooltip="Step trial back"
+          >
+            <span>
+              <FAIcon icon="fa-solid fa-angle-left" />
+            </span>
+          </button>
+        </p>
+        <p class="control">
+          <button
+            class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-left"
+            v-on:click="smilestore.incrementPageTracker(routeName)"
+            data-tooltip="Step trial forward"
+          >
+            <span>
+              <FAIcon icon="fa-solid fa-angle-right" />
+            </span>
+          </button>
+        </p>
+        <p class="control">
+          <button
+            class="button is-small is-light is-jump-bar has-tooltip-arrow has-tooltip-left"
+            v-on:click="api.stepNextRoute()"
+            data-tooltip="Step page forward"
+          >
+            <span>
+              <FAIcon icon="fa-solid fa-angles-right" />
+            </span>
+          </button>
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.fixedcol {
+  min-width: 380px;
+}
 .dropdown-content {
   padding: 0;
   padding-top: 8px;

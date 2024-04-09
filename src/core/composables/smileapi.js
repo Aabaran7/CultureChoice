@@ -59,6 +59,15 @@ export default function useSmileAPI() {
     getRecruitmentService: () => {
       return smilestore.data.recruitment_service
     },
+    getPageTracker: (routeName) => {
+      return smilestore.getPageTracker(routeName)
+    },
+    hasAutofill: () => {
+      return smilestore.hasAutofill
+    },
+    autofill: () => {
+      return smilestore.autofill()
+    },
     currentRouteName: () => {
       return route.name
     },

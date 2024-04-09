@@ -245,6 +245,7 @@ const mainCircle = 10
   border-radius: 10px;
   margin-bottom: 20px;
   margin-top: 5px;
+  height: 100px;
 }
 
 .seqtitle {
@@ -257,13 +258,14 @@ const mainCircle = 10
   width: auto;
   float: left;
   font-size: 0.8em;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .sequential {
   background-color: #f3fdf6;
   border: 1px solid #aff4c6;
   border-radius: 10px;
+  height: 550px;
 }
 
 .title {

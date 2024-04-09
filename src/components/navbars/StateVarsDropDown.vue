@@ -19,7 +19,7 @@ function onDragCallback(x, y) {
 <template>
   <div class="dropdown is-hoverable is-right" :class="{ 'is-active': api.dev.state_var_panel.visible }">
     <div class="dropdown-trigger">
-      <button class="button is-success is-light dev-bar-button">
+      <button class="button devbar-button">
         <FAIcon icon=" fa-solid fa-hand" />
       </button>
     </div>
@@ -41,60 +41,84 @@ function onDragCallback(x, y) {
             <h1 class="title is-6">Manipulate State</h1>
             <p class="is-left">You can override or view certain user-relevant state variables for testing purposes.</p>
             <br />
-            <div class="columns">
-              <div class="column is-6">
-                <div class="field">
-                  <input
-                    id="switchRoundedDefault1"
-                    type="checkbox"
-                    name="switchRoundedDefault1"
-                    class="switch is-rounded is-rtl is-small"
-                    v-model="smilestore.local.knownUser"
-                  />
-                  <label for="switchRoundedDefault1"><b>Is known</b>:</label>
-                </div>
-                <div class="field">
-                  <input
-                    id="switchRoundedDefault2"
-                    type="checkbox"
-                    name="switchRoundedDefault2"
-                    class="switch is-rounded is-rtl is-small"
-                    v-model="smilestore.data.done"
-                  />
-                  <label for="switchRoundedDefault2"><b>Is done</b>:</label>
-                </div>
-              </div>
-              <div class="column is-6">
-                <div class="field">
-                  <input
-                    id="switchRoundedDefault3"
-                    type="checkbox"
-                    name="switchRoundedDefault3"
-                    class="switch is-rounded is-rtl is-small"
-                    v-model="smilestore.data.consented"
-                  />
-                  <label for="switchRoundedDefault3"><b>Has consented</b>:</label>
-                </div>
-                <div class="field">
-                  <input
-                    id="switchRoundedDefault4"
-                    type="checkbox"
-                    name="switchRoundedDefault4"
-                    class="switch is-rounded is-rtl is-small"
-                    v-model="smilestore.data.withdraw"
-                  />
-                  <label for="switchRoundedDefault4"><b>Withdrew</b>:</label>
-                </div>
-              </div>
-            </div>
-            <b>Recruitment service</b>:
-            <div class="select is-small">
-              <select v-model="smilestore.data.recruitment_service">
-                <option v-for="(cond, key) in smilestore.global.urls" :key="cond">
-                  {{ key }}
-                </option>
-              </select>
-            </div>
+            <table class="table is-hoverable is-striped is-fullwidth">
+              <tr>
+                <th width="55%"></th>
+                <th></th>
+              </tr>
+              <tr>
+                <td class="has-text-left"><b>Is known:</b></td>
+                <td class="has-text-left is-family-code is-size-7">
+                  <div class="field">
+                    <input
+                      id="switchRoundedDefault1"
+                      type="checkbox"
+                      name="switchRoundedDefault1"
+                      class="switch is-rounded is-rtl is-small"
+                      v-model="smilestore.local.knownUser"
+                    />
+                    <label for="switchRoundedDefault1"></label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="has-text-left"><b>Has consented:</b></td>
+                <td class="has-text-left is-family-code is-size-7">
+                  <div class="field">
+                    <input
+                      id="switchRoundedDefault3"
+                      type="checkbox"
+                      name="switchRoundedDefault3"
+                      class="switch is-rounded is-rtl is-small"
+                      v-model="smilestore.data.consented"
+                    />
+                    <label for="switchRoundedDefault3"></label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="has-text-left"><b>Is done:</b></td>
+                <td class="has-text-left is-family-code is-size-7">
+                  <div class="field">
+                    <input
+                      id="switchRoundedDefault2"
+                      type="checkbox"
+                      name="switchRoundedDefault2"
+                      class="switch is-rounded is-rtl is-small"
+                      v-model="smilestore.data.done"
+                    />
+                    <label for="switchRoundedDefault2"></label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="has-text-left"><b>Withdrew:</b></td>
+                <td class="has-text-left is-family-code is-size-7">
+                  <div class="field">
+                    <input
+                      id="switchRoundedDefault4"
+                      type="checkbox"
+                      name="switchRoundedDefault4"
+                      class="switch is-rounded is-rtl is-small"
+                      v-model="smilestore.data.withdraw"
+                    />
+                    <label for="switchRoundedDefault4"></label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="has-text-left"><b>Service:</b></td>
+                <td class="has-text-left is-family-code is-size-7">
+                  <div class="control select is-small">
+                    <select id="recruitment" v-model="smilestore.data.recruitment_service" class="select is-small">
+                      <option v-for="(cond, key) in smilestore.global.urls" :key="cond">
+                        {{ key }}
+                      </option>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       </vue-draggable-resizable>
@@ -109,6 +133,7 @@ function onDragCallback(x, y) {
   margin: 0;
   width: 350px;
   text-align: left;
+  padding-bottom: 20px;
 }
 .pin {
   float: right;

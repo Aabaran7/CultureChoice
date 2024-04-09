@@ -49,8 +49,13 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { faUserMinus } from '@fortawesome/free-solid-svg-icons'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { faRotate } from '@fortawesome/free-solid-svg-icons'
+import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faRotateRight } from '@fortawesome/free-solid-svg-icons'
 import { faSquareUpRight } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faAnglesRight } from '@fortawesome/free-solid-svg-icons'
+import { faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
+
 /* add icons to the library */
 library.add(
   faCheck,
@@ -98,5 +103,9 @@ library.add(
   faEye,
   faUserMinus,
   faUserPlus,
-  faRotate
+  faRotate,
+  faRotateLeft,
+  faRotateRight,
+  faAnglesRight,
+  faAnglesLeft
 )

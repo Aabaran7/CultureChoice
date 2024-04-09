@@ -81,13 +81,13 @@ export default defineStore('smilestore', {
         // syncs with local storage
         page_provides_autofill: null,
         show_data_bar: false,
-        data_bar_height: 360,
+        data_bar_height: 370,
         data_bar_tab: 'database',
         data_path: null,
         config_panel: { type: 'local', visible: false, x: -280, y: 0 },
-        state_var_panel: { type: 'local', visible: false, x: -150, y: 0 },
+        state_var_panel: { visible: false, x: -150, y: 0 },
         randomization_panel: { visible: false, x: -130, y: 0 },
-        route_panel: { visible: false, x: -490, y: 1 },
+        route_panel: { visible: false, x: -500, y: -3 },
       },
       localStorage,
       { mergeDefaults: true }

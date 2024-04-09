@@ -6,7 +6,7 @@
 @import '../node_modules/bulma-steps/dist/css/bulma-steps.min.css';
 
 /* Import a Google Font */
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+/*@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');*/
 @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500&display=swap');
 
 :root {
@@ -19,21 +19,21 @@
   --beige-lighter: #eff0eb;
   --code: rgb(4, 4, 4);
   --code-background: rgb(251, 251, 251);
+  --status-green: #23d160; /*rgb(13, 206, 13);*/
+  --status-yellow: #dab830;
+  --status-red: rgb(234, 8, 8);
+  --dev-bar-light-grey: #f7f7f7;
+  --dev-bar-mild-grey: #eeeeee;
+  --dev-bar-strong-grey: #dbdbdb;
+  --dev-bar-text: #000;
+  --dev-bar-lines: 0.01em solid #b5b5b5;
   /* above from the out .scss file */
-  --bulma-family-primary: '"Nunito", sans-serif';
+  --bulma-input-arrow: var(--purple);
   --bulma-primary: var(--purple);
+  --bulma-link: var(--darker-grey);
   --bulma-link-text: var(--light-grey);
   --bulma-link-text-hover: var(--pink);
   --bulma-link-text-active: var(--darker-grey);
-}
-
-/* fixes a bug in Bulma */
-.navbar-menu {
-  /*background-color: inherit;*/
-}
-
-.config li {
-  padding-left: 35px;
 }
 
 .page {

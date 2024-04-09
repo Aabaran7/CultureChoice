@@ -1,4 +1,3 @@
-// create a default vue component using script setup // a default vue component using script setup
 <script setup>
 import { onMounted, watch, ref, reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -8,6 +7,8 @@ import DocsDropDown from '@/components/navbars/DocsDropDown.vue'
 import RandomizationDropDown from '@/components/navbars/RandomizationDropDown.vue'
 import ConfigDropDown from '@/components/navbars/ConfigDropDown.vue'
 import StateVarsDropDown from '@/components/navbars/StateVarsDropDown.vue'
+import Stepper from '@/components/navbars/Stepper.vue'
+import RouteInfoDropDrop from '@/components/navbars/RouteInfoDropDown.vue'
 import TrialStepper from './TrialStepper.vue'
 
 import useSmileAPI from '@/core/composables/smileapi'
@@ -39,92 +40,109 @@ const database_tooltip = computed(() => {
     msg += 'Database not connected | '
   }
   if (api.global.db_changes == true) {
-    msg += 'Unsynced data'
+    msg += 'Unsynced data '
   } else {
-    msg += 'Data in sync'
+    msg += 'Data in sync '
+  }
+  if (api.global.db_connected == true) {
+    msg += '| '
+    msg += Math.round((api.local.approx_data_size / 1048576) * 1000) / 1000 + '% data used'
   }
   return msg
 })
 </script>
 
 <template>
-  <nav class="navbar">
-    <div class="navbar-brand">
-      <div class="devmode-title">
-        <div
-          class="has-tooltip-arrow has-tooltip-bottom"
-          @click="resetDevState()"
-          data-tooltip="Reset developer interface"
-        >
-          <FAIcon icon="fa-solid fa-arrow-rotate-left" />&nbsp;<b>DEVELOPER MODE</b>
-        </div>
+  <nav class="devbar">
+    <div class="devbar-brand">
+      <div
+        class="devbar-title has-tooltip-arrow has-tooltip-bottom"
+        @click="resetDevState()"
+        data-tooltip="Reset developer interface"
+      >
+        <div class="devbar-fulltitle"><FAIcon icon="fa-solid fa-arrow-rotate-left" />&nbsp;<b>DEVELOPER MODE</b></div>
+        <div class="devbar-subtitle"><FAIcon icon="fa-solid fa-arrow-rotate-left" />&nbsp;<b>DEV MODE</b></div>
       </div>
     </div>
 
-    <div id="mainbar" class="navbar-menu">
-      <div class="navbar-start">
+    <div class="devbar-menu">
+      <div class="devbar-start">
         <div class="devmode">
           <DocsDropDown></DocsDropDown>
         </div>
       </div>
-    </div>
 
-    <div class="navbar-end">
-      <div class="navbar-item mainstate">
-        <div class="buttons">
-          <!-- reset button -->
-          <button
-            class="button is-warning is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom"
-            data-tooltip="Reset entire state"
-            @click="resetLocalState()"
-          >
-            <FAIcon icon="fa-solid fa-arrow-rotate-left" />
-          </button>
+      <div class="devbar-end">
+        <div class="devbar-item devbar-buttonpanel">
+          <div class="buttons">
+            <!-- reset button -->
+            <button
+              class="button devbar-button has-tooltip-arrow has-tooltip-bottom"
+              data-tooltip="Reset entire state"
+              @click="resetLocalState()"
+            >
+              <FAIcon icon="fa-solid fa-arrow-rotate-left" />
+            </button>
 
-          <!-- config button -->
-          <ConfigDropDown></ConfigDropDown>
+            <!-- config button -->
+            <ConfigDropDown></ConfigDropDown>
 
-          <button
-            class="button is-success is-light dev-bar-button has-tooltip-arrow has-tooltip-bottom"
-            :data-tooltip="database_tooltip"
-            @click="api.dev.show_data_bar = !api.dev.show_data_bar"
-          >
-            <FAIcon
-              icon="fa-solid fa-database"
-              class="disconnected"
-              :class="{ connected: api.global.db_connected == true }"
-            />
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            <template v-if="!api.global.db_connected">
-              <FAIcon icon="fa-solid fa-rotate" class="has-text-grey" />
-            </template>
-            <template v-else-if="api.global.db_changes">
-              <FAIcon icon="fa-solid fa-rotate" class="outofsync" />
-            </template>
-            <template v-else>
-              <FAIcon icon="fa-solid fa-rotate" class="insync" />
-            </template>
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            <CircleProgress
-              :percentage="Math.round(api.local.approx_data_size / 1048576) * 100"
-              :size="15"
-              :strokeWidth="40"
-              slicecolor="hsl(var(--bulma-button-h), var(--bulma-button-s), calc(var(--bulma-button-background-l) + var(--bulma-button-background-l-delta)))"
-              basecolor="rgb(13, 206, 13)"
-            />
-          </button>
+            <button
+              class="button devbar-button has-tooltip-arrow has-tooltip-bottom"
+              :data-tooltip="database_tooltip"
+              @click="api.dev.show_data_bar = !api.dev.show_data_bar"
+            >
+              <FAIcon
+                icon="fa-solid fa-database"
+                class="disconnected"
+                :class="{ connected: api.global.db_connected == true }"
+              />
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <template v-if="!api.global.db_connected">
+                <FAIcon icon="fa-solid fa-rotate" class="has-text-grey" />
+              </template>
+              <template v-else-if="api.global.db_changes && api.global.db_connected">
+                <FAIcon icon="fa-solid fa-rotate" class="outofsync" />
+              </template>
+              <template v-else>
+                <FAIcon icon="fa-solid fa-rotate" class="insync" />
+              </template>
+              <template v-if="!api.global.db_connected">
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <CircleProgress
+                  :percentage="Math.round(api.local.approx_data_size / 1048576) * 100"
+                  :size="12"
+                  :strokeWidth="40"
+                  slicecolor="#aaa"
+                  basecolor="#aaa"
+                />
+              </template>
+              <template v-else>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
 
-          <!-- randomization button -->
-          <RandomizationDropDown></RandomizationDropDown>
+                <CircleProgress
+                  :percentage="Math.round(api.local.approx_data_size / 1048576) * 100"
+                  :size="12"
+                  :strokeWidth="40"
+                  slicecolor="hsl(var(--bulma-button-h), var(--bulma-button-s), calc(var(--bulma-button-background-l) + var(--bulma-button-background-l-delta)))"
+                  basecolor="var(--status-green)"
+                />
+              </template>
+            </button>
 
-          <!-- state variable buttons -->
-          <StateVarsDropDown></StateVarsDropDown>
-        </div>
-      </div>
-      <!-- drop down-->
-      <div class="navbar-item jumper">
-        <div class="devmode">
-          <TrialStepper :routeName="api.currentRouteName()"> </TrialStepper>
+            <!-- randomization button -->
+            <RandomizationDropDown></RandomizationDropDown>
+
+            <!-- state variable buttons -->
+            <StateVarsDropDown></StateVarsDropDown>
+
+            <!-- route info buttons -->
+            <RouteInfoDropDrop></RouteInfoDropDrop>
+
+            <div class="devbar-stepper">
+              <Stepper></Stepper>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -132,23 +150,115 @@ const database_tooltip = computed(() => {
 </template>
 
 <style>
-.dev-bar-button {
+.devbar {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  position: relative;
+  z-index: 1000;
+}
+
+.devbar-subtitle {
+  padding-right: 20px;
+  display: none;
+  white-space: nowrap;
+}
+
+.devbar-menu {
+  flex-grow: 1;
+  flex-shrink: 0;
+  align-items: stretch;
+  display: flex;
+  z-index: 999;
+}
+
+.devbar {
+  font-size: 13px;
+  background: var(--dev-bar-light-grey); /*rgb(63, 160, 149);*/
+  color: var(--dev-bar-text);
+  border-bottom: var(--dev-bar-lines);
+  min-height: 32px;
+  max-height: 32px;
+}
+
+.devbar-start {
+  justify-content: flex-start;
+  margin-inline-end: auto;
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 3;
+}
+
+@media screen and (max-width: 830px) {
+  .devbar-start {
+    display: none;
+  }
+}
+
+.devbar-title {
+  padding-top: 8px;
+  font-weight: 500;
+  padding-left: 10px;
+}
+
+.devbar-end {
+  justify-content: flex-end;
+  margin-inline-start: auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.devbar-item {
+  align-items: center;
+  display: flex;
+}
+
+.devbar-buttonpanel {
+  padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-left: var(--dev-bar-lines);
+  background-color: var(--dev-bar-mild-grey); /*rgb(63, 160, 149);*/
+}
+
+.devbar-button {
   font-size: 0.65rem;
   height: 2em;
 }
+
+@media screen and (max-width: 725px) {
+  .devbar-fulltitle {
+    display: none;
+  }
+  .devbar-buttonpanel {
+    border-left: none;
+    background-color: #eeeeee; /*rgb(63, 160, 149);*/
+  }
+  .devbar {
+    border-left: 0.01em solid #b5b5b5;
+    background-color: #eeeeee; /*rgb(63, 160, 149);*/
+  }
+  .devbar-subtitle {
+    display: inline;
+  }
+  .devbar-stepper {
+    display: none;
+  }
+}
 </style>
+
 <style scoped>
 .disconnected {
-  color: red;
+  color: var(--status-red);
 }
 .connected {
-  color: rgb(13, 206, 13);
+  color: var(--status-green);
 }
 .outofsync {
-  color: rgb(245, 206, 14);
+  color: var(--status-yellow);
 }
 .insync {
-  color: rgb(13, 206, 13);
+  color: var(--status-green);
 }
 
 a:hover {
@@ -157,19 +267,30 @@ a:hover {
 
 .jumper {
   padding-top: 4px;
-  background-color: #79f2cc;
+  background-color: #dddddd;
 }
 
 .navbar {
   font-size: 13px;
-  background: rgb(63, 160, 149);
-  color: #fff;
+  background: #f7f7f7; /*rgb(63, 160, 149);*/
+  color: #000;
+  border-bottom: 0.01em solid #b5b5b5;
   height: 0px;
   padding: 0px;
   padding-left: 10px;
   margin: 0px;
   min-height: 32px;
   text-align: center;
+}
+
+.field {
+  margin: 0px;
+  margin-top: 3px;
+}
+.is-jump-bar {
+  font-size: 0.65rem;
+  height: 2em;
+  margin: 0px;
 }
 
 .devmode-title {
@@ -186,6 +307,7 @@ a:hover {
 
 .mainstate {
   padding-top: 8px;
-  background-color: rgb(63, 160, 149);
+  border-left: 0.01em solid #b5b5b5;
+  background-color: #eeeeee; /*rgb(63, 160, 149);*/
 }
 </style>

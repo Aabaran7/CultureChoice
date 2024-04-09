@@ -1,0 +1,53 @@
+<script setup>
+import useSmileAPI from '@/core/composables/smileapi'
+const api = useSmileAPI()
+</script>
+
+<template>
+  <div class="field has-addons">
+    <p class="control">
+      <button
+        class="button is-small devbar-button has-tooltip-arrow has-tooltip-bottom"
+        v-on:click="api.stepPrevRoute()"
+        data-tooltip="Step page back"
+      >
+        <span>
+          <FAIcon icon="fa-solid fa-angles-left" />
+        </span>
+      </button>
+    </p>
+    <p class="control">
+      <button
+        class="button is-small devbar-button has-tooltip-arrow has-tooltip-bottom"
+        v-on:click="api.decrementTrial()"
+        data-tooltip="Step trial back"
+      >
+        <span>
+          <FAIcon icon="fa-solid fa-angle-left" />
+        </span>
+      </button>
+    </p>
+    <p class="control">
+      <button
+        class="button is-small devbar-button has-tooltip-arrow has-tooltip-bottom"
+        v-on:click="api.incrementTrial()"
+        data-tooltip="Step trial forward"
+      >
+        <span>
+          <FAIcon icon="fa-solid fa-angle-right" />
+        </span>
+      </button>
+    </p>
+    <p class="control">
+      <button
+        class="button is-small devbar-button has-tooltip-arrow has-tooltip-left"
+        v-on:click="api.stepNextRoute()"
+        data-tooltip="Step page forward"
+      >
+        <span>
+          <FAIcon icon="fa-solid fa-angles-right" />
+        </span>
+      </button>
+    </p>
+  </div>
+</template>

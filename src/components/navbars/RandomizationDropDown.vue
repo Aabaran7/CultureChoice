@@ -22,7 +22,7 @@ function onDragCallback(x, y) {
 <template>
   <div class="dropdown is-hoverable is-right" :class="{ 'is-active': api.dev.randomization_panel.visible }">
     <div class="dropdown-trigger">
-      <button class="button is-success is-light dev-bar-button">
+      <button class="button devbar-button">
         <FAIcon icon=" fa-solid fa-dice" />
       </button>
     </div>
@@ -50,52 +50,75 @@ function onDragCallback(x, y) {
               <a href="https://smile.gureckislab.org/randomization.html">in the docs</a>.
             </p>
             <br />
-            <div class="field">
-              <input
-                id="switchRoundedDefault"
-                type="checkbox"
-                name="switchRoundedDefault"
-                class="switch is-rounded is-rtl is-small"
-                v-model="smilestore.local.seedActive"
-              />
-              <label for="switchRoundedDefault"><b>Use fixed seed</b>:</label>
-            </div>
-            <div class="field">
-              <input
-                class="input is-small"
-                type="text"
-                placeholder="Current seed"
-                size="15"
-                width="10"
-                v-model="seed"
-              />
-              <button class="button is-success is-small" id="refresh" @click="refresh()">
-                <FAIcon icon="fa-solid fa-arrow-rotate-left" />
-              </button>
-            </div>
+            <table class="table is-fullwidth">
+              <tr>
+                <th width="55%"></th>
+                <th></th>
+              </tr>
+              <tr>
+                <td class="has-text-left"><b>Use fixed seed</b>:</td>
+                <td class="has-text-left is-family-code is-size-7">
+                  <div class="field">
+                    <input
+                      id="switchRoundedDefault"
+                      type="checkbox"
+                      name="switchRoundedDefault"
+                      class="switch is-rounded is-rtl is-small"
+                      v-model="smilestore.local.seedActive"
+                    />
+                    <label for="switchRoundedDefault"></label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="has-text-left"><b>Current seed</b>:</td>
+                <td class="has-text-left is-family-code is-size-7">
+                  <div class="fixed-grid has-2-cols gap-0">
+                    <div class="grid">
+                      <div class="cell">
+                        <input
+                          class="input is-small"
+                          type="text"
+                          placeholder="Current seed"
+                          size="15"
+                          width="10"
+                          v-model="seed"
+                        />
+                      </div>
+                      <div class="column">
+                        <button class="button is-success is-small" id="refresh" @click="refresh()">
+                          <FAIcon icon="fa-solid fa-arrow-rotate-left" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+            <div class="field"></div>
 
-            <hr class="dropdown-divider mt-2 mb-2" />
-            &nbsp;
-
-            <hr class="dropdown-divider" />
             <h1 class="title is-6">Random variables</h1>
             <p class="is-left">
               Some text about this. Read more about randomization
               <a href="https://smile.gureckislab.org/randomization.html"> in the docs </a>.
             </p>
             <br />
-            <template v-for="(value, key) in smilestore.getPossibleConditions" :key="key">
-              <b>{{ key }}</b
-              >:
-              <div class="select is-small">
-                <select>
-                  <option v-for="cond in value" :key="cond">
-                    {{ cond }}
-                  </option>
-                </select>
-              </div>
-              <br /><br />
-            </template>
+            <table class="table is-fullwidth">
+              <template v-for="(value, key) in smilestore.getPossibleConditions" :key="key">
+                <tr>
+                  <td>{{ key }}</td>
+                  <td>
+                    <div class="select is-small">
+                      <select>
+                        <option v-for="cond in value" :key="cond">
+                          {{ cond }}
+                        </option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+            </table>
           </div>
         </div>
       </vue-draggable-resizable>

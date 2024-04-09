@@ -4,7 +4,6 @@ import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 import useSmileStore from '@/core/stores/smiledata'
 const smilestore = useSmileStore() // load the global store
-const seed = ref(smilestore.getSeedID)
 
 //const panel = reactive({ type: 'local', visible: false, x: -280, y: 0 })
 
@@ -32,7 +31,7 @@ function createLink(option) {
 <template>
   <div class="dropdown is-hoverable is-right" :class="{ 'is-active': api.dev.config_panel.visible }">
     <div class="dropdown-trigger">
-      <button class="button is-success is-light dev-bar-button">
+      <button class="button devbar-button">
         <FAIcon icon="fa-solid fa-gear" />
       </button>
     </div>
@@ -217,6 +216,10 @@ a {
 
 .config b {
   color: #639aa6;
+}
+
+.config li {
+  padding-left: 35px;
 }
 
 .code {
