@@ -112,7 +112,7 @@ jobs:
             VITE_GIT_LAST_MSG='${{ github.event.head_commit.message }}'
           fi
           echo "VITE_DEPLOY_BASE_PATH   =  '/${VITE_GIT_OWNER}/${VITE_GIT_REPO_NAME}/${VITE_GIT_BRANCH_NAME}/'" >> $ENV_FILE
-          CODENAME=$(node scripts/codenamize.js "/${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}/${{ env.GITHUB_REF_SLUG }}")
+          CODENAME=$(node scripts/codenamize.cjs "/${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG }}/${{ env.GITHUB_REF_SLUG }}")
           echo "VITE_CODE_NAME          = ${CODENAME}" >> $ENV_FILE
           cat $ENV_FILE
 
