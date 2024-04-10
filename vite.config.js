@@ -3,7 +3,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
-import vitePluginHtmlEnv from './scripts/vite-plugin-html-env'
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
@@ -17,7 +16,7 @@ export default ({ mode }) => {
   // import.meta.env.VITE_NAME available here with: process.env.VITE_NAME
   // import.meta.env.VITE_PORT available here with: process.env.VITE_PORT
   return defineConfig({
-    plugins: [vitePluginHtmlEnv(), vue()],
+    plugins: [vue()],
     // if you need an additional page you have to list them here
     // see https://vitejs.dev/guide/build.html#multi-page-app
     // build: {

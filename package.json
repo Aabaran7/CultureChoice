@@ -15,6 +15,7 @@
   },
   "github": "https://github.com/nyuccl/smile",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "test": "vitest",
     "coverage": "vitest run --coverage",
@@ -59,7 +60,7 @@
     "pinia": "^2.0.14",
     "seedrandom": "^3.0.5",
     "uuid": "^9.0.1",
-    "vue": "^3.2.25",
+    "vue": "3.4.21",
     "vue-draggable-resizable": "^3.0.0",
     "vue-gtag": "^2.0.1",
     "vue-router": "^4.0.16"
@@ -69,11 +70,11 @@
     "@creativebulma/bulma-divider": "^1.1.0",
     "@creativebulma/bulma-tooltip": "^1.2.0",
     "@pinia/testing": "^0.0.12",
-    "@vitejs/plugin-vue": "^2.3.3",
+    "@vitejs/plugin-vue": "5.0.4",
     "@vue/test-utils": "^2.0.0-rc.18",
-    "bulma": "^1.0.0",
-    "bulma-extensions": "^6.2.7",
-    "bulma-switch": "^2.0.4",
+    "bulma": "1.0.0",
+    "bulma-extensions": "6.2.7",
+    "bulma-switch": "2.0.4",
     "c8": "^7.11.3",
     "chalk": "^5.0.1",
     "cypress": "^13.6.0",
@@ -94,7 +95,7 @@
     "prettier": "^2.8.8",
     "sass": "^1.52.1",
     "shelljs": "^0.8.5",
-    "vite": "^2.9.9",
+    "vite": "5.2.8",
     "vitepress": "1.1.0",
     "vitest": "^0.16.0"
   }
