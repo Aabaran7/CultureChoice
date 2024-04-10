@@ -49,12 +49,12 @@ function submitWithdraw() {
 </script>
 
 <template>
-  <div class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="https://gureckislab.org">
+  <div class="infobar" role="navigation" aria-label="main navigation">
+    <div class="infobar-brand">
+      <a class="infobar-item" href="https://gureckislab.org">
         <img src="@/assets/nyu.png" width="90" />
       </a>
-      <div class="navbar-item">
+      <div class="infobar-item">
         <p class="is-size-7 studyinfo">
           Study: {{ smilestore.config.code_name }}<br />Version: {{ smilestore.config.github.last_commit_hash
           }}{{
@@ -65,9 +65,9 @@ function submitWithdraw() {
         </p>
       </div>
     </div>
-    <div id="navbarBasicExample" class="navbar-menu is-active">
-      <div class="navbar-end">
-        <div class="navbar-item">
+    <div id="infobar" class="infobar-menu is-active">
+      <div class="infobar-end">
+        <div class="infobar-item">
           <div class="buttons" v-if="smilestore.data.withdraw !== true">
             <button class="button is-info is-small is-light" v-if="smilestore.isConsented" @click="toggleConsent()">
               <FAIcon icon="magnifying-glass" />&nbsp;&nbsp;View consent
@@ -128,6 +128,46 @@ function submitWithdraw() {
 </template>
 
 <style scoped>
+.infobar {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  position: relative;
+  z-index: 1000;
+}
+
+.infobar-brand {
+  align-items: stretch;
+  display: flex;
+  flex-shrink: 0;
+  min-height: var(--bulma-navbar-height);
+}
+
+.infobar {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.infobar-item {
+  align-items: center;
+  display: flex;
+}
+
+.infobar-end {
+  justify-content: flex-end;
+  margin-inline-start: auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.infobar-menu {
+  flex-grow: 1;
+  flex-shrink: 0;
+  align-items: stretch;
+  display: flex;
+  z-index: 999;
+}
+
 /* scoped css for this component */
 .modaltext {
   background-color: #fff;
