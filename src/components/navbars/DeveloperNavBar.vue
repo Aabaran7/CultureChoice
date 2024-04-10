@@ -2,14 +2,13 @@
 import { onMounted, watch, ref, reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
-import CircleProgress from './CircleProgress.vue'
 import DocsDropDown from '@/components/navbars/DocsDropDown.vue'
 import RandomizationDropDown from '@/components/navbars/RandomizationDropDown.vue'
 import ConfigDropDown from '@/components/navbars/ConfigDropDown.vue'
 import StateVarsDropDown from '@/components/navbars/StateVarsDropDown.vue'
 import Stepper from '@/components/navbars/Stepper.vue'
 import RouteInfoDropDrop from '@/components/navbars/RouteInfoDropDown.vue'
-import TrialStepper from './TrialStepper.vue'
+import DataBarButton from '@/components/navbars/DataBarButton.vue'
 
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
@@ -31,25 +30,6 @@ function resetDevState() {
   localStorage.removeItem(api.config.dev_local_storage_key) // delete the local store
   location.reload()
 }
-
-const database_tooltip = computed(() => {
-  var msg = 'Toggle data panel | '
-  if (api.global.db_connected == true) {
-    msg += 'Database connected | '
-  } else {
-    msg += 'Database not connected | '
-  }
-  if (api.global.db_changes == true) {
-    msg += 'Unsynced data '
-  } else {
-    msg += 'Data in sync '
-  }
-  if (api.global.db_connected == true) {
-    msg += '| '
-    msg += Math.round((api.local.approx_data_size / 1048576) * 1000) / 1000 + '% data used'
-  }
-  return msg
-})
 </script>
 
 <template>
@@ -87,58 +67,19 @@ const database_tooltip = computed(() => {
             <!-- config button -->
             <ConfigDropDown></ConfigDropDown>
 
-            <button
-              class="button devbar-button has-tooltip-arrow has-tooltip-bottom"
-              :data-tooltip="database_tooltip"
-              @click="api.dev.show_data_bar = !api.dev.show_data_bar"
-            >
-              <FAIcon
-                icon="fa-solid fa-database"
-                class="disconnected"
-                :class="{ connected: api.global.db_connected == true }"
-              />
-              &nbsp;&nbsp;|&nbsp;&nbsp;
-              <template v-if="!api.global.db_connected">
-                <FAIcon icon="fa-solid fa-rotate" class="has-text-grey" />
-              </template>
-              <template v-else-if="api.global.db_changes && api.global.db_connected">
-                <FAIcon icon="fa-solid fa-rotate" class="outofsync" />
-              </template>
-              <template v-else>
-                <FAIcon icon="fa-solid fa-rotate" class="insync" />
-              </template>
-              <template v-if="!api.global.db_connected">
-                &nbsp;&nbsp;|&nbsp;&nbsp;
-                <CircleProgress
-                  :percentage="Math.round(api.local.approx_data_size / 1048576) * 100"
-                  :size="12"
-                  :strokeWidth="40"
-                  slicecolor="#aaa"
-                  basecolor="#aaa"
-                />
-              </template>
-              <template v-else>
-                &nbsp;&nbsp;|&nbsp;&nbsp;
-
-                <CircleProgress
-                  :percentage="Math.round(api.local.approx_data_size / 1048576) * 100"
-                  :size="12"
-                  :strokeWidth="40"
-                  slicecolor="hsl(var(--bulma-button-h), var(--bulma-button-s), calc(var(--bulma-button-background-l) + var(--bulma-button-background-l-delta)))"
-                  basecolor="var(--status-green)"
-                />
-              </template>
-            </button>
-
             <!-- randomization button -->
             <RandomizationDropDown></RandomizationDropDown>
 
             <!-- state variable buttons -->
             <StateVarsDropDown></StateVarsDropDown>
 
+            <!-- database info button -->
+            <DataBarButton></DataBarButton>
+
             <!-- route info buttons -->
             <RouteInfoDropDrop></RouteInfoDropDrop>
 
+            <!-- responsive hides this if the page is too small-->
             <div class="devbar-stepper">
               <Stepper></Stepper>
             </div>
@@ -226,6 +167,10 @@ const database_tooltip = computed(() => {
   height: 2em;
 }
 
+.devbar-fulltitle {
+  font-size: 0.92em;
+}
+
 @media screen and (max-width: 725px) {
   .devbar-fulltitle {
     display: none;
@@ -248,19 +193,6 @@ const database_tooltip = computed(() => {
 </style>
 
 <style scoped>
-.disconnected {
-  color: var(--status-red);
-}
-.connected {
-  color: var(--status-green);
-}
-.outofsync {
-  color: var(--status-yellow);
-}
-.insync {
-  color: var(--status-green);
-}
-
 a:hover {
   color: #10dffa;
 }

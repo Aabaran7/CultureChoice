@@ -1,16 +1,25 @@
 <script setup>
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
+import { useRoute, useRouter } from 'vue-router'
+const route = useRoute()
 </script>
 
 <template>
   <div class="field has-addons">
-    <p class="control">
+    <p class="control" v-if="api.hasPrevRoute()">
       <button
         class="button is-small devbar-button has-tooltip-arrow has-tooltip-bottom"
         v-on:click="api.stepPrevRoute()"
         data-tooltip="Step page back"
       >
+        <span>
+          <FAIcon icon="fa-solid fa-angles-left" />
+        </span>
+      </button>
+    </p>
+    <p class="control" v-else>
+      <button class="button is-small devbar-button has-tooltip-arrow has-tooltip-bottom" disabled data-tooltip="N/A">
         <span>
           <FAIcon icon="fa-solid fa-angles-left" />
         </span>
@@ -38,12 +47,19 @@ const api = useSmileAPI()
         </span>
       </button>
     </p>
-    <p class="control">
+    <p class="control" v-if="api.hasNextRoute()">
       <button
         class="button is-small devbar-button has-tooltip-arrow has-tooltip-left"
         v-on:click="api.stepNextRoute()"
         data-tooltip="Step page forward"
       >
+        <span>
+          <FAIcon icon="fa-solid fa-angles-right" />
+        </span>
+      </button>
+    </p>
+    <p class="control" v-else>
+      <button class="button is-small devbar-button has-tooltip-arrow has-tooltip-bottom" disabled data-tooltip="N/A">
         <span>
           <FAIcon icon="fa-solid fa-angles-right" />
         </span>
