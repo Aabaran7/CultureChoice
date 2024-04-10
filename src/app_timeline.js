@@ -60,19 +60,20 @@ if (api.config.mode === 'development') {
 }
 
 // welcome screen for non-referral
-timeline.pushSeqRoute({
+timeline.pushRootSeqRoute({
   path: '/welcome',
   name: 'welcome_anonymous',
   component: Advertisement,
-  meta: { next: 'consent' }, // override what is next
+  meta: { prev: undefined, next: 'consent' }, // override what is next
 })
 
 // welcome screen for referral
-timeline.pushSeqRoute({
+timeline.pushRootSeqRoute({
   path: '/welcome/:service',
   name: 'welcome_referred',
   component: Advertisement,
   meta: {
+    prev: undefined,
     next: 'consent',
     allowDirectEntry: true,
   }, // override what is next
@@ -149,7 +150,7 @@ randTimeline.pushRoute({
 // if you want fixed orders based on conditions, uncomment meta line
 // commented out, this will shuffle the routes at random
 timeline.pushRandomizedTimeline({
-  name: randTimeline,
+  name: randTimeline, // TODDQ: why name is the carrier here?
   // meta: { label: "taskOrder", orders: {AFirst: ["task1", "task2"], BFirst: ["task2", "task1"]} }
 })
 

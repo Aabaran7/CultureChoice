@@ -11,6 +11,7 @@ class Timeline {
     this.type = 'timeline'
     this.g = null
     this.g_nonseq = null
+    this._IS_ROOT_NODE = '_IS_ROOT_NODE'
   }
 
   pushToRoutes(route) {
@@ -42,6 +43,13 @@ class Timeline {
       }
     }
     this.seqtimeline.push(route)
+  }
+
+  pushRootSeqRoute(routeConfig) {
+    const newroute = _.cloneDeep(routeConfig)
+    newroute.meta.prev = undefined
+    newroute.meta.root = true
+    newroute.meta.type = this.pushSeqRoute(newroute)
   }
 
   pushSeqRoute(routeConfig) {
@@ -125,8 +133,8 @@ class Timeline {
 
   build() {
     this.buildGraph()
+    this.registerCounters()
     if (smilestore.config.mode === 'development') {
-      this.registerCounters()
       this.buildDAG()
     }
     // this.buildProgress()
@@ -198,7 +206,7 @@ class Timeline {
           this.seqtimeline[i].meta.next = this.seqtimeline[i + 1].name
         }
       }
-      if (this.seqtimeline[i].meta.prev === undefined) {
+      if (!this.seqtimeline[i].meta.root && this.seqtimeline[i].meta.prev === undefined) {
         // pass
         if (i === 0) {
           this.seqtimeline[i].meta.prev = null
@@ -207,6 +215,8 @@ class Timeline {
         } else {
           this.seqtimeline[i].meta.prev = this.seqtimeline[i - 1].name
         }
+      } else {
+        this.seqtimeline[i].meta.prev = null
       }
 
       if (this.seqtimeline[i].meta.type === 'timeline') {
