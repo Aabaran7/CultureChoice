@@ -27,6 +27,13 @@
   --dev-bar-strong-grey: #dbdbdb;
   --dev-bar-text: #000;
   --dev-bar-lines: 0.01em solid #b5b5b5;
+
+  /* previously set by smilestore */
+  --page_bg_color: '#fff';
+  --page_text_color: '#000';
+  --status_bar_bg_color: '#fff';
+  --status_bar_text_color: '#000';
+
   /* above from the out .scss file */
   --bulma-input-arrow: var(--purple);
   --bulma-primary: var(--purple);

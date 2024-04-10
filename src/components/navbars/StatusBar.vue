@@ -136,8 +136,8 @@ function submitWithdraw() {
 
 .navbar {
   z-index: 10;
-  background-color: v-bind(smilestore.global.status_bar_bg_color);
-  color: v-bind(smilestore.global.status_bar_text_color);
+  background-color: var(--status-bar-bg-color);
+  color: var(--status-bar-text-color);
 }
 
 .modal-content {
@@ -146,7 +146,7 @@ function submitWithdraw() {
 
 .studyinfo {
   text-align: left;
-  color: v-bind(smilestore.global.status_bar_text_color);
+  color: var(--status-bar-text-color);
 }
 
 .navbar-start {

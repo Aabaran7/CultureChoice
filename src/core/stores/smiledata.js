@@ -57,10 +57,6 @@ export default defineStore('smilestore', {
     global: {
       // ephemeral state, resets on browser refresh
       progress: 0,
-      page_bg_color: '#fff',
-      page_text_color: '#000',
-      status_bar_bg_color: '#fff',
-      status_bar_text_color: '#000',
       db_connected: false,
       db_changes: true,
       search_params: null,
