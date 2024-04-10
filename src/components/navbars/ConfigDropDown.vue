@@ -27,6 +27,12 @@ function createLink(option) {
   }
   return String(option)
 }
+
+function resetDevState() {
+  localStorage.removeItem(api.config.dev_local_storage_key) // delete the local store
+  api.dev.config_panel.visible = false
+  location.reload()
+}
 </script>
 <template>
   <div class="dropdown is-hoverable is-right" :class="{ 'is-active': api.dev.config_panel.visible }">
@@ -62,19 +68,24 @@ function createLink(option) {
                 <li :class="{ 'is-active': api.dev.config_panel.type == 'local' }">
                   <a @click="api.dev.config_panel.type = 'local'"><b> Local State </b></a>
                 </li>
+                <li :class="{ 'is-active': api.dev.config_panel.type == 'dev' }">
+                  <a @click="api.dev.config_panel.type = 'dev'"><b>Dev Mode State</b></a>
+                </li>
                 <li :class="{ 'is-active': api.dev.config_panel.type == 'code' }">
                   <a @click="api.dev.config_panel.type = 'code'"><b> Code Version </b></a>
                 </li>
                 <li :class="{ 'is-active': api.dev.config_panel.type == 'full' }">
                   <a @click="api.dev.config_panel.type = 'full'"><b>Full Config</b></a>
                 </li>
-                <li :class="{ 'is-active': api.dev.config_panel.type == 'dev' }">
-                  <a @click="api.dev.config_panel.type = 'dev'"><b>Dev Vars</b></a>
-                </li>
               </ul>
             </div>
             <div class="datapanel" v-if="api.dev.config_panel.type == 'local'">
               <div class="code">
+                <div class="resetbutton has-tooltip-arrow has-tooltip-bottom" data-tooltip="Reset local state">
+                  <a class="button is-small" @click="api.resetLocalState()">
+                    <b>Reset local:</b> <FAIcon icon=" fa-solid fa-arrow-rotate-left" />
+                  </a>
+                </div>
                 <ul>
                   <li class="config" v-for="(option, key) in smilestore.local" :key="key">
                     <span v-if="typeof option != 'object' || option === undefined || option === null">
@@ -136,6 +147,14 @@ function createLink(option) {
             <div class="configinfo" v-if="api.dev.config_panel.type == 'dev'">
               <div class="datapanel">
                 <div class="code">
+                  <div
+                    class="resetbutton has-tooltip-arrow has-tooltip-bottom"
+                    data-tooltip="Reset developer interface"
+                  >
+                    <a class="button is-small" @click="resetDevState()">
+                      <b>Reset dev:</b> <FAIcon icon=" fa-solid fa-arrow-rotate-left" />
+                    </a>
+                  </div>
                   <ul>
                     <li class="config" v-for="(option, key) in smilestore.dev" :key="key">
                       <span v-if="typeof option != 'object' || option === undefined || option === null">
@@ -173,6 +192,12 @@ function createLink(option) {
   text-align: left;
 }
 
+.resetbutton {
+  float: right;
+  margin: 0;
+  padding-right: 5px;
+  color: #000;
+}
 .pin {
   float: right;
   margin: 0;

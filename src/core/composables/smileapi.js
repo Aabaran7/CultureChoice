@@ -33,6 +33,16 @@ export default function useSmileAPI() {
     resetStore: () => {
       smilestore.resetLocal()
     },
+    resetLocalState() {
+      localStorage.removeItem(api.config.local_storage_key) // delete the local store
+      // localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
+      // localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
+      smilestore.resetLocal() // reset all the data even
+
+      // go back to the landing page (don't use router because it won't refresh the page and thus won't reset the app)
+      const url = window.location.href
+      window.location.href = url.substring(0, url.lastIndexOf('#/'))
+    },
     setKnown: () => {
       smilestore.setKnown()
     },

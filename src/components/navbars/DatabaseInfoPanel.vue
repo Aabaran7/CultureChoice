@@ -1,6 +1,6 @@
 <script setup>
 //import { useTimeAgo } from '@vueuse/core'
-import { computed, ref, onMounted, onDeactivated } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import SmileAPI from '@/core/composables/smileapi'
 const api = SmileAPI()
 
@@ -45,10 +45,6 @@ onMounted(() => {
       }
     }
   }, 500)
-})
-
-onDeactivated(() => {
-  console.log('unmounting')
 })
 </script>
 <template>
