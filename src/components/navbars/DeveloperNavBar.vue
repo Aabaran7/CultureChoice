@@ -20,8 +20,8 @@ const api = useSmileAPI()
   <nav class="devbar">
     <div class="devbar-brand">
       <div class="devbar-title">
-        <div class="devbar-fulltitle"><b>DEVELOPER MODE</b></div>
-        <div class="devbar-subtitle"><b>DEV MODE</b></div>
+        <div class="devbar-fulltitle">👩‍💻&nbsp;<b>DEVELOPER MODE</b></div>
+        <div class="devbar-subtitle">👩‍💻&nbsp;<b>DEV MODE</b></div>
       </div>
     </div>
 

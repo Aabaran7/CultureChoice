@@ -5,6 +5,8 @@ const api = useSmileAPI()
 import useSmileStore from '@/core/stores/smiledata'
 const smilestore = useSmileStore() // load the global store
 const seed = ref(smilestore.getSeedID)
+import { v4 as uuidv4 } from 'uuid'
+import TextInputWithButton from '@/components/navbars/TextInputWithButton.vue'
 
 function toggle_and_reset() {
   api.dev.randomization_panel.visible = !api.dev.randomization_panel.visible
@@ -17,6 +19,12 @@ function toggle_and_reset() {
 function onDragCallback(x, y) {
   api.dev.randomization_panel.x = x
   api.dev.randomization_panel.y = y
+}
+
+function randomize_seed() {
+  console.log('randomize_seed') // emily help
+  seed.value = uuidv4()
+  //seed = smilestore.randomizeSeed()
 }
 </script>
 <template>
@@ -52,11 +60,11 @@ function onDragCallback(x, y) {
             <br />
             <table class="table is-fullwidth">
               <tr>
-                <th width="55%"></th>
+                <th width="30%"></th>
                 <th></th>
               </tr>
               <tr>
-                <td class="has-text-left"><b>Use fixed seed</b>:</td>
+                <td class="has-text-left"><b>Fixed Seed</b>:</td>
                 <td class="has-text-left is-family-code is-size-7">
                   <div class="field">
                     <input
@@ -71,27 +79,13 @@ function onDragCallback(x, y) {
                 </td>
               </tr>
               <tr>
-                <td class="has-text-left"><b>Current seed</b>:</td>
+                <td class="has-text-left"><b>Seed</b>:</td>
                 <td class="has-text-left is-family-code is-size-7">
-                  <div class="fixed-grid has-2-cols gap-0">
-                    <div class="grid">
-                      <div class="cell">
-                        <input
-                          class="input is-small"
-                          type="text"
-                          placeholder="Current seed"
-                          size="15"
-                          width="10"
-                          v-model="seed"
-                        />
-                      </div>
-                      <div class="column">
-                        <button class="button is-success is-small" id="refresh" @click="refresh()">
-                          <FAIcon icon="fa-solid fa-arrow-rotate-left" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  <TextInputWithButton
+                    :seed="seed"
+                    tooltip="Regenerate randomly"
+                    @action="randomize_seed()"
+                  ></TextInputWithButton>
                 </td>
               </tr>
             </table>
@@ -106,7 +100,9 @@ function onDragCallback(x, y) {
             <table class="table is-fullwidth">
               <template v-for="(value, key) in smilestore.getPossibleConditions" :key="key">
                 <tr>
-                  <td>{{ key }}</td>
+                  <td width="30%">
+                    <b>{{ key }}:</b>
+                  </td>
                   <td>
                     <div class="select is-small">
                       <select>

@@ -43,7 +43,7 @@ function onDragCallback(x, y) {
             <br />
             <table class="table is-hoverable is-striped is-fullwidth">
               <tr>
-                <th width="55%"></th>
+                <th width="40%"></th>
                 <th></th>
               </tr>
               <tr>
