@@ -24,6 +24,8 @@ export default function useSmileAPI() {
     router: router,
     stepNextRoute: stepNextRoute,
     stepPrevRoute: stepPrevRoute,
+    hasNextRoute: () => route.meta.next && route.meta.sequential,
+    hasPrevRoute: () => route.meta.prev && route.meta.sequential,
     shuffle: shuffle,
     useTrialStepper: useTrialStepper,
     isKnownUser: smilestore.isKnownUser,
