@@ -42,7 +42,6 @@ const name = ref('enter your name')
                                 <FormKit v-model="agree" type="checkbox"
                                     name="consent_toggle"
                                     label="I consent and am over 18 years old."
-                                    help="Do you consent to participate in this study?"
                                     validation="accepted"
                                     validation-visibility="dirty"
                                     label-class="has-text-left" />
