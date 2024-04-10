@@ -30,11 +30,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       ## TODO CHANGE THIS TO CHECK OUT THE BRANCH THAT WAS COMMITTED TO
       - name: Checkout committed to branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # setup node.js
       - name: Setup node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20.11.1 # this is what i'm using locally
 
