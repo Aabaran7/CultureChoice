@@ -8,40 +8,20 @@ import ConfigDropDown from '@/components/navbars/ConfigDropDown.vue'
 import StateVarsDropDown from '@/components/navbars/StateVarsDropDown.vue'
 import Stepper from '@/components/navbars/Stepper.vue'
 import RouteInfoDropDrop from '@/components/navbars/RouteInfoDropDown.vue'
+import ResetButton from '@/components/navbars/ResetButton.vue'
+
 import DataBarButton from '@/components/navbars/DataBarButton.vue'
 
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
-
-const panel = reactive({ visible: false, x: 0, y: 0 })
-
-function resetLocalState() {
-  localStorage.removeItem(api.config.local_storage_key) // delete the local store
-  // localStorage.removeItem(`${appconfig.local_storage_key}-seed_id`)
-  // localStorage.removeItem(`${appconfig.local_storage_key}-seed_set`)
-  api.resetStore() // reset all the data even
-
-  // go back to the landing page (don't use router because it won't refresh the page and thus won't reset the app)
-  const url = window.location.href
-  window.location.href = url.substring(0, url.lastIndexOf('#/'))
-}
-
-function resetDevState() {
-  localStorage.removeItem(api.config.dev_local_storage_key) // delete the local store
-  location.reload()
-}
 </script>
 
 <template>
   <nav class="devbar">
     <div class="devbar-brand">
-      <div
-        class="devbar-title has-tooltip-arrow has-tooltip-bottom"
-        @click="resetDevState()"
-        data-tooltip="Reset developer interface"
-      >
-        <div class="devbar-fulltitle"><FAIcon icon="fa-solid fa-arrow-rotate-left" />&nbsp;<b>DEVELOPER MODE</b></div>
-        <div class="devbar-subtitle"><FAIcon icon="fa-solid fa-arrow-rotate-left" />&nbsp;<b>DEV MODE</b></div>
+      <div class="devbar-title">
+        <div class="devbar-fulltitle"><b>DEVELOPER MODE</b></div>
+        <div class="devbar-subtitle"><b>DEV MODE</b></div>
       </div>
     </div>
 
@@ -55,15 +35,6 @@ function resetDevState() {
       <div class="devbar-end">
         <div class="devbar-item devbar-buttonpanel">
           <div class="buttons">
-            <!-- reset button -->
-            <button
-              class="button devbar-button has-tooltip-arrow has-tooltip-bottom"
-              data-tooltip="Reset entire state"
-              @click="resetLocalState()"
-            >
-              <FAIcon icon="fa-solid fa-arrow-rotate-left" />
-            </button>
-
             <!-- config button -->
             <ConfigDropDown></ConfigDropDown>
 
@@ -72,6 +43,9 @@ function resetDevState() {
 
             <!-- state variable buttons -->
             <StateVarsDropDown></StateVarsDropDown>
+
+            <!-- reset button -->
+            <ResetButton></ResetButton>
 
             <!-- database info button -->
             <DataBarButton></DataBarButton>
@@ -98,11 +72,17 @@ function resetDevState() {
   position: relative;
   z-index: 1000;
 }
+.devbar-fulltitle {
+  padding-top: 0px;
+  font-size: 0.92em;
+}
 
 .devbar-subtitle {
+  padding-top: 0px;
   padding-right: 20px;
   display: none;
   white-space: nowrap;
+  font-size: 0.92em;
 }
 
 .devbar-menu {
@@ -165,10 +145,6 @@ function resetDevState() {
 .devbar-button {
   font-size: 0.65rem;
   height: 2em;
-}
-
-.devbar-fulltitle {
-  font-size: 0.92em;
 }
 
 @media screen and (max-width: 725px) {

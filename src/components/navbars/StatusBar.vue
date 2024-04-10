@@ -186,6 +186,7 @@ function submitWithdraw() {
 
 .studyinfo {
   text-align: left;
+  padding-left: 10px;
   color: var(--status-bar-text-color);
 }
 
