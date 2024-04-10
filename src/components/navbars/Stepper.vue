@@ -19,7 +19,7 @@ const route = useRoute()
       </button>
     </p>
     <p class="control" v-else>
-      <button class="button is-small devbar-button has-tooltip-arrow has-tooltip-bottom" disabled data-tooltip="N/A">
+      <button class="button is-small devbar-button" disabled>
         <span>
           <FAIcon icon="fa-solid fa-angles-left" />
         </span>
@@ -59,7 +59,7 @@ const route = useRoute()
       </button>
     </p>
     <p class="control" v-else>
-      <button class="button is-small devbar-button has-tooltip-arrow has-tooltip-bottom" disabled data-tooltip="N/A">
+      <button class="button is-small devbar-button" disabled>
         <span>
           <FAIcon icon="fa-solid fa-angles-right" />
         </span>
