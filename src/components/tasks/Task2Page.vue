@@ -74,7 +74,7 @@ function prev() {
 </script>
 
 <template>
-  <div class="page">
+  <div class="page prevent-select">
     <h1 class="title is-3">Task 2</h1>
     {{ trial.sentence }}/{{ api.getCurrentTrial() }}<br /><br />
     <button class="button is-success is-light" id="finish" @click="prev()" v-if="api.getCurrentTrial() > 0">

@@ -85,12 +85,7 @@ var myInterval = setInterval(() => {
   width: 60%;
   margin: auto;
 }
-.prevent-select {
-  /* needed because selecting the outlines can give away the answer */
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-}
+
 .instructions p {
   padding-bottom: 20px;
 }

@@ -101,7 +101,7 @@ function finish() {
 </script>
 
 <template>
-  <div class="page">
+  <div class="page prevent-select">
     <!-- Show this for each trial -->
     <div class="strooptrial" v-if="api.getCurrentTrial() < trials.length">
       {{ api.getCurrentTrial() + 1 }} / {{ trials.length }}

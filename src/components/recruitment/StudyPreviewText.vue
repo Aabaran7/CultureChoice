@@ -4,7 +4,7 @@ const api = useSmileAPI()
 </script>
 
 <template>
-    <div class="welcome">
+    <div class="welcome prevent-select">
         <div class="columns">
             <div class="column">
 

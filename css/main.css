@@ -1,4 +1,4 @@
-@import './bulma.css'; /* import the bulma scheme */
+@import './bulma.css';  /* import the bulma scheme */
 
 @import '../node_modules/@creativebulma/bulma-divider';
 @import '../node_modules/@creativebulma/bulma-tooltip';
@@ -46,4 +46,13 @@
 .page {
   padding-top: 40px;
   height: 100vh;
+}
+
+
+/* globally provided to prevent selection on some pages */
+.prevent-select {
+  /* needed because selecting the outlines can give away the answer */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }

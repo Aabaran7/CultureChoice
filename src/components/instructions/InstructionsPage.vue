@@ -25,7 +25,7 @@ function finish(goto) {
 </script>
 
 <template>
-  <div class="page">
+  <div class="page prevent-select">
     <h1 class="title is-3">Instructions</h1>
     <p class="has-text-center is-size-5">{{ instText }}</p>
     <hr />

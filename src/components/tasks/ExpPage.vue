@@ -9,7 +9,7 @@ function finish() {
 </script>
 
 <template>
-  <div class="page">
+  <div class="page  prevent-select">
     <h1 class="title is-3">Experiment</h1>
     <hr />
     <button class="button is-success is-light" id="finish" @click="finish()">

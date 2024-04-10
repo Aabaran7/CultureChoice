@@ -12,7 +12,7 @@ function finish() {
 </script>
 
 <template>
-  <div class="page">
+  <div class="page prevent-select">
     <h1 class="title is-3">Task 1</h1>
 
     <div class="formcontent">

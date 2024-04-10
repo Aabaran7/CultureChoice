@@ -45,7 +45,7 @@ clipboard.on('success', (e) => {
 </script>
 
 <template>
-    <div class="page">
+    <div class="page prevent-select">
         <h1 class="title is-3">
             <FAIcon icon="fa-solid fa-square-check" />
         </h1>

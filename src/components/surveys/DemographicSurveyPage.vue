@@ -69,7 +69,7 @@ function finish() {
 </script>
 
 <template>
-  <div class="page">
+  <div class="page prevent-select">
     <div class="formcontent">
       <h3 class="is-size-4 has-text-weight-bold">Demographic Information</h3>
       <p class="is-size-6">

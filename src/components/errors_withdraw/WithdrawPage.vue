@@ -7,7 +7,7 @@ api.saveData(true) // force a data save
 </script>
 
 <template>
-  <div class="page">
+  <div class="page prevent-select">
     <div class="withdraw" v-if="api.getRecruitmentService() == 'prolific'">
       <h1 class="title is-3 has-text-danger">You have successfully withdrawn from the study.</h1>
       <article class="message is-danger" v-if="api.data.withdraw">

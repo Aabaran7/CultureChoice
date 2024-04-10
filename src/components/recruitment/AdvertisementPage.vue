@@ -11,7 +11,7 @@ function finish() {
 </script>
 
 <template>
-  <div class="page">
+  <div class="page prevent-select">
     <br /><br /><br />
     <img src="@/assets/brain.svg" width="220" />
     <h1 class="title is-3">Please help us understand the mind!</h1>
