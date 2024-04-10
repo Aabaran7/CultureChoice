@@ -130,13 +130,13 @@ jobs:
       # load the environment
       - name: Load the github dotenv file
         id: dotenv_github
-        uses: falti/dotenv-action@v0.2.8
+        uses: falti/dotenv-action@v1.1
         with:
           path: 'env/.env.git.local'
 
       - name: Load the general config dotenv file
         id: dotenv_config
-        uses: falti/dotenv-action@v0.2.8
+        uses: falti/dotenv-action@v1.1
         with:
           path: './env/.env.local'
 
@@ -202,7 +202,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: ${{ env.SLACK_WEBHOOK_URL != '' }} # this should only run if SLACK_WEBHOOK exists
         id: slack
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v1.25.0
         with:
           # This data can be any valid JSON from a previous step in the GitHub Action
           payload: |
