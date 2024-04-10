@@ -1,20 +1,29 @@
 <script setup>
 import { shallowRef, ref, computed } from 'vue'
 
-import CaptchaInstructionsText from '@/components/captcha/CaptchaInstructionsText.vue'
+import CaptchaInstructionsText_01 from '@/components/captcha/CaptchaInstructionsText_01.vue'
+import CaptchaInstructionsText_02 from '@/components/captcha/CaptchaInstructionsText_02.vue'
 import CaptchaTrialImageCategorization from '@/components/captcha/CaptchaTrialImageCategorization.vue'
 import CaptchaTrialMotorControl from '@/components/captcha/CaptchaTrialMotorControl.vue'
 import CaptchaTrialTextComprehension from '@/components/captcha/CaptchaTrialTextComprehension.vue'
 import CaptchaTrialStroop from '@/components/captcha/CaptchaTrialStroop.vue'
+import CaptchaRotateImage from '@/components/captcha/CaptchaRotateImage.vue'
 
 // import and initalize smile API
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
+//  need to set up not just the pages but the trials here with configuration inputs
+// for the image categorization and rotate image task need a bunch of images
+// possibly altered so that there is lots of substructure to it
+
 const pages = [
-  CaptchaInstructionsText,
-  //CaptchaTrialTextComprehension,
+  CaptchaInstructionsText_01,
+  CaptchaTrialTextComprehension,
+  CaptchaInstructionsText_02,
   CaptchaTrialImageCategorization,
+  CaptchaTrialMotorControl,
+  CaptchaRotateImage,
   CaptchaTrialMotorControl,
 ]
 
@@ -38,8 +47,9 @@ function next_trial() {
   if (api.getCurrentTrial() >= pages.length - 1) {
     //api.resetPageTracker() // you coudl reset when you leavr but why?
     finish()
+  } else {
+    api.incrementTrial()
   }
-  api.incrementTrial()
 }
 
 function finish() {
@@ -50,9 +60,30 @@ function finish() {
 
 <template>
   <div class="page">
+    <div class="instructions" v-if="api.getCurrentTrial() >= pages.length">
+      <div class="formstep">
+        <article class="message is-danger">
+          <div class="message-header">
+            <p>Error</p>
+            <button class="delete" aria-label="delete"></button>
+          </div>
+          <div class="message-body">
+            Error, you shouldn't have been able to get this far! This happened because the pageTracker for this route
+            has been incremented too many times. There's no problem so long as your code doesn't allow this in live
+            mode.
+          </div>
+        </article>
+      </div>
+    </div>
+
     <!-- Component changes when currentTab changes -->
-    <component :is="currentTab" @next-page-captcha="next_trial()"> </component>
+    <component :is="currentTab" @next-page-captcha="next_trial()" v-else> </component>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.instructions {
+  width: 60%;
+  margin: auto;
+}
+</style>

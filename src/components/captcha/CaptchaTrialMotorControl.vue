@@ -1,14 +1,205 @@
 <script setup>
 const emit = defineEmits(['nextPageCaptcha'])
+import { ref, reactive, onMounted } from 'vue'
+
+// use SVG
+import { SVG } from '@svgdotjs/svg.js'
+
+// do you need keyboard or mouse for your experiment?
+// import { onKeyDown } from '@vueuse/core'
+// import { useMouse } from '@vueuse/core'
+
+// import and initalize smile API
+// import useSmileAPI from '@/core/composables/smileapi'
+// const api = useSmileAPI()
+const timed_task = false
+let MAX_TIME = 15000
+let start_time
+let timeout = ref(0)
+
+const svgCanvas = ref(null)
+
+// const { x, y } = useMouse({ touch: false })
+const svg = reactive({
+  draw: null,
+  circle: null,
+  path: null,
+  pathString: '',
+  isDragging: false,
+  bound: null,
+  circleX: 0,
+  circleY: 0,
+  radius: 3,
+  strokewidth: 10,
+})
+// Reactive variables
+//const finished = ref(false)
+const touched_black = ref(false)
+const grey = '#7f7f7f'
+const red = '#ff0000'
+const bordercolor = ref(grey)
+const rows = ref(25)
+const cols = ref(25)
+const grid = ref([])
+const rectHeight = 500 / rows.value
+const rectWidth = 500 / rows.value
+const startGrid = 0
+const flagLocation = reactive({ row: 11, col: 24 }) // Example location
+
+const handleMouseMove = (event) => {
+  const newX = event.clientX - svg.bound.left //- svg.clientLeft //- paddingLeft
+  const newY = event.clientY - svg.bound.top //- svg.clientTop // - paddingTop
+  if (svg.isDragging) {
+    //svg.circle.move(event.offsetX, event.offsetY)
+
+    // let paddingLeft = parseFloat(style['padding-left'].replace('px', ''))
+    // let paddingTop = parseFloat(style['padding-top'].replace('px', ''))
+
+    // const newX = event.clientX - svg.bound.left //- svg.clientLeft //- paddingLeft
+    // const newY = event.clientY - svg.bound.top //- svg.clientTop // - paddingTop
+    const newXreal = newX //- 10 //+ (newX - svg.circleX) //.width()
+    const newYreal = newY //- 10 //+ (newY - svg.circleY) //.height()
+
+    svg.circle.move(newXreal - svg.radius, newYreal - svg.radius)
+
+    svg.pathString += ` L ${newXreal} ${newYreal}`
+    //console.log(flagLocation)
+    // if newXreal and newYreal are withing the flag location
+    console.log(newXreal, newYreal, flagLocation.row * rectWidth, flagLocation.col * rectHeight)
+    if (
+      newXreal > flagLocation.col * rectWidth &&
+      newXreal < (flagLocation.col + 1) * rectWidth &&
+      newYreal > flagLocation.row * rectHeight &&
+      newYreal < (flagLocation.row + 1) * rectHeight
+    ) {
+      finished_task()
+      //emit('nextPageCaptcha')
+    }
+
+    console.log('in cell', Math.floor(newXreal / rectWidth), Math.floor(newYreal / rectHeight))
+    //console.log('color', )
+    if (grid.value[Math.floor(newYreal / rectHeight)][Math.floor(newXreal / rectWidth)] == 'black') {
+      touched_black.value = true
+      bordercolor.value = red
+    }
+
+    //svg.pathString += ` L ${newX - svg.circle.width() / 2} ${newY - svg.circle.height() / 2}`
+  }
+}
+onMounted(() => {
+  generateGrid()
+  svg.draw = SVG(svgCanvas)
+  svg.circle = svg.draw.findOne('circle')
+  svg.path = svg.draw.findOne('#path')
+  svg.bound = svgCanvas.value.getBoundingClientRect() // get size of the canvas
+  svg.circleY = svg.bound.width / 2 // start in the middle
+  svg.circleX = 0 + svg.radius + svg.strokewidth / 2 // start at the left edge
+  svg.pathString += `M ${svg.circleX} ${svg.circleY}` // move to the cirlce
+  svg.draw.on('mousemove', handleMouseMove)
+  start_time = Date.now()
+  timeout.value = ((MAX_TIME - (Date.now(0) - start_time)) / MAX_TIME) * 100
+  console.log(timeout)
+
+  if (timed_task) {
+    var myInterval = setInterval(() => {
+      timeout.value = ((MAX_TIME - (Date.now(0) - start_time)) / MAX_TIME) * 100
+      if (timeout.value <= 0) {
+        clearInterval(myInterval)
+        emit('nextPageCaptcha')
+      }
+    }, 2)
+  }
+})
+
+function finished_task() {
+  //finished.value = true
+  emit('nextPageCaptcha')
+}
+// Function to generate the grid
+function generateGrid() {
+  grid.value = Array.from({ length: rows.value }, () => Array.from({ length: cols.value }, () => getRandomColor()))
+}
+
+// Function to generate a random color
+function getRandomColor() {
+  if (Math.random() < 0.25) {
+    return 'black'
+  } else {
+    return 'white'
+  }
+}
+
+const startDragging = () => {
+  // dconsole.log('start dragging')
+  svg.isDragging = true
+}
+const stopDragging = () => {
+  //console.log('stop dragging')
+  svg.isDragging = false
+}
+
+const flag_touch = () => {
+  if (svg.isDragging) {
+    console.log('flag touched')
+  } else {
+    console.log('nice try')
+  }
+}
+
+/*
+
+*/
+
+// <button class="button is-success" id="finish" @click="$emit('nextPageCaptcha')">Done</button>
 </script>
 
 <template>
   <div class="instructions">
-    <h1 class="title">Motor control test!</h1>
-    <p class="is-size-5 has-text-left">XXX</p>
-    <hr />
-    <button class="button is-success" id="finish"
-      @click="$emit('nextPageCaptcha')">I'm ready</button>
+    <h1 class="title">Don't touch the black squares</h1>
+    <p class="is-size-5 has-text-center">...while dragging the pink dot to the flag</p>
+    <svg class="maze" ref="svgCanvas" width="500px" height="500px" @mouseup="stopDragging" @mouseleave="stopDragging">
+      <template v-for="(row, rowIndex) in grid" :key="rowIndex">
+        <template v-for="(color, colIndex) in row" :key="colIndex">
+          <!-- Conditionally render flag image at specified location -->
+          <image
+            v-if="rowIndex === flagLocation.row && colIndex === flagLocation.col"
+            :x="colIndex * rectWidth"
+            :y="rowIndex * rectHeight"
+            :width="rectWidth"
+            :height="rectHeight"
+            fill="white"
+            xlink:href="/src/assets/captcha/flag.svg"
+            stroke="green"
+          />
+          <rect
+            v-else
+            :x="colIndex * rectWidth + startGrid"
+            :y="rowIndex * rectHeight"
+            :width="rectWidth"
+            :height="rectHeight"
+            :fill="color"
+          />
+        </template>
+      </template>
+      <path id="mazewall" d="" />
+      <path id="trace" ref="path" stroke="pink" stroke-width="3" :d="svg.pathString" fill="none" />
+      <circle
+        id="circle"
+        ref="circle"
+        :cx="svg.circleX"
+        :cy="svg.circleY"
+        :r="svg.radius"
+        fill="salmon"
+        :stroke-width="svg.strokewidth"
+        stroke="salmon"
+        @mousedown="startDragging"
+      />
+    </svg>
+    <template v-if="timed_task">
+      <br />
+      <br />
+      Respond quickly: <progress class="progress is-large" :value="timeout" max="100"></progress>
+    </template>
   </div>
 </template>
 
@@ -17,8 +208,18 @@ const emit = defineEmits(['nextPageCaptcha'])
   width: 60%;
   margin: auto;
 }
-
+.feedback {
+  width: 500px;
+  height: 500px;
+  background-color: black;
+  color: white;
+  font-size: 50px;
+}
 .instructions p {
   padding-bottom: 20px;
+}
+
+svg {
+  border: 3px solid v-bind(bordercolor);
 }
 </style>

@@ -22,38 +22,31 @@ const trials = [
 onMounted(() => {
   start_time = Date.now()
   timeout.value = ((MAX_TIME - (Date.now(0) - start_time)) / MAX_TIME) * 100
-  console.log(timeout)
+  //console.log(timeout)
+  var myInterval = setInterval(() => {
+    timeout.value = ((MAX_TIME - (Date.now(0) - start_time)) / MAX_TIME) * 100
+    if (timeout.value <= 0) {
+      clearInterval(myInterval)
+      emit('nextPageCaptcha')
+    }
+  }, 2)
 })
-
-var myInterval = setInterval(() => {
-  timeout.value = ((MAX_TIME - (Date.now(0) - start_time)) / MAX_TIME) * 100
-  if (timeout.value <= 0) {
-    clearInterval(myInterval)
-    emit('nextPageCaptcha')
-  }
-}, 2)
 </script>
 
 <template>
   <div class="instructions">
     <div class="box">
-      <div class="boxlabel">choose the <span class="underline">unusual</span>
-        answer.</div>
+      <div class="boxlabel">choose the <span class="underline">unusual</span> answer.</div>
       <p class="is-size-3 has-text-left">The dog ate the _____.</p>
 
-      <button class="button is-white mr-4" id="finish"
-        @click="$emit('nextPageCaptcha')">Meal</button>
-      <button class="button is-white mr-4" id="finish"
-        @click="$emit('nextPageCaptcha')">Bone</button>
-      <button class="button is-white mr-4" id="finish"
-        @click="$emit('nextPageCaptcha')">Food</button>
-      <button class="button is-white mr-4" id="finish"
-        @click="$emit('nextPageCaptcha')">Sun</button>
+      <button class="button is-white mr-4" id="finish" @click="$emit('nextPageCaptcha')">Meal</button>
+      <button class="button is-white mr-4" id="finish" @click="$emit('nextPageCaptcha')">Bone</button>
+      <button class="button is-white mr-4" id="finish" @click="$emit('nextPageCaptcha')">Food</button>
+      <button class="button is-white mr-4" id="finish" @click="$emit('nextPageCaptcha')">Sun</button>
       <br />
       <br />
       <br />
-      Respond quickly: <progress class="progress is-large" :value="timeout"
-        max="100"></progress>
+      Respond quickly: <progress class="progress is-large" :value="timeout" max="100"></progress>
     </div>
   </div>
 </template>
