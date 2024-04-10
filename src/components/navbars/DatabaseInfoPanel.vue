@@ -31,15 +31,17 @@ onMounted(() => {
       last_write_time_string.value = `Never happened`
     } else {
       var time = ((Date.now() - api.local.lastWrite) / 1000).toFixed(1)
-      if (time > 60) {
+      if (time < 60) {
+        last_write_time_string.value = `${time} secs ago`
+      } else if (time < 180) {
         time = (time / 60).toFixed(2)
         last_write_time_string.value = `${time} mins ago`
       } else {
-        last_write_time_string.value = `${time} secs ago`
-      }
-      if (time >= 60 * 10) {
-        last_write_time_string.value = 'So long ago I stopped counting'
         clearInterval(myInterval)
+        last_write_time_string.value = `a few mins ago`
+        setTimeout(() => {
+          last_write_time_string.value = `many mins ago`
+        }, 420000)
       }
     }
   }, 500)
