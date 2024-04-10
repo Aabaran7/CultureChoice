@@ -6,9 +6,7 @@ let MAX_TIME = 15000
 let start_time
 let timeout = ref(0)
 
-const imageURL = ref(
-  '/src/assets/captcha/product-images_designlab_11-oz-metallic-ceramic-custom-mugs-7102m-blue1681213541.jpg'
-)
+const imageURL = ref('cup.jpg') // Image Refs remains confusing -- need to sort this out
 const imageRef = ref()
 let initRotation = getRandomRotation() // chose this randomly
 
@@ -64,7 +62,9 @@ var myInterval = setInterval(() => {
               Rotate Left&nbsp;&nbsp;<FAIcon icon="fa-solid fa-rotate-left" />
             </button>
           </td>
-          <td><img ref="imageRef" :src="imageURL" class="circular-image" alt="Circular Image" /></td>
+          <td>
+            <img ref="imageRef" src="@/assets/captcha/cup.jpg" class="circular-image" alt="Circular Image" />
+          </td>
           <td>
             <button class="button" @click="rotateImageDelta(10)">
               Rotate Right&nbsp;&nbsp;<FAIcon icon="fa-solid fa-rotate-right" />
