@@ -97,7 +97,7 @@ onMounted(() => {
 
 .router {
   height: 100vh;
-  background-color: v-bind(api.global.page_bg_color);
+  background-color: var(--page-bg-color);
 }
 
 #app {
