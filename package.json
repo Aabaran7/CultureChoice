@@ -95,7 +95,7 @@
     "sass": "^1.52.1",
     "shelljs": "^0.8.5",
     "vite": "^2.9.9",
-    "vitepress": "^1.0.0-alpha.2",
+    "vitepress": "1.1.0",
     "vitest": "^0.16.0"
   }
 }
