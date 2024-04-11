@@ -10,7 +10,7 @@ function parse_w_h(value) {
   return { width: `${w_h[0]}px`, height: `${w_h[1]}px` }
 }
 export default {
-  mode: 'development', //import.meta.env.MODE,
+  mode: import.meta.env.MODE,
   project_name: import.meta.env.VITE_PROJECT_NAME, // autocompute this on intitialization
   project_ref: import.meta.env.VITE_DEPLOY_BASE_PATH.slice(1, -1).replace(/\//g, '-'),
   code_name: import.meta.env.VITE_CODE_NAME,

@@ -1,11 +1,34 @@
 <script setup>
-import { onMounted, computed } from 'vue'
+/* 
+   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
+   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
+   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
+   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
+   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
+   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
+
+   WARNING WHEN MAKING CHANGES TO THIS FILE 
+
+   ANY LINE THAT CONTAINS THE TEXT "SMILE_DEV_ONLY" IS A DEVELOPER-ONLY LINE OF CODE
+   AND IS REMOVED PRIOR TO DEPLOYMENT BY THE deploy.yml and deploy-hash.yml SCRIPT
+   LOCATED IN THE .github/workflows FOLDER.
+
+   ANY LINE THAT CONTAINS THE TEXT "SMILE_PRESENTATION_ONLY" IS A PRESENTATION-ONLY LINE OF CODE
+   THIS IS REMOVED PRIOR TO DEPLOYMENT FOR ANY BRANCH OTHER THAN 'presentation'
+
+   THIS MIGHT NOT BE IDEAL BUT IS A CHEAP TEMPLATE OPTION
+   VITE MIGHT HAVE SOME PLUGIN TO DO THIS BETTER IN FUTURE
+
+*/
+import { onMounted, computed, ref } from 'vue'
+
 // load sub-components used in this compomnents
-import DeveloperNavBar from '@/components/navbars/DeveloperNavBar.vue'
+import DeveloperNavBar from '@/components/navbars/DeveloperNavBar.vue' // SMILE_DEV_ONLY
+import DevDataBar from '@/components/navbars/DevDataBar.vue'// SMILE_DEV_ONLY
+import PresentationNavBar from '@/components/navbars/PresentationNavBar.vue'  // SMILE_PRESENTATION_ONLY
+
 import StatusBar from '@/components/navbars/StatusBar.vue'
-import PresentationNavBar from '@/components/navbars/PresentationNavBar.vue'
-import ProgressBar from './components/navbars/ProgressBar.vue'
-import DevDataBar from './components/navbars/DevDataBar.vue'
+import ProgressBar from '@/components/navbars/ProgressBar.vue'
 
 // import and initalize smile API
 import useSmileAPI from '@/core/composables/smileapi'
@@ -17,38 +40,26 @@ const log = useLog()
 import useSmileStore from '@/core/stores/smiledata'
 const smilestore = useSmileStore() // load the global store
 
-var snapshot = { ...smilestore.$state.data }
+var snapshot = { ...smilestore.$state.data } // SMILE_DEV_ONLY
+smilestore.$subscribe((mutation, newstate) => { // SMILE_DEV_ONLY
+  Object.keys(newstate.data).forEach((key) => { // SMILE_DEV_ONLY
+    if (snapshot[key] !== newstate.data[key]) { // SMILE_DEV_ONLY
+      log.log(`smilestore.data value changed for ${key}: from ${snapshot[key]} to ${newstate.data[key]}`) // SMILE_DEV_ONLY
+      smilestore.global.db_changes = true // SMILE_DEV_ONLY
+    } // SMILE_DEV_ONLY
+  }) // SMILE_DEV_ONLY
+  snapshot = { ...newstate.data } // SMILE_DEV_ONLY
+}) // SMILE_DEV_ONLY
 
-smilestore.$subscribe((mutation, newstate) => {
-  //console.log('something changed', mutation, newstate)
-  // // import { MutationType } from 'pinia'
-  // mutation.type // 'direct' | 'patch object' | 'patch function'
-  // // same as cartStore.$id
-  // mutation.storeId // 'cart'
-  // // only available with mutation.type === 'patch object'
-  // mutation.payload // patch object passed to cartStore.$patch()
-  Object.keys(newstate.data).forEach((key) => {
-    //console.log(newstate.data[key])
-    if (snapshot[key] !== newstate.data[key]) {
-      //console.log(`Value changed for ${key}: from ${snapshot[key]} to ${newstate.data[key]}`)
-      log.log(`smilestore.data value changed for ${key}: from ${snapshot[key]} to ${newstate.data[key]}`)
-      smilestore.global.db_changes = true
-    }
-  })
+const total_height = computed(() => { // SMILE_DEV_ONLY
+  if (!api.dev.show_data_bar) { // SMILE_DEV_ONLY
+    return '100vh' // SMILE_DEV_ONLY
+  } else { // SMILE_DEV_ONLY
+    var pct = (window.innerHeight + api.dev.data_bar_height)/window.innerHeight*100 // SMILE_DEV_ONLY
+    return `${pct}vh` // SMILE_DEV_ONLY
+  } // SMILE_DEV_ONLY
+}) // SMILE_DEV_ONLY
 
-  snapshot = { ...newstate.data }
-  // // persist the whole state to the local storage whenever it changes
-  // localStorage.setItem('cart', JSON.stringify(state))
-})
-
-const total_height = computed(() => {
-  if (!api.dev.show_data_bar) {
-    return '100vh'
-  } else {
-    var pct = (window.innerHeight + api.dev.data_bar_height)/window.innerHeight*100
-    return `${pct}vh`
-  }
-})
 
 onMounted(() => {
   log.log('App.vue initialized')
@@ -69,8 +80,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <DeveloperNavBar v-if="api.config.mode == 'development'"> </DeveloperNavBar>
-  <PresentationNavBar v-if="api.config.mode == 'presentation'"> </PresentationNavBar>
+  <DeveloperNavBar v-if="api.config.mode == 'development'"> </DeveloperNavBar> <!-- // SMILE_DEV_ONLY -->
+  <PresentationNavBar v-if="api.config.mode == 'presentation'"> </PresentationNavBar> <!-- // SMILE_PRESENTATION_ONLY -->
   <StatusBar
     v-if="
       api.currentRouteName() !== 'data' && api.currentRouteName() !== 'recruit' && api.config.mode != 'presentation'
@@ -88,9 +99,9 @@ onMounted(() => {
     "
   >
   </ProgressBar>
-  <Transition name="v-slide">
-    <DevDataBar v-if="api.dev.show_data_bar"></DevDataBar>
-  </Transition>
+  <Transition name="v-slide"> <!-- // SMILE_DEV_ONLY -->
+    <DevDataBar v-if="api.dev.show_data_bar"></DevDataBar> <!-- // SMILE_DEV_ONLY -->
+  </Transition> <!-- // SMILE_DEV_ONLY -->
 </template>
 
 <style>
@@ -104,7 +115,8 @@ onMounted(() => {
 }
 
 .router {
-  height: v-bind(total_height);
+  height: '100vh';
+  height: v-bind(total_height); /* // SMILE_DEV_ONLY */
   background-color: var(--page-bg-color);
 }
 

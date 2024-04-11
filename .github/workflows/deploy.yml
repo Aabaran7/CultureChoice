@@ -156,11 +156,19 @@ jobs:
           cat $DEPLOY_ENV_FILE
 
       # strip out the dev stuff from the app
-      - name: strip out dev stuff
+      - name: strip outdDev stuff
         run: |
-          chmod +x ./scripts/strip_dev_code.sh
-          ./scripts/strip_dev_code.sh
+          grep -vE "SMILE_DEV_ONLY" ./src/App.vue > tmpindex
+          mv tmpindex ./src/App.vue
 
+      # strip out the presentation stuff from the app if not in presentation mode
+      - name: strip out presentation stuff
+        run: |
+          if ${{ github.ref != 'refs/heads/presentation'}}; then 
+            grep -vE "SMILE_PRESENTATION_ONLY" ./src/App.vue > tmpindex
+            mv tmpindex ./src/App.vue
+          fi
+      
       - name: echo App.vue
         run: cat src/App.vue
 
