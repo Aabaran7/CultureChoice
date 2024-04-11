@@ -36,22 +36,32 @@ const api = useSmileAPI()
         <div class="devbar-item devbar-buttonpanel">
           <div class="buttons">
             <!-- config button -->
-            <ConfigDropDown></ConfigDropDown>
+            <div class="devbar-configdropdown">
+              <ConfigDropDown></ConfigDropDown>
+            </div>
 
             <!-- randomization button -->
+            <div class="devbar-randomizationdropdown">
             <RandomizationDropDown></RandomizationDropDown>
+            </div>
 
             <!-- state variable buttons -->
-            <StateVarsDropDown></StateVarsDropDown>
+            <div class="devbar-statevarsdropdown">
+              <StateVarsDropDown></StateVarsDropDown>
+            </div>
 
             <!-- reset button -->
-            <ResetButton></ResetButton>
+            <div class="devbar-resetbutton">
+              <ResetButton></ResetButton>
+            </div>
 
             <!-- database info button -->
             <DataBarButton></DataBarButton>
 
             <!-- route info buttons -->
-            <RouteInfoDropDrop></RouteInfoDropDrop>
+            <div class="devbar-routeinfodropdown">
+              <RouteInfoDropDrop></RouteInfoDropDrop>
+            </div>
 
             <!-- responsive hides this if the page is too small-->
             <div class="devbar-stepper">
@@ -163,6 +173,26 @@ const api = useSmileAPI()
     display: inline;
   }
   .devbar-stepper {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 560px) {
+
+  .devbar-statevarsdropdown {
+    display: none;
+  }
+}
+
+
+@media screen and (max-width: 520px) {
+  .devbar-randomizationdropdown {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 474px) {
+  .devbar-routeinfodropdown {
     display: none;
   }
 }
