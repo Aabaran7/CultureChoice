@@ -172,6 +172,7 @@ jobs:
       - name: echo App.vue
         run: cat src/App.vue
 
+ 
       # Build the web app
       - name: Build web app
         run: |
@@ -181,6 +182,9 @@ jobs:
             npm run build
           fi
 
+      - name: echo App.vue
+        run: ls -la .dist/assets
+        
       # make remote folder if necessar
       - name: create the remote folders if they don't exist
         uses: appleboy/ssh-action@master
