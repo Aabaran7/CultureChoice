@@ -157,11 +157,11 @@ jobs:
 
       # strip out the dev stuff from the app
       - name: strip out dev stuff
-        run: cat src/App.vue | grep -V 'DeveloperNavBar' | grep -v "DevDataBar" > src/App.vue
+        run: cat src/App.vue | grep -v 'DeveloperNavBar' | grep -v "DevDataBar" > src/App.vue
 
       - name: echo App.vue
         run: cat src/App.vue
-        
+
       # Build the web app
       - name: Build web app
         run: |
