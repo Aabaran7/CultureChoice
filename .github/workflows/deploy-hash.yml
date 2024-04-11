@@ -140,10 +140,37 @@ jobs:
           echo 'VITE_CODE_NAME_DEPLOY_URL         =  "https://${{ secrets.EXP_DEPLOY_HOST }}/e/${{ steps.dotenv_github.outputs.VITE_CODE_NAME }}"' >> $DEPLOY_ENV_FILE
           cat $DEPLOY_ENV_FILE
 
+      # strip out the dev stuff from the app
+      - name: strip outdDev stuff
+        run: |
+          grep -vE "SMILE_DEV_ONLY" ./src/App.vue > tmpindex
+          mv tmpindex ./src/App.vue
+
+      # strip out the presentation stuff from the app if not in presentation mode
+      - name: strip out presentation stuff
+        run: |
+          if ${{ github.ref != 'refs/heads/presentation'}}; then 
+            grep -vE "SMILE_PRESENTATION_ONLY" ./src/App.vue > tmpindex
+            mv tmpindex ./src/App.vue
+          fi
+      
+      - name: echo App.vue
+        run: cat src/App.vue
+
       # Build the web app
       - name: Build web app
-        run: npm run build
+        run: |
+          if ${{ github.ref == 'refs/heads/presentation'}}; then 
+            npm run build:present 
+          else
+            npm run build
+          fi
 
+      - name: list files
+        run: |
+          ls -la ./dist
+          ls -la ./dist/assets
+          
       # make remote folder if necessar
       - name: create the remote folders if they don't exist
         uses: appleboy/ssh-action@master

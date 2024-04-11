@@ -71,7 +71,7 @@ export default defineStore('smilestore', {
         web: '#/welcome',
       },
     },
-    dev: useStorage(
+    dev: appconfig.mode === 'development'? useStorage(
       appconfig.dev_local_storage_key,
       {
         // syncs with local storage
@@ -87,7 +87,7 @@ export default defineStore('smilestore', {
       },
       localStorage,
       { mergeDefaults: true }
-    ),
+    ) : undefined,
     data: {
       // syncs with firestore
       trial_num: 0, // not being updated correctly
