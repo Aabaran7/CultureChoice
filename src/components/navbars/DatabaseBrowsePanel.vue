@@ -92,7 +92,7 @@ function panel_jump(index) {
         </template>
       </ul>
     </nav>
-    <div class="columns colcontent">
+    <div class="columns colcontent is-mobile">
       <div class="column colcontent is-3 edge">
         <!-- two from end -->
         <DatabaseList
@@ -141,6 +141,7 @@ function panel_jump(index) {
   margin: 0;
   padding: 0;
 }
+
 .edge {
   border-right: 1px solid #e3e3e3;
   margin: 0px;
