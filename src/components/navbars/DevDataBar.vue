@@ -167,6 +167,7 @@ function move() {
   padding-left: 2px;
   padding-top: 0px;
   border-right: var(--dev-bar-lines);
+  flex-shrink: 0;
 }
 
 .menu-list {

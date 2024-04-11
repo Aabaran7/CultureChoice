@@ -183,6 +183,10 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
+
+
+
 .step-title {
   font-size: 0.9em;
   font-weight: bold;
@@ -192,6 +196,14 @@ onMounted(() => {
   font-size: 0.85em;
   padding: 25px;
 }
+
+@media screen and (max-width: 1024px) {
+  .step-details {
+    padding: 0px;
+  }
+}
+
+
 
 .info {
   margin: 20px;
@@ -256,5 +268,32 @@ onMounted(() => {
 .edge {
   border-right: 1px solid #e9e9e9;
   margin: 0px;
+}
+
+
+@media screen and (max-width: 599px) {
+  .steps .step-item::before {
+    display: none;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: row;
+  }
+  .step-details {
+    width: 100%;
+    padding: 25px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .info {
+    overflow-y: scroll;
+    height: 100%;
+    margin: 0px;
+    padding-top: 20px;
+  }
 }
 </style>
