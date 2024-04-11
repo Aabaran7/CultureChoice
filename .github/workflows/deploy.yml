@@ -182,8 +182,10 @@ jobs:
             npm run build
           fi
 
-      - name: echo App.vue
-        run: ls -la .dist/assets
+      - name: list files
+        run: |
+          ls -;a ./dist
+          ls -la ./dist/assets
         
       # make remote folder if necessar
       - name: create the remote folders if they don't exist
