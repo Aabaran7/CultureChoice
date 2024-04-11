@@ -207,9 +207,6 @@ onMounted(() => {
 
 .info {
   margin: 20px;
-  margin-top: 20px;
-  margin-left: 40px;
-  margin-right: 20px;
 }
 .statusinfo {
   padding: 10px;

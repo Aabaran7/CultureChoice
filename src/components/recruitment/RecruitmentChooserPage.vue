@@ -8,7 +8,7 @@ const api = useSmileAPI()
 </script>
 
 <template>
-  <section class="hero">
+  <section class="hero prevent-select">
     <div class="hero-body">
       <div class="title">
         <span id="bigsmile">🤠</span>
@@ -18,7 +18,7 @@ const api = useSmileAPI()
       </div>
     </div>
   </section>
-  <div class="content">
+  <div class="content prevent-select">
     <div class="is-size-5 has-text-left">
       Please choose how you would like to test your application. You can choose between these options:
       <br />
@@ -110,11 +110,26 @@ const api = useSmileAPI()
   border: none;
 }
 
+.button {
+  margin-bottom: 10px;
+}
 .config b {
   color: #639aa6;
 }
 
 #bigsmile {
   font-size: 100px;
+}
+
+@media screen and (max-width: 599px) {
+  .is-1 {
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (max-width: 418px) {
+  .is-1 {
+    display: none;
+  }
 }
 </style>
