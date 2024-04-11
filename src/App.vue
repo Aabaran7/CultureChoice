@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 // load sub-components used in this compomnents
 import DeveloperNavBar from '@/components/navbars/DeveloperNavBar.vue'
 import StatusBar from '@/components/navbars/StatusBar.vue'
@@ -41,7 +41,15 @@ smilestore.$subscribe((mutation, newstate) => {
   // localStorage.setItem('cart', JSON.stringify(state))
 })
 
-// monitor events on the main window
+const total_height = computed(() => {
+  if (!api.dev.show_data_bar) {
+    return '100vh'
+  } else {
+    var pct = (window.innerHeight + api.dev.data_bar_height)/window.innerHeight*100
+    return `${pct}vh`
+  }
+})
+
 onMounted(() => {
   log.log('App.vue initialized')
   window.addEventListener('resize', (event) => {
@@ -96,7 +104,7 @@ onMounted(() => {
 }
 
 .router {
-  height: 100vh;
+  height: v-bind(total_height);
   background-color: var(--page-bg-color);
 }
 
