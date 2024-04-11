@@ -12,7 +12,7 @@ function finish() {
 </script>
 
 <template>
-  <div class="page">
+  <div class="page prevent-select">
     <div class="sizer border-animation">
       <div class="info">
         <span class="is-size-2">

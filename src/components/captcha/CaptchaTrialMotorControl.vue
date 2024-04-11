@@ -154,7 +154,7 @@ const flag_touch = () => {
 </script>
 
 <template>
-  <div class="instructions">
+  <div class="instructions prevent-select">
     <h1 class="title">Don't touch the black squares</h1>
     <p class="is-size-5 has-text-center">...while dragging the pink dot to the flag</p>
     <svg class="maze" ref="svgCanvas" width="500px" height="500px" @mouseup="stopDragging" @mouseleave="stopDragging">

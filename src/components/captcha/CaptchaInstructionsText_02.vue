@@ -5,7 +5,7 @@ const ready = ref(false)
 </script>
 
 <template>
-  <div v-if="!ready" class="instructions">
+  <div v-if="!ready" class="instructions prevent-select">
     <h1 class="title">Great job!</h1>
     <p class="is-size-5 has-text-left">
       Let's begin the main game. There will be many types of tasks. Each question will need to be answered
@@ -23,7 +23,7 @@ const ready = ref(false)
     </button>
   </div>
 
-  <div v-else class="instructions">
+  <div v-else class="instructions prevent-select">
     <h1 class="title">Are you sure?</h1>
     <p class="is-size-5 has-text-left">This game moves fast so you really need to be ready to pay attention!</p>
     <hr />

@@ -3,7 +3,7 @@ const emit = defineEmits(['nextPageCaptcha'])
 </script>
 
 <template>
-  <div class="instructions">
+  <div class="instructions prevent-select">
     <h1 class="title">Lets play some games!</h1>
     <p class="is-size-5 has-text-left">
       Before we begin we'd like you to solve a couple quick problems for us, just to warm up your brain. They are common
