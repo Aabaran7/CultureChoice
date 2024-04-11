@@ -184,7 +184,7 @@ jobs:
 
       - name: list files
         run: |
-          ls -;a ./dist
+          ls -la ./dist
           ls -la ./dist/assets
         
       # make remote folder if necessar
