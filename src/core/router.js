@@ -13,14 +13,18 @@ const log = useLog()
 //    and if they are, they redirect to last route
 function addGuards(r) {
   r.beforeEach((to, from) => {
-    // Set queries to be combination of from queries and to queries (TO overwrites FROM if there is one with the same key)
-    // Also add queries that come before the URL
+    // Set queries to be combination of from queries and to queries
+    // (TO overwrites FROM if there is one with the same key)
+    // Also add queries that come before the URL -- this later
+    // case might not be necessary but was a old problem with
+    // prolific.
     const newQueries = {
       ...from.query,
       ...to.query,
       ...getQueryParams(),
     }
     to.query = newQueries
+
     // console.log('query params', to.query)
     // console.log('loading', to.name)
     // console.log('from', from.name)
