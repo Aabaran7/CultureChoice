@@ -24,12 +24,14 @@ const name = ref('enter your name')
 <template>
     <div class="page">
         <div class="pagecontent">
-            <div class="has-background-light  bumper">
+            <div class="has-background-light bumper">
                 <div class="columns">
-                    <div class="column is-8 pr-0 ">
-                        <InformedConsentText />
+                    <div class="column is-7 ">
+                        <div class="consenttext">
+                            <InformedConsentText />
+                        </div>
                     </div>
-                    <div class="column is-4">
+                    <div class="column is-5">
                         <div class="box consentbox">
                             <p class="has-text-left has-text-weight-semibold">
                                 We first must verify that you are
@@ -67,26 +69,25 @@ const name = ref('enter your name')
 </template>
 
 <style scoped>
-.pagecontent {
-    padding-bottom: 100px;
-    margin-bottom: 20px;
-    margin: 50px;
-    margin-top: 0px;
 
+.bumper {
+    border-radius: 2%;
 }
-
 .consentbox {
     margin-bottom: 20px;
     margin-top: 30px;
+    margin-right: 2vw;
+    margin-left: 2vw;
+
+}
+
+.consenttext {
+    margin-right: 2vw;
+    margin-left: 2vw;
 }
 
 .widetoggle {
     --toggle-width: 5.9rem;
-}
-
-.column {
-    padding: 40px;
-    padding-top: 0px;
 }
 
 .hname {
