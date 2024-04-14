@@ -197,4 +197,10 @@ function submitWithdraw() {
 .navbar-end {
   margin-left: auto;
 }
+
+@media screen and (max-width: 560px){
+  .studyinfo {
+    display: none;
+  }
+}
 </style>
