@@ -1,9 +1,12 @@
 import _ from 'lodash'
-import useSmileStore from '@/core/stores/smiledata'
 import * as dagre from '@dagrejs/dagre'
 import RandomSubTimeline from '@/core/subtimeline'
 
+import useSmileStore from '@/core/stores/smiledata'
 const smilestore = useSmileStore()
+import useLog from '@/core/stores/log'
+const log = useLog()
+
 class Timeline {
   constructor() {
     this.routes = [] // the actual routes given to VueRouter
@@ -46,6 +49,8 @@ class Timeline {
   }
 
   pushRootSeqRoute(routeConfig) {
+    // we should be able to infer this the problem is the current route
+    // is unknown
     const newroute = _.cloneDeep(routeConfig)
     newroute.meta.prev = undefined
     newroute.meta.root = true
@@ -73,14 +78,14 @@ class Timeline {
     try {
       this.pushToRoutes(newroute)
     } catch (err) {
-      console.error('Smile FATAL ERROR: ', err)
+      log.error('Smile FATAL ERROR: ', err)
       throw err
     }
 
     try {
       this.pushToTimeline(newroute) // by reference so should update together
     } catch (err) {
-      console.error('Smile FATAL ERROR: ', err)
+      log.error('Smile FATAL ERROR: ', err)
       throw err
     }
   }
@@ -122,7 +127,7 @@ class Timeline {
       try {
         this.pushToRoutes(route)
       } catch (err) {
-        console.error('Smile FATAL ERROR: ', err)
+        log.error('Smile FATAL ERROR: ', err)
         throw err
       }
     })
@@ -143,14 +148,12 @@ class Timeline {
   registerCounters() {
     // for each route, register a counter based on the name
     for (let i = 0; i < this.routes.length; i += 1) {
-      console.log(this.routes[i].name, ' ', this.routes[i].path)
       smilestore.registerPageTracker(this.routes[i].name)
     }
-    console.log('now the page tracker is,', smilestore.getLocal.pageTracker)
   }
 
   buildDAG() {
-    console.log('building DAG')
+    log.log('building DAG')
     this.g = new dagre.graphlib.Graph().setGraph({ nodesep: 80, ranksep: 40 }).setDefaultEdgeLabel(function () {
       return {}
     }) // Default to assigning a new object as a label for each new edge.
@@ -192,6 +195,7 @@ class Timeline {
 
   // buildGraph builds
   buildGraph() {
+    log.debug('building DAG for timeline')
     // keep track of which objects in sequential timeline are themselves timelines
     const timelineIndices = []
 
