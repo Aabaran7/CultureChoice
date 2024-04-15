@@ -29,7 +29,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       ## TODO CHANGE THIS TO CHECK OUT THE BRANCH THAT WAS COMMITTED TO
-      - name: Checkout committed to branch
+      - name: Checkout code commited to branch
         uses: actions/checkout@v4
 
       # setup node.js
@@ -168,11 +168,10 @@ jobs:
             grep -vE "SMILE_PRESENTATION_ONLY" ./src/App.vue > tmpindex
             mv tmpindex ./src/App.vue
           fi
-      
+
       - name: echo App.vue
         run: cat src/App.vue
 
- 
       # Build the web app
       - name: Build web app
         run: |
@@ -186,7 +185,7 @@ jobs:
         run: |
           ls -la ./dist
           ls -la ./dist/assets
-        
+
       # make remote folder if necessar
       - name: create the remote folders if they don't exist
         uses: appleboy/ssh-action@master
