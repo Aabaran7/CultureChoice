@@ -41,7 +41,7 @@ function addGuards(r) {
 
     //if withdrew
     // this is leading to infinite redirects.
-    // if (smilestore.data.withdraw && !smilestore.local.allowJumps) {
+    // if (smilestore.data.withdraw && !smilestore.dev.allowJumps) {
     //   console.log("withdraw so can't go anywhere")
     //   return {
     //     name: 'withdraw',
@@ -82,10 +82,11 @@ function addGuards(r) {
       smilestore.recordRoute(to.name)
       return true
     }
+
     // if you're in jumping mode
     // or you're in presentation mode allow the new route
     if (
-      (smilestore.config.mode === 'development' && smilestore.local.allowJumps) ||
+      (smilestore.config.mode === 'development' && smilestore.dev.allowJumps) ||
       smilestore.config.mode === 'presentation'
     ) {
       log.warn(
@@ -94,8 +95,8 @@ function addGuards(r) {
           //to.meta.allowDirectEntry,
           '.  This is allowed in development/presentation mode but not in production.'
       )
-      smilestore.setLastRoute(to.name)
-      smilestore.recordRoute(to.name)
+      //smilestore.setLastRoute(to.name)  - TODD SUGGESTING NOT OVERWRITING THIS
+      //smilestore.recordRoute(to.name)
       return true
     }
 
@@ -141,6 +142,7 @@ export const router = createRouter({
 })
 addGuards(router) // add the guards defined above
 log.log('Vue Router initialized')
+
 // add additional guard to set global seed before
 router.beforeResolve((to) => {
   const smilestore = useSmileStore()
