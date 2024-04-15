@@ -16,6 +16,8 @@ function getBgClass(msg) {
       return 'bg-yellow'
     case 'error':
       return 'bg-red'
+    case 'debug':
+      return 'bg-grey'
     default:
       return ''
   }
@@ -24,22 +26,79 @@ function getBgClass(msg) {
 <template>
   <!-- content of panel here -->
   <div class="contentpanel">
+    <div class="togglebar">
+      <ul>
+        <li>
+          <b>Search:</b>&nbsp;
+          <input class="input is-small search" placeholder="Search..." type="text" />
+        </li>
+        <li>
+          <b>Filter:</b>&nbsp;
+          <div class="select is-small">
+            <select>
+              <option>All</option>
+              <option>Warnings and Errors</option>
+              <option>Errors</option>
+              <option>Debug only</option>
+              <option>Warnings only</option>
+              <option>Errors only</option>
+            </select>
+          </div>
+        </li>
+        <li>
+          <b>Notifications:</b>&nbsp;
+          <div class="select is-small">
+            <select>
+              <option>All</option>
+              <option>Warnings and Errors</option>
+              <option>Errors</option>
+              <option>Debug only</option>
+              <option>Errors only</option>
+            </select>
+          </div>
+        </li>
+      </ul>
+    </div>
     <div class="scrollablelog">
       <aside class="menu">
         <ul class="menu-list">
           <li v-for="msg in log.history" :class="getBgClass(msg)">
-            <a
-              ><FAIcon icon=" fa-solid fa-angle-right" /> {{ msg.time }} <b>{{ msg.message }}</b> <br>&nbsp;&nbsp;{{ msg.trace }}</a
-            >
+            <FAIcon icon=" fa-solid fa-angle-right" /> {{ msg.time }} <b>{{ msg.message }}</b> <br />&nbsp;&nbsp;{{
+              msg.trace
+            }}
           </li>
         </ul>
       </aside>
     </div>
   </div>
-  <div class="searchbar"></div>
 </template>
 
 <style scoped>
+.search {
+  max-width: 100px;
+}
+.togglebar {
+  min-height: 35px;
+  background-color: #eeeeee;
+  border-bottom: 0.05em solid #cbcbcb;
+  padding-bottom: 3px;
+  padding-top: 3px;
+  width: 100%;
+  text-align: right;
+}
+.togglebar ul {
+  list-style-type: none;
+  padding: 0px;
+  padding-left: 10px;
+}
+.togglebar li {
+  display: inline;
+  padding: 5px;
+  font-size: 0.7em;
+}
+.togglebar select {
+}
+
 .columnheader {
   background: #f4f4f4;
   color: #858484;
@@ -67,6 +126,8 @@ function getBgClass(msg) {
 .menu-list li {
   font-size: 0.7em;
   font-family: monospace;
+  padding: 7px;
+  padding-right: 0px;
   border-bottom: 1px solid #f2f2f2;
 }
 .bg-white {
@@ -77,5 +138,9 @@ function getBgClass(msg) {
 }
 .bg-red {
   background-color: #e0aaaa;
+}
+.bg-grey {
+  background-color: #d0dadd;
+  color: #505050;
 }
 </style>
