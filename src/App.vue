@@ -1,32 +1,12 @@
 <script setup>
-/* 
-   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
-   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
-   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
-   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
-   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
-   WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING 
-
-   WARNING WHEN MAKING CHANGES TO THIS FILE 
-
-   ANY LINE THAT CONTAINS THE TEXT "SMILE_DEV_ONLY" IS A DEVELOPER-ONLY LINE OF CODE
-   AND IS REMOVED PRIOR TO DEPLOYMENT BY THE deploy.yml and deploy-hash.yml SCRIPT
-   LOCATED IN THE .github/workflows FOLDER.
-
-   ANY LINE THAT CONTAINS THE TEXT "SMILE_PRESENTATION_ONLY" IS A PRESENTATION-ONLY LINE OF CODE
-   THIS IS REMOVED PRIOR TO DEPLOYMENT FOR ANY BRANCH OTHER THAN 'presentation'
-
-   THIS MIGHT NOT BE IDEAL BUT IS A CHEAP TEMPLATE OPTION
-   VITE MIGHT HAVE SOME PLUGIN TO DO THIS BETTER IN FUTURE
-
-*/
 import { onMounted, computed, ref } from 'vue'
 
 // load sub-components used in this compomnents
-import DeveloperNavBar from '@/components/navbars/DeveloperNavBar.vue' // SMILE_DEV_ONLY
-import DevDataBar from '@/components/navbars/DevDataBar.vue'// SMILE_DEV_ONLY
-import PresentationNavBar from '@/components/navbars/PresentationNavBar.vue'  // SMILE_PRESENTATION_ONLY
+import DeveloperNavBar from '@/components/navbars/DeveloperNavBar.vue'
+import DevDataBar from '@/components/navbars/DevDataBar.vue'
+import PresentationNavBar from '@/components/navbars/PresentationNavBar.vue'
 
+// bars that are part of the actual experiments
 import StatusBar from '@/components/navbars/StatusBar.vue'
 import ProgressBar from '@/components/navbars/ProgressBar.vue'
 
@@ -43,37 +23,42 @@ import WindowSizerPage from '@/components/screen_adjust/WindowSizerPage.vue'
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
+// use the log feature
 import useLog from '@/core/stores/log'
 const log = useLog()
 
+// get the smilestore
 import useSmileStore from '@/core/stores/smiledata'
 const smilestore = useSmileStore() // load the global store
 
-var snapshot = { ...smilestore.$state.data } // SMILE_DEV_ONLY
-smilestore.$subscribe((mutation, newstate) => { // SMILE_DEV_ONLY
-  Object.keys(newstate.data).forEach((key) => { // SMILE_DEV_ONLY
-    if (snapshot[key] !== newstate.data[key]) { // SMILE_DEV_ONLY
-      log.log(`smilestore.data value changed for ${key}: from ${snapshot[key]} to ${newstate.data[key]}`) // SMILE_DEV_ONLY
-      smilestore.global.db_changes = true // SMILE_DEV_ONLY
-    } // SMILE_DEV_ONLY
-  }) // SMILE_DEV_ONLY
-  snapshot = { ...newstate.data } // SMILE_DEV_ONLY
-}) // SMILE_DEV_ONLY
+var snapshot = { ...smilestore.$state.data }
+smilestore.$subscribe((mutation, newstate) => {
+  Object.keys(newstate.data).forEach((key) => {
+    if (snapshot[key] !== newstate.data[key]) {
+      log.log(`smilestore.data value changed for ${key}: from ${snapshot[key]} to ${newstate.data[key]}`)
+      smilestore.global.db_changes = true
+    }
+  })
+  snapshot = { ...newstate.data }
+})
 
-const total_height = computed(() => { // SMILE_DEV_ONLY
-  if (!api.dev.show_data_bar) { // SMILE_DEV_ONLY
-    return '100vh' // SMILE_DEV_ONLY
-  } else { // SMILE_DEV_ONLY
-    var pct = (window.innerHeight + api.dev.data_bar_height)/window.innerHeight*100 // SMILE_DEV_ONLY
-    return `${pct}vh` // SMILE_DEV_ONLY
-  } // SMILE_DEV_ONLY
-}) // SMILE_DEV_ONLY
+const total_height = computed(() => {
+  if (api.config.mode == 'development' && !api.dev.show_data_bar) {
+    return '100vh'
+  } else {
+    var pct = ((window.innerHeight + api.dev.data_bar_height) / window.innerHeight) * 100
+    return `${pct}vh`
+  }
+})
 
+const toosmall = ref(api.isBrowserTooSmall())
 
 onMounted(() => {
   log.log('App.vue initialized')
+
   window.addEventListener('resize', (event) => {
     api.recordWindowEvent('resize', { width: window.innerWidth, height: window.innerHeight })
+    toosmall.value = api.isBrowserTooSmall()
   })
 
   window.addEventListener('focus', (event) => {
@@ -102,8 +87,11 @@ onMounted(() => {
     "
   ></StatusBar>
   <!-- the router loads here -->
-  <div class="router">
+  <div class="router" v-if="!toosmall">
     <router-view></router-view>
+  </div>
+  <div v-else>
+    <WindowSizerPage triggered="true"></WindowSizerPage>
   </div>
   <ProgressBar
     v-if="
@@ -113,9 +101,9 @@ onMounted(() => {
     "
   >
   </ProgressBar>
-  <Transition name="v-slide"> <!-- // SMILE_DEV_ONLY -->
-    <DevDataBar v-if="api.dev.show_data_bar"></DevDataBar> <!-- // SMILE_DEV_ONLY -->
-  </Transition> <!-- // SMILE_DEV_ONLY -->
+  <Transition name="v-slide">
+    <DevDataBar v-if="api.dev.show_data_bar"></DevDataBar>
+  </Transition>
 </template>
 
 <style>
