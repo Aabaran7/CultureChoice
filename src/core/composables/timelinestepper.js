@@ -36,7 +36,7 @@ export default function useTimelineStepper() {
 
   const navigateTo = (goto) => {
     if (smilestore.config.auto_save) {
-      console.warn('auto saving on navigateTo() navigation')
+      console.warn('Auto saving on navigateTo() navigation')
       smilestore.saveData() // automatically saves data
     }
     if (goto) router.push(goto)

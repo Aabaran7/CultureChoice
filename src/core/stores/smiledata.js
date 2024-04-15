@@ -331,10 +331,9 @@ export default defineStore('smilestore', {
 
         if (!force && this.local.lastWrite && Date.now() - this.local.lastWrite < appconfig.min_write_interval) {
           log.error(
-            'SMILESTORE: write interval too short for firebase.  Data NOT saved. Call saveData() less frequently to avoid problems/cost issues.'
-          )
-          log.error(
-            'SMILESTORE: interval was ' + appconfig.min_write_interval + '.  See env/.env file to alter this setting.'
+            `SMILESTORE: write interval too short for firebase (${appconfig.min_write_interval}).  \
+            Data NOT saved. Call saveData() less frequently to avoid problems/cost issues. See env/.env \
+            file to alter this setting.`
           )
           // console.error(Date.now() - this.local.lastWrite)
           return

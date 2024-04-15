@@ -21,9 +21,11 @@ class Timeline {
     // path and/or name
     for (let i = 0; i < this.routes.length; i += 1) {
       if (this.routes[i].path === route.path) {
+        log.error(`Registering two routes to router with same path.  DuplicatePathError:${route.path}`)
         throw new Error(`DuplicatePathError:${route.path}`)
       }
       if (this.routes[i].name === route.name) {
+        log.error(`Registering two routes to router =with same name.  DuplicatePathError:${route.name}`)
         throw new Error(`DuplicateNameError:${route.name}`)
       }
     }
@@ -35,11 +37,13 @@ class Timeline {
     // path and/or name
     for (let i = 0; i < this.seqtimeline.length; i += 1) {
       if (this.seqtimeline[i].name === route.name) {
+        log.error(`Registering two routes to timeline with same name.  DuplicatePathError:${route.name}`)
         throw new Error(`DuplicateNameError${route.name}`)
       }
       // only check for duplicate paths if the route name is not an object (subtimeline)
       if (typeof route.name !== 'object') {
         if (this.seqtimeline[i].path === route.path) {
+          log.error(`Registering two routes to timeline with same path.  DuplicatePathError:${route.path}`)
           throw new Error(`DuplicatePathError${route.path}`)
         }
       }
