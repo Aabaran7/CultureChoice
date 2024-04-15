@@ -225,7 +225,7 @@ export default defineStore('smilestore', {
           // check if ip field exists
           if (response.data.ip) {
             ip = response.data.ip
-            log.log('User IP address detected (using api.ipify.org): ' + ip)
+            log.success('User IP address detected (using api.ipify.org): ' + ip)
           }
         })
         .catch((error) => {

@@ -69,5 +69,18 @@ export default defineStore('log', {
       console.error(message)
       this.history.push(msg)
     },
+    success(message) {
+      const msg = {
+        type: 'success',
+        time: new Date().toLocaleTimeString('en-US', { timeZoneName: 'short' }),
+        message: message,
+        trace: getLogTrace(),
+      }
+      if (appconfig.mode === 'development') {
+        push.success(message)
+      }
+      console.log(message)
+      this.history.push(msg)
+    },
   },
 })

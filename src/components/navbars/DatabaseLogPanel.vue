@@ -18,6 +18,8 @@ function getBgClass(msg) {
       return 'bg-red'
     case 'debug':
       return 'bg-grey'
+    case 'success':
+      return 'bg-green'
     default:
       return ''
   }
@@ -142,5 +144,8 @@ function getBgClass(msg) {
 .bg-grey {
   background-color: #d0dadd;
   color: #505050;
+}
+.bg-green {
+  background-color: rgb(189, 241, 189);
 }
 </style>
