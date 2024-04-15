@@ -107,10 +107,12 @@ One very useful tool for learning about components is the [Vue Single File Compo
 By default, <SmileText/> preloads all images in the `assets` directory using the glob `'@/assets/**/*.{png,jpg,jpeg,svg,SVG,JPG,PNG,JPEG}'`. This should enable them to be loaded instantaneously from the local cache during the experiment, rather than being fetched from the server upon first use. If you find yourself wanting to preload some subset of images later in the experiment, paste the snippet below in the appropriate location and change the glob to match the images you want to preload.
 
 ```javascript
-Object.values(import.meta.glob('@/assets/**/*.{png,jpg,jpeg,svg,SVG,JPG,PNG,JPEG}', { eager: true, as: 'url' })).forEach((url) => {
-  const image = new Image();
-  image.src = url;
-});
+setTimeout(() => {
+  Object.values(import.meta.glob('@/assets/**/*.{png,jpg,jpeg,svg,SVG,JPG,PNG,JPEG}', { eager: true, as: 'url' })).forEach((url) => {
+    const image = new Image();
+    image.src = url;
+  });
+}, 0);
 ```
 
 _Note_: you cannot dynamically specify the glob (that is, read it from a variable). For this to work, the glob needs to be hard-coded in the call to `import.meta.glob`, as this allows [Vite](https://vitejs.dev) to resolve it appropriately when the experiment is built and deployed. 
