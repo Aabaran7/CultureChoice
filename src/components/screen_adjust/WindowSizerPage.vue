@@ -1,7 +1,15 @@
 <script setup>
+import { reactive } from 'vue'
 // import and initalize smile API
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
+//const props = defineProps(['triggered']
+
+const sizer = reactive({
+  w: api.config.windowsizer_request.width + 'px',
+  h: api.config.windowsizer_request.height + 'px',
+})
+
 
 function finish() {
   // smilestore.setConsented()
@@ -18,7 +26,7 @@ function finish() {
         <span class="is-size-2">
           <FAIcon icon="fa-solid fa-arrows-up-down-left-right "></FAIcon>
         </span>
-        <h1 class="is-size-4">Please adjust the size of your browser until the edges of this box are visible.</h1>
+        <h1 class="is-size-4">Please adjust the size of your browser window until <b>ALL</b> four edges of this box are visible.</h1>
         <hr />
         <div class="is-8 is-size-7 has-text-left note">
           <b>Warning</b>: If you can't resize your window and see the entire box please click the red "withdraw" button
@@ -36,6 +44,9 @@ function finish() {
 </template>
 
 <style scoped>
+.page {
+  width: 100vw;
+}
 .info {
   width: 65%;
   padding-top: 30px;
@@ -54,8 +65,8 @@ hr {
 .sizer {
   background-color: rgb(208, 242, 251);
   /*border: 2px dashed red;*/
-  width: v-bind(api.config.windowsizer_request.width);
-  height: v-bind(api.config.windowsizer_request.height);
+  width: v-bind(sizer.w);
+  height: v-bind(sizer.h);
   margin-left: auto;
   margin-right: auto;
   vertical-align: center;

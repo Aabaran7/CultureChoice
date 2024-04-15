@@ -127,6 +127,7 @@ export default defineStore('smilestore', {
     getPage: (state) => state.local.pageTracker,
     getPossibleConditions: (state) => state.local.possibleConditions,
     getConditions: (state) => state.data.conditions,
+    verifiedVisibility: (state) => state.data.verified_visibility,
   },
 
   actions: {

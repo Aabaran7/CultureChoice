@@ -93,7 +93,9 @@ VITE_AUTO_SAVE_DATA              = true
 VITE_MAX_WRITES                  = 1000
 VITE_MIN_WRITE_INTERVAL          = 2000
 VITE_SHOW_PROGRESS_BAR           = false
+
 VITE_VIEWPORT_REQUEST            = 800x600
+VITE_WINDOWSIZER_AGRESSIVE       = true
 
 VITE_ESTIMATED_TIME              = "30-40 minutes"
 VITE_PAYRATE_HOURLY              = "$15USD/hour + performance related bonus"
@@ -111,6 +113,7 @@ available to the web application/experiment.
 - `VITE_MIN_WRITE_INTERVAL` configured the minimum time in milliseconds that should pass between writes to the Firestore. This respects Firestore's limit of 1 write per document per second. It defaults to 2000ms.
 - `VITE_SHOW_PROGRESS_BAR` configures if the progress bar should be visible at the bottom of the screen.
 - `VITE_WINDOWSIZER_REQUEST` configures the requested size of the page for rendering content (used by WindowSizerPage.vue component)
+- `VITE_WINDOWSIZER_AGGRESSIVE` if set to true and the user resizes the page, this will hide the task and show a guide to resize the window. It is called "aggressive" since it really stops the task moving forward when the user makes their window too small.  This is enabled only after the subject is told and agrees they made the window a given size.
 - `VITE_RANDOM_SEED` initializes the pseudo-random number generator in <SmileText />
 - `VITE_ESTIMATED_TIME` is text you can include in an ad for the study (e.g., mechanical turk) to let people know how long to expect the task to take. It might need to be references several places so putting it in the config can be helpful.
 - `VITE_PAYRATE` is text about the payrate for the study. Again, it is a configuration option since it might need to be referenced in several components and templates.

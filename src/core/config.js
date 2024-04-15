@@ -7,7 +7,7 @@ function parse_w_h(value) {
   // receives configuration option as WIDTHxHEIGHT
   // split based on 'x' and assign to objects
   const w_h = value.split('x')
-  return { width: `${w_h[0]}px`, height: `${w_h[1]}px` }
+  return { width: parseInt(w_h[0]), height: parseInt(w_h[1]) }
 }
 export default {
   mode: import.meta.env.MODE,
@@ -40,6 +40,7 @@ export default {
   payrate: import.meta.env.VITE_PAYRATE,
   google_analytics_id: import.meta.env.VITE_GOOGLE_ANALYTICS,
   windowsizer_request: parse_w_h(import.meta.env.VITE_WINDOWSIZER_REQUEST),
+  windowsizer_aggressive: import.meta.env.VITE_WINDOWSIZER_AGGRESSIVE,
   firebaseConfig: {
     apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTHDOMAIN,

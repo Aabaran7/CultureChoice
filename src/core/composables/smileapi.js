@@ -61,6 +61,17 @@ export default function useSmileAPI() {
     verifyVisibility: (value) => {
       smilestore.verifyVisibility(value)
     },
+    getVerifiedVisibility: () => {
+      return smilestore.verifiedVisibility
+    },
+    isBrowserTooSmall: () => {
+      let val = false
+      if(smilestore.config.windowsizer_aggressive && smilestore.verifiedVisibility) {
+        val = window.innerWidth < smilestore.config.windowsizer_request.width+40 || window.innerHeight < smilestore.config.windowsizer_request.height+40
+        
+      }
+      return val
+    },
     setPageAutofill: (autofill) => {
       console.log('setting autofil')
       if (smilestore.config.mode === 'development') smilestore.setPageAutofill(autofill)
