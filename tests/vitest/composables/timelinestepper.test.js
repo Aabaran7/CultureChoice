@@ -4,7 +4,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { mount } from '@vue/test-utils'
 import useTimelineStepper from '@/core/composables/timelinestepper'
-import { Timeline, processQuery } from '@/timeline'
+import { Timeline, processQuery } from '@/core/timeline'
 
 let router
 let pinia

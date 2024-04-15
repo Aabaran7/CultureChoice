@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
-import RandomSubTimeline from '@/subtimeline'
-import { RandomizeSubTimeline } from '@/subtimeline'
-import Timeline from '@/timeline'
-import { createTestingPinia } from '@pinia/testing'
+import RandomizeSubTimeline from '@/core/subtimeline'
+import Timeline from '@/core/timeline'
+import { createTestingPinia, setActivePinia } from '@pinia/testing'
 import useSmileStore from '@/core/stores/smiledata'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { mount } from '@vue/test-utils'
+import { setActivePinia } from 'pinia'
 
 let router
 let pinia
@@ -17,7 +17,7 @@ describe('Subtimeline tests', () => {
       template: `<h1>hi</h1><router-view></router-view>`,
     }
     pinia = createTestingPinia({ stubActions: true })
-
+    setActivePinia(pinia)
     router = createRouter({
       history: createWebHashHistory(),
       routes,

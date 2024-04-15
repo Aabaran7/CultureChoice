@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-import Timeline from '@/timeline'
-import RandomSubTimeline from '@/subtimeline'
+import Timeline from '@/core/timeline'
+import RandomSubTimeline from '@/core/subtimeline'
 
 describe('Timeline tests', () => {
   it('should be able to create a timeline', () => {

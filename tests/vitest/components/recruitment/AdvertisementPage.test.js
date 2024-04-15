@@ -13,7 +13,7 @@ let pinia
 
 describe('Advertisement tests', () => {
   beforeEach(() => {
-    pinia = createTestingPinia({ stubActions: false })
+    pinia = createTestingPinia({ stubActions: true })
     router = createRouter({
       history: createWebHashHistory(),
       routes,
