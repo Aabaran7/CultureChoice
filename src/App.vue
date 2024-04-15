@@ -35,7 +35,15 @@ var snapshot = { ...smilestore.$state.data }
 smilestore.$subscribe((mutation, newstate) => {
   Object.keys(newstate.data).forEach((key) => {
     if (snapshot[key] !== newstate.data[key]) {
-      log.log(`smilestore.data value changed for ${key}: from ${snapshot[key]} to ${newstate.data[key]}`)
+      // test if newstate.data[key] is an Object
+      let oldv = snapshot[key]
+      let newv = newstate.data[key]
+      if (typeof newstate.data[key] === 'object') {
+        oldv = JSON.stringify(snapshot[key])
+        newv = JSON.stringify(newstate.data[key])
+      }
+
+      log.log(`smilestore.data value changed for ${key}: from ${oldv} to ${newv}`)
       smilestore.global.db_changes = true
     }
   })
