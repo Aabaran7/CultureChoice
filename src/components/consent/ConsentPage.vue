@@ -8,11 +8,7 @@ import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
 function finish() {
-    if (!api.isKnownUser) {
-        // console.log('not known')
-        api.setKnown() // set new user and add document, then assign conditions
-    }
-    api.setConsented()
+    api.completeConsent()
     api.stepNextRoute()
 }
 

@@ -104,7 +104,7 @@ One very useful tool for learning about components is the [Vue Single File Compo
 
 
 ## Preloading images
-By default, <SmileText/> preloads all images in the `assets` directory using the glob `'@/assets/**/*.{png,jpg,jpeg,svg,SVG,JPG,PNG,JPEG}'`. This should enable them to be loaded instantaneously from the local cache during the experiment, rather than being fetched from the server upon first use. If you find yourself wanting to preload some subset of images later in the experiment, paste the snippet below in the appropriate location and change the glob to match the images you want to preload.
+By default, <SmileText/> preloads all images in the `assets` directory using the glob `'@/assets/**/*.{png,jpg,jpeg,svg,SVG,JPG,PNG,JPEG}'` after the particpant consents to participate in the experiment by calling `api.preloadAllImages()` as part of `api.completeConsent()`. This should enable them to be loaded instantaneously from the local cache during the experiment, rather than being fetched from the server upon first use. If you find yourself wanting to preload some subset of images later in the experiment, paste the snippet below in the appropriate location and change the glob to match the images you want to preload.
 
 ```javascript
 setTimeout(() => {
