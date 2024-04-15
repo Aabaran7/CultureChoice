@@ -1,8 +1,18 @@
 <script setup>
+import { computed } from 'vue'
 import useSmileAPI from '@/core/composables/smileapi'
 import RouteJumper from '@/components/navbars/RouteJumper.vue'
 
 const api = useSmileAPI()
+
+const buttonstyle = computed(() => {
+  let base = 'button is-small is-route is-jump-bar has-tooltip-arrow has-tooltip-bottom'
+  if (api.dev.route_panel.visible) {
+    return base + ' is-selected'
+  } else {
+    return base
+  }
+})
 </script>
 
 <template>
@@ -15,6 +25,7 @@ const api = useSmileAPI()
         <span class="counter">{{ api.getPageTracker(api.currentRouteName()) }}</span>
       </button>
     </p>
+
     <p class="control" v-if="api.hasAutofill()">
       <button
         class="button is-small is-jump-bar has-tooltip-arrow has-tooltip-bottom"
@@ -29,7 +40,7 @@ const api = useSmileAPI()
     <div class="dropdown is-hoverable is-right" :class="{ 'is-active': api.dev.route_panel.visible }">
       <div class="dropdown-trigger">
         <p class="control is-route">
-          <button class="button is-small is-route is-jump-bar has-tooltip-arrow has-tooltip-bottom">
+          <button :class="buttonstyle" @click="api.dev.route_panel.visible = !api.dev.route_panel.visible">
             <div class="routelabel">/{{ api.currentRouteName() }}</div>
           </button>
         </p>
@@ -53,6 +64,9 @@ const api = useSmileAPI()
 }
 .dropdown {
   margin-top: 0;
+}
+.is-selected {
+  background-color: rgb(211, 251, 222);
 }
 .is-jump-bar {
   font-size: 0.65rem;

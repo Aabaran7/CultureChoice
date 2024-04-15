@@ -1,8 +1,12 @@
 <script setup>
 //import { useTimeAgo } from '@vueuse/core'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
+
 import SmileAPI from '@/core/composables/smileapi'
 const api = SmileAPI()
+
+import useSmileStore from '@/core/stores/smiledata'
+const smilestore = useSmileStore()
 
 const firebase_url = computed(() => {
   const mode = api.config.mode == 'development' ? 'testing' : 'real'
@@ -24,9 +28,20 @@ const sync_state = computed(() => {
   }
 })
 
-const last_write_time_string = ref('')
+// smilestore.dev.show_data_bar.$subscribe((mutation, newstate) => {
+//   console.log('show_data_bar', newstate)
+// })
+
+/*
+watch(() => smilestore.dev.show_data_bar, (newVal, oldVal) => {
+  console.log('show_data_bar', newVal, oldVal)
+})
+*/
+
+const last_write_time_string = ref('Never happened') // default
 onMounted(() => {
   var myInterval = setInterval(() => {
+    //console.log("updating timer", api.dev.show_data_bar)
     if (!api.global.db_connected) {
       last_write_time_string.value = `Never happened`
     } else {
@@ -187,10 +202,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
-
-
-
 .step-title {
   font-size: 0.9em;
   font-weight: bold;
@@ -206,8 +217,6 @@ onMounted(() => {
     padding: 0px;
   }
 }
-
-
 
 .info {
   margin: 20px;
@@ -270,7 +279,6 @@ onMounted(() => {
   border-right: 1px solid #e9e9e9;
   margin: 0px;
 }
-
 
 @media screen and (max-width: 599px) {
   .steps .step-item::before {

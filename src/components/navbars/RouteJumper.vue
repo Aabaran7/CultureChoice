@@ -2,6 +2,9 @@
 //import RouteGraph from '@/components/navbars/RouteGraph.vue'
 import { watch, ref } from 'vue'
 
+import { useKeyModifier } from '@vueuse/core'
+const altKeyState = useKeyModifier('Alt')
+
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 const props = defineProps(['routeName'])
@@ -41,139 +44,86 @@ function setHover(route) {
 function setClicked(route) {
   console.log('got the click event')
   router.push({ name: route }) /// something something about passing queryparams
+  api.dev.route_panel.visible = false
+}
+
+watch(altKeyState, (value) => {
+  api.dev.allowJumps = value
+})
+
+function navigate(route) {
+  router.push({ name: route })
+  // dismiss hover if open but not if panel is set to remain visible.
+  //api.dev.route_panel.visible = false
 }
 </script>
 <template>
-  <vue-draggable-resizable
-    :x="api.dev.route_panel.x"
-    :y="api.dev.route_panel.y"
-    :draggable="api.dev.route_panel.visible"
-    :resizable="false"
-    :onDrag="onDragCallback"
-  >
-    <div class="dropdown-content p*-3 is-left">
-      <div class="pin" :class="{ 'pin-selected': api.dev.route_panel.visible }">
-        <a @click="toggle_and_reset()">
-          <FAIcon icon=" fa-solid fa-thumbtack" />
-        </a>
-      </div>
-      <div class="content">
-        <div class="columns pt-0 mt-0">
-          <div class="column is-9 pt-0 mt-0">
-            <h1 class="title is-6">Experiment Timeline</h1>
-            <p class="has-text-left">
-              If you enable the "force" option you can jump between routes even when it would be disallowed in live
-              mode. The timeline graphs show how transitions between pages are arranged. Read more about the
-              <a href="https://smile.gureckislab.org/timeline.html">timeline</a>
-              here. <br />
-            </p>
-            <div class="field mt-4 has-text-right">
-              <input
-                id="switchRoundedDefaultJump"
-                type="checkbox"
-                name="switchRoundedDefaultJump"
-                class="switch is-rounded is-rtl is-small"
-                v-model="smilestore.local.allowJumps"
-              />
-              <label for="switchRoundedDefaultJump"><b>Force navigation:</b></label>
-            </div>
-            <!--<RouteGraph
-              :current-route="routeName"
-              :hover-route="hoverRoute"
-              @hovered-on="setHover"
-              @clicked-on="setClicked"
-            ></RouteGraph>-->
+  <div class="dropdown-content has-text-left">
+    <template v-for="r in routes">
+      <div
+        class="routelabel"
+        @mouseover="hoverRoute = r.name"
+        @mouseout="hoverRoute = ''"
+        :class="{ route_selected: routeName === r.name, hover: hoverRoute === r.name }"
+        @click="navigate(r.name)"
+      >
+        <span class="is-size-7">
+          <div class="routename">/{{ r.name }}</div>
+          <div class="forcebutton forcemode" v-if="altKeyState && hoverRoute === r.name">
+            <FAIcon icon="fa-solid fa-square-caret-right" />
           </div>
-          <div class="column is-3 pt-0 mt-0">
-            <template v-for="r in routes">
-              <!-- make a special link for web_referred, which has params -->
-              <router-link
-                @mouseover="hoverRoute = r.name"
-                @mouseout="hoverRoute = ''"
-                class="dropdown-item routelink"
-                :class="{ hover: hoverRoute === r.name }"
-                v-if="r.name === 'welcome_referred'"
-                :to="{ name: r.name, params: { service: 'web' }, query: currentQuery }"
-                :key="r.path"
-              >
-                <div class="routelabel">
-                  <span class="is-size-7">/{{ r.name }}</span>
-                </div>
-              </router-link>
-              <!-- make a link for everything else -->
-
-              <router-link
-                @mouseover="hoverRoute = r.name"
-                @mouseout="hoverRoute = ''"
-                class="dropdown-item routelink"
-                :class="{ route_selected: routeName === r.name, hover: hoverRoute === r.name }"
-                v-else
-                :to="{ name: r.name, query: currentQuery }"
-                :key="r.name"
-              >
-                <div class="routelabel">
-                  <span class="is-size-7">/{{ r.name }}</span>
-                </div>
-              </router-link>
-            </template>
-          </div>
-        </div>
+        </span>
       </div>
-    </div>
-  </vue-draggable-resizable>
+    </template>
+    <hr />
+    <div class="note">Use ⌥ + click to force navigation.</div>
+  </div>
 </template>
 
 <style scoped>
 .dropdown-content {
-  padding: 0;
-  padding-top: 8px;
+  padding-left: 10px;
+  padding-right: 5px;
+}
+.dropdown-content hr {
   margin: 0;
-  width: 700px;
-  text-align: left;
-}
-.content {
-  padding: 15px;
-  text-align: left;
-}
-.routelink {
-  font-family: monospace;
+  border-top: 0.05em solid #cbcbcb;
 }
 
-.pin {
-  float: right;
-  margin: 0;
-  padding-right: 15px;
-  color: #fff;
+.forcemode {
+  color: #595959;
 }
-
-.pin a {
-  color: #ccc;
-}
-
-.pin-selected a {
-  color: #42b983;
-}
-
-.datapanel {
-  padding: 15px;
-  text-align: left;
-  width: 500px;
+.note {
+  font-size: 0.8em;
+  color: #6b6b6b;
+  padding-top: 3px;
 }
 
 .dropdown-content b {
   color: #000;
   font-size: 13px;
 }
-.dropdown-divider {
-  margin: 0;
+.hover {
+  background-color: #f0f0f0;
+}
+.routelink {
+  font-family: monospace;
 }
 
-.dropdown-item {
-  color: #000;
-  font-size: 13px;
-  padding: 8px;
-  margin: 0px;
-  text-align: left;
+.routename {
+  font-weight: 800;
+}
+
+.forcebutton {
+  font-size: 0.8rem;
+  position: absolute;
+
+  position: absolute;
+  right: 2px;
+  top: 3px;
+  padding: 3px;
+  margin-right: 4px;
+  margin-left: auto;
 }
 .route_selected {
   background-color: #bbbbbb;
@@ -181,46 +131,14 @@ function setClicked(route) {
   font-weight: 500;
 }
 
-a {
-  color: #42b983;
-}
-
-.tabs {
-  margin-bottom: 0px;
-}
-
 .routelabel {
   font-weight: 800;
   font-family: 'Courier New', Courier, monospace;
-}
-
-.config {
-  text-align: left;
-  margin-left: 20px;
-  font-family: monospace;
-  font-size: 0.9em;
-  font-weight: 500;
-}
-
-.config a {
-  color: #0b8a9b;
-}
-
-.config b {
-  color: #639aa6;
-}
-
-.code {
-  background: rgb(251, 251, 251);
-  margin: auto;
-  margin-top: 0px;
-  margin-right: 25px;
-  padding: 10px;
-  word-wrap: break-word;
-}
-
-.code p {
-  text-align: left;
-  font-size: 0.9em;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
 }
 </style>
