@@ -112,6 +112,7 @@ export default defineStore('smilestore', {
   }),
 
   getters: {
+    isDataBarVisible: (state) => state.dev.show_data_bar,
     isKnownUser: (state) => state.local.knownUser,
     isConsented: (state) => state.data.consented,
     isDone: (state) => state.data.done,

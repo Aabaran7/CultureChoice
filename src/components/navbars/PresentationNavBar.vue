@@ -59,11 +59,12 @@ function resetLocalState() {
           <div class="dropdown-menu" id="dropdown-menu" role="menu">
             <div class="dropdown-content">
               <br />
-              <input type="checkbox" v-model="smilestore.local.allowJumps" />
+              <input type="checkbox" v-model="smilestore.dev.allowJumps" />
               <b>Force</b> <br /><br />
               <hr class="dropdown-divider" />
               <template v-for="r in routes">
                 <!-- make a special link for web_referred, which has params -->
+
                 <router-link
                   class="dropdown-item routelink"
                   v-if="r.name === 'welcome_referred'"
