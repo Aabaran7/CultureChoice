@@ -9,6 +9,15 @@
 /*@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');*/
 @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500&display=swap');
 
+/* global fonts **/
+:root {
+  --vp-font-family-base: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --vp-font-family-mono: Menlo, Monaco, Consolas, 'Courier New', monospace;
+  /* fontkit overrides */
+  --fk-color-primary: #48c78e;
+}
+
 :root {
   --purple: #8a4d76;
   --pink: #e88f9e;

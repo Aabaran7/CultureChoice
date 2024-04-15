@@ -107,15 +107,6 @@ onMounted(() => {
 </template>
 
 <style>
-/* global fonts **/
-:root {
-  --vp-font-family-base: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --vp-font-family-mono: Menlo, Monaco, Consolas, 'Courier New', monospace;
-  /* fontkit overrides */
-  --fk-color-primary: #48c78e;
-}
-
 .router {
   height: '100vh';
   height: v-bind(total_height); /* // SMILE_DEV_ONLY */
