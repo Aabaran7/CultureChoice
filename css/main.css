@@ -47,7 +47,7 @@
   /* Your variables */
   --header-height: 30px;
   --container-padding: 10px;
-  --container-width: 1280px;
+  --container-width: 100vw;
 
   /* Set the maximum width of the stream */
   --nv-root-width: var(--container-width);
