@@ -37,6 +37,7 @@ export default defineStore('smilestore', {
         docRef: null,
         partNum: null,
         completionCode: null,
+        done: false,
         totalWrites: 0,
         lastWrite: null,
         approx_data_size: 0,
@@ -147,6 +148,7 @@ export default defineStore('smilestore', {
       this.data.endtime = fsnow()
     },
     setDone() {
+      this.local.done = true
       this.data.done = true
       this.data.endtime = fsnow()
     },
