@@ -30,6 +30,15 @@ import PresentationNavBar from '@/components/navbars/PresentationNavBar.vue'  //
 import StatusBar from '@/components/navbars/StatusBar.vue'
 import ProgressBar from '@/components/navbars/ProgressBar.vue'
 
+// notification library
+import { Notivue, Notification, NotificationProgress } from 'notivue'
+import 'notivue/notification.css' // Only needed if using built-in notifications
+import 'notivue/animations.css' // Only needed if using built-in animations
+import 'notivue/notification-progress.css'
+import { pastelTheme } from 'notivue'
+
+import WindowSizerPage from '@/components/screen_adjust/WindowSizerPage.vue'
+
 // import and initalize smile API
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
@@ -80,8 +89,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <DeveloperNavBar v-if="api.config.mode == 'development'"> </DeveloperNavBar> <!-- // SMILE_DEV_ONLY -->
-  <PresentationNavBar v-if="api.config.mode == 'presentation'"> </PresentationNavBar> <!-- // SMILE_PRESENTATION_ONLY -->
+  <DeveloperNavBar v-if="api.config.mode == 'development'"> </DeveloperNavBar>
+  <PresentationNavBar v-if="api.config.mode == 'presentation'"> </PresentationNavBar>
+  <Notivue v-slot="item">
+    <Notification :item="item" :theme="pastelTheme">
+      <NotificationProgress :item="item" />
+    </Notification>
+  </Notivue>
   <StatusBar
     v-if="
       api.currentRouteName() !== 'data' && api.currentRouteName() !== 'recruit' && api.config.mode != 'presentation'

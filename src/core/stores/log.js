@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import appconfig from '@/core/config'
+import { push } from 'notivue'
 
 function getLogTrace() {
   // some browsers use 'at ', some use '@'
@@ -60,6 +61,10 @@ export default defineStore('log', {
         time: new Date().toLocaleTimeString('en-US', { timeZoneName: 'short' }),
         message: message,
         trace: getLogTrace(),
+      }
+      if (appconfig.mode === 'development') {
+        console.log(message)
+        push.error(message)
       }
       console.error(message)
       this.history.push(msg)
