@@ -73,6 +73,10 @@ onMounted(() => {
               <td class="has-text-left is-family-code is-size-7">{{ '/' + api.local.lastRoute }}</td>
             </tr>
             <tr>
+              <td class="has-text-left"><b>Is done:</b></td>
+              <td class="has-text-left is-family-code is-size-7">{{ api.local.done }}</td>
+            </tr>
+            <tr>
               <td class="has-text-left"><b>Allow repeat:</b></td>
               <td class="has-text-left is-family-code is-size-7">{{ api.config.allow_repeats }}</td>
             </tr>
