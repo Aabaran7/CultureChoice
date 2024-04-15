@@ -1,5 +1,4 @@
 import { processQuery } from '@/core/utils'
-import Timeline from '@/core/timeline'
 import RandomSubTimeline from '@/core/subtimeline'
 
 // 1. Import route components
@@ -24,13 +23,15 @@ import WindowSizer from '@/components/screen_adjust/WindowSizerPage.vue'
 import useSmileAPI from '@/core/composables/smileapi'
 const api = useSmileAPI()
 
+import useTimeline from '@/core/composables/timeline'
+const timeline = useTimeline()
+
 // 2. Define some routes to the timeline
 // Each route should map to a component.
 // Each needs a name
 // these routes can be accessed in any order generally
 // but for most experiment they go in sequence from begining
 // to the end of this list
-const timeline = new Timeline()
 
 // add the recruitment chooser if in development mode
 if (api.config.mode === 'development') {

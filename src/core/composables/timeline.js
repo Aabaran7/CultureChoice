@@ -1,11 +1,10 @@
 import _ from 'lodash'
 import * as dagre from '@dagrejs/dagre'
-import RandomSubTimeline from '@/core/subtimeline'
-
 import useSmileStore from '@/core/stores/smiledata'
 const smilestore = useSmileStore()
 import useLog from '@/core/stores/log'
 const log = useLog()
+import RandomSubTimeline from '@/core/subtimeline'
 
 class Timeline {
   constructor() {
@@ -174,8 +173,8 @@ class Timeline {
       }
     }
     /*  add a non sequential route
-    this.g_nonseq.setNode('recruit', { name: 'recruit', label: 'RecruitmentChooser.vue', class: 'node', shape: 'circle' })
-    */
+      this.g_nonseq.setNode('recruit', { name: 'recruit', label: 'RecruitmentChooser.vue', class: 'node', shape: 'circle' })
+      */
     for (let i = 0; i < this.seqtimeline.length; i += 1) {
       if (this.seqtimeline[i].meta.type === 'timeline') {
         // don't know whast to do about the subtimeline things
@@ -250,4 +249,8 @@ class Timeline {
   //   }
   // }
 }
-export default Timeline
+
+export default function useTimeline() {
+  const timeline = new Timeline()
+  return timeline
+}
