@@ -119,6 +119,25 @@ export default function useSmileAPI() {
       smilestore.saveTrialData(data)
       console.log('data ', smilestore.data.study_data)
     },
+    preloadAllImages: () => {
+      setTimeout(() => {
+        Object.values(import.meta.glob('@/assets/**/*.{png,jpg,jpeg,svg,SVG,JPG,PNG,JPEG}', { eager: true, as: 'url' })).forEach((url) => {
+          const image = new Image();
+          image.src = url;
+        });
+      }, 1);
+    },
+    completeConsent: (preloadImages = true) => {
+      if (preloadImages) {
+        api.preloadAllImages();
+      }
+      
+      if (!api.isKnownUser) {
+        // console.log('not known')
+        api.setKnown(); // set new user and add document, then assign conditions
+      }
+      api.setConsented();
+    }
   }
 
   return api

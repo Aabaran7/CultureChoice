@@ -77,6 +77,7 @@ onMounted(() => {
     api.recordWindowEvent('blur')
   })
 })
+
 </script>
 
 <template>
