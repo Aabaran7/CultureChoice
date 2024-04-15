@@ -5,7 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 /* import specific icons */
 /* to limit the size of the final project you import individal icons */
 /* NOTE: you also have to load them below by adding to the library */
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { faSwatchbook, faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { faBook } from '@fortawesome/free-solid-svg-icons'
 import { faArrowsTurnToDots } from '@fortawesome/free-solid-svg-icons'
@@ -55,9 +55,16 @@ import { faSquareUpRight } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faAnglesRight } from '@fortawesome/free-solid-svg-icons'
 import { faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
+import { faHammer } from '@fortawesome/free-solid-svg-icons'
+import { faSquareCaretRight } from '@fortawesome/free-solid-svg-icons'
+import { faCodeBranch } from '@fortawesome/free-solid-svg-icons'
+import { faCircle as farCircle } from '@fortawesome/free-regular-svg-icons'
 
 /* add icons to the library */
 library.add(
+  farCircle,
+  faCodeBranch,
+  faSquareCaretRight,
   faCheck,
   faXmark,
   faUserSecret,
@@ -107,5 +114,6 @@ library.add(
   faRotateLeft,
   faRotateRight,
   faAnglesRight,
-  faAnglesLeft
+  faAnglesLeft,
+  faHammer
 )
