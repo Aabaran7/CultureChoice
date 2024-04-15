@@ -108,7 +108,7 @@ onMounted(() => {
   >
   </ProgressBar>
   <Transition name="v-slide">
-    <DevDataBar v-if="api.dev.show_data_bar"></DevDataBar>
+    <DevDataBar v-if="api.config.mode == 'development' && api.dev.show_data_bar"></DevDataBar>
   </Transition>
 </template>
 
