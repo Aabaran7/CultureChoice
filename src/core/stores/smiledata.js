@@ -25,10 +25,6 @@ function initLastRoute(mode) {
   return 'landing'
 }
 
-function initAllowJumps(mode) {
-  return mode === 'development' || mode === 'presentation'
-}
-
 export default defineStore('smilestore', {
   // arrow function recommended for full type inference
   state: () => ({
@@ -38,7 +34,6 @@ export default defineStore('smilestore', {
         // syncs with local storage
         knownUser: false,
         lastRoute: initLastRoute(appconfig.mode),
-        allowJumps: initAllowJumps(appconfig.mode),
         docRef: null,
         partNum: null,
         completionCode: null,
@@ -71,23 +66,27 @@ export default defineStore('smilestore', {
         web: '#/welcome',
       },
     },
-    dev: appconfig.mode === 'development'? useStorage(
-      appconfig.dev_local_storage_key,
-      {
-        // syncs with local storage
-        page_provides_autofill: null,
-        show_data_bar: false,
-        data_bar_height: 370,
-        data_bar_tab: 'database',
-        data_path: null,
-        config_panel: { type: 'local', visible: false, x: -280, y: 0 },
-        state_var_panel: { visible: false, x: -150, y: 0 },
-        randomization_panel: { visible: false, x: -130, y: 0 },
-        route_panel: { visible: false, x: -500, y: -3 },
-      },
-      localStorage,
-      { mergeDefaults: true }
-    ) : undefined,
+    dev:
+      appconfig.mode === 'development'
+        ? useStorage(
+            appconfig.dev_local_storage_key,
+            {
+              // syncs with local storage
+              page_provides_autofill: null,
+              allowJumps: false,
+              show_data_bar: false,
+              data_bar_height: 370,
+              data_bar_tab: 'database',
+              data_path: null,
+              config_panel: { type: 'local', visible: false, x: -280, y: 0 },
+              state_var_panel: { visible: false, x: -150, y: 0 },
+              randomization_panel: { visible: false, x: -130, y: 0 },
+              route_panel: { visible: false, x: -0, y: -3 },
+            },
+            localStorage,
+            { mergeDefaults: true }
+          )
+        : undefined,
     data: {
       // syncs with firestore
       trial_num: 0, // not being updated correctly
