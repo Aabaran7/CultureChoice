@@ -12,14 +12,27 @@ import '@/core/icons' // configure fontawesome
 
 // drag components
 import VueDraggableResizable from 'vue-draggable-resizable'
+import { createNotivue } from 'notivue'
+
 // Create the app and the data store
 // const pinia = createPinia() // create the data store
 const app = createApp(App) // create the app
-
+const notivue = createNotivue({
+  position: 'top-left',
+  limit: 4,
+  enqueue: true,
+  avoidDuplicates: true,
+  notifications: {
+    global: {
+      duration: 2000,
+    },
+  },
+})
 // register plugins
 app.use(pinia) // tell the app to use the data store
 app.use(router) // tell the app to use the router
 app.use(plugin, defaultConfig)
+app.use(notivue)
 app.use(
   VueGtag,
   {
