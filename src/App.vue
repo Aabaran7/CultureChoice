@@ -68,8 +68,9 @@ onMounted(() => {
   window.addEventListener('blur', (event) => {
     api.recordWindowEvent('blur')
   })
-
-  api.getBrowserFingerprint()
+  if (api.currentRouteName() !== 'recruit') {
+    api.getBrowserFingerprint()
+  }
 })
 </script>
 
