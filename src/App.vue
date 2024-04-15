@@ -80,6 +80,12 @@ onMounted(() => {
     api.getBrowserFingerprint()
   }
 })
+
+Object.values(import.meta.glob('@/assets/**/*.{png,jpg,jpeg,svg,SVG,JPG,PNG,JPEG}', { eager: true, as: 'url' })).forEach((url) => {
+  const image = new Image();
+  image.src = url;
+});
+
 </script>
 
 <template>
