@@ -18,17 +18,22 @@ const api = useSmileAPI()
 // possibly altered so that there is lots of substructure to it
 
 const pages = [
-  CaptchaInstructionsText_01,
-  CaptchaTrialTextComprehension,
-  CaptchaInstructionsText_02,
-  CaptchaTrialImageCategorization,
-  CaptchaTrialMotorControl,
-  CaptchaRotateImage,
-  CaptchaTrialMotorControl,
+  {component: CaptchaInstructionsText_01, params: {adjective: "wonderful"}, data: []},
+  {component: CaptchaTrialTextComprehension, params: {}, data: []},
+  {component: CaptchaInstructionsText_02, params: {}, data: []},
+  {component: CaptchaTrialImageCategorization, params: {}, data: []},
+  {component: CaptchaTrialMotorControl, params: {}, data: []},
+  {component: CaptchaRotateImage, params: {}, data: []},
+  {component: CaptchaTrialMotorControl, params: {}, data: []},
 ]
 
 const currentTab = computed(() => {
-  return pages[api.getCurrentTrial()]
+  return {
+    component: pages[api.getCurrentTrial()].component,
+    props: {
+      params: pages[api.getCurrentTrial()].params
+    }
+  }
 })
 // captcha steps
 
@@ -77,7 +82,7 @@ function finish() {
     </div>
 
     <!-- Component changes when currentTab changes -->
-    <component :is="currentTab" @next-page-captcha="next_trial()" v-else> </component>
+    <component :is="currentTab.component" v-bind="currentTab.props" @next-page-captcha="next_trial()" v-else> </component>
   </div>
 </template>
 
