@@ -121,7 +121,7 @@ export default function useSmileAPI() {
       console.log('data ', smilestore.data.study_data)
     },
     preloadAllImages: () => {
-      log.log('Preloading images')
+      console.log('Preloading images')
       setTimeout(() => {
         Object.values(
           import.meta.glob('@/assets/**/*.{png,jpg,jpeg,svg,SVG,JPG,PNG,JPEG}', {

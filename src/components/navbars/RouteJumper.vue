@@ -21,7 +21,6 @@ const hoverRoute = ref('')
 const router = useRouter() // this is needed in composition API because this.$router not availabel
 const route = useRoute()
 
-log.debug(router.getRoutes())
 // watch route -- if route changes, update value of current query. This will get carried forward when you jump routes
 const currentQuery = ref(route.query)
 watch(route, async (newRoute, oldRoute) => {
