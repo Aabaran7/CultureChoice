@@ -32,6 +32,10 @@ dist-ssr
 env/*.txt
 env/*.tar.gz
 env/*.zip
+env/.env.local
+env/.env.deploy.local
+env/.env.git.local
+env/.env.deploy
 
 # Firebase service account
 *.service-account*
