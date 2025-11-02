@@ -24,18 +24,23 @@ jobs:
         with:
           node-version: 20
 
+      - name: Generate git environment
+        run: |
+          chmod +x scripts/generate_git_env.sh
+          sh scripts/generate_git_env.sh
+
       - name: Install deps
-        working-directory: smile
         run: npm ci
 
       - name: Build
-        working-directory: smile
+        env:
+          VITE_DEPLOY_BASE_PATH: /CultureChoice/
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: smile/dist
+          path: dist
 
   deploy:
     runs-on: ubuntu-latest
