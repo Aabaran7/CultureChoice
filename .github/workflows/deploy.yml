@@ -9,21 +9,23 @@ on:
         description: 'The GitHub SHA you want to deploy'
         required: false
         type: string
-  push:
-    branches-ignore:
-      - 'feat-*'
-      - 'fix-*'
-      - 'refactor-*'
-      - 'test-*'
-      - 'chore-*'
-      - 'style-*'
-      - 'docs-*'
-      - 'ci-*'
-    paths-ignore: # ignore any changes to the docs for this workflow or unimportant files
-      - 'docs/**'
-      - '.github/workflows/docs-deploy.yml'
-      - '**/*.md'
-      - 'LICENSE'
+  # DISABLED: This workflow is disabled in favor of pages.yml for GitHub Pages deployment
+  # To deploy to a custom server, trigger this workflow manually via workflow_dispatch
+  # push:
+  #   branches-ignore:
+  #     - 'feat-*'
+  #     - 'fix-*'
+  #     - 'refactor-*'
+  #     - 'test-*'
+  #     - 'chore-*'
+  #     - 'style-*'
+  #     - 'docs-*'
+  #     - 'ci-*'
+  #   paths-ignore: # ignore any changes to the docs for this workflow or unimportant files
+  #     - 'docs/**'
+  #     - '.github/workflows/docs-deploy.yml'
+  #     - '**/*.md'
+  #     - 'LICENSE'
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
