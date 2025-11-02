@@ -32,19 +32,61 @@ import {
 import appconfig from '@/core/config'
 import useLog from '@/core/stores/log'
 
-// Initialize Firebase connection
-const firebaseApp = initializeApp(appconfig.firebaseConfig)
-const auth = getAuth(firebaseApp)
-let db
+// Initialize Firebase connection only if config is valid
+let firebaseApp = null
+let auth = null
+let db = null
 
-if (appconfig.mode === 'testing') {
-  db = getFirestore()
-  db._setSettings({ ignoreUndefinedProperties: true })
-  connectFirestoreEmulator(db, '127.0.0.1', 8080)
-  console.warn('WARNING: using local firestore emulator')
+// Check if Firebase config is valid (not just placeholder values)
+const hasValidFirebaseConfig = appconfig.firebaseConfig?.apiKey && 
+  appconfig.firebaseConfig.apiKey !== 'your-api-key-here' &&
+  !appconfig.firebaseConfig.apiKey.includes('your-') &&
+  appconfig.firebaseConfig.projectId &&
+  appconfig.firebaseConfig.projectId !== 'your-project-id' &&
+  !appconfig.firebaseConfig.projectId.includes('your-')
+
+// Enable Firebase now that we have valid credentials
+const enableFirebase = true
+
+// Helpful diagnostics to understand why Firebase may not initialize
+try {
+  console.log('FIREBASE CONFIG CHECK', {
+    mode: appconfig.mode,
+    hasApiKey: !!appconfig.firebaseConfig?.apiKey,
+    hasProjectId: !!appconfig.firebaseConfig?.projectId,
+    projectId: appconfig.firebaseConfig?.projectId || '(missing)',
+    hasValidFirebaseConfig,
+  })
+} catch (_) {}
+
+if (hasValidFirebaseConfig && enableFirebase) {
+  try {
+    firebaseApp = initializeApp(appconfig.firebaseConfig)
+    auth = getAuth(firebaseApp)
+    console.log('Firebase initialized successfully')
+  } catch (error) {
+    console.warn('Firebase initialization failed:', error)
+  }
 } else {
-  db = getFirestore(firebaseApp)
-  db._setSettings({ ignoreUndefinedProperties: true })
+  console.log('Firebase disabled or invalid config', {
+    enableFirebase,
+    hasValidFirebaseConfig,
+    mode: appconfig.mode,
+  })
+}
+
+if (hasValidFirebaseConfig && enableFirebase && firebaseApp) {
+  if (appconfig.mode === 'testing') {
+    db = getFirestore()
+    db._setSettings({ ignoreUndefinedProperties: true })
+    connectFirestoreEmulator(db, '127.0.0.1', 8080)
+    console.warn('WARNING: using local firestore emulator')
+  } else {
+    db = getFirestore(firebaseApp)
+    db._setSettings({ ignoreUndefinedProperties: true })
+  }
+} else {
+  console.warn('Firebase not configured - running in offline mode')
 }
 
 let mode = 'real'
@@ -64,6 +106,13 @@ export const fsnow = () => Timestamp.now()
  */
 export const anonymousAuth = async () => {
   const log = useLog()
+  
+  // Return null if Firebase is not configured
+  if (!hasValidFirebaseConfig || !auth) {
+    log.log('FIRESTORE-DB: Firebase not configured, skipping auth')
+    return null
+  }
+  
   try {
     const userCredential = await signInAnonymously(auth)
     log.log('FIRESTORE-DB: Anonymous auth successful')
@@ -145,6 +194,13 @@ const validateFirestoreData = (data, path = '') => {
  */
 export const updateSubjectDataRecord = async (data, docid) => {
   const log = useLog()
+  
+  // Skip if Firebase is not enabled
+  if (!db || !enableFirebase) {
+    log.log('FIRESTORE-DB: Skipping update (Firebase disabled)')
+    return Promise.resolve()
+  }
+  
   try {
     validateFirestoreData(data)
     const docRef = doc(db, `${mode}/${appconfig.projectRef}/data/`, docid)
@@ -164,6 +220,13 @@ export const updateSubjectDataRecord = async (data, docid) => {
  */
 export const updatePrivateSubjectDataRecord = async (data, docid) => {
   const log = useLog()
+  
+  // Skip if Firebase is not enabled
+  if (!db || !enableFirebase) {
+    log.log('FIRESTORE-DB: Skipping private update (Firebase disabled)')
+    return Promise.resolve()
+  }
+  
   // is it weird to have a aync method that doesn't return anything?
   try {
     const docRef = doc(db, `${mode}/${appconfig.projectRef}/data/${docid}/private/`, 'private_data')

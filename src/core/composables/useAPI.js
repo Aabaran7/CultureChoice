@@ -383,9 +383,13 @@ export class SmileAPI {
    * @returns {Promise<void>} A promise that resolves when the database connection is established
    */
   async connectDB() {
-    if (!this.store.browserPersisted.knownUser) {
+    // If user is unknown OR we don't yet have a Firestore docRef, create it
+    if (!this.store.browserPersisted.knownUser || !this.store.browserPersisted.docRef) {
       await this.store.setKnown()
       this.store.setConsented()
+    } else {
+      // Try loading and setting DB connected if docRef exists
+      await this.store.loadData()
     }
   }
 

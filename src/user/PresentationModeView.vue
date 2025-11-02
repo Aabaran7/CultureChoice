@@ -223,12 +223,12 @@ function getAffiliationIndex(affiliation) {
 
         <Separator />
 
-        <!-- stoop example game -->
+        <!-- Roulette Experiment -->
         <div>
-          <h3 class="text-xl font-semibold text-foreground mb-3">Play Stoop</h3>
-          <p class="text-lg text-muted-foreground mb-4">Try out the stroop task.</p>
-          <Button size="sm" @click="api.goToView('stroop')">
-            Stroop
+          <h3 class="text-xl font-semibold text-foreground mb-3">Roulette Experiment</h3>
+          <p class="text-lg text-muted-foreground mb-4">Try out the roulette experiment.</p>
+          <Button size="sm" @click="api.goToView('roulette')">
+            Roulette Experiment
             <ArrowRight class="w-4 h-4 ml-2 inline" />
           </Button>
         </div>

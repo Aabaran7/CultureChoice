@@ -68,7 +68,7 @@ export default ({ mode }) => {
       },
     },
     envDir: 'env',
-    base: process.env.VITE_DEPLOY_BASE_PATH,
+    base: process.env.VITE_DEPLOY_BASE_PATH || '/CultureChoice/',
     server: {
       port: process.env.VITE_DEV_PORT_NUM,
       strictPort: true,

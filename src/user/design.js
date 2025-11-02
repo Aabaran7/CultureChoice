@@ -33,7 +33,7 @@ import WindowSizerView from '@/builtins/windowSizer/WindowSizerView.vue'
 import ExpView from '@/builtins/demoTasks/ExpView.vue'
 import FavoriteNumber from '@/builtins/demoTasks/FavoriteNumber.vue'
 import FavoriteColor from '@/builtins/demoTasks/FavoriteColor.vue'
-import StroopExpView from '@/user/components/stroop_exp/StroopExpView.vue'
+import RouletteExperimentView from '@/user/components/roulette/RouletteExperimentView.vue'
 
 // #3. Import smile API and timeline
 import useAPI from '@/core/composables/useAPI'
@@ -224,10 +224,11 @@ timeline.pushRandomizedNode({
   options: [['number'], ['color']],
 })
 
-// stroop exp
+
+// roulette experiment
 timeline.pushSeqView({
-  name: 'stroop',
-  component: StroopExpView,
+  name: 'roulette',
+  component: RouletteExperimentView,
 })
 
 // debriefing form
