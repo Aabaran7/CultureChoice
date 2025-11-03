@@ -9,7 +9,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import useViewAPI from '@/core/composables/useViewAPI'
 import { Button } from '@/uikit/components/ui/button'
 // Custom progress bar implementation
-import { ConstrainedTaskWindow } from '@/uikit/layouts'
+import { ConstrainedPage } from '@/uikit/layouts'
 import RouletteWheel from './RouletteWheel.vue'
 import RatingScale from './RatingScale.vue'
 import { generateTrialSequence } from './miniBlockGenerator.js'
@@ -252,13 +252,7 @@ api.setAutofill(autofill)
 </script>
 
 <template>
-  <ConstrainedTaskWindow
-    variant="ghost"
-    :responsiveUI="api.config.responsiveUI"
-    :width="api.config.windowsizerRequest.width"
-    :height="api.config.windowsizerRequest.height"
-    class="p-8"
-  >
+  <ConstrainedPage :responsiveUI="api.config.responsiveUI" class="p-4 md:p-8">
     <!-- Instructions Phase -->
     <div v-if="phase === phases.INSTRUCTIONS" class="text-center space-y-6">
       <h1 class="text-3xl font-bold">Roulette Wheel Experiment</h1>
@@ -458,5 +452,5 @@ api.setAutofill(autofill)
         </Button>
       </div>
     </div>
-  </ConstrainedTaskWindow>
+  </ConstrainedPage>
 </template>
