@@ -229,6 +229,7 @@ timeline.pushRandomizedNode({
 timeline.pushSeqView({
   name: 'roulette',
   component: RouletteExperimentView,
+  meta: { allowAlways: true, requiresConsent: false },
 })
 
 // debriefing form
