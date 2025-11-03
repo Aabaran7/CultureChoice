@@ -63,16 +63,18 @@ if (!api.persist.isDefined('forminfo')) {
 }
 
 /**
- * Watch for date changes and update the form data
- * Converts CalendarDate to ISO string format and closes popover
+ * Update persisted DOB only when user selects a date to avoid feedback loops
  */
-watch(dateValue, (newValue) => {
-  if (newValue) {
-    const date = newValue.toDate(getLocalTimeZone())
-    api.persist.forminfo.dob = date.toISOString().split('T')[0] // Format as YYYY-MM-DD
-    isPopoverOpen.value = false // Close popover when date is selected
+function onDateSelect(val) {
+  if (val) {
+    const year = val.year
+    const month = String(val.month).padStart(2, '0')
+    const day = String(val.day).padStart(2, '0')
+    const iso = `${year}-${month}-${day}`
+    if (api.persist.forminfo.dob !== iso) api.persist.forminfo.dob = iso
   }
-})
+  isPopoverOpen.value = false
+}
 
 /**
  * Watch for form data changes and update the date picker
@@ -228,8 +230,8 @@ function finish() {
                   {{ dateValue ? df.format(dateValue.toDate(getLocalTimeZone())) : 'Pick a date' }}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent class="w-auto p-0">
-                <Calendar v-model="dateValue" initial-focus />
+              <PopoverContent class="w-auto p-0" :trap-focus="false" :disable-outside-pointer-events="false" :modal="false">
+                <Calendar v-model="dateValue" initial-focus @update:modelValue="onDateSelect" />
               </PopoverContent>
             </Popover>
             <p class="text-xs text-muted-foreground mt-1">Enter your birthday (required)</p>
