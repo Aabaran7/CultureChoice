@@ -30,7 +30,7 @@ jobs:
         working-directory: smile
         run: npm ci
 
-      - name: Build
+      - name: Build (and move artifact to root/dist)
         working-directory: smile
         env:
           VITE_DEPLOY_BASE_PATH: /CultureChoice/
@@ -40,12 +40,17 @@ jobs:
           VITE_FIREBASE_STORAGEBUCKET: ${{ fromJson(secrets.FIREBASE_CONFIG_JSON).storageBucket }}
           VITE_FIREBASE_MESSAGINGSENDERID: ${{ fromJson(secrets.FIREBASE_CONFIG_JSON).messagingSenderId }}
           VITE_FIREBASE_APPID: ${{ fromJson(secrets.FIREBASE_CONFIG_JSON).appId }}
-        run: npm run build
+        run: |
+          npm run build
+          echo "Built contents of smile/dist:" && ls -la dist || true
+          rm -rf ../dist
+          mv dist ../dist
+          echo "Moved artifact to root/dist:" && ls -la ../dist || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: smile/dist
+          path: dist
 
   deploy:
     needs: build
