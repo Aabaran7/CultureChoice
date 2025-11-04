@@ -2,11 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-<<<<<<< HEAD
     branches: [ main ]
-=======
-    branches: [main]
->>>>>>> b9b5639 (Mobile layout + Switch v-model; responsive slider)
   workflow_dispatch:
 
 permissions:
@@ -22,12 +18,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-<<<<<<< HEAD
-      - name: Checkout repo into smile/
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          path: smile
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -38,33 +30,8 @@ jobs:
         working-directory: smile
         run: npm ci
 
-      - name: Generate git environment (optional)
-        working-directory: smile
-        run: |
-          if [ -x scripts/generate_git_env.sh ]; then
-            chmod +x scripts/generate_git_env.sh
-            sh scripts/generate_git_env.sh || true
-          fi
-
       - name: Build
         working-directory: smile
-=======
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Generate git environment
-        run: |
-          chmod +x scripts/generate_git_env.sh
-          sh scripts/generate_git_env.sh
-
-      - name: Install deps
-        run: npm ci
-
-      - name: Build
->>>>>>> b9b5639 (Mobile layout + Switch v-model; responsive slider)
         env:
           VITE_DEPLOY_BASE_PATH: /CultureChoice/
           VITE_FIREBASE_APIKEY: ${{ fromJson(secrets.FIREBASE_CONFIG_JSON).apiKey }}
@@ -78,7 +45,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-<<<<<<< HEAD
           path: smile/dist
 
   deploy:
@@ -90,20 +56,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
- 
-=======
-          path: dist
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
->>>>>>> b9b5639 (Mobile layout + Switch v-model; responsive slider)
