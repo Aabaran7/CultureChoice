@@ -15,6 +15,11 @@ const props = defineProps({
     type: Number,
     required: true
   },
+  // Pixel size of the rendered SVG (scales the 128x128 viewBox)
+  size: {
+    type: Number,
+    default: 128,
+  },
   isSelected: {
     type: Boolean,
     default: false
@@ -190,14 +195,14 @@ watch(() => props.isSpinning, (newVal) => {
     <!-- Selection ring -->
     <div 
       v-if="isSelected"
-      class="absolute inset-0 rounded-full border-4 border-primary animate-pulse"
-      style="width: 128px; height: 128px; margin: -4px;"
+      class="absolute rounded-full border-4 border-primary animate-pulse"
+      :style="{ width: `${props.size}px`, height: `${props.size}px`, top: '-4px', left: '-4px' }"
     />
     
     <!-- SVG Wheel -->
     <svg 
-      width="128" 
-      height="128" 
+      :width="props.size" 
+      :height="props.size" 
       viewBox="0 0 128 128"
       class="drop-shadow-lg"
     >

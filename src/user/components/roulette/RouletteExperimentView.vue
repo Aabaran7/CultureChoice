@@ -5,9 +5,10 @@
  * Adapted from Figma prototype to work with SMILE framework
  */
 
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import useViewAPI from '@/core/composables/useViewAPI'
 import { Button } from '@/uikit/components/ui/button'
+import { Switch } from '@/uikit/components/ui/switch'
 // Custom progress bar implementation
 import { ConstrainedPage } from '@/uikit/layouts'
 import RouletteWheel from './RouletteWheel.vue'
@@ -43,6 +44,10 @@ const CONFIG = { numMiniBlocks: 5 }
 
 // State management (block-structured)
 const phase = ref(phases.INSTRUCTIONS)
+const animationsEnabled = ref(true)
+const wheelSize = ref(128)
+const isWheelSpinning = computed(() => animationsEnabled.value && !spinComplete.value)
+const containerEl = ref(null)
 const currentMiniBlock = ref(0) // 0..(CONFIG.numMiniBlocks-1)
 const currentSubBlock = ref('agency') // 'agency' | 'noAgency'
 const currentTrialInSubBlock = ref(0) // 0..3
@@ -112,6 +117,11 @@ const proceedToSpin = () => {
   phase.value = phases.SPIN
   spinComplete.value = false
   api.log.log('Spin phase - Outcome:', currentTrialData.value.outcomeWin)
+
+  // If animations are disabled, immediately mark spin complete
+  if (!animationsEnabled.value) {
+    spinComplete.value = true
+  }
 }
 
 const handleSpinComplete = () => {
@@ -232,6 +242,38 @@ onMounted(async () => {
   // Ensure Firebase anonymous auth is established early and wait for doc creation
   await api.connectDB()
   initializeExperiment()
+  const setSize = () => {
+    // Derive size from viewport width so choice and spin phases match
+    const vw = window.innerWidth
+    const gap = 24
+    const base = Math.floor((vw - gap * 2) / 3)
+    // Clamp for reasonable bounds across devices
+    wheelSize.value = Math.max(120, Math.min(220, base))
+  }
+  setSize()
+  window.addEventListener('resize', setSize)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', () => {})
+})
+
+watch(() => phase.value, () => {
+  // Recompute wheel size when the layout changes
+  setTimeout(() => {
+    const el = containerEl.value
+    if (el) {
+      const event = new Event('resize')
+      window.dispatchEvent(event)
+    }
+  }, 0)
+})
+
+// Respect toggle changes during the spin phase
+watch(animationsEnabled, (newValue) => {
+  if (phase.value === phases.SPIN && !newValue) {
+    // Immediately complete spin when animation is turned off mid-spin
+    spinComplete.value = true
+  }
 })
 
 // Autofill function for development
@@ -252,7 +294,16 @@ api.setAutofill(autofill)
 </script>
 
 <template>
-  <ConstrainedPage :responsiveUI="api.config.responsiveUI" class="p-4 md:p-8">
+  <ConstrainedPage :responsiveUI="api.config.responsiveUI" class="p-4 md:p-8 relative">
+    <div class="absolute top-4 right-2 z-10">
+      <div class="flex items-center gap-2 text-sm">
+        <span class="text-muted-foreground">Wheel animation</span>
+        <Switch
+          v-model:checked="animationsEnabled"
+          class="data-[state=checked]:bg-green-500"
+        />
+      </div>
+    </div>
     <!-- Instructions Phase -->
     <div v-if="phase === phases.INSTRUCTIONS" class="text-center space-y-6">
       <h1 class="text-3xl font-bold">Roulette Wheel Experiment</h1>
@@ -282,9 +333,9 @@ api.setAutofill(autofill)
         <h2 class="text-2xl font-bold mb-2">
           Trial {{ completedTrialsCount + 1 }} of {{ totalTrials }}
         </h2>
-        <div class="w-full max-w-md mx-auto bg-gray-200 rounded-full h-2">
+        <div class="w-full max-w-2xl mx-auto bg-gray-200 rounded-full h-4 mt-6">
           <div 
-            class="bg-primary h-2 rounded-full transition-all duration-300 ease-out"
+            class="bg-primary h-4 rounded-full transition-all duration-300 ease-out"
             :style="{ width: `${progress}%` }"
           ></div>
         </div>
@@ -296,19 +347,21 @@ api.setAutofill(autofill)
         </p>
       </div>
       
-      <div class="flex justify-center space-x-8">
+      <div class="pt-16 md:pt-24 lg:pt-28"></div>
+      <div ref="containerEl" class="flex justify-center gap-6 md:gap-8">
         <RouletteWheel
           v-for="(wheel, index) in 3"
           :key="index"
           :probability="currentTrialData.probability"
           :wheel-index="index"
+          :size="wheelSize"
           :is-selected="selectedWheel === index"
           :disabled="false"
           @click="handleWheelChoice(index)"
         />
       </div>
       
-      <div v-if="selectedWheel !== null" class="text-center">
+      <div v-if="selectedWheel !== null" class="text-center mt-6">
         <Button @click="proceedToApproval" size="lg">
           Confirm Choice
         </Button>
@@ -316,41 +369,46 @@ api.setAutofill(autofill)
     </div>
 
     <!-- Approval Phase -->
-    <div v-else-if="phase === phases.APPROVAL" class="text-center space-y-6">
-      <div class="text-2xl">
+    <div v-else-if="phase === phases.APPROVAL" class="text-center">
+      <div class="flex flex-col items-center justify-center min-h-[55vh] md:min-h-[60vh] lg:min-h-[65vh] space-y-6">
+        <div class="text-2xl">
         <div v-if="isApproved" class="text-green-600">
           ✓ Your choice was APPROVED
         </div>
         <div v-else class="text-red-600">
           ✗ Your choice was VETOED
+          </div>
         </div>
+        
+        <Button @click="proceedToConfidence" size="lg">
+          Continue
+        </Button>
       </div>
-      <p class="text-lg">
-        The computer has {{ isApproved ? 'approved' : 'vetoed' }} your choice.
-      </p>
-      <Button @click="proceedToConfidence" size="lg">
-        Continue
-      </Button>
     </div>
 
     <!-- Confidence Rating Phase -->
     <div v-else-if="phase === phases.CONFIDENCE" class="space-y-6">
-      <div class="text-center">
-        <h2 class="text-xl font-bold mb-4">Rate Your Confidence</h2>
-        <p class="text-muted-foreground">
-          How confident are you in your wheel choice?
-        </p>
-      </div>
-      
+      <div class="flex flex-col items-center justify-center min-h-[45vh] md:min-h-[50vh] lg:min-h-[55vh] w-full">
+        <div class="text-center mb-2">
+          <h2 class="text-xl font-bold mb-1">Rate Your Confidence</h2>
+          <p class="text-muted-foreground">How confident are you in your wheel choice?</p>
+        </div>
       <RatingScale
-        label="Confidence"
+        label=""
         :min="0"
         :max="100"
         :value="confidenceRating"
+        leftIcon="thumbs"
+        :hideLabels="true"
+        :hideValue="true"
+        :wide="true"
+        widthClass="w-[40vw] md:w-[35vw] lg:w-[30vw]"
+        trackHeightClass="h-[12px]"
+        :largeIcons="true"
         @change="handleConfidenceRating"
       />
-      
-      <div v-if="confidenceRating !== null" class="text-center">
+      </div>
+      <div v-if="confidenceRating !== null" class="text-center mt-2">
         <Button @click="proceedToSpin" size="lg">
           Continue
         </Button>
@@ -360,20 +418,23 @@ api.setAutofill(autofill)
     <!-- Spin Phase -->
     <div v-else-if="phase === phases.SPIN" class="space-y-6">
       <div class="text-center">
-        <h2 class="text-xl font-bold mb-4">Wheel Spinning...</h2>
-        <p class="text-muted-foreground">
+        <h2 class="text-xl font-bold mb-4">{{ animationsEnabled ? 'Wheel Spinning...' : 'Outcome' }}</h2>
+        <p class="text-muted-foreground" v-if="animationsEnabled">
           The selected wheel is spinning to reveal the outcome.
         </p>
       </div>
       
-      <div class="flex justify-center">
+      <div class="pt-16 md:pt-24 lg:pt-28"></div>
+      <div ref="containerEl" class="flex justify-center">
         <RouletteWheel
           :probability="currentTrialData?.probability || 0.5"
           :wheel-index="selectedWheel !== null ? selectedWheel : 0"
+          :size="wheelSize"
           :is-selected="false"
           :disabled="true"
-          :is-spinning="true"
+          :is-spinning="isWheelSpinning"
           :outcome="currentTrialData?.outcomeWin"
+          :key="isWheelSpinning ? 'spin-on' : 'spin-off'"
           @spin-complete="handleSpinComplete"
         />
       </div>
@@ -390,17 +451,27 @@ api.setAutofill(autofill)
 
     <!-- Agency Satisfaction Phase -->
     <div v-else-if="phase === phases.AGENCY_SATISFACTION" class="space-y-6">
-      <div class="text-center">
-        <h2 class="text-xl font-bold mb-4">Agency Block Complete</h2>
+      <div class="flex flex-col items-center justify-center min-h-[45vh] md:min-h-[50vh] lg:min-h-[55vh] w-full">
+        <div class="text-center mb-2">
+          <h2 class="text-xl font-bold mb-1">Block Complete</h2>
+          <p class="text-muted-foreground">Happy with your lottery outcome?</p>
+        </div>
+        <RatingScale
+          label=""
+          :min="0"
+          :max="100"
+          :value="agencySatisfaction"
+          leftIcon="faces"
+          :hideLabels="true"
+          :hideValue="true"
+          :wide="true"
+          widthClass="w-[40vw] md:w-[35vw] lg:w-[30vw]"
+          trackHeightClass="h-[12px]"
+          :largeIcons="true"
+          @change="(val) => agencySatisfaction = val"
+        />
       </div>
-      <RatingScale
-        label="Satisfaction with Agency Block"
-        :min="0"
-        :max="100"
-        :value="agencySatisfaction"
-        @change="(val) => agencySatisfaction = val"
-      />
-      <div class="text-center">
+      <div class="text-center mt-2">
         <Button @click="completeAgencySatisfaction" :disabled="agencySatisfaction === null" size="lg">
           Continue
         </Button>
@@ -409,17 +480,27 @@ api.setAutofill(autofill)
 
     <!-- No Agency Satisfaction Phase -->
     <div v-else-if="phase === phases.NO_AGENCY_SATISFACTION" class="space-y-6">
-      <div class="text-center">
-        <h2 class="text-xl font-bold mb-4">No Agency Block Complete</h2>
+      <div class="flex flex-col items-center justify-center min-h-[45vh] md:min-h-[50vh] lg:min-h-[55vh] w-full">
+        <div class="text-center mb-2">
+          <h2 class="text-xl font-bold mb-1">Block Complete</h2>
+          <p class="text-muted-foreground">Happy with your lottery outcome?</p>
+        </div>
+        <RatingScale
+          label=""
+          :min="0"
+          :max="100"
+          :value="noAgencySatisfaction"
+          leftIcon="faces"
+          :hideLabels="true"
+          :hideValue="true"
+          :wide="true"
+          widthClass="w-[40vw] md:w-[35vw] lg:w-[30vw]"
+          trackHeightClass="h-[12px]"
+          :largeIcons="true"
+          @change="(val) => noAgencySatisfaction = val"
+        />
       </div>
-      <RatingScale
-        label="Satisfaction with No Agency Block"
-        :min="0"
-        :max="100"
-        :value="noAgencySatisfaction"
-        @change="(val) => noAgencySatisfaction = val"
-      />
-      <div class="text-center">
+      <div class="text-center mt-2">
         <Button @click="completeNoAgencySatisfaction" :disabled="noAgencySatisfaction === null" size="lg">
           Continue
         </Button>

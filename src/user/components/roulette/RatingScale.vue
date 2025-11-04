@@ -5,16 +5,45 @@
  */
 
 import { ref, computed } from 'vue'
+import { ThumbsDown, ThumbsUp, Frown, Smile } from 'lucide-vue-next'
 // Custom slider implementation using HTML range input
 
 const props = defineProps({
   label: {
     type: String,
-    required: true
+    default: ''
   },
   min: {
     type: Number,
     default: 0
+  },
+  hideLabels: {
+    type: Boolean,
+    default: false,
+  },
+  hideValue: {
+    type: Boolean,
+    default: false,
+  },
+  wide: {
+    type: Boolean,
+    default: false,
+  },
+  widthClass: {
+    type: String,
+    default: '',
+  },
+  trackHeightClass: {
+    type: String,
+    default: '',
+  },
+  largeIcons: {
+    type: Boolean,
+    default: false,
+  },
+  subtitle: {
+    type: String,
+    default: '',
   },
   max: {
     type: Number,
@@ -23,19 +52,21 @@ const props = defineProps({
   value: {
     type: Number,
     default: null
+  },
+  // Optional icon hints for the two ends of the slider
+  leftIcon: {
+    type: String,
+    default: '' // 'thumbs' | 'faces'
+  },
+  rightIcon: {
+    type: String,
+    default: '' // kept for symmetry; not strictly needed
   }
 })
 
 const emit = defineEmits(['change'])
 
-// Quick rating options
-const quickRatings = [
-  { label: 'Very Low', value: 10 },
-  { label: 'Low', value: 25 },
-  { label: 'Medium', value: 50 },
-  { label: 'High', value: 75 },
-  { label: 'Very High', value: 90 }
-]
+// Minimal UI; no quick presets
 
 // Current rating value
 const currentValue = ref(props.value || 50)
@@ -58,24 +89,27 @@ const isQuickRatingSelected = (value) => currentValue.value === value
 </script>
 
 <template>
-  <div class="w-full max-w-2xl mx-auto space-y-6">
-    <!-- Label -->
-    <div class="text-center">
+  <div class="w-full mx-auto space-y-6" :class="widthClass || (wide ? 'max-w-4xl' : 'max-w-2xl')">
+    <!-- Optional label -->
+    <div v-if="label && !hideLabels" class="text-center">
       <h3 class="text-lg font-semibold">{{ label }}</h3>
-      <p class="text-sm text-muted-foreground">
-        Rate from {{ min }} to {{ max }}
-      </p>
+      <p v-if="subtitle" class="text-sm text-muted-foreground">{{ subtitle }}</p>
+      <p v-else class="text-sm text-muted-foreground">Rate from {{ min }} to {{ max }}</p>
     </div>
     
-    <!-- Large value display -->
-    <div class="text-center">
-      <div class="text-4xl font-bold text-primary">
-        {{ currentValue }}
-      </div>
-    </div>
+    <!-- Minimal value text (small, muted) -->
+    <div v-if="!hideValue" class="text-center text-sm text-muted-foreground">{{ currentValue }}</div>
     
-    <!-- Slider -->
+    <!-- Slider with optional end icons -->
     <div class="px-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 shrink-0 text-foreground" aria-hidden="true">
+          <component
+            :is="leftIcon === 'thumbs' ? ThumbsDown : (leftIcon === 'faces' ? Frown : null)"
+            v-if="leftIcon"
+            :class="largeIcons ? 'w-8 h-8' : 'w-5 h-5'"
+          />
+        </div>
       <input
         type="range"
         :min="min"
@@ -83,34 +117,27 @@ const isQuickRatingSelected = (value) => currentValue.value === value
         :step="1"
         :value="currentValue"
         @input="handleSliderChange"
-        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+        :class="`w-full ${trackHeightClass || 'h-2'} bg-gray-200 rounded-lg appearance-none cursor-pointer slider`"
         style="background: linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(currentValue - min) / (max - min) * 100}%, #e5e7eb ${(currentValue - min) / (max - min) * 100}%, #e5e7eb 100%)"
       />
+        <div class="w-8 shrink-0 text-foreground" aria-hidden="true">
+          <component
+            :is="leftIcon === 'thumbs' ? ThumbsUp : (leftIcon === 'faces' ? Smile : null)"
+            v-if="leftIcon"
+            :class="largeIcons ? 'w-8 h-8' : 'w-5 h-5'"
+          />
+        </div>
+      </div>
       
       <!-- Scale labels -->
-      <div class="flex justify-between text-xs text-muted-foreground mt-2">
+      <div v-if="!hideLabels" class="flex justify-between text-xs text-muted-foreground mt-2">
         <span>{{ min }}</span>
         <span>{{ Math.round((min + max) / 2) }}</span>
         <span>{{ max }}</span>
       </div>
     </div>
     
-    <!-- Quick rating buttons -->
-    <div class="grid grid-cols-5 gap-2">
-      <button
-        v-for="rating in quickRatings"
-        :key="rating.value"
-        @click="handleQuickRating(rating.value)"
-        class="px-3 py-2 text-sm rounded-md border transition-colors"
-        :class="{
-          'bg-primary text-primary-foreground border-primary': isQuickRatingSelected(rating.value),
-          'bg-background hover:bg-muted border-border': !isQuickRatingSelected(rating.value)
-        }"
-      >
-        {{ rating.label }}
-        <div class="text-xs">{{ rating.value }}</div>
-      </button>
-    </div>
+    <!-- No quick rating buttons for simplified UI -->
   </div>
 </template>
 
