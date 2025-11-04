@@ -18,10 +18,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repo into smile/
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          path: smile
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
