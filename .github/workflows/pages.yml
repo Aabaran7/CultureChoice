@@ -43,9 +43,11 @@ jobs:
         run: npm run build
 
       - name: Verify artifact exists
-        working-directory: smile
         run: |
-          echo "Listing smile/dist after build:" && ls -la dist
+          echo "pwd:" && pwd
+          echo "List smile dir:" && ls -la smile || true
+          echo "List smile/dist:" && ls -la smile/dist || true
+          echo "Search for any dist dirs near root:" && find . -maxdepth 3 -type d -name dist -print || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
