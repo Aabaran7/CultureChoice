@@ -27,11 +27,9 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        working-directory: smile
         run: npm ci
 
       - name: Build
-        working-directory: smile
         env:
           VITE_DEPLOY_BASE_PATH: /CultureChoice/
           VITE_FIREBASE_APIKEY: ${{ fromJson(secrets.FIREBASE_CONFIG_JSON).apiKey }}
@@ -42,17 +40,10 @@ jobs:
           VITE_FIREBASE_APPID: ${{ fromJson(secrets.FIREBASE_CONFIG_JSON).appId }}
         run: npm run build
 
-      - name: Verify artifact exists
-        run: |
-          echo "pwd:" && pwd
-          echo "List smile dir:" && ls -la smile || true
-          echo "List smile/dist:" && ls -la smile/dist || true
-          echo "Search for any dist dirs near root:" && find . -maxdepth 3 -type d -name dist -print || true
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: smile/dist
+          path: dist
 
   deploy:
     needs: build
