@@ -242,13 +242,24 @@ onMounted(async () => {
   // Ensure Firebase anonymous auth is established early and wait for doc creation
   await api.connectDB()
   initializeExperiment()
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n))
   const setSize = () => {
     // Derive size from viewport width so choice and spin phases match
     const vw = window.innerWidth
     const gap = 24
-    const base = Math.floor((vw - gap * 2) / 3)
-    // Clamp for reasonable bounds across devices
-    wheelSize.value = Math.max(120, Math.min(220, base))
+    // Mobile-first sizing: larger wheels on phones, consistent scale on larger screens
+    if (vw < 640) {
+      if (phase.value === phases.CHOICE) {
+        wheelSize.value = clamp(Math.floor(vw * 0.6), 120, 220)
+      } else if (phase.value === phases.SPIN) {
+        wheelSize.value = clamp(Math.floor(vw * 0.65), 140, 240)
+      } else {
+        wheelSize.value = clamp(Math.floor(vw * 0.55), 110, 210)
+      }
+    } else {
+      const base = Math.floor((vw - gap * 2) / 3)
+      wheelSize.value = clamp(base, 120, 220)
+    }
   }
   setSize()
   window.addEventListener('resize', setSize)
@@ -294,12 +305,12 @@ api.setAutofill(autofill)
 </script>
 
 <template>
-  <ConstrainedPage :responsiveUI="api.config.responsiveUI" class="p-4 md:p-8 relative">
+  <ConstrainedPage :responsiveUI="api.config.responsiveUI" class="p-4 md:p-8 relative overflow-x-hidden">
     <div class="absolute top-4 right-2 z-10">
       <div class="flex items-center gap-2 text-sm">
         <span class="text-muted-foreground">Wheel animation</span>
         <Switch
-          v-model:checked="animationsEnabled"
+          v-model ="animationsEnabled"
           class="data-[state=checked]:bg-green-500"
         />
       </div>
@@ -330,7 +341,7 @@ api.setAutofill(autofill)
     <!-- Choice Phase -->
     <div v-else-if="phase === phases.CHOICE" class="space-y-6">
       <div class="text-center">
-        <h2 class="text-2xl font-bold mb-2">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
           Trial {{ completedTrialsCount + 1 }} of {{ totalTrials }}
         </h2>
         <div class="w-full max-w-2xl mx-auto bg-gray-200 rounded-full h-4 mt-6">
@@ -347,8 +358,8 @@ api.setAutofill(autofill)
         </p>
       </div>
       
-      <div class="pt-16 md:pt-24 lg:pt-28"></div>
-      <div ref="containerEl" class="flex justify-center gap-6 md:gap-8">
+      <div class="pt-10 sm:pt-16 md:pt-24 lg:pt-28"></div>
+      <div ref="containerEl" class="grid grid-cols-1 md:grid-cols-3 place-items-center gap-4 sm:gap-6 md:gap-8">
         <RouletteWheel
           v-for="(wheel, index) in 3"
           :key="index"
@@ -418,7 +429,7 @@ api.setAutofill(autofill)
     <!-- Spin Phase -->
     <div v-else-if="phase === phases.SPIN" class="space-y-6">
       <div class="text-center">
-        <h2 class="text-xl font-bold mb-4">{{ animationsEnabled ? 'Wheel Spinning...' : 'Outcome' }}</h2>
+        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-4">{{ animationsEnabled ? 'Wheel Spinning...' : 'Outcome' }}</h2>
         <p class="text-muted-foreground" v-if="animationsEnabled">
           The selected wheel is spinning to reveal the outcome.
         </p>

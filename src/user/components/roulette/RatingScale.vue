@@ -89,7 +89,7 @@ const isQuickRatingSelected = (value) => currentValue.value === value
 </script>
 
 <template>
-  <div class="w-full mx-auto space-y-6" :class="widthClass || (wide ? 'max-w-4xl' : 'max-w-2xl')">
+  <div class="w-full mx-auto space-y-6 min-w-[280px]" :class="widthClass || (wide ? 'max-w-4xl' : 'max-w-2xl')">
     <!-- Optional label -->
     <div v-if="label && !hideLabels" class="text-center">
       <h3 class="text-lg font-semibold">{{ label }}</h3>
@@ -118,7 +118,7 @@ const isQuickRatingSelected = (value) => currentValue.value === value
         :value="currentValue"
         @input="handleSliderChange"
         :class="`w-full ${trackHeightClass || 'h-2'} bg-gray-200 rounded-lg appearance-none cursor-pointer slider`"
-        style="background: linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(currentValue - min) / (max - min) * 100}%, #e5e7eb ${(currentValue - min) / (max - min) * 100}%, #e5e7eb 100%)"
+        :style="`touch-action: manipulation; background: linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((currentValue - min) / (max - min) * 100)}%, #e5e7eb ${((currentValue - min) / (max - min) * 100)}%, #e5e7eb 100%)`"
       />
         <div class="w-8 shrink-0 text-foreground" aria-hidden="true">
           <component
