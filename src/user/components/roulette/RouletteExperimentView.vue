@@ -445,7 +445,6 @@ api.setAutofill(autofill)
           :disabled="true"
           :is-spinning="isWheelSpinning"
           :outcome="currentTrialData?.outcomeWin"
-          :key="isWheelSpinning ? 'spin-on' : 'spin-off'"
           @spin-complete="handleSpinComplete"
         />
       </div>

@@ -145,8 +145,6 @@ watch(() => [props.isSpinning, props.outcome], ([isSpinning, outcome]) => {
       targetRotation.value = getOutcomeRotation()
       console.log('Target rotation set to:', targetRotation.value)
     }, 10)
-  } else {
-    targetRotation.value = 0
   }
 }, { immediate: true })
 
@@ -240,8 +238,11 @@ watch(() => props.isSpinning, (newVal) => {
       <g
         :style="{ 
           transformOrigin: 'center center',
-          transform: `rotate(${props.isSpinning ? targetRotation : 0}deg)`,
-          transition: props.isSpinning ? 'transform 2.5s ease-out' : 'none'
+          // Always keep the pointer at the last outcome angle so it
+          // stays on the winning/losing color after the spin completes.
+          transform: `rotate(${targetRotation}deg)`,
+          // Shorter spin duration for a snappier feel (see Jiwa-style tasks)
+          transition: props.isSpinning ? 'transform 1.5s ease-out' : 'none'
         }"
         @transitionend="handleAnimationComplete"
       >
