@@ -24,6 +24,15 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  // Optional highlights for agency/non-agency visuals
+  isParticipantChoice: {
+    type: Boolean,
+    default: false,
+  },
+  isComputerChoice: {
+    type: Boolean,
+    default: false,
+  },
   disabled: {
     type: Boolean,
     default: false
@@ -116,8 +125,10 @@ const segments = computed(() => generateSegments())
 // Store the calculated rotation angle
 const targetRotation = ref(0)
 
-// Get outcome rotation for spin animation
-const getOutcomeRotation = () => {
+// Get outcome rotation for the pointer
+// withExtraSpins = true -> add 2 full rotations for animation
+// withExtraSpins = false -> minimal rotation to a matching segment
+const getOutcomeRotation = (withExtraSpins = true) => {
   const baseSegmentTypes = createBaseWheelPattern(props.probability)
   const wheelRotation = props.wheelIndex * 120
   
@@ -129,24 +140,40 @@ const getOutcomeRotation = () => {
   // Random segment of correct type
   const targetSegmentIndex = targetSegments[Math.floor(Math.random() * targetSegments.length)]
   
-  // Calculate angle + 720° (2 full rotations)
-  const targetAngle = targetSegmentIndex * segmentAngle + Math.random() * segmentAngle + wheelRotation
-  return targetAngle + 720
+  // Base angle within the correct outcome segment
+  const baseAngle = targetSegmentIndex * segmentAngle + Math.random() * segmentAngle + wheelRotation
+  return withExtraSpins ? baseAngle + 720 : baseAngle
 }
 
-// Watch for spinning state changes
-watch(() => [props.isSpinning, props.outcome], ([isSpinning, outcome]) => {
-  console.log('RouletteWheel watch:', { isSpinning, outcome, probability: props.probability, wheelIndex: props.wheelIndex })
-  if (isSpinning && outcome !== null) {
-    // First reset to a small negative value to ensure transition triggers
-    targetRotation.value = -10
-    // Then set the actual target rotation in next tick
-    setTimeout(() => {
-      targetRotation.value = getOutcomeRotation()
-      console.log('Target rotation set to:', targetRotation.value)
-    }, 10)
-  }
-}, { immediate: true })
+// Watch for spinning state changes and outcome updates
+watch(
+  () => [props.isSpinning, props.outcome],
+  ([isSpinning, outcome]) => {
+    console.log('RouletteWheel watch:', {
+      isSpinning,
+      outcome,
+      probability: props.probability,
+      wheelIndex: props.wheelIndex,
+    })
+
+    if (outcome === null) return
+
+    if (isSpinning) {
+      // Animated case: brief reset, then spin to target angle
+      targetRotation.value = -10
+      setTimeout(() => {
+        targetRotation.value = getOutcomeRotation(true)
+        console.log('Target rotation set to (animated):', targetRotation.value)
+      }, 10)
+    } else if (targetRotation.value === 0) {
+      // No-animation case (e.g., wheel animation toggle off from the start):
+      // jump directly to the correct outcome angle without extra spins.
+      targetRotation.value = getOutcomeRotation(false)
+      console.log('Target rotation set (no animation):', targetRotation.value)
+    }
+  },
+  { immediate: true },
+)
 
 // Also log when component receives isSpinning prop
 watch(() => props.isSpinning, (newVal) => {
@@ -183,17 +210,24 @@ watch(() => props.isSpinning, (newVal) => {
   <div 
     class="relative cursor-pointer transition-all duration-200"
     :class="{
-      'scale-110': isSelected,
-      'scale-105 hover:scale-110': !disabled && !isSelected,
+      'scale-110': isSelected || isComputerChoice,
+      'scale-105 hover:scale-110': !disabled && !isSelected && !isComputerChoice,
       'opacity-75 cursor-not-allowed': disabled,
-      'animate-pulse': isSelected
+      'animate-pulse': isComputerChoice
     }"
     @click="handleClick"
   >
-    <!-- Selection ring -->
+    <!-- Selection ring for computer choice (primary, pulsing) -->
     <div 
-      v-if="isSelected"
-      class="absolute rounded-full border-4 border-primary animate-pulse"
+      v-if="isComputerChoice"
+      class="absolute rounded-full border-4 border-primary animate-pulse shadow-lg"
+      :style="{ width: `${props.size}px`, height: `${props.size}px`, top: '-4px', left: '-4px' }"
+    />
+
+    <!-- Selection ring for participant's initial choice (red, static) -->
+    <div
+      v-if="isParticipantChoice && !isComputerChoice"
+      class="absolute rounded-full border-4 border-red-500"
       :style="{ width: `${props.size}px`, height: `${props.size}px`, top: '-4px', left: '-4px' }"
     />
     

@@ -41,6 +41,7 @@ const createTrial = (trialNumber, probability, miniBlock, outcomeWin, agency) =>
 
 // Config
 const CONFIG = { numMiniBlocks: 5 }
+const ACK_TIME_LIMIT_MS = 4000 // time limit to acknowledge computer choice in non-agency trials
 
 // State management (block-structured)
 const phase = ref(phases.INSTRUCTIONS)
@@ -52,6 +53,8 @@ const currentMiniBlock = ref(0) // 0..(CONFIG.numMiniBlocks-1)
 const currentSubBlock = ref('agency') // 'agency' | 'noAgency'
 const currentTrialInSubBlock = ref(0) // 0..3
 const selectedWheel = ref(null)
+const participantSelectedWheel = ref(null)
+const computerSelectedWheel = ref(null)
 const confidenceRating = ref(null)
 const agencySatisfaction = ref(null)
 const noAgencySatisfaction = ref(null)
@@ -59,6 +62,9 @@ const isApproved = ref(null)
 const results = ref([])
 const spinComplete = ref(false)
 const totalMiniBlocks = ref(CONFIG.numMiniBlocks)
+const ackTimeoutId = ref(null)
+// For non-agency trials: true if participant clicked the pulsing wheel in time, false if timeout
+const computerChoiceAcknowledged = ref(false)
 
 // Computed properties
 const totalTrials = computed(() => CONFIG.numMiniBlocks * 8)
@@ -90,20 +96,75 @@ const startExperiment = () => {
 
 const handleWheelChoice = (wheelIndex) => {
   selectedWheel.value = wheelIndex
+  participantSelectedWheel.value = wheelIndex
   api.log.log('Wheel selected:', wheelIndex)
+
+  // For agency trials, immediately move on to the confidence rating
+  // without an explicit "confirm choice" or approval screen. The
+  // participant sees the selection highlight and then the next screen.
+  if (currentSubBlock.value === 'agency') {
+    isApproved.value = true
+    phase.value = phases.CONFIDENCE
+    api.log.log('Agency trial - skipping approval screen, moving to confidence')
+    return
+  }
+
+  // For non-agency trials, immediately move to the computer-choice screen.
+  // The participant's initial click is recorded but the computer will make
+  // the actual selection in proceedToApproval.
+  proceedToApproval()
 }
 
 const proceedToApproval = () => {
   if (selectedWheel.value === null) return
   
-  phase.value = phases.APPROVAL
-  isApproved.value = currentTrialData.value.agency
-  api.log.log('Approval phase - Agency:', isApproved.value)
+  // For non-agency trials, move to a screen where the computer selects
+  // a wheel and the participant must click that computer-chosen wheel
+  // to confirm they understood the choice.
+  if (currentSubBlock.value === 'noAgency') {
+    // Computer choice should differ from the participant's initial choice
+    const options = [0, 1, 2].filter((i) => i !== participantSelectedWheel.value)
+    computerSelectedWheel.value = options[Math.floor(Math.random() * options.length)]
+    // The actual spinning wheel should be the computer's choice
+    selectedWheel.value = computerSelectedWheel.value
+    isApproved.value = false
+    computerChoiceAcknowledged.value = false
+    phase.value = phases.APPROVAL
+    api.log.log('Non-agency approval phase - computer selected wheel:', computerSelectedWheel.value)
+
+    // Start acknowledgment time limit: if the participant does not
+    // click the computer-chosen wheel within the window, we auto-advance
+    // to the confidence phase and mark the timeout in the logs.
+    if (ackTimeoutId.value) {
+      clearTimeout(ackTimeoutId.value)
+    }
+    ackTimeoutId.value = setTimeout(() => {
+      ackTimeoutId.value = null
+      api.log.warn('Non-agency trial - acknowledgment timeout, auto-advancing to confidence')
+      phase.value = phases.CONFIDENCE
+    }, ACK_TIME_LIMIT_MS)
+  }
 }
 
 const proceedToConfidence = () => {
   phase.value = phases.CONFIDENCE
   api.log.log('Confidence rating phase')
+}
+
+const handleComputerChoiceConfirm = (wheelIndex) => {
+  // Only accept clicks on the computer-selected wheel
+  if (wheelIndex !== computerSelectedWheel.value) {
+    return
+  }
+
+  isApproved.value = false
+  computerChoiceAcknowledged.value = true
+  api.log.log('Non-agency trial - participant confirmed computer choice:', wheelIndex)
+  if (ackTimeoutId.value) {
+    clearTimeout(ackTimeoutId.value)
+    ackTimeoutId.value = null
+  }
+  phase.value = phases.CONFIDENCE
 }
 
 const handleConfidenceRating = (rating) => {
@@ -141,6 +202,10 @@ const completeCurrentTrial = () => {
     confidenceRating: confidenceRating.value,
     timestamp: Date.now(),
   }
+  // Non-agency only: whether they clicked the computer-chosen wheel within the time limit
+  if (currentSubBlock.value === 'noAgency') {
+    trialData.acknowledgedComputerChoice = computerChoiceAcknowledged.value
+  }
 
   results.value.push(trialData)
   api.recordData(trialData)
@@ -148,6 +213,9 @@ const completeCurrentTrial = () => {
 
   // Reset trial state
   selectedWheel.value = null
+  participantSelectedWheel.value = null
+  computerSelectedWheel.value = null
+  computerChoiceAcknowledged.value = false
   confidenceRating.value = null
   spinComplete.value = false
   isApproved.value = null
@@ -341,18 +409,9 @@ api.setAutofill(autofill)
     <!-- Choice Phase -->
     <div v-else-if="phase === phases.CHOICE" class="space-y-6">
       <div class="text-center">
-        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
           Trial {{ completedTrialsCount + 1 }} of {{ totalTrials }}
         </h2>
-        <div class="w-full max-w-2xl mx-auto bg-gray-200 rounded-full h-4 mt-6">
-          <div 
-            class="bg-primary h-4 rounded-full transition-all duration-300 ease-out"
-            :style="{ width: `${progress}%` }"
-          ></div>
-        </div>
-        <p class="text-sm text-muted-foreground mt-2">
-          Win Probability: {{ Math.round(currentTrialData.probability * 100) }}%
-        </p>
         <p class="text-xs text-muted-foreground">
           Mini-block {{ currentMiniBlock + 1 }} / {{ totalMiniBlocks }} — {{ currentSubBlock === 'agency' ? 'Agency' : 'No Agency' }}
         </p>
@@ -367,33 +426,39 @@ api.setAutofill(autofill)
           :wheel-index="index"
           :size="wheelSize"
           :is-selected="selectedWheel === index"
+          :is-participant-choice="currentSubBlock === 'noAgency' && participantSelectedWheel === index"
+          :is-computer-choice="currentSubBlock === 'noAgency' && computerSelectedWheel === index"
           :disabled="false"
           @click="handleWheelChoice(index)"
         />
       </div>
       
-      <div v-if="selectedWheel !== null" class="text-center mt-6">
-        <Button @click="proceedToApproval" size="lg">
-          Confirm Choice
-        </Button>
-      </div>
     </div>
 
-    <!-- Approval Phase -->
-    <div v-else-if="phase === phases.APPROVAL" class="text-center">
-      <div class="flex flex-col items-center justify-center min-h-[55vh] md:min-h-[60vh] lg:min-h-[65vh] space-y-6">
-        <div class="text-2xl">
-        <div v-if="isApproved" class="text-green-600">
-          ✓ Your choice was APPROVED
+    <!-- Approval Phase (used for non-agency only) -->
+    <div v-else-if="phase === phases.APPROVAL" class="space-y-6">
+      <div class="flex flex-col items-center justify-center min-h-[45vh] md:min-h-[50vh] lg:min-h-[55vh] w-full">
+        <div class="text-center mb-4">
+          <h2 class="text-xl font-bold mb-1">Computer&apos;s Choice</h2>
+          <p class="text-muted-foreground">
+            The wheel you picked before is shown with a red ring. The computer&apos;s choice is pulsing. Please click the pulsing wheel within a few seconds to continue.
+          </p>
         </div>
-        <div v-else class="text-red-600">
-          ✗ Your choice was VETOED
-          </div>
+
+        <div ref="containerEl" class="grid grid-cols-1 md:grid-cols-3 place-items-center gap-4 sm:gap-6 md:gap-8">
+          <RouletteWheel
+            v-for="(wheel, index) in 3"
+            :key="index"
+            :probability="currentTrialData.probability"
+            :wheel-index="index"
+            :size="wheelSize"
+            :is-selected="false"
+            :is-participant-choice="participantSelectedWheel === index"
+            :is-computer-choice="computerSelectedWheel === index"
+            :disabled="index !== computerSelectedWheel"
+            @click="handleComputerChoiceConfirm(index)"
+          />
         </div>
-        
-        <Button @click="proceedToConfidence" size="lg">
-          Continue
-        </Button>
       </div>
     </div>
 
