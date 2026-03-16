@@ -15,11 +15,21 @@ import RouletteWheel from './RouletteWheel.vue'
 import RatingScale from './RatingScale.vue'
 import { generateTrialSequence } from './miniBlockGenerator.js'
 
+const props = defineProps({
+  // mode === 'practice' runs a short, practice-only version (1 mini-block)
+  // and can be used between instructions and the main task.
+  mode: {
+    type: String,
+    default: 'main',
+  },
+})
+
 const api = useViewAPI()
 
 // Experiment phases
 const phases = {
   INSTRUCTIONS: 'instructions',
+  BLOCK_CUE: 'blockCue',
   CHOICE: 'choice',
   APPROVAL: 'approval',
   CONFIDENCE: 'confidence',
@@ -40,7 +50,8 @@ const createTrial = (trialNumber, probability, miniBlock, outcomeWin, agency) =>
 })
 
 // Config
-const CONFIG = { numMiniBlocks: 5 }
+const IS_PRACTICE = props.mode === 'practice'
+const CONFIG = { numMiniBlocks: IS_PRACTICE ? 1 : 5 }
 const ACK_TIME_LIMIT_MS = 4000 // time limit to acknowledge computer choice in non-agency trials
 
 // State management (block-structured)
@@ -53,7 +64,6 @@ const currentMiniBlock = ref(0) // 0..(CONFIG.numMiniBlocks-1)
 const currentSubBlock = ref('agency') // 'agency' | 'noAgency'
 const currentTrialInSubBlock = ref(0) // 0..3
 const selectedWheel = ref(null)
-const participantSelectedWheel = ref(null)
 const computerSelectedWheel = ref(null)
 const confidenceRating = ref(null)
 const agencySatisfaction = ref(null)
@@ -65,6 +75,14 @@ const totalMiniBlocks = ref(CONFIG.numMiniBlocks)
 const ackTimeoutId = ref(null)
 // For non-agency trials: true if participant clicked the pulsing wheel in time, false if timeout
 const computerChoiceAcknowledged = ref(false)
+// Which cue to show on BLOCK_CUE: 'agency' | 'noAgency'
+const blockCueType = ref('agency')
+// Tutorial step used only in practice mode
+// 0: before first agency choice
+// 1: before first agency confidence
+// 10: before first non-agency computer-choice screen
+// 12: non-engagement note on first non-agency confidence screen
+const tutorialStep = ref(IS_PRACTICE ? 0 : -1)
 
 // Computed properties
 const totalTrials = computed(() => CONFIG.numMiniBlocks * 8)
@@ -76,6 +94,20 @@ const currentTrialData = computed(() => {
 const completedTrialsCount = computed(() => currentMiniBlock.value * 8 + (currentSubBlock.value === 'noAgency' ? 4 : 0) + currentTrialInSubBlock.value)
 const progress = computed(() => ((completedTrialsCount.value + 1) / totalTrials.value) * 100)
 const isComplete = computed(() => currentMiniBlock.value >= CONFIG.numMiniBlocks)
+
+const isAgencyTutorialTrial = computed(() =>
+  IS_PRACTICE &&
+  currentMiniBlock.value === 0 &&
+  currentSubBlock.value === 'agency' &&
+  currentTrialInSubBlock.value === 0,
+)
+
+const isNonAgencyTutorialTrial = computed(() =>
+  IS_PRACTICE &&
+  currentMiniBlock.value === 0 &&
+  currentSubBlock.value === 'noAgency' &&
+  currentTrialInSubBlock.value === 0,
+)
 
 // Initialize experiment
 const initializeExperiment = () => {
@@ -90,13 +122,55 @@ const initializeExperiment = () => {
 
 // Phase transition functions
 const startExperiment = () => {
-  phase.value = phases.CHOICE
-  api.log.log('Experiment started - Trial', completedTrialsCount.value + 1)
+  blockCueType.value = 'agency'
+  phase.value = phases.BLOCK_CUE
+  api.log.log('Experiment started - block cue (you decide)')
+}
+
+const startNonAgencyComputerChoice = () => {
+  // Computer selects a wheel; participant only confirms this choice.
+  computerSelectedWheel.value = Math.floor(Math.random() * 3)
+  selectedWheel.value = computerSelectedWheel.value
+  isApproved.value = false
+  computerChoiceAcknowledged.value = false
+  phase.value = phases.APPROVAL
+  api.log.log('Non-agency block - computer selected wheel:', computerSelectedWheel.value)
+
+  const skipTimeoutForFirstPracticeNonAgency =
+    IS_PRACTICE && isNonAgencyTutorialTrial.value && currentTrialInSubBlock.value === 0
+
+  if (skipTimeoutForFirstPracticeNonAgency) {
+    // Show tutorial overlay; no timeout so participants can read.
+    tutorialStep.value = 10
+  } else {
+    // Start acknowledgment time limit
+    if (ackTimeoutId.value) {
+      clearTimeout(ackTimeoutId.value)
+    }
+    ackTimeoutId.value = setTimeout(() => {
+      ackTimeoutId.value = null
+      api.log.warn('Non-agency trial - acknowledgment timeout, auto-advancing to confidence')
+      phase.value = phases.CONFIDENCE
+    }, ACK_TIME_LIMIT_MS)
+  }
+}
+
+const proceedFromBlockCue = () => {
+  if (currentSubBlock.value === 'agency') {
+    phase.value = phases.CHOICE
+    api.log.log('Block cue acknowledged - agency Trial', completedTrialsCount.value + 1)
+  } else {
+    startNonAgencyComputerChoice()
+  }
 }
 
 const handleWheelChoice = (wheelIndex) => {
+  // In non-agency blocks, the computer decides; ignore participant clicks here.
+  if (currentSubBlock.value === 'noAgency') {
+    return
+  }
+
   selectedWheel.value = wheelIndex
-  participantSelectedWheel.value = wheelIndex
   api.log.log('Wheel selected:', wheelIndex)
 
   // For agency trials, immediately move on to the confidence rating
@@ -108,42 +182,10 @@ const handleWheelChoice = (wheelIndex) => {
     api.log.log('Agency trial - skipping approval screen, moving to confidence')
     return
   }
-
-  // For non-agency trials, immediately move to the computer-choice screen.
-  // The participant's initial click is recorded but the computer will make
-  // the actual selection in proceedToApproval.
-  proceedToApproval()
 }
 
 const proceedToApproval = () => {
   if (selectedWheel.value === null) return
-  
-  // For non-agency trials, move to a screen where the computer selects
-  // a wheel and the participant must click that computer-chosen wheel
-  // to confirm they understood the choice.
-  if (currentSubBlock.value === 'noAgency') {
-    // Computer choice should differ from the participant's initial choice
-    const options = [0, 1, 2].filter((i) => i !== participantSelectedWheel.value)
-    computerSelectedWheel.value = options[Math.floor(Math.random() * options.length)]
-    // The actual spinning wheel should be the computer's choice
-    selectedWheel.value = computerSelectedWheel.value
-    isApproved.value = false
-    computerChoiceAcknowledged.value = false
-    phase.value = phases.APPROVAL
-    api.log.log('Non-agency approval phase - computer selected wheel:', computerSelectedWheel.value)
-
-    // Start acknowledgment time limit: if the participant does not
-    // click the computer-chosen wheel within the window, we auto-advance
-    // to the confidence phase and mark the timeout in the logs.
-    if (ackTimeoutId.value) {
-      clearTimeout(ackTimeoutId.value)
-    }
-    ackTimeoutId.value = setTimeout(() => {
-      ackTimeoutId.value = null
-      api.log.warn('Non-agency trial - acknowledgment timeout, auto-advancing to confidence')
-      phase.value = phases.CONFIDENCE
-    }, ACK_TIME_LIMIT_MS)
-  }
 }
 
 const proceedToConfidence = () => {
@@ -163,6 +205,10 @@ const handleComputerChoiceConfirm = (wheelIndex) => {
   if (ackTimeoutId.value) {
     clearTimeout(ackTimeoutId.value)
     ackTimeoutId.value = null
+  }
+  if (IS_PRACTICE && isNonAgencyTutorialTrial.value && currentTrialInSubBlock.value === 0) {
+    // Show non-engagement note on the following confidence screen
+    tutorialStep.value = 12
   }
   phase.value = phases.CONFIDENCE
 }
@@ -208,12 +254,13 @@ const completeCurrentTrial = () => {
   }
 
   results.value.push(trialData)
-  api.recordData(trialData)
-  api.saveData()
+  if (!IS_PRACTICE) {
+    api.recordData(trialData)
+    api.saveData()
+  }
 
   // Reset trial state
   selectedWheel.value = null
-  participantSelectedWheel.value = null
   computerSelectedWheel.value = null
   computerChoiceAcknowledged.value = false
   confidenceRating.value = null
@@ -231,41 +278,57 @@ const completeCurrentTrial = () => {
       phase.value = phases.NO_AGENCY_SATISFACTION
     }
   } else {
-    phase.value = phases.CHOICE
+    if (currentSubBlock.value === 'agency') {
+      phase.value = phases.CHOICE
+    } else {
+      // For non-agency, the computer selects on every trial; go directly
+      // back to the computer-choice screen.
+      startNonAgencyComputerChoice()
+    }
   }
 }
 
 const completeAgencySatisfaction = () => {
-  api.recordData({
-    miniBlock: currentMiniBlock.value + 1,
-    agencySatisfaction: agencySatisfaction.value,
-  })
-  api.saveData()
+  if (!IS_PRACTICE) {
+    api.recordData({
+      miniBlock: currentMiniBlock.value + 1,
+      agencySatisfaction: agencySatisfaction.value,
+    })
+    api.saveData()
+  }
 
-  // Move to no-agency block
+  // Move to no-agency block: show cue then choice
   currentSubBlock.value = 'noAgency'
   currentTrialInSubBlock.value = 0
   agencySatisfaction.value = null
-  phase.value = phases.CHOICE
+  blockCueType.value = 'noAgency'
+  phase.value = phases.BLOCK_CUE
 }
 
 const completeNoAgencySatisfaction = () => {
-  api.recordData({
-    miniBlock: currentMiniBlock.value + 1,
-    noAgencySatisfaction: noAgencySatisfaction.value,
-  })
-  api.saveData()
+  if (!IS_PRACTICE) {
+    api.recordData({
+      miniBlock: currentMiniBlock.value + 1,
+      noAgencySatisfaction: noAgencySatisfaction.value,
+    })
+    api.saveData()
+  }
 
   // Move to next mini-block
   currentMiniBlock.value++
 
   if (currentMiniBlock.value >= CONFIG.numMiniBlocks) {
+    if (IS_PRACTICE) {
+      finish()
+      return
+    }
     phase.value = phases.COMPLETE
   } else {
     currentSubBlock.value = 'agency'
     currentTrialInSubBlock.value = 0
     noAgencySatisfaction.value = null
-    phase.value = phases.CHOICE
+    blockCueType.value = 'agency'
+    phase.value = phases.BLOCK_CUE
   }
 }
 
@@ -373,16 +436,7 @@ api.setAutofill(autofill)
 </script>
 
 <template>
-  <ConstrainedPage :responsiveUI="api.config.responsiveUI" class="p-4 md:p-8 relative overflow-x-hidden">
-    <div class="absolute top-4 right-2 z-10">
-      <div class="flex items-center gap-2 text-sm">
-        <span class="text-muted-foreground">Wheel animation</span>
-        <Switch
-          v-model ="animationsEnabled"
-          class="data-[state=checked]:bg-green-500"
-        />
-      </div>
-    </div>
+  <ConstrainedPage :responsiveUI="api.config.responsiveUI" :fluidHeight="true" class="p-4 md:p-8 relative overflow-x-hidden">
     <!-- Instructions Phase -->
     <div v-if="phase === phases.INSTRUCTIONS" class="text-center space-y-6">
       <h1 class="text-3xl font-bold">Roulette Wheel Experiment</h1>
@@ -406,18 +460,22 @@ api.setAutofill(autofill)
       </Button>
     </div>
 
-    <!-- Choice Phase -->
-    <div v-else-if="phase === phases.CHOICE" class="space-y-6">
-      <div class="text-center">
-        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-          Trial {{ completedTrialsCount + 1 }} of {{ totalTrials }}
+    <!-- Block cue: "you decide" / "computer decides" before each 4-trial block -->
+    <div v-else-if="phase === phases.BLOCK_CUE" class="text-center">
+      <div class="flex flex-col items-center justify-center min-h-[50vh] gap-[7.5rem]">
+        <h2 class="text-2xl sm:text-3xl font-bold">
+          {{ blockCueType === 'agency' ? 'For the next 4 trials, you decide.' : 'For the next 4 trials, the computer decides.' }}
         </h2>
-        <p class="text-xs text-muted-foreground">
-          Mini-block {{ currentMiniBlock + 1 }} / {{ totalMiniBlocks }} — {{ currentSubBlock === 'agency' ? 'Agency' : 'No Agency' }}
-        </p>
+        <Button @click="proceedFromBlockCue" size="lg">
+          Continue
+        </Button>
       </div>
-      
+    </div>
+
+    <!-- Choice Phase (no trial/mini-block label; block cue already states you decide / computer decides) -->
+    <div v-else-if="phase === phases.CHOICE" class="space-y-6">
       <div class="pt-10 sm:pt-16 md:pt-24 lg:pt-28"></div>
+      <p class="text-center text-xl sm:text-2xl font-semibold text-foreground">Select a wheel</p>
       <div ref="containerEl" class="grid grid-cols-1 md:grid-cols-3 place-items-center gap-4 sm:gap-6 md:gap-8">
         <RouletteWheel
           v-for="(wheel, index) in 3"
@@ -425,10 +483,9 @@ api.setAutofill(autofill)
           :probability="currentTrialData.probability"
           :wheel-index="index"
           :size="wheelSize"
-          :is-selected="selectedWheel === index"
-          :is-participant-choice="currentSubBlock === 'noAgency' && participantSelectedWheel === index"
-          :is-computer-choice="currentSubBlock === 'noAgency' && computerSelectedWheel === index"
-          :disabled="false"
+          :is-selected="currentSubBlock === 'agency' && selectedWheel === index"
+          :is-computer-choice="false"
+          :disabled="currentSubBlock === 'noAgency'"
           @click="handleWheelChoice(index)"
         />
       </div>
@@ -437,11 +494,11 @@ api.setAutofill(autofill)
 
     <!-- Approval Phase (used for non-agency only) -->
     <div v-else-if="phase === phases.APPROVAL" class="space-y-6">
-      <div class="flex flex-col items-center justify-center min-h-[45vh] md:min-h-[50vh] lg:min-h-[55vh] w-full">
+      <div class="flex flex-col items-center justify-center min-h-[40vh] sm:min-h-[45vh] w-full">
         <div class="text-center mb-4">
           <h2 class="text-xl font-bold mb-1">Computer&apos;s Choice</h2>
           <p class="text-muted-foreground">
-            The wheel you picked before is shown with a red ring. The computer&apos;s choice is pulsing. Please click the pulsing wheel within a few seconds to continue.
+            The computer has selected one of the wheels. Please click the pulsing wheel within a few seconds to continue.
           </p>
         </div>
 
@@ -453,7 +510,6 @@ api.setAutofill(autofill)
             :wheel-index="index"
             :size="wheelSize"
             :is-selected="false"
-            :is-participant-choice="participantSelectedWheel === index"
             :is-computer-choice="computerSelectedWheel === index"
             :disabled="index !== computerSelectedWheel"
             @click="handleComputerChoiceConfirm(index)"
@@ -464,7 +520,7 @@ api.setAutofill(autofill)
 
     <!-- Confidence Rating Phase -->
     <div v-else-if="phase === phases.CONFIDENCE" class="space-y-6">
-      <div class="flex flex-col items-center justify-center min-h-[45vh] md:min-h-[50vh] lg:min-h-[55vh] w-full">
+      <div class="flex flex-col items-center justify-center min-h-[40vh] sm:min-h-[45vh] w-full">
         <div class="text-center mb-2">
           <h2 class="text-xl font-bold mb-1">Rate Your Confidence</h2>
           <p class="text-muted-foreground">How confident are you in your wheel choice?</p>
@@ -526,7 +582,7 @@ api.setAutofill(autofill)
 
     <!-- Agency Satisfaction Phase -->
     <div v-else-if="phase === phases.AGENCY_SATISFACTION" class="space-y-6">
-      <div class="flex flex-col items-center justify-center min-h-[45vh] md:min-h-[50vh] lg:min-h-[55vh] w-full">
+      <div class="flex flex-col items-center justify-center min-h-[40vh] sm:min-h-[45vh] w-full">
         <div class="text-center mb-2">
           <h2 class="text-xl font-bold mb-1">Block Complete</h2>
           <p class="text-muted-foreground">Happy with your lottery outcome?</p>
@@ -555,7 +611,7 @@ api.setAutofill(autofill)
 
     <!-- No Agency Satisfaction Phase -->
     <div v-else-if="phase === phases.NO_AGENCY_SATISFACTION" class="space-y-6">
-      <div class="flex flex-col items-center justify-center min-h-[45vh] md:min-h-[50vh] lg:min-h-[55vh] w-full">
+      <div class="flex flex-col items-center justify-center min-h-[40vh] sm:min-h-[45vh] w-full">
         <div class="text-center mb-2">
           <h2 class="text-xl font-bold mb-1">Block Complete</h2>
           <p class="text-muted-foreground">Happy with your lottery outcome?</p>
@@ -579,6 +635,78 @@ api.setAutofill(autofill)
         <Button @click="completeNoAgencySatisfaction" :disabled="noAgencySatisfaction === null" size="lg">
           Continue
         </Button>
+      </div>
+    </div>
+
+    <!-- Practice tutorial overlays -->
+    <!-- 1) Agency: first choice trial -->
+    <div
+      v-if="IS_PRACTICE && isAgencyTutorialTrial && tutorialStep === 0 && phase === phases.CHOICE"
+      class="absolute inset-0 bg-black/50 flex items-center justify-center z-20"
+    >
+      <div class="bg-white rounded-lg shadow-lg max-w-lg p-6 text-left space-y-4">
+        <h2 class="text-xl font-bold">Choosing a wheel</h2>
+        <p>
+          You will often see three wheels like this. In <span class="font-semibold">“you decide”</span> blocks,
+          <span class="font-semibold">click one wheel</span> to select it. All three wheels have the same chance of winning –
+          there is no “better” wheel.
+        </p>
+        <div class="text-right">
+          <Button size="sm" @click="tutorialStep = 1">Got it</Button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2) Agency: first confidence rating -->
+    <div
+      v-if="IS_PRACTICE && isAgencyTutorialTrial && tutorialStep === 1 && phase === phases.CONFIDENCE"
+      class="absolute inset-0 bg-black/50 flex items-center justify-center z-20"
+    >
+      <div class="bg-white rounded-lg shadow-lg max-w-lg p-6 text-left space-y-4">
+        <h2 class="text-xl font-bold">Confidence rating</h2>
+        <p>
+          After each trial, rate <span class="font-semibold">how confident</span> you were about your choice.
+          Move the slider from “not at all confident” to “very confident”. You will do this after every trial in the task.
+        </p>
+        <div class="text-right">
+          <Button size="sm" @click="tutorialStep = 2">Got it</Button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3) Non-agency: first computer-choice screen (no timeout) -->
+    <div
+      v-if="IS_PRACTICE && isNonAgencyTutorialTrial && tutorialStep === 10 && phase === phases.APPROVAL"
+      class="absolute inset-0 bg-black/50 flex items-center justify-center z-20"
+    >
+      <div class="bg-white rounded-lg shadow-lg max-w-lg p-6 text-left space-y-4">
+        <h2 class="text-xl font-bold">When the computer decides</h2>
+        <p>
+          Here, the <span class="font-semibold">computer has chosen one wheel for you</span>.
+          The <span class="font-semibold">pulsing wheel</span> shows which one it selected.
+          Please <span class="font-semibold">click the pulsing wheel</span> to confirm that you understand the computer’s choice.
+        </p>
+        <div class="text-right">
+          <Button size="sm" @click="tutorialStep = 11">Got it</Button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4) Non-agency: non-engagement note on first confidence screen -->
+    <div
+      v-if="IS_PRACTICE && isNonAgencyTutorialTrial && tutorialStep === 12 && phase === phases.CONFIDENCE"
+      class="absolute inset-0 bg-black/50 flex items-center justify-center z-20"
+    >
+      <div class="bg-white rounded-lg shadow-lg max-w-lg p-6 text-left space-y-4">
+        <h2 class="text-xl font-bold">If you don&apos;t click in time</h2>
+        <p>
+          In the main task, you will have a <span class="font-semibold">short time</span> to click the pulsing wheel
+          when the computer decides. If you do not click in time, the trial will still continue, but we may treat it as
+          <span class="font-semibold">low engagement</span> and ignore it in our analyses.
+        </p>
+        <div class="text-right">
+          <Button size="sm" @click="tutorialStep = 13">Got it</Button>
+        </div>
       </div>
     </div>
 

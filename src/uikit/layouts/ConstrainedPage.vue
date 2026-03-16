@@ -11,6 +11,11 @@ const props = defineProps({
     default: true,
     description: 'Whether to use responsive layout behavior',
   },
+  /** When true, container height grows with content (no maxHeight). Use for views that must not cut off on small viewports (e.g. mobile). */
+  fluidHeight: {
+    type: Boolean,
+    default: false,
+  },
   width: {
     type: Number,
     default: 800,
@@ -37,13 +42,19 @@ const containerStyle = computed(() => {
       height: props.height + 'px',
       minHeight: props.height + 'px',
     }
-  } else {
+  }
+  if (props.fluidHeight) {
     return {
-      width: '90vw',
-      minHeight: props.height + 'px',
+      width: '100%',
       maxWidth: props.width + 'px',
-      maxHeight: props.height + 'px',
+      minHeight: '100vh',
     }
+  }
+  return {
+    width: '90vw',
+    minHeight: props.height + 'px',
+    maxWidth: props.width + 'px',
+    maxHeight: props.height + 'px',
   }
 })
 </script>

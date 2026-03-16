@@ -183,6 +183,16 @@ timeline.pushSeqView({
   component: InstructionsView,
 })
 
+// practice roulette block (1 mini-block: agency + non-agency) to let participants
+// learn the task by doing before the main experiment and quiz.
+timeline.pushSeqView({
+  name: 'roulette_practice',
+  component: RouletteExperimentView,
+  props: {
+    mode: 'practice',
+  },
+})
+
 // import the quiz questions
 import { QUIZ_QUESTIONS } from './components/quizQuestions'
 // instructions quiz

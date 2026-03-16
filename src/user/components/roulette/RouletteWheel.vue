@@ -24,11 +24,7 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  // Optional highlights for agency/non-agency visuals
-  isParticipantChoice: {
-    type: Boolean,
-    default: false,
-  },
+  // Optional highlight for non-agency computer choice
   isComputerChoice: {
     type: Boolean,
     default: false,
@@ -221,13 +217,6 @@ watch(() => props.isSpinning, (newVal) => {
     <div 
       v-if="isComputerChoice"
       class="absolute rounded-full border-4 border-primary animate-pulse shadow-lg"
-      :style="{ width: `${props.size}px`, height: `${props.size}px`, top: '-4px', left: '-4px' }"
-    />
-
-    <!-- Selection ring for participant's initial choice (red, static) -->
-    <div
-      v-if="isParticipantChoice && !isComputerChoice"
-      class="absolute rounded-full border-4 border-red-500"
       :style="{ width: `${props.size}px`, height: `${props.size}px`, top: '-4px', left: '-4px' }"
     />
     
