@@ -41,6 +41,10 @@ let qs = props.questions
  * and randomizing questions if enabled
  */
 function init() {
+  // Clear any previously appended quiz pages to avoid duplicate paths and stale content
+  // when questions change during development.
+  api.steps.clear()
+
   // randomize questions and add to stepper
   qs = props.randomizeQandA ? getRandomizedQuestions() : props.questions
 

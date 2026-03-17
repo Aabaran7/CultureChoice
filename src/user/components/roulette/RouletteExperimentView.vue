@@ -53,6 +53,7 @@ const createTrial = (trialNumber, probability, miniBlock, outcomeWin, agency) =>
 const IS_PRACTICE = props.mode === 'practice'
 const CONFIG = { numMiniBlocks: IS_PRACTICE ? 1 : 5 }
 const ACK_TIME_LIMIT_MS = 4000 // time limit to acknowledge computer choice in non-agency trials
+const WIN_POINTS = 50
 
 // State management (block-structured)
 const phase = ref(phases.INSTRUCTIONS)
@@ -77,6 +78,9 @@ const ackTimeoutId = ref(null)
 const computerChoiceAcknowledged = ref(false)
 // Which cue to show on BLOCK_CUE: 'agency' | 'noAgency'
 const blockCueType = ref('agency')
+// Points
+const totalPoints = ref(0)
+const trialPoints = ref(0)
 // Tutorial step used only in practice mode
 // 0: before first agency choice
 // 1: before first agency confidence
@@ -108,6 +112,8 @@ const isNonAgencyTutorialTrial = computed(() =>
   currentSubBlock.value === 'noAgency' &&
   currentTrialInSubBlock.value === 0,
 )
+
+const displayTotalPoints = computed(() => totalPoints.value + (spinComplete.value ? trialPoints.value : 0))
 
 // Initialize experiment
 const initializeExperiment = () => {
@@ -223,6 +229,9 @@ const proceedToSpin = () => {
   
   phase.value = phases.SPIN
   spinComplete.value = false
+  // Points are determined by the pre-generated outcome (not by the animation),
+  // so compute them immediately to avoid any timing/transition edge cases.
+  trialPoints.value = currentTrialData.value.outcomeWin ? WIN_POINTS : 0
   api.log.log('Spin phase - Outcome:', currentTrialData.value.outcomeWin)
 
   // If animations are disabled, immediately mark spin complete
@@ -237,6 +246,9 @@ const handleSpinComplete = () => {
 }
 
 const completeCurrentTrial = () => {
+  // Apply points for this trial
+  totalPoints.value += trialPoints.value
+
   // Record trial data
   const trialData = {
     miniBlock: currentMiniBlock.value + 1,
@@ -246,6 +258,8 @@ const completeCurrentTrial = () => {
     selectedWheel: selectedWheel.value,
     isApproved: isApproved.value,
     confidenceRating: confidenceRating.value,
+    trialPoints: trialPoints.value,
+    totalPoints: totalPoints.value,
     timestamp: Date.now(),
   }
   // Non-agency only: whether they clicked the computer-chosen wheel within the time limit
@@ -266,6 +280,7 @@ const completeCurrentTrial = () => {
   confidenceRating.value = null
   spinComplete.value = false
   isApproved.value = null
+  trialPoints.value = 0
 
   // Move to next trial within current sub-block
   currentTrialInSubBlock.value++
@@ -444,9 +459,16 @@ api.setAutofill(autofill)
         <p class="text-lg">
           You will participate in a decision-making experiment involving roulette wheels.
         </p>
+        <p v-if="IS_PRACTICE" class="font-semibold">
+          Practice round (points shown for learning only).
+        </p>
         <p>
           In each trial, you will see three identical roulette wheels. Your task is to choose one wheel.
           The computer will then either approve or veto your choice, and the selected wheel will spin to reveal the outcome.
+        </p>
+        <p>
+          Points: each <span class="font-semibold">WIN</span> is worth <span class="font-semibold">{{ WIN_POINTS }}</span> points.
+          Each <span class="font-semibold">LOSS</span> is worth <span class="font-semibold">0</span> points.
         </p>
         <p>
           After each trial, you will rate your confidence in your choice and your satisfaction with the outcome.
@@ -574,6 +596,9 @@ api.setAutofill(autofill)
         <div class="text-3xl font-bold mb-4" :class="currentTrialData.outcomeWin ? 'text-green-600' : 'text-red-600'">
           {{ currentTrialData.outcomeWin ? 'WIN!' : 'LOSE' }}
         </div>
+        <div class="text-muted-foreground mb-4">
+          +{{ trialPoints }} points (Total: {{ displayTotalPoints }})
+        </div>
         <Button @click="completeCurrentTrial" size="lg">
           Continue
         </Button>
@@ -650,6 +675,11 @@ api.setAutofill(autofill)
           You will often see three wheels like this. In <span class="font-semibold">“you decide”</span> blocks,
           <span class="font-semibold">click one wheel</span> to select it. All three wheels have the same chance of winning –
           there is no “better” wheel.
+        </p>
+        <p>
+          Points: each <span class="font-semibold">WIN</span> is worth <span class="font-semibold">{{ WIN_POINTS }}</span> points.
+          Each <span class="font-semibold">LOSS</span> is worth <span class="font-semibold">0</span> points.
+          (In practice, points are shown for learning only.)
         </p>
         <div class="text-right">
           <Button size="sm" @click="tutorialStep = 1">Got it</Button>
