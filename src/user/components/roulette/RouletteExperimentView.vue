@@ -456,29 +456,19 @@ api.setAutofill(autofill)
     <div v-if="phase === phases.INSTRUCTIONS" class="text-center space-y-6">
       <h1 class="text-3xl font-bold">Roulette Wheel Experiment</h1>
       <div class="max-w-2xl mx-auto space-y-4">
-        <p class="text-lg">
-          You will participate in a decision-making experiment involving roulette wheels.
+        <p v-if="IS_PRACTICE" class="text-lg">
+          Before the main task, you&apos;ll complete a short practice. The three wheels always have equal chances of winning.
+          Each WIN earns {{ WIN_POINTS }} points; losses earn 0. Practice points don&apos;t count.
         </p>
-        <p v-if="IS_PRACTICE" class="font-semibold">
-          Practice round (points shown for learning only).
-        </p>
-        <p>
-          In each trial, you will see three identical roulette wheels. Your task is to choose one wheel.
-          The computer will then either approve or veto your choice, and the selected wheel will spin to reveal the outcome.
-        </p>
-        <p>
-          Points: each <span class="font-semibold">WIN</span> is worth <span class="font-semibold">{{ WIN_POINTS }}</span> points.
-          Each <span class="font-semibold">LOSS</span> is worth <span class="font-semibold">0</span> points.
-        </p>
-        <p>
-          After each trial, you will rate your confidence in your choice and your satisfaction with the outcome.
-        </p>
-        <p class="font-semibold">
-          The experiment consists of {{ totalTrials }} trials and should take about 15-20 minutes.
-        </p>
+        <template v-else>
+          <p class="text-lg">
+            The main task consists of {{ totalTrials }} trials organised in mini-blocks of 4. Your total points will be
+            tracked throughout.
+          </p>
+        </template>
       </div>
       <Button @click="startExperiment" size="lg">
-        Start Experiment
+        {{ IS_PRACTICE ? 'Start Practice' : 'Start Experiment' }}
       </Button>
     </div>
 
@@ -545,7 +535,10 @@ api.setAutofill(autofill)
       <div class="flex flex-col items-center justify-center min-h-[40vh] sm:min-h-[45vh] w-full">
         <div class="text-center mb-2">
           <h2 class="text-xl font-bold mb-1">Rate Your Confidence</h2>
-          <p class="text-muted-foreground">How confident are you in your wheel choice?</p>
+          <p class="text-muted-foreground">
+            After each trial, rate how confident you are that you will win on the spin. Move the slider from
+            &quot;not at all confident&quot; to &quot;very confident&quot;.
+          </p>
         </div>
       <RatingScale
         label=""
@@ -671,6 +664,9 @@ api.setAutofill(autofill)
     >
       <div class="bg-white rounded-lg shadow-lg max-w-lg p-6 text-left space-y-4">
         <h2 class="text-xl font-bold">Choosing a wheel</h2>
+        <p class="text-muted-foreground">
+          Practice round. After this, you&apos;ll take a short quiz, then the main task will begin.
+        </p>
         <p>
           You will often see three wheels like this. In <span class="font-semibold">“you decide”</span> blocks,
           <span class="font-semibold">click one wheel</span> to select it. All three wheels have the same chance of winning –
