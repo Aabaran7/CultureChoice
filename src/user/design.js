@@ -191,6 +191,11 @@ timeline.pushSeqView({
   props: {
     mode: 'practice',
   },
+  // NOTE: allowAlways/requiresConsent are enabled temporarily so you can
+  // deep-link directly to `#/roulette_practice` for demonstration.
+  // Before running the real study, you probably want to REMOVE this meta
+  // so everyone still passes through consent/demographics/instructions.
+  meta: { allowAlways: true, requiresConsent: false },
 })
 
 // import the quiz questions
